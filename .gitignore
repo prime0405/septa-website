@@ -36,3 +36,6 @@ data/
 *.njsproj
 *.sln
 *.sw?
+
+# Vercel CLI link state (project id + org id, written by `vercel link`)
+.vercel
