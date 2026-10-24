@@ -8,8 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
+/dist
+/dist-ssr
 *.local
 
 # Local environment — SMTP and inbox credentials live here, never in the bundle
@@ -17,8 +17,10 @@ dist-ssr
 .env.*
 !.env.example
 
-# Submission store: real visitor data and uploaded CVs (created on first API boot)
-data/
+# Submission store: real visitor data and uploaded CVs (created on first API boot).
+# Anchored to the repo root on purpose — `data/` alone also matched src/data/,
+# which is the site's content and must stay tracked.
+/data/
 *.db
 *.db-journal
 *.db-shm

@@ -1,0 +1,195 @@
+export const mission = {
+  statement:
+    "Make useful technology ordinary. We help organisations turn a hard operational problem into software, automation or a team that can keep improving it.",
+};
+
+export const vision = {
+  statement:
+    "A market where every serious organisation can build and run good technology — or work with a partner who behaves as if it will still be there in three years.",
+};
+
+export const values = [
+  {
+    title: "Evidence before promises",
+    detail:
+      "A prototype, a measurement or a written trade-off beats a confident estimate. When we do not know, we say so and find out cheaply.",
+  },
+  {
+    title: "Built to be lived in",
+    detail:
+      "Software is judged years after launch, by whoever inherits it. Architecture, tests and documentation are chosen for that reader, not the demo.",
+  },
+  {
+    title: "Honest about fit",
+    detail:
+      "Some problems should not become an AI project, some codebases should not be rewritten, and some engagements we should not take. We say which one you are in.",
+  },
+  {
+    title: "Owners, not spectators",
+    detail:
+      "Named people accountable for delivery, monitoring and outcomes — including after handover, when the phone still gets answered.",
+  },
+  {
+    title: "Transfer what we know",
+    detail:
+      "Pairing, review, documentation and runbooks are part of the work. Capability that leaves with us is a failure of the engagement.",
+  },
+];
+
+export const approach = [
+  {
+    title: "Start from the decision",
+    detail:
+      "Every engagement opens with the decision the client is trying to make or the outcome they need to see. That frames the scope, not a technology preference.",
+  },
+  {
+    title: "Work in short, visible loops",
+    detail:
+      "Two-week increments, a running system from early on, and demos of real software rather than status decks.",
+  },
+  {
+    title: "Prove it before scaling it",
+    detail:
+      "Prototype, measure, then commit. If the evidence says stop, the engagement says stop and writes down why.",
+  },
+  {
+    title: "Design for the next team",
+    detail:
+      "Typed code, tests on meaningful paths, readable infrastructure and documentation written for the person who inherits it.",
+  },
+  {
+    title: "Instrument what we ship",
+    detail:
+      "Latency, errors, cost and usage are visible from the first release, so improvement is argued with data.",
+  },
+  {
+    title: "Hand over properly",
+    detail:
+      "Runbooks, walkthroughs and a defined support window. The goal is your team owning the thing, not renting our attention.",
+  },
+];
+
+export const whySepta = [
+  {
+    title: "One team across the whole path",
+    detail:
+      "Strategy, product design, engineering, automation, observability and staffing sit in the same conversation instead of being split between vendors who blame each other.",
+  },
+  {
+    title: "Senior and hands-on",
+    detail:
+      "The people who scope the work are the people who build it. No relay race from an account team to a delivery team you never met.",
+  },
+  {
+    title: "Delivery you can inspect",
+    detail:
+      "Your repository, your trackers, your infrastructure accounts. Progress is software running, visible at every increment.",
+  },
+  {
+    title: "Costs stated upfront",
+    detail:
+      "Inference, hosting and integration effort are modelled before commitment, so the finance team is not surprised by the architecture.",
+  },
+  {
+    title: "Reliability as a feature",
+    detail:
+      "Monitoring, alerting and rollback are part of scope on everything we build, not a separate service line people have to remember to buy.",
+  },
+  {
+    title: "Exit planned from day one",
+    detail:
+      "Documentation, pairing and transition checkpoints so ownership can move to your team whenever you want it to.",
+  },
+];
+
+export const techCapabilities = [
+  {
+    group: "Product and frontend",
+    items: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Design systems", "Accessibility (WCAG-informed work)"],
+  },
+  {
+    group: "Backend and data",
+    items: ["Node.js", "Python", "PostgreSQL", "Redis", "Event queues", "REST and GraphQL APIs", "ETL and sync jobs"],
+  },
+  {
+    group: "AI and applied ML",
+    items: [
+      "Large language model integration",
+      "Retrieval-augmented generation",
+      "Embeddings and vector search",
+      "Evaluation harnesses",
+      "Classical ML for prediction and anomaly detection",
+    ],
+  },
+  {
+    group: "Platform and operations",
+    items: [
+      "Containerised deployment",
+      "Infrastructure as code",
+      "OpenTelemetry instrumentation",
+      "Metrics, logs and tracing",
+      "Alerting and SLO practice",
+    ],
+  },
+  {
+    group: "Ways of working",
+    items: ["Test coverage on critical paths", "Code review", "Trunk-based delivery", "Threat modelling", "Post-incident review"],
+  },
+];
+
+export const statsPlaceholders = [
+  { label: "Years delivering", value: null as string | null },
+  { label: "Engineers and specialists", value: null as string | null },
+  { label: "Systems in production", value: null as string | null },
+  { label: "Client sectors served", value: null as string | null },
+];
+
+export const disciplines = [
+  {
+    title: "AI and machine learning",
+    detail: "Retrieval, evaluation, model integration and the product thinking that keeps those honest.",
+  },
+  {
+    title: "Backend and platform",
+    detail: "Services, data models, queues, APIs and the operational plumbing around them.",
+  },
+  {
+    title: "Frontend and design",
+    detail: "Interfaces people can use with a keyboard, on a phone, under pressure, in poor light.",
+  },
+  {
+    title: "Automation and integration",
+    detail: "Connecting systems, approvals and reporting so manual handoffs stop being a job.",
+  },
+  {
+    title: "Observability and reliability",
+    detail: "Instrumentation, dashboards, alerting and incident practice.",
+  },
+  {
+    title: "Delivery and analysis",
+    detail: "Discovery, requirements, coordination and the hard work of landing change in a real organisation.",
+  },
+];
+
+export const howWeWork = [
+  {
+    title: "Small teams, real authority",
+    detail:
+      "Delivery groups stay small enough that everyone knows the context, and are trusted to make engineering decisions rather than relay them.",
+  },
+  {
+    title: "Feedback while building",
+    detail:
+      "Demos every increment, written trade-offs, and a standing invitation to challenge a design before it hardens.",
+  },
+  {
+    title: "Learning is scheduled",
+    detail:
+      "Time for spikes, dependency care and post-incident review sits in the plan rather than being stolen from it.",
+  },
+  {
+    title: "Clear expectations on hours",
+    detail:
+      "Client-facing delivery has busy weeks; sustained overtime is treated as a planning failure to fix, not a normal cost of work.",
+  },
+];
