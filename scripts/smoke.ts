@@ -1,7 +1,6 @@
-import { existsSync } from "node:fs";
 import { CV_MAX_BYTES, requestSchema, statusSchema, submissionResult } from "../src/shared/schemas.ts";
-import { config } from "../server/config.ts";
-import { listInbox } from "../server/store.ts";
+import { storageLabel } from "../server/config.ts";
+import { listInbox, type StoredSubmission } from "../server/store.ts";
 
 /**
  * End-to-end smoke test for the Septa API.
@@ -12,6 +11,7 @@ import { listInbox } from "../server/store.ts";
  */
 
 const BASE = (process.env.API_BASE_URL ?? "http://127.0.0.1:8787").replace(/\/+$/, "");
+const targetsLocalApi = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(BASE);
 
 const VALIDATION_MESSAGE = "Please fix the highlighted fields.";
 const RATE_LIMIT_MESSAGE = "Too many submissions from this address. Please wait a minute and try again.";
@@ -134,10 +134,30 @@ function fakePdf(size = 2048): Uint8Array {
   return bytes;
 }
 
-function readStoredCount(stream?: "contact" | "requests" | "applications"): number {
-  // Reads the same file the API writes to. Safe with a live server: readers only here.
-  if (!existsSync(config.dbPath)) return -1;
-  return listInbox(stream, 500).length;
+/**
+ * Direct row checks are only valid when this process opens the very store the API writes
+ * to, so they are allowed only after the storage the API reports matches this script's.
+ */
+let apiStorage = "";
+
+function storeReadable(): boolean {
+  return apiStorage.length > 0 && apiStorage === storageLabel();
+}
+
+async function readStoredCount(stream?: "contact" | "requests" | "applications"): Promise<number> {
+  if (!storeReadable()) return -1;
+  return (await listInbox(stream, 500)).length;
+}
+
+/**
+ * Reads back the row the API just accepted, using the reference it returned. Same-timestamp
+ * rows have no guaranteed order, so "the newest one" is not a reliable stand-in.
+ */
+async function readStoredRow(stream: "requests" | "applications", id: string): Promise<StoredSubmission> {
+  const rows = await listInbox(stream, 500);
+  const row = rows.find((entry) => entry.id === id);
+  if (!row) throw new Error(`the row the API accepted (${id}) is not in ${stream} — read ${rows.length} rows`);
+  return row;
 }
 
 type CaseFn = (log: (note: string) => void) => Promise<void>;
@@ -171,7 +191,7 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
       assert(res.status === 200, `expected 200, got ${res.status} (${res.raw.slice(0, 120)})`);
       const status = statusSchema.parse(res.json);
       assert(status.backend === "septa-api", "backend must be septa-api");
-      assert(status.storage.startsWith("sqlite:"), `unexpected storage: ${status.storage}`);
+      assert(/^(sqlite|postgres):/.test(status.storage), `unexpected storage: ${status.storage}`);
       assert(status.mode === "live" || status.mode === "record-only", `unexpected mode: ${status.mode}`);
       assert(typeof status.emailDelivery === "boolean", "emailDelivery must be boolean");
       assert(typeof status.uploadsEnabled === "boolean", "uploadsEnabled must be boolean");
@@ -232,16 +252,16 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
     group: "contact",
     name: "POST /api/contact honeypot -> generic 422 and nothing stored",
     run: async (log) => {
-      const before = readStoredCount("contact");
+      const before = await readStoredCount("contact");
       const res = await jsonPost("/api/contact", contactPayload({ _hp: "https://spam.example" }));
       assert(res.status === 422, `expected 422, got ${res.status}`);
       assert(res.messageText !== VALIDATION_MESSAGE, "honeypot must not return the field-error message");
       assert(Object.keys(res.fieldErrors).length === 0, "honeypot must not leak field errors");
       if (before < 0) {
-        log("storage file not readable from this process — non-storage not asserted");
+        log("store not readable from this process — nothing-stored not asserted");
         return;
       }
-      const after = readStoredCount("contact");
+      const after = await readStoredCount("contact");
       assert(after === before, `honeypot submission was stored (${before} -> ${after})`);
       log(`contact rows unchanged at ${after}`);
     },
@@ -263,10 +283,12 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
     run: async () => {
       const res = await jsonPost("/api/request", requestPayload());
       assert(res.status === 201, `expected 201, got ${res.status}`);
-      const stored = listInbox("requests", 1)[0];
-      assert(!!stored, "no stored request found");
-      const parsed = requestSchema.safeParse(stored.payload);
-      assert(parsed.success, `stored payload does not re-validate: ${JSON.stringify(parsed.error?.issues[0])}`);
+      const id = submissionResult.parse(res.json).id;
+      if (storeReadable()) {
+        const stored = await readStoredRow("requests", id);
+        const parsed = requestSchema.safeParse(stored.payload);
+        assert(parsed.success, `stored payload does not re-validate: ${JSON.stringify(parsed.error?.issues[0])}`);
+      }
     },
   },
   {
@@ -311,9 +333,8 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
       const body = submissionResult.parse(res.json);
       assert(body.ok === true, "ok must be true");
 
-      if (existsSync(config.dbPath)) {
-        const stored = listInbox("applications", 1)[0];
-        assert(!!stored, "application row not found");
+      const stored = storeReadable() ? await readStoredRow("applications", body.id) : null;
+      if (stored) {
         assert(stored.payload.cvFileName === "priya-raman-cv.pdf", `cvFileName not recorded: ${String(stored.payload.cvFileName)}`);
         assert(stored.payload.cvSizeBytes === 2048, `cvSizeBytes wrong: ${String(stored.payload.cvSizeBytes)}`);
         assert(typeof stored.cvPath === "string" && stored.cvPath.length > 0, "cv_path was not stored");
@@ -323,7 +344,7 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
         );
         log(`cv stored as ${String(stored.cvPath).split(/[\\/]/).pop()}`);
       } else {
-        log("db file not readable — payload assertions skipped");
+        log("store not readable from this process — payload assertions skipped");
       }
     },
   },
@@ -419,12 +440,22 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
   {
     group: "routing",
     name: "uploads are not served over HTTP",
-    run: async () => {
+    run: async (log) => {
       const attempts = ["/uploads", "/api/uploads", "/data/uploads", `/api/${"cv"}`];
+      let fellBack = 0;
       for (const path of attempts) {
         const res = await call(path, { method: "GET" });
+        const contentType = res.headers.get("content-type") ?? "";
+        if (res.status === 200 && contentType.includes("text/html")) {
+          // A static host answers every unknown path with the app shell, so a 200 here is the
+          // SPA fallback rather than a route that serves stored CVs.
+          assert(/^<!doctype html/i.test(res.raw.trimStart()), `${path} returned HTML that is not the app shell`);
+          fellBack += 1;
+          continue;
+        }
         assert(res.status === 404 || res.status === 401, `${path} returned ${res.status}, expected 404`);
       }
+      if (fellBack > 0) log(`${fellBack} path(s) answered with the SPA shell, no upload content`);
     },
   },
   {
@@ -480,20 +511,36 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
 interface Row {
   group: string;
   name: string;
-  status: "PASS" | "FAIL";
+  status: "PASS" | "FAIL" | "SKIP";
   detail: string;
 }
+
+/** Cases that store a real row. Against a deployment these are the applicant's inbox. */
+const WRITE_GROUPS = new Set(["contact", "request", "careers"]);
+const liveWritesAllowed = targetsLocalApi || process.env.ALLOW_LIVE_SUBMISSIONS === "true";
 
 async function main(): Promise<number> {
   const rows: Row[] = [];
   let notes: string[] = [];
 
   console.log(`\nSepta API smoke — ${BASE}`);
+  if (!targetsLocalApi) {
+    console.log("Target is not localhost — valid submissions are skipped unless ALLOW_LIVE_SUBMISSIONS=true.");
+  }
   let reachable = false;
   try {
-    const probe = await fetch(`${BASE}/api/status`, { signal: AbortSignal.timeout(5000) });
+    // A serverless function that has been idle can spend several seconds booting and opening
+    // its database before answering, so the probe gets a generous window off localhost.
+    const probe = await fetch(`${BASE}/api/status`, {
+      signal: AbortSignal.timeout(targetsLocalApi ? 8000 : 30000),
+    });
     reachable = probe.ok;
-    await probe.body?.cancel();
+    if (reachable) {
+      const status = statusSchema.safeParse(await probe.json().catch(() => null));
+      if (status.success) apiStorage = status.data.storage;
+    } else {
+      await probe.body?.cancel();
+    }
   } catch {
     reachable = false;
   }
@@ -503,9 +550,18 @@ async function main(): Promise<number> {
     );
     return 1;
   }
+  console.log(
+    storeReadable()
+      ? `Direct row checks: on — this script opens the same store as the API (${apiStorage}).`
+      : `Direct row checks: off — this script opens ${storageLabel()}, the API reports ${apiStorage || "nothing"}.`,
+  );
 
   for (const current of cases) {
     notes = [];
+    if (!liveWritesAllowed && WRITE_GROUPS.has(current.group)) {
+      rows.push({ group: current.group, name: current.name, status: "SKIP", detail: "would store a real submission on this target" });
+      continue;
+    }
     try {
       await current.run((note) => notes.push(note));
       rows.push({ group: current.group, name: current.name, status: "PASS", detail: notes.join(" · ") });
@@ -523,17 +579,21 @@ async function main(): Promise<number> {
   const groupWidth = Math.max(...rows.map((row) => row.group.length), 6);
   const nameWidth = Math.min(72, Math.max(...rows.map((row) => row.name.length), 20));
   const failed = rows.filter((row) => row.status === "FAIL");
+  const skipped = rows.filter((row) => row.status === "SKIP");
+  const passed = rows.filter((row) => row.status === "PASS");
 
   console.log("");
   console.log(`${"GROUP".padEnd(groupWidth)}  RESULT  CASE`);
   for (const row of rows) {
     console.log(
-      `${row.group.padEnd(groupWidth)}  ${row.status}  ${row.name.slice(0, nameWidth).padEnd(nameWidth)}`,
+      `${row.group.padEnd(groupWidth)}  ${row.status.padEnd(4)}  ${row.name.slice(0, nameWidth).padEnd(nameWidth)}`,
       row.detail.length > 0 ? `— ${row.detail}` : "",
     );
   }
   console.log("");
-  console.log(`${rows.length - failed.length}/${rows.length} checks passed.`);
+  console.log(
+    `${passed.length}/${rows.length - skipped.length} checks passed${skipped.length > 0 ? ` (${skipped.length} skipped: they write real rows on this target)` : ""}.`,
+  );
   if (failed.length > 0) {
     console.log(`Failed: ${failed.map((row) => `${row.group}/${row.name}`).join(" | ")}`);
     return 1;

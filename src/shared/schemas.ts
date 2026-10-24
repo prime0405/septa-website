@@ -205,7 +205,9 @@ export const disciplines = [
   "Something else",
 ] as const;
 
-export const CV_MAX_BYTES = 8 * 1024 * 1024;
+/** Below the ~4.5 MB body limit a Vercel Function rejects before our code runs, so an applicant
+ * who picks a huge CV gets the field message here instead of a platform error page. */
+export const CV_MAX_BYTES = 4 * 1024 * 1024;
 export const CV_ALLOWED_EXT = ["pdf", "doc", "docx", "rtf", "txt"] as const;
 
 export const careerSchema = z.object({

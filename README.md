@@ -2,9 +2,12 @@
 
 A complete, multi-route marketing site for Septa with its own submission backend: contact
 enquiries, five-step service requests and career applications are validated in the browser,
-validated again on the server, written to SQLite and (once SMTP is configured) emailed.
+validated again on the server, written to the database and (once SMTP is configured) emailed.
+It is live on Vercel as one project: static frontend plus the API as a Node serverless function
+on Postgres, with CV uploads stored as private Vercel Blob objects.
 
-React 19 · TypeScript · Vite · Tailwind v4 · React Router 7 · Motion · Express 5 · `node:sqlite`
+React 19 · TypeScript · Vite · Tailwind v4 · React Router 7 · Motion · Express 5 ·
+`node:sqlite` (local) / Postgres (deployed) · Vercel Blob
 
 ---
 
@@ -29,13 +32,26 @@ emailed, and every form says so on screen. Nothing is faked as "sent".
 Other scripts:
 
 ```bash
-npm run build       # tsc -b && vite build  ->  dist/
+npm run build       # tsc -b && vite build -> dist/, then build:api -> api/[...all].js
+npm run build:api   # bundle the API into the Vercel Function entry (run by `build`)
 npm run preview     # serve the built frontend
 npm run start:api   # API only, no watcher
 npm run smoke       # 22 end-to-end API checks (needs a running API)
 npm run api:inbox   # read stored submissions from the terminal
 npm run lint        # oxlint
 ```
+
+`npm run api:inbox` and `npm run smoke` read the same store the API writes to. Against the
+deployed database, run them inside the project's environment:
+
+```bash
+npx vercel env run -- npm run api:inbox
+API_BASE_URL=https://<deployment-domain> ALLOW_LIVE_SUBMISSIONS=true \
+  npx vercel env run -- npm run smoke
+```
+
+Without `ALLOW_LIVE_SUBMISSIONS=true` the smoke suite skips the cases that would write real
+rows into the production store — only a target on `localhost` is allowed to write by default.
 
 `npm run api:inbox -- --stream contact --limit 50 --json --full` — flags are combinable;
 `--help` lists them.
@@ -55,31 +71,38 @@ validation, review screen, server-confirmed receipt with a reference id) and the
 application (optional CV upload). Server re-validates everything with the same Zod schemas the
 browser uses.
 
-**Verified on 2026-10-24:** `tsc -b` clean, `vite build` clean, `npm run smoke` **22/22**, all
-routes and detail pages rendered, and all three forms submitted successfully from the browser —
-including a CV upload written to disk under a sanitised `<uuid>.pdf` name.
+**Verified on 2026-10-24:** `tsc -b` clean, `vite build` clean, `npm run smoke` **22/22 against
+the local API on SQLite**, **22/22 against the deployed Vercel function on Postgres**, all routes
+and detail pages rendered, and all three forms submitted successfully from the browser — including
+a CV upload written to disk locally and as a private Blob object on the deployment. One further
+contact enquiry was sent through the live site in a browser and read back from Postgres by the
+reference it returned.
 
 **Anti-fabrication.** Anything Septa has not supplied is rendered as a visible
 *not configured* chip naming the file to set it in — never invented. Case-study results carry an
-`unverified` pill and a "to publish" note; sample articles and studies are tagged as samples;
-the careers page shows a genuine "no published openings" state; legal pages declare themselves
-templates until a date, entity and jurisdiction exist.
+`unverified` pill and a "to publish" note; sample articles and studies are tagged as samples in
+their own copy (`Sample scenario · …`), so they stay labelled even when the developer notes are
+off; the careers page shows a genuine "no published openings" state; legal pages declare
+themselves templates until a date, entity and jurisdiction exist.
 
 ## What still needs configuration
 
-All of this is on-screen and honest until done:
-
 1. **`src/lib/site.ts`** — email, support/careers address, phone, address, hours, stated reply
-   window, social links, `VITE_SITE_URL`, legal dates / entity / governing law / retention.
-2. **SMTP + `INBOX_EMAIL`** in `.env` — until then nothing is emailed (banner text on every form
-   page reflects this live from `GET /api/status`).
+   window, social links, `VITE_SITE_URL`, legal dates / entity / governing law / retention. Until
+   the addresses exist, an applicant who is told "we will reply by email" has no email to reply
+   to, so the forms only promise storage and a reference.
+2. **SMTP + `INBOX_EMAIL`** — the one remaining backend gap. Submissions are written and
+   confirmed, but nothing is emailed, so `npm run api:inbox` (or the database) is currently the
+   only way enquiries are seen. Until this is set, each receipt shows an amber
+   *"Stored on the server, not emailed yet"* pill, which is the truth rather than a bug.
 3. **Real content** — replace the 5 sample case studies, 6 sample articles and any company facts.
-4. **Production storage** — SQLite on a persistent disk (see *Hosting* below).
-5. **Legal review** — the privacy notice and terms are structurally complete, not advice.
+4. **Legal review** — the privacy notice and terms are structurally complete, not advice.
 
-Demo-only behaviour, clearly labelled: submissions land in `data/submissions.db` and the local
-inbox command; there is no admin UI, no CRM sync and no spam heuristic beyond the honeypot,
-rate limit and server validation.
+Done since this section was written: the backend is hosted (Vercel Function), submissions persist
+in Postgres, and CV uploads are stored privately — see *Hosting*.
+
+There is no admin UI, no CRM sync and no spam heuristic beyond the honeypot, rate limit and
+server validation.
 
 ---
 
@@ -97,13 +120,18 @@ Failure shapes: `422` + `{ message, errors: {field: message} }` for validation, 
 generic message when the honeypot is filled (**nothing is stored**, no field map is leaked),
 `429` + `Retry-After` when rate limited, `413` for oversized bodies, `404` JSON for unknown
 `/api/*` paths. `ok: true` is returned **only after the row is written**; email forwarding
-happens afterwards and its result is recorded on the row.
+happens afterwards and its result is recorded on the row. A CV that is refused by the API's own
+size limit gets a field message — a body larger than the platform's ~4.5 MB request cap never
+reaches the code, which is why `CV_MAX_BYTES` is set below that ceiling. If the deployed database
+is unreachable, `/api/*` answers `503` and the form reports failure instead of inventing a
+receipt.
 
 Protections: hand-rolled CORS against `ALLOWED_ORIGINS`, per-endpoint/per-IP fixed-window rate
 limit, `X-Content-Type-Options: nosniff`, `Cache-Control: no-store`, body size caps, field-count
-and field-size caps inside the multipart parser, extension allowlist, and CVs written as
-`<uuid>.<ext>` with mode `0600`. **Uploads are never mounted as static files** — there is no
-HTTP route that can serve a submitted CV back.
+and field-size caps inside the multipart parser, extension allowlist, and CVs stored as
+`<uuid>.<ext>` (mode `0600` on disk, `access: "private"` in Blob). **Uploads are never mounted as
+static files** — there is no HTTP route that can serve a submitted CV back, and an anonymous GET
+of a stored CV returns 403.
 
 ## Environment
 
@@ -115,6 +143,7 @@ Minimum to go live:
 
 ```env
 VITE_SITE_URL=https://sept.example
+TRUST_PROXY=true
 SMTP_HOST=smtp.provider.example
 SMTP_PORT=587
 SMTP_SECURE=false
@@ -122,11 +151,13 @@ SMTP_USER=apikey
 SMTP_PASS=secret
 SMTP_FROM="Septa Website <website@sept.example>"
 INBOX_EMAIL=enquiries@sept.example
-ALLOWED_ORIGINS=https://sept.example
 ```
 
-`SMTP_URL` (nodemailer connection string) can replace the host/port/from triple. Env values may
-only *tighten* the upload limits defined in `src/shared/schemas.ts`, never loosen them.
+`POSTGRES_URL` (or `DATABASE_URL`) and `BLOB_STORE_ID` decide where submissions and CVs go; on
+Vercel the Prisma Postgres and Blob integrations supply both, so they are not set by hand.
+`ALLOWED_ORIGINS` is only needed when the browser calls the API on a different origin than the
+site. `SMTP_URL` (nodemailer connection string) can replace the host/port/from triple. Env values
+may only *tighten* the upload limits defined in `src/shared/schemas.ts`, never loosen them.
 
 ## Content model
 
@@ -162,62 +193,77 @@ reading progress bar disappears, and smooth scrolling becomes instant.
 
 ## Hosting
 
-`npm run build` produces a static `dist/` plus a separate Node process for the API. Two rules
-follow from that:
+The site is deployed as **one Vercel project**: the static frontend from `dist/`, and the same
+Express app running as a catch-all Node Function for every `/api/*` path. Storage is Postgres for
+submissions and private Vercel Blob objects for CVs. Locally, nothing changes: the API runs as a
+process and falls back to SQLite + `data/uploads` when no database is configured.
 
-- **Do not deploy the API to a function/serverless platform expecting SQLite to persist.** Each
-  invocation gets a fresh, ephemeral filesystem, so submissions silently accumulate in
-  throw-away copies of `data/submissions.db`. The frontend can be static-hosted anywhere; the API
-  needs a persistent disk.
-- **Practical layouts:** one small VM or container (Render, Fly.io, Railway, Hetzner, a VPS)
-  running `npm run start:api` behind nginx/Caddy that also serves `dist/` and proxies `/api`;
-  or static frontend on Vercel/Netlify with the API on such a host and `ALLOWED_ORIGINS` set to
-  the frontend origin.
+```
+browser  ->  Vercel  ->  /api/*     -> api/[...all].js  -> Express app -> Postgres  (rows)
+                                        (built by `npm run build:api`)              -> Vercel Blob (CVs)
+                   ->  everything else -> dist/index.html (SPA rewrite)
+```
 
-For serverless-only hosting, replace `server/store.ts` with a Postgres/Turso driver:
-`insertSubmission`, `listInbox`, `setForwardState`, `countByStream` and `initStore` are the only
-functions the routes use, and the table shape is one `CREATE TABLE` in that file. Uploaded CVs
-need object storage instead of `server/upload.ts`'s `saveCv`.
+`server/store.ts` issues identical SQL on both backends (one driver uses `node:sqlite`, the other
+`postgres`), so `data/submissions.db` on a laptop and the deployed database hold the same columns.
+`server/upload.ts` writes to Blob or disk the same way. A connection string is what picks the
+driver — there is no separate build for each environment.
 
-### Deploying the frontend on Vercel
+Four things about this layout are worth knowing before changing it:
 
-`vercel.json` in the repo root already declares the build (`npm run build` → `dist/`) and the SPA
-fallback rewrite `/:path((?!api/).*)` → `/index.html`, so deep links like `/careers` resolve. The
-rewrite deliberately excludes `/api`, which is what lets the backend be proxied in later.
+- **A Vercel Function has no usable disk.** With `VERCEL` set and no connection string the API
+  refuses to boot rather than write submissions into an ephemeral filesystem, so a misconfigured
+  deploy fails loudly instead of losing enquiries.
+- **The pooled endpoint is used on purpose.** `server/config.ts` rewrites a direct Prisma Postgres
+  host to `pooled.db.prisma.io`, because every cold function invocation otherwise opens its own
+  connection and a free plan caps at ten.
+- **One database serves every environment.** Development, preview and production deployments share
+  the same Postgres store, so preview traffic and smoke runs land in the production table. Filter
+  by `created_at`, or delete rows you do not want, before launch.
+- **The rate limiter is per warm instance**, not global — see `.env.example`.
 
-1. Push to GitHub and connect the project: `npx vercel link --yes --project septa-website` then
-   `npx vercel git connect` (requires an active session — check with `npx vercel whoami`; run
-   `npx vercel login` if it answers "not logged in"). Once connected, every push to `main` builds and
-   promotes a production deployment; `npx vercel deploy --prod --yes` still works from the CLI.
-2. Set the build-time environment variables — `npx vercel env add VITE_SITE_URL production` and, for a
-   frontend-only deploy, `npx vercel env add VITE_SHOW_LAUNCH_NOTES production`:
-   `VITE_SITE_URL=https://<your-vercel-or-custom-domain>` and `VITE_SHOW_LAUNCH_NOTES=true`. With no
-   backend reachable the forms then say *"Demo mode — no backend reachable"* instead of failing quietly,
-   and the placeholder-content notes stay visible. Deploy without them and the site still behaves
-   honestly — every submit reports that receipt could not be confirmed — it is just less explained.
-3. Host the API on any persistent-disk service (Render, Fly.io, Railway, a VPS) running
-   `npm run start:api`, then connect it one of two ways:
+### Deploying to Vercel
 
-   | Way | What to set | Trade-off |
-   | --- | --- | --- |
-   | **Same-origin proxy (preferred)** | Add a Vercel rewrite `{"source": "/api/:path*", "destination": "https://<api-host>/api/:path*"}` above the SPA rule. No `VITE_*` change, no CORS. | Vercel forwards `x-real-ip`/`x-forwarded-for`, so set `TRUST_PROXY=true` on the API or the rate limiter collapses every visitor into one bucket. |
-   | **Cross-origin** | `VITE_API_BASE_URL=https://<api-host>/api` and `ALLOWED_ORIGINS=https://<frontend-origin>` | The browser calls the API directly; the backend URL is public and preflighted. |
+`vercel.json` declares the build (`npm run build` → `dist/`) and the SPA fallback rewrite
+`/:path((?!api/).*)` → `/index.html`, which deliberately excludes `/api` so those paths reach the
+Function instead of returning HTML.
 
-   Either way keep `NODE_ENV=production` and TLS on the API, and never put `SMTP_*` or
-   `INBOX_EMAIL` into a `VITE_*` variable.
-4. Re-check on the live URL: `/api/status` should return the JSON status, and `npm run smoke`
-   against it (`API_BASE_URL=https://<api-host>`) should be 22/22. Turn `VITE_SHOW_LAUNCH_NOTES`
-   off once the company facts in `src/lib/site.ts` are confirmed.
+1. **Connect the stores** once: add the Prisma Postgres and Blob integrations to the project. They
+   inject `POSTGRES_URL`/`DATABASE_URL` and `BLOB_STORE_ID`, plus an OIDC token inside a Function
+   that authorises writes to that store — so there is no Blob token to keep in your settings.
+2. **Set the remaining variables**: `npx vercel env add VITE_SITE_URL production` and
+   `npx vercel env add TRUST_PROXY production` with `true` — without it every visitor appears to
+   come from Vercel's proxy and shares one rate-limit bucket. Add `SMTP_*` and `INBOX_EMAIL` the
+   same way when they exist. Never prefix those with `VITE_`: that inlines them into the browser
+   bundle.
+3. **Deploy**: `npx vercel deploy --prod --yes`, or push to `main` now that the repository is
+   connected (`npx vercel git connect`; check the session with `npx vercel whoami`). The Function
+   entry is generated during the build — `npm run build:api` bundles `server/vercel-handler.ts` into
+   `api/[...all].js` — so it is not committed. `api/package.json` **is** committed, because the root
+   package is `"type": "module"` and the runtime would otherwise load that CommonJS bundle as ESM.
+   Do not run `vercel build` in this working copy: it executes `npm ci`, which on Windows fails
+   halfway when a running editor holds a native binary and leaves `node_modules` gutted.
+4. **Verify**: `curl https://<domain>/api/status` must report `"storage": "postgres:…"`, then
+   `API_BASE_URL=https://<domain> ALLOW_LIVE_SUBMISSIONS=true npx vercel env run -- npm run smoke`
+   must be 22/22, then read back what it wrote with `npx vercel env run -- npm run api:inbox`. If a
+   Function fails, `npx vercel logs --deployment <url>` shows the crash — and retry once before
+   believing it, because a cold start plus a first database connection is the slowest request the
+   site makes.
+5. `VITE_SHOW_LAUNCH_NOTES` is intentionally **not** set in production: those notes name internal
+   files and the storage endpoint. They are always on in `npm run dev`, and a preview build can be
+   given them with `npx vercel env add VITE_SHOW_LAUNCH_NOTES preview`.
 
-Before going live: set `NODE_ENV=production`, `HOST`/`PORT`, correct `ALLOWED_ORIGINS`, turn on
-`TRUST_PROXY` only when a real reverse proxy is in front (the rate limiter keys on client IP),
-put the API behind TLS, keep `.env` out of git, and re-run `npm run smoke` against the deployed
-URL with `API_BASE_URL`.
+On any other host the same app runs as `npm run start:api` behind nginx/Caddy serving `dist/` and
+proxying `/api` (Render, Fly.io, Railway, a VPS). Leave the connection string unset there and it
+uses SQLite on the persistent disk; set `ALLOWED_ORIGINS` when the frontend is on another origin,
+keep `.env` out of git, and re-run `npm run smoke` against the deployed URL.
 
 ## Layout
 
 ```
 index.html            meta, fonts, favicon
+vercel.json           build, output dir, SPA rewrite that leaves /api alone
+api/                  generated Function entry (only package.json is committed)
 src/
   App.tsx             routes, lazy pages, Suspense, ErrorBoundary
   pages/              15 route components
@@ -227,14 +273,16 @@ src/
   shared/schemas.ts   Zod schemas used by browser AND server
   index.css           Tailwind theme tokens + component classes
 server/
-  index.ts            Express app and route handlers
-  config.ts           env parsing, safe defaults, record-only fallback
-  store.ts            node:sqlite persistence
+  app.ts              Express app: middleware, routes, security headers
+  index.ts            local boot — open the store, then listen
+  vercel-handler.ts   Function entry the build bundles into api/[...all].js
+  config.ts           env parsing, driver choice, safe defaults, record-only fallback
+  store.ts            one SQL, two drivers: node:sqlite locally, postgres deployed
   validate.ts         field mapping, honeypot, error shaping
-  upload.ts           busboy limits, sanitised CV writes
+  upload.ts           busboy limits, sanitised CV writes to disk or private Blob
   notify.ts           optional nodemailer forwarding
   rate-limit.ts       fixed-window per endpoint+IP
 scripts/
-  smoke.ts            22-case API test
+  smoke.ts            22-case API test (refuses to write on a live target unless allowed)
   inbox.ts            read submissions from the terminal
 ```

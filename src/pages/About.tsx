@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Compass, Send, Target } from "lucide-react";
 import { CtaBand, PageHero } from "../components/blocks/PageHero";
-import { LaunchNoteInline } from "../components/blocks/LaunchNote";
+import { DevNote, LaunchNoteInline } from "../components/blocks/LaunchNote";
 import { ProcessSteps } from "../components/visuals/ProcessSteps";
 import { HeroDiagram } from "../components/visuals/HeroDiagram";
 import { Button } from "../components/ui/Button";
@@ -104,7 +104,13 @@ export default function About() {
         <SectionHeading
           eyebrow="By the numbers"
           title="Company facts that still need to be supplied"
-          lead="Rather than publish plausible-sounding figures, Septa leaves these unset until the real numbers exist. Each one reads from src/lib/site.ts and src/data/content.ts."
+          lead={
+            <>
+              Rather than publish plausible-sounding figures, Septa leaves these unset until the real
+              numbers exist.
+              <DevNote> Each one reads from src/lib/site.ts and src/data/content.ts.</DevNote>
+            </>
+          }
           className="mb-9"
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -271,10 +277,12 @@ export default function About() {
               <Callout kind="setup" title="Not yet published on this page">
                 <p>
                   Company history, founders, office locations and team photos have not been supplied,
-                  so they are absent rather than invented. Add them in{" "}
-                  <code className="font-mono text-[0.8rem]">src/lib/site.ts</code> and{" "}
-                  <code className="font-mono text-[0.8rem]">src/data/content.ts</code> — or say so and
-                  they will be written properly.
+                  so they are absent rather than invented.
+                  <DevNote>
+                    {" "}Add them in <code className="font-mono text-[0.8rem]">src/lib/site.ts</code> and{" "}
+                    <code className="font-mono text-[0.8rem]">src/data/content.ts</code> — or say so and
+                    they will be written properly.
+                  </DevNote>
                 </p>
               </Callout>
 

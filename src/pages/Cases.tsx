@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Search, SearchX, FolderOpen } from "lucide-react";
 import { CtaBand, PageHero } from "../components/blocks/PageHero";
+import { DevNote } from "../components/blocks/LaunchNote";
 import { CaseCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
@@ -110,9 +111,12 @@ export default function Cases() {
         <Callout kind="warn" title="These are sample scenarios" className="mb-10">
           <p>
             The studies below were written to demonstrate the page structure and our thinking. They
-            are not Septa client engagements, and no metric here is a real result. Replace them with
-            approved studies in <code className="font-mono text-[0.8rem]">src/data/cases.ts</code>{" "}
-            before launch — the labels come from that file, not from the page.
+            are not Septa client engagements, and no metric here is a real result.
+            <DevNote>
+              {" "}Replace them with approved studies in{" "}
+              <code className="font-mono text-[0.8rem]">src/data/cases.ts</code> before launch — the
+              labels come from that file, not from the page.
+            </DevNote>
           </p>
         </Callout>
 

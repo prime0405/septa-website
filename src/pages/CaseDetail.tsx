@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, CircleSlash } from "lucide-react";
 import { CtaBand, PageHero } from "../components/blocks/PageHero";
+import { DevNote } from "../components/blocks/LaunchNote";
 import { CaseCard, RequestInline } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
@@ -271,9 +272,11 @@ export default function CaseDetail() {
                   <p>
                     None of the results on this page are measured outcomes from a real Septa
                     engagement. They exist so the template shows the right shape: a metric, a
-                    direction, and the evidence that would be needed to publish it. Replace{" "}
-                    <code className="font-mono text-[0.8rem]">src/data/cases.ts</code> with
-                    client-approved studies before launch.
+                    direction, and the evidence that would be needed to publish it.
+                    <DevNote>
+                      {" "}Replace <code className="font-mono text-[0.8rem]">src/data/cases.ts</code>{" "}
+                      with client-approved studies before launch.
+                    </DevNote>
                   </p>
                 </Callout>
               ) : null}

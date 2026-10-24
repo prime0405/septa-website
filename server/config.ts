@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { CV_ALLOWED_EXT, CV_MAX_BYTES } from "../src/shared/schemas.ts";
 
 /**
@@ -10,7 +9,11 @@ import { CV_ALLOWED_EXT, CV_MAX_BYTES } from "../src/shared/schemas.ts";
  * submissions without emailing them until SMTP details exist.
  */
 
-const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+/**
+ * The working directory, not `import.meta.url`: a Vercel Function bundles this module to
+ * CommonJS, where `import.meta` does not exist. Every npm script runs from the repo root.
+ */
+const projectRoot = process.cwd();
 
 /** Reads `.env` from the project root when present. Optional, never fatal. */
 function loadDotEnv(): void {
@@ -125,6 +128,38 @@ const dataDir = pathFromEnv("DATA_DIR", "data");
 const dbPath = env("DB_PATH") === undefined ? resolve(dataDir, "submissions.db") : pathFromEnv("DB_PATH", "data/submissions.db");
 const uploadDir = pathFromEnv("UPLOAD_DIR", "data/uploads");
 
+/**
+ * Postgres, when the submission rows live there instead of in SQLite.
+ *
+ * Prisma Postgres issues a direct endpoint that caps connections at ten (five of them
+ * reserved), which a fleet of short-lived Vercel Function instances blows through. The
+ * same credentials work on its pooler host, so the URL is rewritten unless a
+ * `POSTGRES_POOL_URL` is supplied explicitly.
+ */
+const issuedDatabaseUrl = env("DATABASE_URL") ?? env("POSTGRES_URL") ?? null;
+const databaseUrl = (() => {
+  const pinned = env("POSTGRES_POOL_URL");
+  if (pinned !== undefined) return pinned;
+  if (issuedDatabaseUrl === null) return null;
+  return issuedDatabaseUrl.replace("@db.prisma.io:", "@pooled.db.prisma.io:");
+})();
+
+/**
+ * Where a CV is written.
+ *
+ * Vercel Blob accepts a static read-write token anywhere, but a connected store only
+ * exposes OIDC credentials, which are valid inside a Vercel runtime and useless on a
+ * laptop. When neither works the deployment says so instead of quietly dropping files.
+ */
+const blobStoreId = env("BLOB_STORE_ID") ?? null;
+const blobReadWriteToken = env("BLOB_READ_WRITE_TOKEN") ?? null;
+const runningOnVercel = env("VERCEL") !== undefined;
+const uploadsTarget: "blob" | "disk" | "none" = (() => {
+  if (blobReadWriteToken !== null) return "blob";
+  if (blobStoreId === null) return "disk";
+  return runningOnVercel ? "blob" : "none";
+})();
+
 export interface SmtpSettings {
   url: string | null;
   host: string | null;
@@ -148,6 +183,13 @@ export interface AppConfig {
   dbPath: string;
   dbPathDisplay: string;
   uploadDir: string;
+  /** Postgres connection string, or null when submissions stay in SQLite. */
+  databaseUrl: string | null;
+  /** Where a CV is written: object storage, local disk, or nowhere. */
+  uploadsTarget: "blob" | "disk" | "none";
+  blobStoreId: string | null;
+  /** True inside a Vercel runtime, where the filesystem does not outlive the request. */
+  runningOnVercel: boolean;
   allowedOrigins: string[];
   jsonBodyLimitBytes: number;
   rateLimit: { max: number; windowMs: number; enabled: boolean };
@@ -180,6 +222,10 @@ export const config: AppConfig = {
   dbPath,
   dbPathDisplay: displayPath(dbPath),
   uploadDir,
+  databaseUrl,
+  uploadsTarget,
+  blobStoreId,
+  runningOnVercel,
   allowedOrigins: (() => {
     const configured = listFromEnv("ALLOWED_ORIGINS");
     return configured.length > 0 ? configured : DEFAULT_ALLOWED_ORIGINS;
@@ -208,8 +254,12 @@ export const config: AppConfig = {
   cvAllowedExtensions,
 };
 
-/** `sqlite:data/submissions.db` — the string surfaced by GET /api/status. */
-export const storageLabel = `sqlite:${displayPath(config.dbPath)}`;
+/** `sqlite:data/submissions.db` or `postgres:septa-submissions` — surfaced by GET /api/status. */
+export function storageLabel(): string {
+  if (config.databaseUrl === null) return `sqlite:${displayPath(config.dbPath)}`;
+  const host = /@([^:/]+)/.exec(config.databaseUrl)?.[1] ?? "postgres";
+  return `postgres:${host}`;
+}
 
 export function describeConfig(): string {
   const mail = config.emailDeliveryEnabled
@@ -217,5 +267,8 @@ export function describeConfig(): string {
     : config.smtp.usable
       ? "smtp configured but INBOX_EMAIL missing (record-only)"
       : "no smtp (record-only)";
-  return `host=${config.host}:${config.port} db=${config.dbPathDisplay} uploads=${displayPath(config.uploadDir)} mail=${mail} origins=${config.allowedOrigins.join(" ")}`;
+  const store = config.databaseUrl === null ? `sqlite:${config.dbPathDisplay}` : "postgres (pooled)";
+  return `host=${config.host}:${config.port} store=${store} uploads=${config.uploadsTarget}${
+    config.uploadsTarget === "disk" ? `:${displayPath(config.uploadDir)}` : ""
+  } mail=${mail} origins=${config.allowedOrigins.join(" ")}`;
 }

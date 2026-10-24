@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { Wrench } from "lucide-react";
 import { apiBase, loadApiStatus } from "../../lib/api";
+import { showLaunchNotes as showNotes } from "../../lib/launchNotes";
 import type { ApiStatus } from "../../shared/schemas";
 import { Callout } from "../ui/primitives";
-
-const showNotes =
-  import.meta.env.DEV || (import.meta.env.VITE_SHOW_LAUNCH_NOTES as string | undefined) === "true";
 
 /**
  * Honest note about content that must be confirmed by Septa before launch.
@@ -93,4 +92,12 @@ export function LaunchNoteInline({ label }: { label: string }) {
       {label}
     </span>
   );
+}
+
+/**
+ * A clause of maintainer instruction — which file to edit — inside copy that is otherwise honest
+ * and stays on the public site. Renders nothing once the launch notes are off.
+ */
+export function DevNote({ children }: { children: ReactNode }) {
+  return showNotes ? <>{children}</> : null;
 }

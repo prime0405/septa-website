@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useReducedMotion } from "motion/react";
 import { ArrowRight, CalendarDays, Clock, PenLine } from "lucide-react";
 import { CtaBand } from "../components/blocks/PageHero";
+import { DevNote } from "../components/blocks/LaunchNote";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
@@ -258,8 +259,11 @@ export default function BlogPost() {
               <Callout kind="warn" title="Placeholder editorial" className="mb-10">
                 <p>
                   This article was written to demonstrate the blog template. Authorship and
-                  publication date are not real. Approved articles replace it in{" "}
-                  <code className="font-mono text-[0.8rem]">src/data/posts.ts</code>.
+                  publication date are not real.
+                  <DevNote>
+                    {" "}Approved articles replace it in{" "}
+                    <code className="font-mono text-[0.8rem]">src/data/posts.ts</code>.
+                  </DevNote>
                 </p>
               </Callout>
 

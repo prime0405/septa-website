@@ -3,15 +3,17 @@ import { mkdir, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { IncomingMessage } from "node:http";
 import busboy from "busboy";
+import { del, put } from "@vercel/blob";
 import { config } from "./config.ts";
 import { clampFileName } from "./validate.ts";
 
 /**
  * CV upload handling.
  *
- * Files are streamed through busboy with hard byte and count limits, then written as
- * `<uuid>.<ext>` inside the uploads directory. Nothing in this module is ever mounted
- * on an HTTP route: uploaded CVs are never served back to a browser.
+ * Files are streamed through busboy with hard byte and count limits, then stored as
+ * `<uuid>.<ext>` — in the uploads directory, or in a private Vercel Blob object when a
+ * store is attached. Nothing in this module is ever mounted on an HTTP route: uploaded
+ * CVs are never served back to a browser.
  */
 
 export const CV_FIELD = "cv";
@@ -202,7 +204,7 @@ export function readMultipart(req: IncomingMessage): Promise<MultipartResult> {
 }
 
 export interface StoredCv {
-  /** Absolute path written to disk; stored in the DB, never sent to a client. */
+  /** Disk path or private object URL; stored in the DB, never sent to a client. */
   cvPath: string;
   /** `<uuid>.<ext>` — safe to log. */
   storedName: string;
@@ -210,9 +212,13 @@ export interface StoredCv {
 
 /**
  * Persists the CV under a generated name. The extension comes from the allowlist only,
- * so the destination can never escape the uploads directory.
+ * so neither the disk path nor the object key can escape its storage root.
  */
 export async function saveCv(file: UploadedFile): Promise<StoredCv> {
+  if (config.uploadsTarget === "blob") return saveToBlob(file);
+  if (config.uploadsTarget !== "disk") {
+    throw new Error("CV uploads are not available on this deployment.");
+  }
   await mkdir(config.uploadDir, { recursive: true });
   const storedName = `${randomUUID()}.${file.extension}`;
   const cvPath = join(config.uploadDir, storedName);
@@ -220,12 +226,31 @@ export async function saveCv(file: UploadedFile): Promise<StoredCv> {
   return { cvPath, storedName };
 }
 
-/** Best-effort cleanup when a later step fails, so rejects do not litter disk. */
+const CV_PREFIX = "cvs";
+
+/** Private Blob object: readable only with store credentials, never over an HTTP route. */
+async function saveToBlob(file: UploadedFile): Promise<StoredCv> {
+  const storedName = `${randomUUID()}.${file.extension}`;
+  const blob = await put(`${CV_PREFIX}/${storedName}`, file.buffer, {
+    access: "private",
+    addRandomSuffix: false,
+    contentType: file.mimeType || "application/octet-stream",
+  });
+  return { cvPath: blob.url, storedName };
+}
+
+/** Best-effort cleanup when a later step fails, so rejects do not litter storage. */
 export async function removeCv(cvPath: string): Promise<void> {
   try {
+    if (/^https?:\/\//.test(cvPath)) {
+      await del(cvPath);
+      return;
+    }
     await unlink(cvPath);
   } catch {
-    // Nothing to do: the file is already gone or the filesystem refused.
+    // Orphan report: the object or file stays behind, but the applicant already got a
+    // rejection, so nothing sensitive was accepted. The URL is not logged.
+    console.error("[upload] a rejected CV could not be deleted from storage; it may be an orphan.");
   }
 }
 
@@ -241,4 +266,9 @@ export function cvSizeMessage(): string {
 
 export function cvTypeMessage(): string {
   return `The CV must be one of these file types: ${config.cvAllowedExtensions.join(", ")}.`;
+}
+
+/** Shown when this deployment genuinely cannot accept a file. */
+export function cvUnavailableMessage(): string {
+  return "This deployment cannot store CV files yet, so please send your application without an attachment.";
 }

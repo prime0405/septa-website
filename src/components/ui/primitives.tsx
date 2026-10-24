@@ -10,6 +10,7 @@ import {
   Sparkles,
   Wrench,
 } from "lucide-react";
+import { showLaunchNotes } from "../../lib/launchNotes";
 import { cn } from "../../lib/cn";
 
 /* ------------------------------- layout ------------------------------- */
@@ -189,11 +190,17 @@ export function Unconfigured({
         "inline-flex items-center gap-1.5 rounded-lg border border-dashed border-line bg-[#0e1418] px-2.5 py-1 text-[0.8rem] text-faint",
         className,
       )}
-      title={`Add the real ${what} in ${where}`}
+      title={showLaunchNotes ? `Add the real ${what} in ${where}` : `The real ${what} is not supplied yet`}
     >
       <CircleSlash className="size-3.5" aria-hidden />
       <span>
-        No {what} yet — set it in <code className="font-mono text-[0.72rem]">{where}</code>
+        No {what} yet
+        {showLaunchNotes ? (
+          <>
+            {" "}
+            — set it in <code className="font-mono text-[0.72rem]">{where}</code>
+          </>
+        ) : null}
       </span>
     </span>
   );

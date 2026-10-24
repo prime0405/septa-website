@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
-import { config } from "../server/config.ts";
+import { config, storageLabel } from "../server/config.ts";
 import {
+  closeStore,
   countByStream,
   listInbox,
   streams,
@@ -10,13 +11,16 @@ import {
 } from "../server/store.ts";
 
 /**
- * `npm run api:inbox` — reads the SQLite file directly and prints recent submissions.
+ * `npm run api:inbox` — reads the submission store and prints recent rows.
  *
  *   npm run api:inbox                       last 20 across all streams
  *   npm run api:inbox -- --stream contact   one stream only
  *   npm run api:inbox -- --limit 50         more rows
  *   npm run api:inbox -- --json             machine-readable output
  *   npm run api:inbox -- --full             show every stored payload field
+ *
+ * The deployed store is Postgres on Vercel, so reading production rows needs its
+ * environment variables: `vercel env run -- npm run api:inbox`.
  */
 
 interface Options {
@@ -81,7 +85,7 @@ function forwardedLabel(submission: StoredSubmission): string {
 
 function printHelp(): void {
   console.log(`
-Septa submission inbox (reads ${config.dbPathDisplay})
+Septa submission inbox (reads ${storageLabel()})
 
   npm run api:inbox
   npm run api:inbox -- --stream contact|requests|applications
@@ -89,12 +93,12 @@ Septa submission inbox (reads ${config.dbPathDisplay})
   npm run api:inbox -- --json
   npm run api:inbox -- --full
 
-Columns: created, stream, id, key fields, delivery status, CV path.
-Rows are read from the local database — nothing is sent to any mailbox by this command.
+Columns: created, stream, id, key fields, delivery status, CV location.
+Rows are read from the database — nothing is sent to any mailbox by this command.
 `);
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
 
   if (options.help) {
@@ -105,13 +109,13 @@ function main(): void {
     console.error(`inbox: ${options.error}\nRun "npm run api:inbox -- --help".`);
     process.exit(1);
   }
-  if (!existsSync(config.dbPath)) {
+  if (config.databaseUrl === null && !existsSync(config.dbPath)) {
     console.log(`No submissions yet — ${config.dbPathDisplay} does not exist.`);
     console.log("Start the API (npm run start:api) and submit a form, then run this again.");
     return;
   }
 
-  const rows = listInbox(options.stream ?? undefined, options.limit);
+  const rows = await listInbox(options.stream ?? undefined, options.limit);
 
   if (options.json) {
     console.log(JSON.stringify(rows, null, 2));
@@ -123,7 +127,7 @@ function main(): void {
     return;
   }
 
-  const counts = countByStream();
+  const counts = await countByStream();
   const column = (value: string, width: number) => value.slice(0, width).padEnd(width);
 
   console.log(`\nSepta inbox — showing ${rows.length} most recent submission(s)\n`);
@@ -146,7 +150,7 @@ function main(): void {
   console.log(
     `Totals — ${counts.map((entry) => `${entry.stream}: ${entry.total} (${entry.forwarded} emailed)`).join(" · ")}`
   );
-  console.log(`Database: ${config.dbPathDisplay}`);
+  console.log(`Store: ${storageLabel()}`);
   console.log(
     config.emailDeliveryEnabled
       ? `Email delivery: configured (inbox ${config.inboxEmail}).`
@@ -155,4 +159,11 @@ function main(): void {
   console.log("");
 }
 
-main();
+main()
+  .catch((error: unknown) => {
+    console.error("inbox: the submissions could not be read:", error);
+    process.exitCode = 1;
+  })
+  .finally(() => {
+    void closeStore();
+  });

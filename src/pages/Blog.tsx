@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Search, SearchX } from "lucide-react";
 import { CtaBand, PageHero } from "../components/blocks/PageHero";
+import { DevNote } from "../components/blocks/LaunchNote";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
@@ -121,10 +122,12 @@ export default function Blog() {
         <Callout kind="warn" title="Sample editorial content" className="mb-10">
           <p>
             These articles exist to prove out the blog architecture — list, search, filters, article
-            template and related posts. Authorship and dates are placeholders, not real bylines. Add
-            or replace articles by appending to{" "}
-            <code className="font-mono text-[0.8rem]">src/data/posts.ts</code>; the page layout reads
-            entirely from that file, so new content needs no template work.
+            template and related posts. Authorship and dates are placeholders, not real bylines.
+            <DevNote>
+              {" "}Add or replace articles by appending to{" "}
+              <code className="font-mono text-[0.8rem]">src/data/posts.ts</code>; the page layout reads
+              entirely from that file, so new content needs no template work.
+            </DevNote>
           </p>
         </Callout>
 
@@ -271,7 +274,7 @@ export default function Blog() {
             <MarkerList
               items={[
                 {
-                  label: "Append an entry to src/data/posts.ts",
+                  label: "One entry in a single data file",
                   detail: "Title, excerpt, category, tags, author, date and body blocks.",
                 },
                 {
