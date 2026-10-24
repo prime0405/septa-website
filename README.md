@@ -185,13 +185,16 @@ need object storage instead of `server/upload.ts`'s `saveCv`.
 fallback rewrite `/:path((?!api/).*)` → `/index.html`, so deep links like `/careers` resolve. The
 rewrite deliberately excludes `/api`, which is what lets the backend be proxied in later.
 
-1. Push this repo to GitHub and *Import* it in Vercel (or run `npx vercel` in the project — the CLI
-   needs `npx vercel login` first, which is interactive and must be run by you).
-2. Set the build-time environment variables: `VITE_SITE_URL=https://<your-vercel-or-custom-domain>`
-   and, for a frontend-only deploy, `VITE_SHOW_LAUNCH_NOTES=true`. With no backend reachable the
-   forms then say *"Demo mode — no backend reachable"* instead of failing quietly, and the
-   placeholder-content notes stay visible. Deploy without them and the site still behaves honestly —
-   every submit reports that receipt could not be confirmed — it is just less explained.
+1. Push to GitHub and connect the project: `npx vercel link --yes --project septa-website` then
+   `npx vercel git connect` (requires an active session — check with `npx vercel whoami`; run
+   `npx vercel login` if it answers "not logged in"). Once connected, every push to `main` builds and
+   promotes a production deployment; `npx vercel deploy --prod --yes` still works from the CLI.
+2. Set the build-time environment variables — `npx vercel env add VITE_SITE_URL production` and, for a
+   frontend-only deploy, `npx vercel env add VITE_SHOW_LAUNCH_NOTES production`:
+   `VITE_SITE_URL=https://<your-vercel-or-custom-domain>` and `VITE_SHOW_LAUNCH_NOTES=true`. With no
+   backend reachable the forms then say *"Demo mode — no backend reachable"* instead of failing quietly,
+   and the placeholder-content notes stay visible. Deploy without them and the site still behaves
+   honestly — every submit reports that receipt could not be confirmed — it is just less explained.
 3. Host the API on any persistent-disk service (Render, Fly.io, Railway, a VPS) running
    `npm run start:api`, then connect it one of two ways:
 
