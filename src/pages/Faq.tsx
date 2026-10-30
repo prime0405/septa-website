@@ -11,7 +11,7 @@ import { usePageMeta } from "../lib/usePageMeta";
 const general = [
   {
     q: "What does Septa actually do?",
-    a: "Five services — AI product development, workflow automation, digital transformation, observability and monitoring, and talent solutions — plus two product-development tracks for turning an idea into software, with AI or conventionally. Every one of them ends with something running in your environment, instrumented and handed over.",
+    a: "Five services: AI product development, workflow automation, digital transformation, observability and monitoring, and talent solutions. Alongside them are two product development tracks for turning an idea into software, with AI or conventionally. Every one of them ends with something running in your environment, instrumented and handed over.",
   },
   {
     q: "How does a piece of work start?",
@@ -19,15 +19,15 @@ const general = [
   },
   {
     q: "Who owns the code and the accounts?",
-    a: "You do. Work happens in your repository and your cloud accounts wherever that is possible, and transition is planned from the first week rather than negotiated at the end.",
+    a: "You do. Work happens in your repository and your cloud accounts wherever that is possible, and transition is planned from the first week of the engagement.",
   },
   {
     q: "Do you take on fixed-scope work?",
-    a: "Yes, where the scope can honestly be fixed — a prototype phase, an audit, an integration. Where it cannot, we work in two-week increments against a prioritised list instead of pretending a date is knowable.",
+    a: "Yes, where the scope can honestly be fixed: a prototype phase, an audit, an integration. Where it cannot, we work in two-week increments against a prioritised list, because a fixed date this early would be a guess.",
   },
   {
     q: "How do I get an estimate?",
-    a: "Send a request with what you know. Estimates come out of discovery, not out of a form — so the first number you get is a range and a proposal for how to narrow it.",
+    a: "Send a request with what you know. An estimate comes out of discovery, so the first number you get is a range and a proposal for how to narrow it.",
   },
 ];
 
@@ -62,7 +62,7 @@ export default function Faq() {
         <SectionHeading
           eyebrow="By service"
           title="The detailed questions"
-          lead="Each service page carries the same list in context, with the trade-offs written out."
+          lead="Each service page carries the same list in context, including what each choice costs."
           className="mb-10"
         />
         <div className="space-y-12">
@@ -94,7 +94,7 @@ export default function Faq() {
 
       <CtaBand
         title="Question not answered here?"
-        lead="Send it through the contact form. A person reads every submission and replies with a point of view, not a brochure."
+        lead="Send it through the contact form. A person reads every submission and replies with a point of view."
         primaryLabel="Ask a question"
         secondary={{ label: "Start a request instead", to: paths.request() }}
       />

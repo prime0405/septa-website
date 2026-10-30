@@ -198,6 +198,21 @@ Pages read entirely from data files — no JSX edits needed to publish:
 | `src/data/content.ts` | mission, values, process, approach, contact copy, the Septa Advantage pillars, service-overview and services-intro lines, partner names, testimonials (empty until approved) |
 | `src/lib/site.ts` | company facts, legal config, privacy lists |
 
+**Client-written copy is fenced off from editorial cleanup.** The revamp brief supplied certain
+lines verbatim, and they are the client's words rather than the site's house voice: the five service
+`heroTitle`s, the two product-track `heroTitle`s, `advantageIntro`, every `advantagePillars` title and
+detail, `serviceOverview`, `servicesIntro`, `site.tagline`, `site.description`, the whole home hero
+(headline, subline, badge, button labels, the three feature cards) and the closing CtaBand headline.
+A copy pass may fix their punctuation but must not rewrite them. Several of them read like generic
+agency marketing ("Work smarter, not harder", "Experience growth without limits", "Whether you need
+an AI-powered product, smarter workflows, or complete product development…") and are the last lines
+on the site that still sound that way; changing them needs Septa's sign-off, not an editor's.
+
+Everything else on the site is written in the house voice: plain sentences, no em-dash asides, no
+"X, not Y" constructions, no aphoristic closers, and hyphens only where English actually needs them.
+That rule is worth preserving on future edits, because the copy had been drifting back toward
+generated-sounding marketing prose.
+
 Adding a case study: append an object to `cases` with a unique `slug`, set `verified: true` on a
 result only once a client has signed it off (unverified results render an amber pill and the page
 is `noindex`ed). Adding an article: append to `posts` with `status: "sample"` until approved —

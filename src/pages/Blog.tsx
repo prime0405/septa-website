@@ -121,7 +121,7 @@ export default function Blog() {
       <Section className="section">
         <Callout kind="warn" title="Sample editorial content" className="mb-10">
           <p>
-            These articles exist to prove out the blog architecture — list, search, filters, article
+            These articles exist to prove out the blog architecture: list, search, filters, article
             template and related posts. Authorship and dates are placeholders, not real bylines.
             <DevNote>
               {" "}Add or replace articles by appending to{" "}
@@ -279,7 +279,7 @@ export default function Blog() {
                 },
                 {
                   label: "Write the body as blocks",
-                  detail: "Paragraphs, headings, lists, quotes and code — rendered by the article template.",
+                  detail: "Paragraphs, headings, lists, quotes and code, rendered by the article template.",
                 },
                 {
                   label: "Categories and tags update themselves",
@@ -311,7 +311,7 @@ export default function Blog() {
 
       <CtaBand
         title="Reading about it is not the same as doing it"
-        lead="If one of these articles describes your situation, send the details — we will say what applies to you."
+        lead="If one of these articles describes your situation, send the details and we will say what applies to you."
         secondary={{ label: "About Septa", to: paths.about() }}
       />
     </>

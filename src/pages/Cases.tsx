@@ -90,7 +90,7 @@ export default function Cases() {
                 <ul className="space-y-3 text-[0.88rem] text-muted">
                   <li className="flex gap-3">
                     <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-mint/60" />
-                    Every study states the constraint that mattered — budget, data, politics or legacy code.
+                    Every study states the constraint that mattered: budget, data, politics or legacy code.
                   </li>
                   <li className="flex gap-3">
                     <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-mint/60" />
@@ -114,8 +114,8 @@ export default function Cases() {
             are not Septa client engagements, and no metric here is a real result.
             <DevNote>
               {" "}Replace them with approved studies in{" "}
-              <code className="font-mono text-[0.8rem]">src/data/cases.ts</code> before launch — the
-              labels come from that file, not from the page.
+              <code className="font-mono text-[0.8rem]">src/data/cases.ts</code> before launch. The
+              labels come from that file.
             </DevNote>
           </p>
         </Callout>
@@ -244,14 +244,14 @@ export default function Cases() {
           />
           <ul className="grid gap-3 sm:grid-cols-2">
             {[
-              "Background — the situation and its constraints",
-              "The challenge — what made it hard, not just what was missing",
-              "Objectives — what success was meant to look like",
-              "The solution — the design and why it was chosen",
-              "Implementation — sequence, integrations and risks taken",
-              "Technology stack — what was used and what replaced",
-              "Results — verified where possible, marked where not",
-              "Lessons learned — what we would do differently",
+              "Background: the situation and its constraints",
+              "The challenge, and what made it hard beyond what was missing",
+              "Objectives and what success was meant to look like",
+              "The solution and why that design was chosen",
+              "Implementation: sequence, integrations, risks taken",
+              "The technology stack, what was used and what was replaced",
+              "Results: verified where possible, marked where not",
+              "Lessons learned, and what we would do differently",
             ].map((s) => (
               <li
                 key={s}
@@ -265,7 +265,7 @@ export default function Cases() {
 
         <p className="mt-8 flex items-center gap-2 text-[0.85rem] text-faint">
           <FolderOpen className="size-4" aria-hidden />
-          Real client stories need client sign-off. If you have worked with us,{" "}
+          Real client stories need client approval. If you have worked with us,{" "}
           <Link to={paths.contact()} className="text-mint hover:underline">
             tell us which project
           </Link>{" "}
@@ -275,7 +275,7 @@ export default function Cases() {
 
       <CtaBand
         title="Want something like one of these?"
-        lead="Send the shape of your problem through the request form. We will say which of these approaches transfers — and which part does not."
+        lead="Send the shape of your problem through the request form. We will say which of these approaches transfers, and which part does not."
         secondary={{ label: "See the services", to: paths.services() }}
       />
     </>

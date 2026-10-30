@@ -33,13 +33,13 @@ export const site = {
    * profile pattern with that handle dropped in — click-test every one before launch.
    */
   social: [
-    { label: "X — @septa_academy", href: "https://x.com/septa_academy" },
-    { label: "X — @septasoftware", href: "https://x.com/septasoftware" },
-    { label: "LinkedIn — Septa Academy", href: "https://www.linkedin.com/company/septa-academy" },
-    { label: "LinkedIn — Septa Software", href: "https://www.linkedin.com/company/septasoftware" },
-    { label: "Instagram — @septa_academy", href: "https://www.instagram.com/septa_academy" },
-    { label: "Instagram — @septasoftware", href: "https://www.instagram.com/septasoftware" },
-    { label: "Facebook — Septa Academy", href: "https://www.facebook.com/septa-academy" },
+    { label: "X: @septa_academy", href: "https://x.com/septa_academy" },
+    { label: "X: @septasoftware", href: "https://x.com/septasoftware" },
+    { label: "LinkedIn: Septa Academy", href: "https://www.linkedin.com/company/septa-academy" },
+    { label: "LinkedIn: Septa Software", href: "https://www.linkedin.com/company/septasoftware" },
+    { label: "Instagram: @septa_academy", href: "https://www.instagram.com/septa_academy" },
+    { label: "Instagram: @septasoftware", href: "https://www.instagram.com/septasoftware" },
+    { label: "Facebook: Septa Academy", href: "https://www.facebook.com/septa-academy" },
   ] as { label: string; href: string }[],
 
   maps: {
@@ -72,6 +72,6 @@ export const privacy = {
   doesNotCollect: [
     "Payment card details.",
     "Government identification numbers.",
-    "Health, biometric or other special-category data — please do not include it in free-text fields.",
+    "Health, biometric or other special-category data. Please do not include it in free-text fields.",
   ],
 } as const;

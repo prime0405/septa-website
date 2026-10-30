@@ -5,7 +5,7 @@ export const mission = {
 
 export const vision = {
   statement:
-    "A market where every serious organisation can build and run good technology — or work with a partner who behaves as if it will still be there in three years.",
+    "A market where every serious organisation can build and run good technology, or work with a partner who behaves as if it will still be there in three years.",
 };
 
 export const values = [
@@ -17,7 +17,7 @@ export const values = [
   {
     title: "Built to be lived in",
     detail:
-      "Software is judged years after launch, by whoever inherits it. Architecture, tests and documentation are chosen for that reader, not the demo.",
+      "Software is judged years after launch, by whoever inherits it. We pick the architecture, tests and documentation with that future reader in mind.",
   },
   {
     title: "Honest about fit",
@@ -25,9 +25,9 @@ export const values = [
       "Some problems should not become an AI project, some codebases should not be rewritten, and some engagements we should not take. We say which one you are in.",
   },
   {
-    title: "Owners, not spectators",
+    title: "Named owners",
     detail:
-      "Named people accountable for delivery, monitoring and outcomes — including after handover, when the phone still gets answered.",
+      "Named people accountable for delivery, monitoring and outcomes. That includes after handover, when the phone still gets answered.",
   },
   {
     title: "Transfer what we know",
@@ -40,12 +40,12 @@ export const approach = [
   {
     title: "Start from the decision",
     detail:
-      "Every engagement opens with the decision the client is trying to make or the outcome they need to see. That frames the scope, not a technology preference.",
+      "Every engagement opens with the decision the client is trying to make or the outcome they need to see. That is what sets the scope, ahead of any tool choice.",
   },
   {
     title: "Work in short, visible loops",
     detail:
-      "Two-week increments, a running system from early on, and demos of real software rather than status decks.",
+      "Two-week increments, a running system from early on, and demos of real software, not status decks.",
   },
   {
     title: "Prove it before scaling it",
@@ -65,7 +65,7 @@ export const approach = [
   {
     title: "Hand over properly",
     detail:
-      "Runbooks, walkthroughs and a defined support window. The goal is your team owning the thing, not renting our attention.",
+      "Runbooks, walkthroughs and a defined support window. The goal is your team owning the thing outright.",
   },
 ];
 
@@ -93,7 +93,7 @@ export const whySepta = [
   {
     title: "Reliability as a feature",
     detail:
-      "Monitoring, alerting and rollback are part of scope on everything we build, not a separate service line people have to remember to buy.",
+      "Monitoring, alerting and rollback are part of scope on everything we build, so they are never something you have to remember to buy separately.",
   },
   {
     title: "Exit planned from day one",
@@ -175,7 +175,7 @@ export const howWeWork = [
   {
     title: "Small teams, real authority",
     detail:
-      "Delivery groups stay small enough that everyone knows the context, and are trusted to make engineering decisions rather than relay them.",
+      "Delivery groups stay small enough that everyone knows the context, and they hold the authority to make engineering decisions themselves.",
   },
   {
     title: "Feedback while building",
@@ -185,16 +185,16 @@ export const howWeWork = [
   {
     title: "Learning is scheduled",
     detail:
-      "Time for spikes, dependency care and post-incident review sits in the plan rather than being stolen from it.",
+      "Time for spikes, dependency care and post-incident review is written into the plan.",
   },
   {
     title: "Clear expectations on hours",
     detail:
-      "Client-facing delivery has busy weeks; sustained overtime is treated as a planning failure to fix, not a normal cost of work.",
+      "Client work has busy weeks. Sustained overtime is a planning failure, and we fix it instead of treating it as a normal cost.",
   },
 ];
 
-/** Supplied by the Septa website revamp brief. */
+/** Supplied by the Septa website revamp brief. Kept verbatim; see README. */
 export const advantageIntro =
   "Septa combines modern engineering, product innovation, and AI-powered insights to help organizations scale faster, simplify complexity, and capture opportunities with confidence.";
 

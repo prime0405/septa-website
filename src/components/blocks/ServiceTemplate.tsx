@@ -207,7 +207,7 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
               <MarkerList items={page.deliverables} />
               <div className="mt-6 border-t border-line pt-5">
                 <p className="text-[0.85rem] text-faint">
-                  Scope, pricing and timelines are agreed per engagement — this page is editable
+                  Scope, pricing and timelines are agreed per engagement. This page is editable
                   service copy, not a contract.
                 </p>
                 <Button to={paths.request(page.name)} size="sm" variant="outline-mint" className="mt-4">

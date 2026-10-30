@@ -12,7 +12,7 @@ export default function ProductDetail() {
   const product = productBySlug(slug);
 
   usePageMeta({
-    title: product ? `${product.name} — Product Development` : "Product track not found",
+    title: product ? `${product.name} – Product Development` : "Product track not found",
     description: product?.navBlurb,
     noindex: !product,
   });
@@ -22,7 +22,7 @@ export default function ProductDetail() {
       <div className="wrap section">
         <EmptyState
           heading="h1"
-          title="That product-development track does not exist"
+          title="No product development track by that name"
           icon={<Layers className="size-5" />}
           action={
             <div className="flex flex-wrap justify-center gap-3">

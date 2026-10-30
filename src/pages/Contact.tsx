@@ -23,7 +23,7 @@ const beforeYouWrite = [
   {
     label: "You want something built or fixed",
     detail:
-      "Use the request form — it captures the service, the problem and your timeline in four short steps.",
+      "Use the request form. It captures the service, the problem and your timeline in five short steps.",
     to: paths.request(),
     cta: "Open the request form",
   },
@@ -41,7 +41,7 @@ const beforeYouWrite = [
   },
   {
     label: "You have worked with us before",
-    detail: "If you would like your project published as a case study, say so — it needs your sign-off.",
+    detail: "If you would like your project published as a case study, say so. It needs your approval.",
     to: paths.cases(),
     cta: "See the studies",
   },
@@ -212,7 +212,7 @@ export default function Contact() {
               <p className="eyebrow mb-4">Inquiry types</p>
               <MarkerList items={inquiryTypes.map((i) => ({ label: i }))} />
               <p className="mt-4 text-[0.85rem] leading-relaxed text-faint">
-                Choose the closest one — it decides who sees the message first, not how it is treated.
+                Choose the closest one. It only decides who reads the message first.
               </p>
             </Card>
 
@@ -260,7 +260,7 @@ export default function Contact() {
             </Reveal>
           ))}
         </div>
-        <LaunchNoteInline label="Email, phone and address are read from src/lib/site.ts — set them before launch" />
+        <LaunchNoteInline label="Email, phone and address are read from src/lib/site.ts. Set them before launch" />
       </Section>
 
       <CtaBand

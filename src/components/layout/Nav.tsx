@@ -325,7 +325,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
         className="fixed inset-y-0 right-0 z-50 flex w-[min(92vw,420px)] flex-col border-l border-line bg-ink lg:hidden"
       >
         <div className="flex h-[72px] items-center justify-between border-b border-line px-4">
-          <BrandLink label="Septa — close menu" />
+          <BrandLink label="Septa: close menu" />
           <button
             ref={firstRef}
             type="button"

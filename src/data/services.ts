@@ -33,11 +33,11 @@ export const services: ServiceContent[] = [
     slug: "ai-product-development",
     name: "AI Product Development",
     icon: "ai",
-    navBlurb: "Intelligent, user-focused products from idea to market-ready launch.",
+    navBlurb: "Products people want to use, built with AI where it genuinely helps.",
     heroTitle: "Bring your product ideas to life with AI-assisted development",
     lead: "We use AI-assisted product development to turn your ideas into market-ready products within 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering to build products that solve real problems and support your business growth.",
     detail:
-      "Most AI pilots stall between the demo and production. We work from the decision you want the system to make backwards — through evaluation, data readiness, guardrails and deployment — so the result is a product people trust with their work, not a chat window bolted onto a spreadsheet.",
+      "Most AI pilots stall between the demo and production. We work backwards from the decision you want the system to make, through evaluation, data readiness, guardrails and deployment. Skip that and you ship a chat window bolted onto a spreadsheet.",
     problems: [
       "A promising prototype that never made it past a proof of concept.",
       "Answers generated without ground truth, so nobody dares act on them.",
@@ -72,12 +72,12 @@ export const services: ServiceContent[] = [
           {
             title: "Clickable prototyping",
             detail:
-              "A working slice against real data in days, not quarters, so the decision to fund the build is cheap.",
+              "A working slice against real data in days, so the decision to fund the build is cheap.",
           },
           {
             title: "Interaction design for uncertain output",
             detail:
-              "Citations, confidence, undo, review queues and escalation paths — the parts that decide whether users adopt or abandon.",
+              "Citations, confidence, undo, review queues and escalation paths. Those details decide whether people adopt the feature.",
           },
         ],
       },
@@ -112,7 +112,7 @@ export const services: ServiceContent[] = [
           {
             title: "Evaluation harness",
             detail:
-              "Golden datasets, regression suites and scored runs so every prompt or model change is measured, not vibes.",
+              "Golden datasets, regression suites and scored runs, so every prompt or model change has a number attached to it.",
           },
           {
             title: "Observability for AI",
@@ -127,7 +127,7 @@ export const services: ServiceContent[] = [
           {
             title: "Deployment and iteration",
             detail:
-              "Staged rollout, offline and online evaluation, rollback plan, then a cadence of improvement against the metrics that matter.",
+              "Staged rollout, offline and online evaluation, rollback plan, then a cadence of improvement against the metrics agreed in discovery.",
           },
         ],
       },
@@ -135,7 +135,7 @@ export const services: ServiceContent[] = [
     benefits: [
       {
         title: "Funded on evidence",
-        detail: "A prototype and an evaluation baseline come before the big build, so money follows proof.",
+        detail: "You see a prototype and an evaluation baseline before committing to the full build.",
       },
       {
         title: "Accountable answers",
@@ -157,7 +157,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Operational triage",
-        detail: "Sorting, summarising and routing inbound work — tickets, applications, alerts — with a human in the loop.",
+        detail: "Sorting, summarising and routing inbound work like tickets, applications and alerts, with a human in the loop.",
       },
       {
         title: "Copilot inside your product",
@@ -203,7 +203,7 @@ export const services: ServiceContent[] = [
       },
       {
         q: "Can you work with the team we already have?",
-        a: "Yes. Pairing, code review, architecture guidance and evaluation practice transfer well, and several engagements are advisory or augmentation-shaped rather than full handover builds.",
+        a: "Yes. Pairing, code review, architecture guidance and evaluation practice all transfer. Several engagements are advisory, or add people to a team that already exists.",
       },
     ],
     visual: "ai",
@@ -222,7 +222,7 @@ export const services: ServiceContent[] = [
     slug: "workflow-automation",
     name: "Workflow Automation",
     icon: "automation",
-    navBlurb: "Automation that frees your teams from routine tasks.",
+    navBlurb: "Automation that removes the manual handoffs between your systems.",
     heroTitle: "Work smarter, not harder",
     lead: "Repetitive tasks drain productivity and distract from strategic priorities. Tell us your organisational needs: Septa partners with you to identify bottlenecks, map critical workflows, and deliver automation solutions that free your teams from routine tasks, enabling sharper focus, faster execution, and sustainable growth.",
     detail:
@@ -270,7 +270,7 @@ export const services: ServiceContent[] = [
           {
             title: "Task automation",
             detail:
-              "Event-driven jobs: create, enrich, route, notify, escalate — with retries, dead-letter queues and manual replay.",
+              "Event-driven jobs: create, enrich, route, notify and escalate, with retries, dead-letter queues and manual replay.",
           },
           {
             title: "Approval workflows",
@@ -300,7 +300,7 @@ export const services: ServiceContent[] = [
           {
             title: "Maintenance",
             detail:
-              "Provider API changes, credential rotation and dependency upgrades handled as scheduled work, not emergencies.",
+              "Provider API changes, credential rotation and dependency upgrades handled as planned work, before they turn into incidents.",
           },
         ],
       },
@@ -312,7 +312,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Fewer silent failures",
-        detail: "Retries plus alerting mean a broken integration is a five-minute incident, not a quarter-long data gap.",
+        detail: "Retries plus alerting surface a broken integration in minutes, so bad data does not sit unnoticed for a quarter.",
       },
       {
         title: "One source of truth",
@@ -364,7 +364,7 @@ export const services: ServiceContent[] = [
       },
       {
         q: "What if a system has no API?",
-        a: "Options in order of preference: database or file export, an official connector, a brokered email or queue path, then carefully monitored browser automation as a last resort — we will be explicit about its fragility.",
+        a: "Options in order of preference: database or file export, an official connector, a brokered email or queue path, then carefully monitored browser automation as a last resort. We will be explicit about how fragile that last option is.",
       },
       {
         q: "Who owns the automation afterwards?",
@@ -391,9 +391,9 @@ export const services: ServiceContent[] = [
     slug: "digital-transformation",
     name: "Digital Transformation",
     icon: "transformation",
-    navBlurb: "Replace outdated systems with digital solutions that unlock efficiency.",
+    navBlurb: "Replace ageing systems with software that costs less to run.",
     heroTitle: "Experience growth without limits",
-    lead: "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth — so your business thrives in the digital age.",
+    lead: "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth, so your business thrives in the digital age.",
     detail:
       "A transformation programme fails when it treats old systems as a moral failing rather than a set of specific constraints. We work in the boring, decisive order: understand what the current system actually does, decide what must keep working exactly as it does, then replace the rest in slices that ship value while the lights stay on.",
     problems: [
@@ -410,7 +410,7 @@ export const services: ServiceContent[] = [
           {
             title: "Digital strategy",
             detail:
-              "An outcome-led roadmap sequenced by dependency and value, with cost and risk stated in the same document.",
+              "A roadmap ordered by dependency and value, with cost and risk stated in the same document.",
           },
           {
             title: "Systems and capability audit",
@@ -450,7 +450,7 @@ export const services: ServiceContent[] = [
           {
             title: "Digital product implementation",
             detail:
-              "Customer- and staff-facing applications that carry the new capabilities where work actually happens.",
+              "Applications for customers and staff that carry the new capabilities where work actually happens.",
           },
         ],
       },
@@ -517,7 +517,7 @@ export const services: ServiceContent[] = [
       { title: "Pilot", detail: "One vertical slice migrated end to end to prove the pattern.", note: "De-risk early" },
       { title: "Waves", detail: "Repeat the proven pattern across domains with parallel teams.", note: "Ship every wave" },
       { title: "Operate", detail: "Monitoring, support model and cost control from day one.", note: "No orphan services" },
-      { title: "Close out", detail: "Decommission legacy, archive, document, hand over.", note: "Formal sign-off" },
+      { title: "Close out", detail: "Decommission legacy, archive, document, hand over.", note: "Formal approval" },
     ],
     deliverables: [
       "Assessment report and target architecture",
@@ -530,7 +530,7 @@ export const services: ServiceContent[] = [
     faq: [
       {
         q: "Is rewriting always the answer?",
-        a: "No. Encapsulating, extending or migrating a working system is often cheaper and lower-risk. The recommendation comes from the assessment, not from a preference to rebuild.",
+        a: "No. Encapsulating, extending or migrating a working system is often cheaper and lower-risk. The assessment decides the recommendation.",
       },
       {
         q: "How do you handle unknown behaviour in legacy code?",
@@ -561,7 +561,7 @@ export const services: ServiceContent[] = [
     slug: "observability-monitoring",
     name: "Observability & Monitoring",
     icon: "observability",
-    navBlurb: "Real-time visibility that catches issues before they escalate.",
+    navBlurb: "Telemetry and alerting that say what is broken, for whom, and how fast.",
     heroTitle: "Data-driven insights keep your systems reliable",
     lead: "Every minute of downtime drains revenue, damages reputation, and stalls growth. Our observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
     detail:
@@ -587,11 +587,11 @@ export const services: ServiceContent[] = [
           },
           {
             title: "Distributed tracing",
-            detail: "Context propagation across services and queues so a trace shows the whole request path, not one hop.",
+            detail: "Context propagation across services and queues, so one trace covers the whole request path.",
           },
           {
             title: "Real user and synthetic monitoring",
-            detail: "Frontend performance, Core Web Vitals and scripted checks on the journeys that make or lose money.",
+            detail: "Frontend performance, Core Web Vitals and scripted checks on the flows that make or lose money.",
           },
         ],
       },
@@ -604,7 +604,7 @@ export const services: ServiceContent[] = [
           },
           {
             title: "Slow-path diagnosis",
-            detail: "Profile the actual bottleneck — queries, N+1 access, serialised calls, cold starts — and fix the top of the list.",
+            detail: "Profile the actual bottleneck (queries, N+1 access, serialised calls, cold starts) and fix the top of the list.",
           },
         ],
       },
@@ -613,7 +613,7 @@ export const services: ServiceContent[] = [
         items: [
           {
             title: "Infrastructure monitoring",
-            detail: "Hosts, containers, clusters, queues, jobs and third-party endpoints, with saturation signals that lead rather than lag.",
+            detail: "Hosts, containers, clusters, queues, jobs and third-party endpoints, with saturation signals that give warning before a service is full.",
           },
           {
             title: "Kubernetes and serverless coverage",
@@ -626,19 +626,19 @@ export const services: ServiceContent[] = [
         items: [
           {
             title: "Dashboards",
-            detail: "One screen per audience: executive SLOs, on-call triage, service deep-dive — not forty graphs of vanity data.",
+            detail: "One screen per audience: executive SLOs, an on-call triage view, and a detailed view for the service that is failing.",
           },
           {
             title: "Alerting and routing",
-            detail: "Symptom-based alerts with owners, escalation paths, snooze policy and a documented error budget.",
+            detail: "Alerts that fire on what users actually see, with owners, escalation paths, snooze policy and a documented error budget.",
           },
           {
             title: "Incident workflow",
-            detail: "Runbooks, severity definitions, blameless review templates and time-saved tracking after the fact.",
+            detail: "Runbooks, severity definitions, blameless review templates and a record of the time it all took.",
           },
           {
             title: "Reliability improvement",
-            detail: "SLOs negotiated with the business, then a backlog of reliability work justified by burn-rate data.",
+            detail: "SLOs negotiated with the business, then a backlog of reliability work justified by how fast the error budget is being spent.",
           },
         ],
       },
@@ -658,7 +658,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Change confidence",
-        detail: "Every deploy gets compared against the baseline it changed.",
+        detail: "Every deploy is measured against the baseline from before it shipped.",
       },
     ],
     useCases: [
@@ -672,7 +672,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Tool already bought",
-        detail: "Datadog, Grafana, New Relic, OpenTelemetry or self-hosted — under-used and paying for itself in shelf-ware.",
+        detail: "Datadog, Grafana, New Relic, OpenTelemetry or self-hosted, bought already and doing very little for the licence spend.",
       },
       {
         title: "Chronic reliability debt",
@@ -681,11 +681,11 @@ export const services: ServiceContent[] = [
     ],
     process: [
       { title: "Audit", detail: "Current signals, tools, response process and gaps.", note: "Output: coverage map" },
-      { title: "Define", detail: "SLOs per service and the user journeys worth protecting.", note: "With the business" },
+      { title: "Define", detail: "SLOs per service and the user flows worth protecting.", note: "With the business" },
       { title: "Instrument", detail: "Metrics, logs and traces shipped together behind OpenTelemetry where possible.", note: "Vendor-lean" },
       { title: "Visualise", detail: "Dashboards per audience and a triage view for on-call.", note: "Reviewed live" },
-      { title: "Alert", detail: "Symptom alerts, routing, escalation, noise budget enforced.", note: "Page hygiene" },
-      { title: "Improve", detail: "Post-incident reviews and a reliability backlog driven by burn data.", note: "Monthly rhythm" },
+      { title: "Alert", detail: "Alerts on visible symptoms, routing, escalation, noise budget enforced.", note: "Page hygiene" },
+      { title: "Improve", detail: "Post-incident reviews and a reliability backlog ordered by error budget spend.", note: "Monthly rhythm" },
     ],
     deliverables: [
       "Observability audit and gap analysis",
@@ -701,12 +701,12 @@ export const services: ServiceContent[] = [
         a: "Usually not. Instrumentation is standardised where the tool allows, so the existing stack gets more useful and a future move becomes a configuration task rather than a rewrite.",
       },
       {
-        q: "Monitoring or observability — what is the difference in practice?",
+        q: "What is the difference between monitoring and observability in practice?",
         a: "Monitoring answers questions you predicted. Observability lets you ask new ones. You need both: alerting on the known failure modes, and enough signal richness to investigate the unknown ones.",
       },
       {
         q: "Won't this make our bill spike?",
-        a: "Cardinality, sampling and retention are designed as part of the work, with a cost model before rollout. Noisy telemetry is also a reliability problem, not just a finance one.",
+        a: "Cardinality, sampling and retention are designed as part of the work, with a cost model before rollout. Noisy telemetry is a reliability problem as well as a cost one.",
       },
       {
         q: "Can you work with our OpenTelemetry setup?",
@@ -729,11 +729,11 @@ export const services: ServiceContent[] = [
     slug: "talent-solution",
     name: "Talent Solution",
     icon: "talent",
-    navBlurb: "The right experts at the right time to support your growth.",
+    navBlurb: "Vetted engineers and specialists added to the team you already have.",
     heroTitle: "Hiring designed to fuel your vision",
     lead: "Connecting you with top tech talents to fuel innovation and accelerate growth. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
     detail:
-      "Hiring good engineers slowly is its own kind of outage. Whether you need one specialist who can work unsupervised, a squad that owns a product line, or a vetted contractor for a defined piece of work, the useful question is the same: who is accountable for the outcome, and how quickly can they start? That is what we arrange.",
+      "Hiring good engineers slowly is its own kind of outage. One specialist who can work unsupervised, a squad that owns a product line, or a vetted contractor for a defined piece of work: the useful question is the same in every case. Who is accountable for the outcome, and how quickly can they start? That is what we arrange.",
     problems: [
       "A role open for five months while the roadmap waits.",
       "Contractors who need six weeks of context before producing.",
@@ -772,7 +772,7 @@ export const services: ServiceContent[] = [
           },
           {
             title: "Team augmentation",
-            detail: "Individual engineers embedded in your squad, sized to the gap rather than a headcount target.",
+            detail: "Individual engineers embedded in your squad, sized to the gap you actually have.",
           },
         ],
       },
@@ -804,12 +804,12 @@ export const services: ServiceContent[] = [
         detail: "Scale a squad up for the push, taper it as ownership transfers.",
       },
       {
-        title: "Accountability, not anonymity",
-        detail: "Named engineers who own outcomes in your trackers, not an unseen pool of resources.",
+        title: "Engineers you can name",
+        detail: "Everyone on your project is named, with their own items in your tracker.",
       },
       {
         title: "Knowledge transfer built in",
-        detail: "Documentation, pairing and handover checkpoints are part of the engagement, not an extra.",
+        detail: "Documentation, pairing and handover checkpoints are part of the engagement from the start.",
       },
     ],
     useCases: [
@@ -819,7 +819,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Specialist gap",
-        detail: "ML evaluation, data platform, embedded, security or SRE depth you need for months, not years.",
+        detail: "ML evaluation, data platform, embedded, security or SRE depth for a defined stretch of work.",
       },
       {
         title: "New product line",
@@ -835,7 +835,7 @@ export const services: ServiceContent[] = [
       { title: "Model", detail: "Choose placement, augmentation, squad or project shape.", note: "Costed per option" },
       { title: "Screen", detail: "Technical assessment plus structured evidence packs.", note: "Before you are charged time" },
       { title: "Start", detail: "Onboarding plan, access, first deliverable in week one.", note: "Ramp tracked" },
-      { title: "Review", detail: "Regular check-ins on delivery quality and fit, not just utilisation.", note: "Cadence agreed" },
+      { title: "Review", detail: "Regular check-ins on delivery quality and how the person fits the team.", note: "Cadence agreed" },
       { title: "Transition", detail: "Extend, convert to permanent, or hand over with documentation.", note: "Planned exit" },
     ],
     deliverables: [
@@ -852,7 +852,7 @@ export const services: ServiceContent[] = [
       },
       {
         q: "How is technical quality checked?",
-        a: "Structured review of past work plus a practical assessment matched to the role. What you receive is the reasoning, not a score with no explanation.",
+        a: "Structured review of past work plus a practical assessment matched to the role. Each decision comes with the reasoning behind it.",
       },
       {
         q: "Where do engineers work from?",

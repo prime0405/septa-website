@@ -40,7 +40,7 @@ const SERVICE_OPTIONS = [
   { value: "Digital Transformation", blurb: "Modernise legacy technology and operations." },
   { value: "Observability & Monitoring", blurb: "Metrics, traces, alerting, reliability." },
   { value: "Talent Solution", blurb: "Engineers, squads or hiring support.", icon: <Users className="size-4" /> },
-  { value: "Other", blurb: "Not sure yet — describe it instead." },
+  { value: "Other", blurb: "Not sure yet. Describe it instead." },
 ];
 
 const EMPTY = {
@@ -170,7 +170,7 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
         if (Object.keys(err.fieldErrors).length) form.setErrors(err.fieldErrors);
         setFailure(err.message);
       } else {
-        setFailure("We could not reach the server. Your answers are kept — try again in a moment.");
+        setFailure("We could not reach the server, so the request was not sent. Your answers are still here. Try again in a moment.");
       }
       setPhase("editing");
     } finally {
@@ -229,7 +229,7 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
               <StepShell
                 index={0}
                 title="Which service do you need?"
-                hint="Pick the closest match. If several apply, choose the one you would want to start with — we will map the rest together."
+                hint="Pick the closest match. If several apply, choose the one you would want to start with, and we will map the rest together."
               >
                 <RadioCards
                   label="Service"
@@ -256,7 +256,7 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
               <StepShell
                 index={1}
                 title="Describe the project"
-                hint="Write it the way you would explain it to a colleague. Rough is fine — this is what we read first."
+                hint="Write it the way you would explain it to a colleague. Rough is fine. This is what we read first."
               >
                 <div className="space-y-5">
                   <TextField
@@ -677,8 +677,8 @@ function RequestConfirmation({ result, onRestart }: { result: SubmissionResult; 
             which discipline the problem actually sits in.
           </li>
           <li className="flex gap-3">
-            <span className="font-mono text-mint">02</span> You get a reply with a point of view, not
-            a brochure — including if the answer is "this is not a job for us".
+            <span className="font-mono text-mint">02</span> You get a reply with a point of view, even
+            when the answer is "this is not a job for us".
           </li>
           <li className="flex gap-3">
             <span className="font-mono text-mint">03</span> If it fits, we set up a working session

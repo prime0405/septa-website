@@ -23,10 +23,10 @@ import { usePageMeta } from "../lib/usePageMeta";
 const sharedStandard = [
   {
     label: "Working software from the second week",
-    detail: "Demos of a running system, not status slides about one.",
+    detail: "Demos of a system that actually runs.",
   },
   { label: "Typed, reviewed code in your repository", detail: "The people who scope the work review it." },
-  { label: "Tests on the paths that matter", detail: "Coverage aimed at business risk, not a percentage." },
+  { label: "Tests on the paths that matter", detail: "Coverage aimed at the places a failure would cost you something." },
   {
     label: "Monitoring from the first release",
     detail: "Latency, errors, cost and usage visible before the first complaint.",
@@ -40,7 +40,7 @@ const sharedStandard = [
 const sharedFaq = [
   {
     q: "Why are these separate from the service pages?",
-    a: "Services describe what Septa offers to a buyer. Product-development pages describe how a build actually runs — the sequence, the artefacts and the decisions at each stage. They cross-link so you can read either first.",
+    a: "Services describe what Septa offers to a buyer. Product development pages describe how a build actually runs: the sequence, the artefacts and the decisions at each stage. They cross-link so you can read either first.",
     links: [
       { label: "Read the services instead", to: "/services" },
       { label: "AI Product Development service", to: "/services/ai-product-development" },
@@ -52,7 +52,7 @@ const sharedFaq = [
   },
   {
     q: "Who owns the code?",
-    a: "You do — repositories, pipelines and cloud accounts are yours from the start, and transition checkpoints are scheduled rather than improvised at the end of a contract.",
+    a: "You do. Repositories, pipelines and cloud accounts are yours from the start, and transition checkpoints go in the plan rather than appearing at the end of a contract.",
   },
   {
     q: "Can you take over an existing codebase?",
@@ -202,7 +202,7 @@ export default function ProductHub() {
       {/* ------------------------- lifecycle --------------------------- */}
       <Section className="section">
         <SectionHeading
-          eyebrow="From idea to running product"
+          eyebrow="Idea to running product"
           title="The product-development lifecycle"
           lead="Identical on both tracks. On the AI track, the evaluation step carries more weight because the behaviour is probabilistic."
           className="mb-9"
@@ -218,7 +218,7 @@ export default function ProductHub() {
             },
             {
               title: "Design",
-              detail: "Flows, interface and the architecture options with their trade-offs stated.",
+              detail: "Flows, interface and the architecture options, with what each one costs stated.",
               note: "Output: designs + ADRs",
             },
             {

@@ -194,11 +194,11 @@ export function Unconfigured({
     >
       <CircleSlash className="size-3.5" aria-hidden />
       <span>
-        No {what} yet
+        No {what} yet.
         {showLaunchNotes ? (
           <>
             {" "}
-            — set it in <code className="font-mono text-[0.72rem]">{where}</code>
+            Set it in <code className="font-mono text-[0.72rem]">{where}</code>
           </>
         ) : null}
       </span>

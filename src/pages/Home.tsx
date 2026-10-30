@@ -41,7 +41,7 @@ const techStrip = [
 
 const deliveryProcess = [
   { title: "Discovery", detail: "Find the real decision, the actual constraint and the system that quietly runs the process.", note: "Week 1–2" },
-  { title: "Prototype", detail: "A thin, working slice that answers the riskiest question first.", note: "Days, not quarters" },
+  { title: "Prototype", detail: "A thin, working slice that answers the riskiest question first.", note: "Answered in days" },
   { title: "Build", detail: "Two-week increments of shippable software, reviewed in your repository.", note: "Visible progress" },
   { title: "Evaluate", detail: "Tests on the paths that matter, plus measurement of quality, cost and latency.", note: "Blocks regressions" },
   { title: "Ship", detail: "Staged release with monitoring from the first user, and a practised rollback.", note: "Hypercare period" },
@@ -221,7 +221,7 @@ export default function Home() {
               as="h2"
               eyebrow="Who we are"
               title="A technology partner for the part that is actually hard"
-              lead="Septa is a technology company that builds and modernises software: AI products, conventional applications, workflow automation, observability and the teams that sustain them. We are most useful when a system matters — when being wrong has a cost, and somebody has to be accountable afterwards."
+              lead="Septa is a technology company that builds and modernises software: AI products, conventional applications, workflow automation, observability and the teams that sustain them. We are most useful when a system matters, when being wrong has a cost, and somebody has to be accountable afterwards."
               action={
                 <Button to={paths.about()} variant="secondary" size="sm">
                   About Septa
@@ -334,7 +334,7 @@ export default function Home() {
               </p>
               <div className="mt-7 space-y-3">
                 {[
-                  "Retrieval with source citations, not vibes",
+                  "Retrieval with source citations",
                   "Golden-set evaluation running in the pipeline",
                   "Latency, cost and correction rates on one dashboard",
                   "Refusal policy and human review where errors are costly",
@@ -375,8 +375,8 @@ export default function Home() {
               </h2>
               <p className="prose-body mt-5">
                 Portals, platforms, APIs, internal tools and data products. Discovery, requirements,
-                design, architecture, build, test, deploy — and the discipline that decides whether
-                the codebase is still cheap to change in year three.
+                design, architecture, build, test, deploy — and the discipline that keeps a codebase
+                cheap to change in year three.
               </p>
               <div className="mt-7 grid gap-3 sm:grid-cols-2">
                 {[
@@ -406,7 +406,7 @@ export default function Home() {
         <SectionHeading
           eyebrow="Case studies"
           title="How this kind of work goes"
-          lead="The studies below are illustrative sample scenarios written to show the shape of a Septa engagement — the problem framing, the sequence, the trade-offs. They are not client references, and their outcomes are not measured results."
+          lead="The studies below are illustrative sample scenarios written to show the shape of a Septa engagement: the problem framing, the sequence and the costs of the choices made. They are not client references, and their outcomes are not measured results."
           action={
             <Button to={paths.cases()} variant="secondary" size="sm" iconEnd={<ArrowRight className="size-4" />}>
               All case studies
@@ -415,7 +415,7 @@ export default function Home() {
           className="mb-4"
         />
         <div className="mb-8 flex flex-wrap items-center gap-3">
-          <SampleTag label="Placeholder content — real studies pending approval" />
+          <SampleTag label="Placeholder content until real studies are approved" />
           <LaunchNoteInline label="Replace with client-approved case studies" />
         </div>
 
@@ -437,13 +437,13 @@ export default function Home() {
           <div>
             <SectionHeading
               eyebrow="Our approach"
-              title="A delivery loop, not a waterfall with better slides"
+              title="A delivery loop that runs on repeat"
               lead="Every engagement runs the same spine. What changes is how long each stage takes and who is in the room."
             />
             <div className="mt-7 flex flex-wrap gap-2">
               <Pill tone="mint">Two-week increments</Pill>
-              <Pill tone="line">Software, not status decks</Pill>
-              <Pill tone="line">Written trade-offs</Pill>
+              <Pill tone="line">Working software</Pill>
+              <Pill tone="line">Written decisions</Pill>
             </div>
             <Button to={paths.about()} variant="ghost" size="sm" className="mt-6">
               More about how we work
@@ -460,7 +460,7 @@ export default function Home() {
         <SectionHeading
           eyebrow="Why Septa"
           title="Reasons organisations pick us, in their words"
-          lead="Not testimonials — these are the practical differences we are able to commit to on this page."
+          lead="These are not testimonials — they are the practical differences we are able to commit to on this page."
           className="mb-10"
         />
         <div className="grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
@@ -488,12 +488,12 @@ export default function Home() {
             {
               title: "Costs named early",
               detail:
-                "Inference, hosting and integration effort are modelled before commitment, not discovered later.",
+                "Inference, hosting and integration effort are modelled before commitment rather than discovered later.",
             },
             {
               title: "Reliability included",
               detail:
-                "Instrumentation, alerting and rollback are in scope on everything we build, not an upsell.",
+                "Instrumentation, alerting and rollback are in scope on everything we build.",
             },
           ].map((w, i) => (
             <Reveal key={w.title} delay={i * 0.04}>
@@ -520,7 +520,7 @@ export default function Home() {
             <p className="prose-body mt-5">
               A specialist who can work unsupervised, a squad that owns a product line, or technical
               screening your hiring team does not have time to run well. Engagement shape is agreed
-              against the outcome, not a headcount target.
+              against the outcome rather than a headcount target.
             </p>
             <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
               {[

@@ -23,7 +23,7 @@ const engagementModel = [
   {
     title: "Fixed-scope spike",
     detail:
-      "One or two weeks on a single question — is this feasible, where does the data live, what would it cost to run. Ends with a written answer and a working artefact.",
+      "One or two weeks on a single question: is this feasible, where does the data live, what would it cost to run. Ends with a written answer and a working artefact.",
     fits: "You need evidence before committing budget.",
   },
   {
@@ -36,7 +36,7 @@ const engagementModel = [
     title: "Ongoing partnership",
     detail:
       "A standing capacity commitment: roadmap input, delivery, reliability work and handover checkpoints reviewed regularly.",
-    fits: "Technology is part of your operating model, not a project.",
+    fits: "Technology is part of your operating model and runs continuously.",
   },
 ];
 
@@ -65,7 +65,7 @@ export default function Services() {
   usePageMeta({
     title: "Services",
     description:
-      "Septa's five service lines: AI product development, workflow automation, digital transformation, observability and monitoring, and talent solutions — plus the product-development tracks behind them.",
+      "Septa's five service lines: AI product development, workflow automation, digital transformation, observability and monitoring, and talent solutions, plus the product-development tracks behind them.",
   });
 
   return (
@@ -74,7 +74,7 @@ export default function Services() {
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Services" }]}
         eyebrow="Services"
         title="Five ways we take a hard operational problem and make it software"
-        lead="Each service page states what the work involves, what you receive, and what still needs confirming about how Septa sells it. Pick the closest one — mixed engagements are the norm, not the exception."
+        lead="Each service page states what the work involves, what you receive, and what still needs confirming about how Septa sells it. Pick the closest one. Mixed engagements are normal."
         meta={
           <>
             <Pill tone="mint">{services.length} service lines</Pill>
@@ -139,7 +139,7 @@ export default function Services() {
         <SectionHeading
           eyebrow="The five lines"
           title="Choose the closest starting point"
-          lead="These overlap on purpose. A claims assistant is AI product development, workflow automation and observability at once — the pages describe the same company, not five departments."
+          lead="These overlap on purpose. A claims assistant is AI product development, workflow automation and observability at once. Each page describes the same company across the five listings."
           className="mb-10"
         />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -157,7 +157,7 @@ export default function Services() {
                 </span>
                 <h3 className="mt-5 text-[1.15rem]">Not sure which one fits?</h3>
                 <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
-                  Send the situation in your own words. We will tell you which line it belongs to —
+                  Send the situation in your own words. We will tell you which line it belongs to,
                   or that it does not need one yet.
                 </p>
               </div>
@@ -181,7 +181,7 @@ export default function Services() {
             <SectionHeading
               eyebrow="Product development"
               title="Two build tracks, one engineering standard"
-              lead="The service pages describe what we offer. The product-development pages walk through how a new product actually gets built — AI-enabled or conventional software."
+              lead="The service pages describe what we offer. The product-development pages walk through how a new product actually gets built, whether AI-enabled or conventional software."
             />
             <Button to={paths.products()} variant="ghost" size="sm" className="mt-6" iconEnd={<ArrowRight className="size-4" />}>
               Open the product-development hub
@@ -256,7 +256,7 @@ export default function Services() {
         <SectionHeading
           eyebrow="How work runs"
           title="The same spine under every service"
-          lead="Discovery, prototype, build, evaluate, ship, operate. What changes between services is the content of each step, not the shape of the engagement."
+          lead="Discovery, prototype, build, evaluate, ship, operate. What changes between services is the content of each step."
           className="mb-9"
         />
         <ProcessSteps
@@ -300,8 +300,8 @@ export default function Services() {
       </Section>
 
       <CtaBand
-        title="Tell us the situation, not the solution"
-        lead="The request form takes four short steps and preselects a service for you. We reply with a point of view and the smallest useful next step."
+        title="Tell us the situation and we will shape the work"
+        lead="The request form takes five short steps and preselects a service for you. We reply with a point of view and the smallest useful next step."
         secondary={{ label: "Browse services", to: paths.services() }}
       />
     </>

@@ -39,7 +39,7 @@ export function BrandLink({ className, label }: { className?: string; label?: st
   return (
     <Link
       to="/"
-      aria-label={label ?? "Septa — home"}
+      aria-label={label ?? "Septa home"}
       className={cn(
         "group inline-flex items-center rounded-lg text-fg transition-opacity hover:opacity-90",
         className

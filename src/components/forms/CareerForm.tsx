@@ -115,7 +115,7 @@ export function CareerForm({
         </div>
         {result.note ? <Callout kind="setup" className="mt-4">{result.note}</Callout> : null}
         <Callout kind="info" className="mt-4">
-          What happens next is described above this form. We reply either way — including when there
+          What happens next is described above this form. We reply either way, including when there
           is no matching opening yet.
         </Callout>
         <div className="mt-6">
@@ -221,7 +221,7 @@ export function CareerForm({
         file={file}
         onSelect={pickFile}
         error={fileError ?? form.errors.cvFileName}
-        hint={`Up to ${CV_MAX_BYTES / 1024 / 1024} MB. ${CV_ALLOWED_EXT.join(", ")}. Stored privately — never published on the site.`}
+        hint={`Up to ${CV_MAX_BYTES / 1024 / 1024} MB. ${CV_ALLOWED_EXT.join(", ")}. Stored privately and never published on the site.`}
       />
 
       <Honeypot value={v(form.values, "_hp")} onChange={(x) => form.set("_hp", x)} />

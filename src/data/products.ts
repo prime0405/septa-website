@@ -15,7 +15,7 @@ export const products: ProductContent[] = [
     serviceSlug: "ai-product-development",
     navBlurb: "From ambiguous idea to an AI feature you can measure and defend.",
     heroTitle: "Bring your product ideas to market faster with AI",
-    lead: "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering to bring your vision to life.",
+    lead: "We use AI to move product development along and turn your ideas into software you can sell in 4–6 weeks. One team handles the AI, the product strategy and the engineering.",
     detail:
       "This is the product-development track where an AI idea becomes software: a scoped feature, an honest evaluation baseline, an architecture your team can operate, and a release that can be rolled back. It is the build half of the AI Product Development service.",
     framing:
@@ -99,11 +99,11 @@ export const products: ProductContent[] = [
       },
       {
         title: "Operable by your team",
-        detail: "Instrumentation, runbook and documentation ship with the feature, not after it.",
+        detail: "Instrumentation, runbook and documentation ship alongside the feature.",
       },
       {
         title: "Reversible",
-        detail: "Flags and versioning mean a bad release is an operational event, not a project crisis.",
+        detail: "Flags and versioning keep a bad release a routine operational event.",
       },
     ],
     useCases: [
@@ -114,7 +114,7 @@ export const products: ProductContent[] = [
     ],
     process: [
       { title: "Discovery", detail: "Decision framing, constraints, data audit.", note: "Week 1" },
-      { title: "Product strategy", detail: "Scope, success metrics, rollout thesis.", note: "Signed off once" },
+      { title: "Product strategy", detail: "Scope, success metrics, rollout thesis.", note: "Approved once" },
       { title: "Prototype", detail: "Thin slice plus baseline eval scores.", note: "1–3 weeks" },
       { title: "Architecture", detail: "Review of retrieval, models, safety, cost.", note: "With your engineers" },
       { title: "Build & test", detail: "Increments behind flags, regression suite growing.", note: "Two-week loops" },
@@ -134,7 +134,7 @@ export const products: ProductContent[] = [
       },
       {
         q: "Do you work inside our codebase?",
-        a: "Usually yes — in your repositories, your review process and your deployment pipeline, so the work is yours from day one.",
+        a: "Usually yes, in your repositories, your review process and your deployment pipeline, so the work is yours from day one.",
       },
       {
         q: "What if the prototype says no?",
@@ -159,9 +159,9 @@ export const products: ProductContent[] = [
     serviceSlug: undefined,
     navBlurb: "Web and software products engineered to be maintained by whoever comes next.",
     heroTitle: "Great products start with great partnerships",
-    lead: "We turn ideas into intelligent products that solve real problems, delight users, and drive growth, powered by smart strategy and thoughtful design.",
+    lead: "We build software that solves a real problem, holds up under the people who use it, and stays easy to change after launch. The strategy and the design both have to earn their place.",
     detail:
-      "Dashboards, platforms, marketplaces, portals, APIs, mobile backends — conventional product work, done with the discipline that keeps a codebase cheap to change two years after launch: clear architecture, tests that catch real regressions, sensible data modelling and honest documentation.",
+      "Dashboards, platforms, marketplaces, portals, APIs and mobile backends. This is conventional product work, done with the discipline that keeps a codebase cheap to change two years after launch: clear architecture, tests that catch real regressions, sensible data modelling and honest documentation.",
     framing:
       "This is the non-generative counterpart to the AI product track: the same engineering discipline applied to ordinary, demanding software.",
     problems: [
@@ -181,7 +181,7 @@ export const products: ProductContent[] = [
           },
           {
             title: "Requirements gathering",
-            detail: "Flows, edge cases, permissions, non-functional limits — written down and agreed.",
+            detail: "Flows, edge cases, permissions and non-functional limits, written down and agreed.",
           },
           {
             title: "UI/UX design",
@@ -247,7 +247,7 @@ export const products: ProductContent[] = [
       },
       {
         title: "Accessible by default",
-        detail: "Keyboard paths, contrast, focus order and screen-reader labels handled during build, not as an audit afterwards.",
+        detail: "Keyboard paths, contrast, focus order and screen-reader labels are handled during the build.",
       },
       {
         title: "Visible under load",
@@ -258,15 +258,15 @@ export const products: ProductContent[] = [
       { title: "Customer platform", detail: "Portals, marketplaces and account experiences with real permission models." },
       { title: "Internal operations tool", detail: "The admin system that replaces the shared spreadsheet." },
       { title: "Regulated workflows", detail: "Approval chains, audit trails and reporting where records must hold up." },
-      { title: "API product", detail: "Developer-facing interfaces with documentation, versioning and usage limits." },
+      { title: "API product", detail: "Interfaces built for developers, with documentation, versioning and usage limits." },
     ],
     process: [
       { title: "Discovery", detail: "Users, jobs, constraints and success measures.", note: "Output: brief" },
-      { title: "Requirements", detail: "Flows, edge cases and non-functional limits written down.", note: "Agreed, not assumed" },
+      { title: "Requirements", detail: "Flows, edge cases and non-functional limits written down.", note: "Agreed in writing" },
       { title: "Design", detail: "Interface patterns and states prototyped with real content.", note: "Accessible from here" },
-      { title: "Architecture", detail: "Data model, boundaries and deployment shape reviewed.", note: "Trade-offs documented" },
+      { title: "Architecture", detail: "Data model, boundaries and deployment shape reviewed.", note: "Decisions documented" },
       { title: "Build & test", detail: "Incremental delivery behind flags with reviews and CI.", note: "Two-week loops" },
-      { title: "Launch", detail: "Staged release, monitoring, hypercare period.", note: "Rollback practised" },
+      { title: "Launch", detail: "Staged release, monitoring, launch support period.", note: "Rollback practised" },
       { title: "Maintain", detail: "Iteration, dependency care, debt review.", note: "Optional retainer" },
     ],
     deliverables: [
@@ -284,11 +284,11 @@ export const products: ProductContent[] = [
       },
       {
         q: "Who owns the code afterwards?",
-        a: "You do — repository, pipeline, infrastructure accounts and documentation. Our aim is that your team can extend it without us.",
+        a: "You do: repository, pipeline, infrastructure accounts and documentation. Our aim is that your team can extend it without us.",
       },
       {
         q: "Can you take over an existing codebase?",
-        a: "Yes. Work starts with an audit: what is there, what is load-bearing, what is risky, and what the cheapest safe next step is.",
+        a: "Yes. Work starts with an audit: what is there, what the system actually depends on, what is risky, and the cheapest safe next step.",
       },
       {
         q: "Do you build mobile apps?",

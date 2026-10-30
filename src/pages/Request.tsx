@@ -19,7 +19,7 @@ import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
 
 const steps = [
-  { label: "Choose a service", detail: "One selection — “Other” is a real option." },
+  { label: "Choose a service", detail: "One selection. “Other” is a real option." },
   { label: "Describe the project", detail: "The problem, the outcome you want, constraints you already know." },
   { label: "Project details", detail: "Organisation, budget range and timeline. Optional where it should be." },
   { label: "Your contact details", detail: "How to reach you and which channel you prefer." },
@@ -89,7 +89,7 @@ export default function Request() {
               <Callout kind="info" title="Service preselected" className="mb-6">
                 <p>
                   You arrived from the <span className="text-fg">{preselected}</span> page, so step one
-                  starts there. Change it if the problem is really somewhere else — mixed engagements
+                  starts there. Change it if the problem is really somewhere else. Mixed engagements
                   are normal.
                 </p>
               </Callout>
@@ -155,13 +155,13 @@ export default function Request() {
           <SectionHeading
             eyebrow="Useful context"
             title="What makes a request easy to answer well"
-            lead="None of this is required. It is simply the difference between a reply that guesses and a reply that is specific."
+            lead="None of this is required. It is what turns a reply that guesses into a reply that is specific."
           />
           <MarkerList
             items={[
               "Who is affected by the problem today, and how often they hit it.",
               "What you already tried, including anything that quietly failed.",
-              "Systems the solution has to touch — and ones it must not.",
+              "Systems the solution has to touch, and the ones it must stay away from.",
               "A rough date, if one exists, and what makes that date real.",
               "Who needs to say yes, and what they care about.",
             ]}

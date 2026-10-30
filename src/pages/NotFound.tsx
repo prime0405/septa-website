@@ -31,7 +31,7 @@ export default function NotFound() {
         </h1>
         <p className="prose-body mx-auto mt-6 max-w-xl text-[1.02rem]">
           The page was probably renamed, or a link was typed slightly wrong. Everything that exists
-          is reachable from here — and if you think something is missing, tell us and we will either
+          is reachable from here. If you think something is missing, tell us and we will either
           point you at it or build it.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

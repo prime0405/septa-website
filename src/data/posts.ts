@@ -27,9 +27,9 @@ export type Post = {
 export const posts: Post[] = [
   {
     slug: "ai-pilot-production-gap",
-    title: "The gap between an AI pilot and a product is evaluation, not models",
+    title: "An AI pilot becomes a product when you can say which version is better",
     excerpt:
-      "Most stalled AI work is not stuck on capability. It is stuck because nobody defined what a good answer is, so no one could tell whether the next change helped.",
+      "Most stalled AI work is stuck because nobody defined what a good answer looks like. Without that, no one can say whether the next change helped or hurt.",
     category: "AI",
     tags: ["LLM", "Evaluation", "Product"],
     author: "Septa editorial",
@@ -50,7 +50,7 @@ export const posts: Post[] = [
         items: [
           "Unacceptable error: what must never be output, and who sees it if it happens.",
           "Tolerated error rate: what fraction of answers may need correction before the feature loses trust.",
-          "Latency budget: what the user will wait for, per interaction, not per benchmark run.",
+          "Latency budget: how long the user will wait while doing their actual job.",
           "Cost envelope: what one useful answer is allowed to cost, including retrieval and retries.",
           "Human step: where a person reviews, and what they can do about a bad answer in one click.",
         ],
@@ -58,7 +58,7 @@ export const posts: Post[] = [
       { type: "h2", text: "Build the golden set with the domain team" },
       {
         type: "p",
-        text: "A hundred examples chosen by an engineer measures what the engineer thought to test. A few hundred chosen with the people who do the job measure what the job actually contains: the awkward phrasing, the merged record, the attachment that is a scan of a scan. That set becomes the shared reference for every argument about quality, and it is the artefact that outlives the model choice.",
+        text: "A hundred examples chosen by an engineer measures what the engineer thought to test. A few hundred chosen with the people who do the job cover what the job contains: the awkward phrasing, the merged record, the attachment that is a scan of a scan. That set becomes the reference point for every argument about quality, and it outlives whichever model you end up using.",
       },
       {
         type: "quote",
@@ -77,7 +77,7 @@ export const posts: Post[] = [
       { type: "h2", text: "Instrument the thing you actually ship" },
       {
         type: "p",
-        text: "Generative features need the same operational respect as any other service, plus three measures that are easy to forget: corrections made by users, refusal or fallback rates, and spend per useful output. Those are what let you argue for the next iteration with numbers rather than enthusiasm.",
+        text: "Generative features need the same operational discipline as any other service, plus three measures people forget to instrument: corrections made by users, refusal or fallback rates, and spend per useful output. Those are the figures you take into the conversation about the next iteration.",
       },
       {
         type: "p",
@@ -98,13 +98,13 @@ export const posts: Post[] = [
     body: [
       {
         type: "p",
-        text: "Every organisation has automation that quietly stopped working three months ago. The evidence is not an alert; it is a spreadsheet someone keeps because they no longer trust the flow. That failure mode is a design choice made at the start, when retries, ownership and replay were postponed.",
+        text: "Every organisation has automation that quietly stopped working three months ago. You can spot it by the spreadsheet someone keeps because they no longer trust the flow. That failure was designed in at the start, when retries, ownership and replay were postponed.",
       },
       { type: "h2", text: "Assume the upstream system will misbehave" },
       {
         type: "ul",
         items: [
-          "Rate limits and partial outages are normal operating conditions, not exceptions.",
+          "Rate limits and partial outages are ordinary operating conditions, and they need their own plan.",
           "Records arrive late, duplicated and out of order.",
           "A field that was always present last quarter becomes nullable next month.",
           "Credentials expire on a schedule that nobody owns.",
@@ -119,19 +119,19 @@ export const posts: Post[] = [
         type: "p",
         text: "The most used feature in any automation you build will be the one that re-runs yesterday's failed item after the data is fixed. It is cheap to build while the context is fresh and expensive to retrofit under pressure. It also changes who can maintain the system: with a replay tool and a queue view, the operations team owns it. Without, only the engineer who wrote it does.",
       },
-      { type: "h2", text: "Alert on ageing, not on errors" },
+      { type: "h2", text: "Alert on how long an item has been failing" },
       {
         type: "p",
-        text: "A single failed record is noise; a record that has been failing for two hours is a problem. Alert thresholds set on queue depth and item age describe user-visible risk, and they keep the pager credible enough that people answer it.",
+        text: "A single failed record is noise. A record that has been failing for two hours is a problem. Thresholds set on queue depth and item age describe the risk someone can actually see, and they keep the pager credible enough that people answer it.",
       },
       {
         type: "quote",
-        text: "Automations do not fail loudly. They fail quietly and then get distrusted permanently.",
+        text: "Automations do not fail loudly. They fail quietly, and then nobody trusts them again.",
       },
       { type: "h2", text: "Remove steps before connecting them" },
       {
         type: "p",
-        text: "The best automation project we have seen documented was a week of process review that deleted two approval steps and changed who entered a record once. The integration that followed was small. That ordering — map, cut, then connect — is the difference between a lighter workload and a faster version of the same wasted effort.",
+        text: "The best automation project we have seen documented was a week of process review that deleted two approval steps and changed who entered a record once. The integration that followed was small. Map the work first, cut what does not need doing, then connect what is left. Do it in another order and you get the same wasted effort, only faster.",
       },
     ],
   },
@@ -139,7 +139,7 @@ export const posts: Post[] = [
     slug: "legacy-system-questions",
     title: "Six questions to ask before anyone proposes rewriting your legacy system",
     excerpt:
-      "Rewrite, extend, replace with a package, or live with it? The honest answer comes from constraints, not from how much the codebase offends anybody.",
+      "Rewrite, extend, replace with a package, or live with it? The honest answer comes from your constraints and very little from how much the codebase offends anybody.",
     category: "Digital Transformation",
     tags: ["Modernisation", "Architecture", "Risk"],
     author: "Septa editorial",
@@ -148,17 +148,17 @@ export const posts: Post[] = [
     body: [
       {
         type: "p",
-        text: "Legacy conversations go wrong when they become aesthetic. Five questions put the decision back on evidence.",
+        text: "Legacy conversations go wrong when they become aesthetic. Six questions put the decision back on evidence.",
       },
       { type: "h3", text: "1. What does the system actually do?" },
       {
         type: "p",
-        text: "Not what the documentation claims — what it does, including the rules that live in a nightly job and the workaround spreadsheet. If nobody can produce that inventory, the first project is characterisation, usually by replaying real traffic against a copy.",
+        text: "The documentation is rarely the answer. The rules that matter live in a nightly job and in the workaround spreadsheet nobody admitted to. If nobody can produce that inventory, the first project is characterisation, usually by replaying real traffic against a copy.",
       },
-      { type: "h3", text: "2. Which parts are load-bearing for the business?" },
+      { type: "h3", text: "2. Which parts would break the business if they changed?" },
       {
         type: "p",
-        text: "Some capabilities must behave identically for regulatory or downstream reasons. Some are legacy precisely because nobody depends on them. Splitting the two changes the size of the problem.",
+        text: "Some capabilities must behave identically for regulatory or downstream reasons. Some are legacy only because nobody depends on them. Splitting the two changes the size of the problem.",
       },
       { type: "h3", text: "3. What is the constraint that would make us regret a rewrite?" },
       {
@@ -167,13 +167,13 @@ export const posts: Post[] = [
           "A fixed audit or reporting deadline during the change.",
           "One team that cannot be split across old and new work.",
           "Data that cannot be dual-written safely.",
-          "Vendor licence expiry that sets the clock, not our preference.",
+          "A vendor licence expiry that sets the clock for you.",
         ],
       },
-      { type: "h3", text: "4. Can we take one journey at a time?" },
+      { type: "h3", text: "4. Can we move one flow at a time?" },
       {
         type: "p",
-        text: "A strangler seam at the edge lets a new service absorb a single journey and roll back in configuration. That option is usually underrated, mostly because it produces fewer impressive diagrams.",
+        text: "A strangler seam at the edge lets a new service absorb a single flow and roll back in configuration. That option is usually underrated, mostly because it produces fewer impressive diagrams.",
       },
       { type: "h3", text: "5. Who will observe the result?" },
       {
@@ -183,7 +183,7 @@ export const posts: Post[] = [
       { type: "h3", text: "6. How does this end?" },
       {
         type: "p",
-        text: "Decommissioning needs a named owner, an archival plan and sign-off, or the old system keeps being authoritative because it is still switched on. Programmes that skip that step are the reason the phrase 'temporary migration' is funny.",
+        text: "Decommissioning needs a named owner, an archival plan and somebody's written approval. Otherwise the old system stays authoritative because it is still switched on. Programmes that skip that step are why the phrase 'temporary migration' is funny.",
       },
       {
         type: "quote",
@@ -206,20 +206,20 @@ export const posts: Post[] = [
         type: "p",
         text: "Most first attempts at SLOs produce a dashboard nobody argues with and a reliability report nobody reads. The test of a good objective is simpler: does it ever stop a release, and does it ever justify a piece of unglamorous work?",
       },
-      { type: "h2", text: "Measure the symptom, not the cause" },
+      { type: "h2", text: "Measure what the user feels" },
       {
         type: "p",
-        text: "Availability of the host is not the user's experience. Choose the request path the business cares about — checkout, search, login — and measure success and latency there. Dependencies show up as symptoms without needing to be enumerated in advance.",
+        text: "A host can be healthy while checkout is broken. Choose the request path the business cares about, for example checkout, search or login, and measure success and latency there. Dependencies then show up as symptoms without anyone having to list them in advance.",
       },
       { type: "h2", text: "Negotiate the budget with product" },
       {
         type: "p",
-        text: "An error budget is a shared allowance, agreed before the incident. If product owners have not signed up to the trade-off, the number becomes a policy nobody enforces, and the first breach turns into a negotiation instead of a decision.",
+        text: "An error budget is a shared allowance, agreed before the incident. If product owners have not agreed in advance what happens once it is spent, the number becomes a policy nobody enforces, and the first breach turns into a negotiation instead of a decision.",
       },
       {
         type: "ul",
         items: [
-          "Set targets from user impact, not from what current systems happen to achieve.",
+          "Set targets from user impact. What the current system happens to achieve is a separate question.",
           "State multi-window burn rates so a fast fire and a slow leak both page appropriately.",
           "Define who may spend the budget, and what buys it back.",
         ],
@@ -227,7 +227,7 @@ export const posts: Post[] = [
       { type: "h2", text: "One screen per audience" },
       {
         type: "p",
-        text: "Executives need status against targets. On-call needs the triage view: what is failing, since when, which deploy is suspect. Deep-dive belongs to the service team. A dashboard trying to be all three is usually used by none.",
+        text: "Executives need status against targets. On-call needs the triage view: what is failing, since when, which deploy is suspect. The service team needs the per-service detail. A dashboard trying to be all three is usually used by none.",
       },
       { type: "h2", text: "Rewrite alerts until they are trustworthy" },
       {
@@ -236,15 +236,15 @@ export const posts: Post[] = [
       },
       {
         type: "quote",
-        text: "Reliability work gets funded when somebody can point at the burn rate and name the customer journey at risk.",
+        text: "Reliability work gets funded when somebody can point at the burn rate and name the customers who are feeling it.",
       },
     ],
   },
   {
     slug: "maintainability-is-a-product-decision",
-    title: "Maintainability is a product decision, not an engineering preference",
+    title: "Maintainability is a product decision",
     excerpt:
-      "The cost of the third year of a product is set by choices made in the first three months — and by whether anyone was accountable for them.",
+      "The cost of a product's third year is set by the choices made in its first three months, and by whether anyone was accountable for them.",
     category: "Software Engineering",
     tags: ["Quality", "Architecture", "Delivery"],
     author: "Septa editorial",
@@ -253,12 +253,12 @@ export const posts: Post[] = [
     body: [
       {
         type: "p",
-        text: "Speed and quality get presented as a trade-off in early conversations because it is an easy promise to make. In practice the variable that decides next year's velocity is decided now: can a change be made safely by someone who did not write the original?",
+        text: "Speed and quality get presented as a trade in early conversations because it is an easy promise to make. In practice the variable that decides next year's velocity is settled now: can a change be made safely by someone who did not write the original?",
       },
       { type: "h2", text: "Tests that catch real regressions" },
       {
         type: "p",
-        text: "Coverage as a target produces tests that assert the implementation and break on every refactor. Coverage on the paths that would hurt — money moved, permissions applied, records created — produces tests that earn their maintenance cost. The question is not how much is tested but which mistakes are impossible to ship.",
+        text: "Coverage as a target produces tests that assert the implementation and break on every refactor. Coverage on the paths that move money, apply permissions or create records produces tests that earn their maintenance cost, because those are the failures a customer notices.",
       },
       { type: "h2", text: "Data models age in public" },
       {
@@ -274,15 +274,15 @@ export const posts: Post[] = [
       {
         type: "ul",
         items: [
-          "Why the boundary is where it is, not just where the files live.",
+          "Why the boundary sits where it does, and which files fall on each side of it.",
           "The one-page setup that gets a new engineer running in under an hour.",
-          "Decisions that would be expensive to accidentally reverse.",
+          "Decisions that would be expensive to reverse by accident.",
           "A runbook for each scheduled job, integration and failure mode.",
         ],
       },
       {
         type: "p",
-        text: "All of this is cheap relative to the release it delays, and expensive relative to the quarter it is deferred into. It belongs in the plan as a stated product decision, not as an engineer's private battle.",
+        text: "All of this is cheap relative to the release it delays, and expensive relative to the quarter it gets deferred into. Put it in the plan as a stated product decision with an owner attached.",
       },
     ],
   },
@@ -315,10 +315,10 @@ export const posts: Post[] = [
       {
         type: "ul",
         items: [
-          "Working software at a fixed interval, not status slides.",
-          "Written trade-offs with the option you did not take and why.",
+          "Working software at a fixed interval. A status slide does not count as progress.",
+          "Written decisions, with the option you did not take and why.",
           "Measures agreed before build that decide whether the release worked.",
-          "A visible change list so scope creep has a price, not a mood.",
+          "A visible change list, so scope creep has a price attached.",
         ],
       },
       { type: "h2", text: "Negotiate the exit on day one" },

@@ -37,7 +37,7 @@ export default function Careers() {
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Career" }]}
         eyebrow="Career at Septa"
         title="Do work that stays useful after the launch"
-        lead="We build systems that other people have to live with — which means engineering decisions are made for the reader who inherits them. If that is the kind of work you want, this page tells you how we operate and how to reach us."
+        lead="We build systems that other people have to live with, which means engineering decisions are made for the reader who inherits them. If that is the kind of work you want, this page tells you how we operate and how to reach us."
         meta={
           <>
             <Pill tone="mint">
@@ -196,7 +196,7 @@ export default function Careers() {
         )}
 
         {!openings.length ? (
-          <LaunchNoteInline label="Publish real vacancies in src/data/jobs.ts — the page renders whatever that array contains" />
+          <LaunchNoteInline label="Publish real vacancies in src/data/jobs.ts: the page renders whatever that array contains" />
         ) : null}
       </Section>
 
@@ -205,7 +205,7 @@ export default function Careers() {
         <SectionHeading
           eyebrow="Areas of work"
           title="The disciplines we hire into"
-          lead="Roles move between these. A backend engineer on an AI engagement is still a backend engineer — the difference is what they are deciding."
+          lead="Roles move between these. A backend engineer on an AI engagement is still a backend engineer: the difference is what they are deciding."
           className="mb-10"
         />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -241,7 +241,7 @@ export default function Careers() {
             <SectionHeading
               eyebrow="Working here"
               title="What the day-to-day is actually like"
-              lead="Written as commitments about how work is organised, not as a perks list."
+              lead="Written as commitments about how work is organised."
               className="mb-8"
             />
             <div className="grid gap-3">
@@ -343,8 +343,8 @@ export default function Careers() {
       </Section>
 
       <CtaBand
-        title="Not hiring-shaped, but want to talk?"
-        lead="Client-facing delivery work is the same craft. If you would rather discuss a project, the request form is the faster route."
+        title="Not here for a role, but want to talk?"
+        lead="Delivery work with clients is the same craft. If you would rather discuss a project, the request form is the faster route."
         primaryLabel="Request a Service"
         secondary={{ label: "Contact us", to: paths.contact() }}
       />

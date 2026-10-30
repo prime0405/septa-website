@@ -33,7 +33,7 @@ export default function About() {
   usePageMeta({
     title: "About Us",
     description:
-      "Septa's mission, values, technical capability and approach to delivery — a technology company building AI products, software, automation, modernisation and observability work.",
+      "Septa's mission, values, technical capability and approach to delivery: a technology company building AI products, software, automation, modernisation and observability work.",
   });
 
   return (
@@ -42,7 +42,7 @@ export default function About() {
         crumbs={[{ label: "Home", to: paths.home() }, { label: "About Us" }]}
         eyebrow="About Septa"
         title="We make useful technology ordinary"
-        lead="Septa exists for organisations that know they need better systems and do not know which problem to open with. We take the operational pain, work out what is really blocking it, and leave behind software — and a team that can keep improving it."
+        lead="Septa exists for organisations that know they need better systems and do not know which problem to open with. We take the operational pain, work out what is really blocking it, and leave behind the software and the team that keeps improving it."
         meta={
           <>
             <Pill tone="mint">AI products</Pill>
@@ -138,7 +138,7 @@ export default function About() {
         <SectionHeading
           eyebrow="Values"
           title="Five commitments we hold ourselves to in public"
-          lead="These are written to be checkable — each one should be visible in how an engagement runs, not just on this page."
+          lead="These are written to be checkable: each one should be visible in how an engagement runs."
           className="mb-10"
         />
         <div className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
@@ -161,7 +161,7 @@ export default function About() {
             <SectionHeading
               eyebrow="Technical capability"
               title="What the team actually works with"
-              lead="A statement of working competence, not a keyword list. Anything here we would happily be assessed on in a technical conversation."
+              lead="A statement of working competence. Anything here we would happily be assessed on in a technical conversation."
             />
             <Button to={paths.cases()} variant="ghost" size="sm" className="mt-6" iconEnd={<ArrowRight className="size-4" />}>
               See it applied in the case studies
@@ -198,7 +198,7 @@ export default function About() {
         <SectionHeading
           eyebrow="How we solve problems"
           title="The approach, in the order we apply it"
-          lead="Problem-first, evidence-first, and designed for the team that inherits the result."
+          lead="We start from the problem and the evidence, and design for the team that inherits the result."
           className="mb-10"
         />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -229,7 +229,7 @@ export default function About() {
         />
         <ProcessSteps
           columns={3}
-          caption="Every step ends with something inspectable — a brief, a prototype, running software, measurements, a release, documentation."
+          caption="Every step ends with something inspectable: a brief, a prototype, running software, measurements, a release, documentation."
           steps={approach.map((a, i) => ({
             title: a.title,
             detail: a.detail,
@@ -267,9 +267,9 @@ export default function About() {
                 <MarkerList
                   items={[
                     "The people who scope your work build your work.",
-                    "Progress is demonstrated as software, not slides.",
+                    "Progress is demonstrated as working software.",
                     "Costs and risks are named before commitment.",
-                    "Handover is scheduled, not an afterthought.",
+                    "Handover is scheduled from the start.",
                   ]}
                 />
               </Card>
@@ -280,7 +280,7 @@ export default function About() {
                   so they are absent rather than invented.
                   <DevNote>
                     {" "}Add them in <code className="font-mono text-[0.8rem]">src/lib/site.ts</code> and{" "}
-                    <code className="font-mono text-[0.8rem]">src/data/content.ts</code> — or say so and
+                    <code className="font-mono text-[0.8rem]">src/data/content.ts</code>, or say so and
                     they will be written properly.
                   </DevNote>
                 </p>

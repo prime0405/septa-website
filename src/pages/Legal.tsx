@@ -19,7 +19,7 @@ const privacyClauses: Clause[] = [
   {
     title: "Who we are",
     body: [
-      `This notice explains how ${site.name} handles information submitted through this website — the contact form, the service request form and career applications.`,
+      `This notice explains how ${site.name} handles information submitted through this website: the contact form, the service request form and career applications.`,
       "The responsible entity name, registered address and any applicable registration details have not been supplied yet, so they are shown as unset rather than assumed.",
     ],
   },
@@ -36,7 +36,7 @@ const privacyClauses: Clause[] = [
   {
     title: "Why we collect it",
     body: [
-      "To reply to your enquiry, to assess a service request, and — for career applications — to consider you for current or future roles. We do not use submission data for advertising, and we do not sell it.",
+      "To reply to your enquiry, to assess a service request, and (for career applications) to consider you for current or future roles. We do not use submission data for advertising, and we do not sell it.",
     ],
   },
   {
@@ -48,7 +48,7 @@ const privacyClauses: Clause[] = [
   {
     title: "How long we keep it",
     body: [
-      "No retention schedule has been set. Until one is confirmed, this section is deliberately incomplete — say when enquiries and applications are deleted rather than guessing.",
+      "No retention schedule has been set. Until one is confirmed this section stays deliberately incomplete: it should state when enquiries and applications are deleted rather than guess.",
     ],
   },
   {
@@ -78,7 +78,7 @@ const privacyClauses: Clause[] = [
   {
     title: "Contact",
     body: [
-      "Ask for a privacy change — access, correction, deletion or consent withdrawal — through the contact form, quoting the reference you were given when you submitted.",
+      "Ask for a privacy change (access, correction, deletion or consent withdrawal) through the contact form, quoting the reference you were given when you submitted.",
     ],
   },
 ];
@@ -117,7 +117,7 @@ const termsClauses: Clause[] = [
   {
     title: "Intellectual property",
     body: [
-      "The website's design, text and graphics belong to Septa or are used with permission. Work produced for a client is assigned according to that engagement's contract — typically including repositories, pipelines and accounts as client-owned.",
+      "The website's design, text and graphics belong to Septa or are used with permission. Work produced for a client is assigned according to that engagement's contract, typically with repositories, pipelines and accounts owned by the client.",
     ],
   },
   {
@@ -184,7 +184,7 @@ export default function Legal({ kind }: { kind: "privacy" | "terms" }) {
             <Pill tone={effective ? "line" : "amber"}>
               {effective ? `Effective ${effective}` : "Effective date not set"}
             </Pill>
-            <Pill tone="amber">Template — needs review</Pill>
+            <Pill tone="amber">Template: needs review</Pill>
           </>
         }
         actions={

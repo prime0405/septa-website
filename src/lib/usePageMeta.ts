@@ -21,7 +21,7 @@ function upsert(attr: "name" | "property", key: string, value: string) {
 export function usePageMeta({ title, description, noindex }: PageMeta) {
   useEffect(() => {
     const brandless = title === site.name;
-    const full = brandless ? `${site.name} — ${site.tagline}` : `${title} · ${site.name}`;
+    const full = brandless ? `${site.name} · ${site.tagline}` : `${title} · ${site.name}`;
     const desc = description ?? site.description;
 
     document.title = full;

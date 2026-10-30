@@ -158,7 +158,7 @@ export function ContactForm({ defaultInquiry }: { defaultInquiry?: string }) {
 
       {phase === "failed" && failure ? (
         <Callout kind="danger" title="Not sent">
-          {failure} Your text is still on the page — adjust it and press send again.
+          {failure} Your text is still on the page. Adjust it and press send again.
         </Callout>
       ) : null}
 

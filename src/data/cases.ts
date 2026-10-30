@@ -35,9 +35,9 @@ export const caseStudies: CaseStudy[] = [
     category: "AI Product",
     year: "Sample",
     summary:
-      "Adjusters were spending the first forty minutes of every claim reading attachments. A grounded, cited assistant moved that to under five, with the human still deciding.",
+      "Adjusters were spending the first forty minutes of every claim reading attachments. The assistant was built to take that under five, with every field citing the page it came from and the adjuster still making the call.",
     problem:
-      "New claims arrived as a PDF bundle — forms, photos, third-party estimates. Adjusters had to read all of it before they could even categorise severity, so the queue grew faster than the team.",
+      "New claims arrived as a PDF bundle: forms, photos, third-party estimates. Adjusters had to read the whole thing before they could even say how severe a claim was, so the queue grew faster than the team.",
     solutionOverview:
       "A retrieval-augmented triage screen that summarises each claim against the insurer's own category definitions, quotes the source page for every field it extracts, and routes uncertain cases to a senior review queue.",
     stack: ["TypeScript", "React", "Node.js", "PostgreSQL", "pgvector", "LLM API", "OpenTelemetry", "Grafana"],
@@ -45,7 +45,7 @@ export const caseStudies: CaseStudy[] = [
     background:
       "The insurer ran a documented claims process with clear severity categories, but the classification step itself was manual and inconsistent between teams. Two earlier pilots had stalled after stakeholders could not tell whether the outputs were trustworthy.",
     challenge:
-      "Extraction accuracy was not the hard part; accountability was. Any summary that influenced a reserve decision had to point at the document and page it came from, and any wrong answer had to be catchable before it reached a claim file.",
+      "The hard part was accountability rather than extraction accuracy. Any summary that influenced a reserve decision had to point at the document and the page it came from, and a wrong answer had to be catchable before it reached a claim file.",
     objectives: [
       "Cut time-to-classify for a new claim materially without adding headcount",
       "Show the source evidence behind every extracted field",
@@ -54,14 +54,14 @@ export const caseStudies: CaseStudy[] = [
     ],
     solution: [
       {
-        title: "Grounded extraction",
+        title: "Extraction with sources",
         detail:
-          "Documents were parsed once into a versioned store. Retrieval combined keyword and vector search over the insurer's own category definitions, with structured outputs validated against a schema before any field was shown.",
+          "Documents were parsed once into a versioned store. Retrieval combined keyword and vector search over the insurer's own category definitions, and structured outputs were validated against a schema before any field was shown.",
       },
       {
-        title: "Evidence-first interface",
+        title: "Evidence in the interface",
         detail:
-          "Each extracted value carried a citation link that opened the source page at the highlighted passage. Adjusters could correct a value in one action, which wrote to a review queue rather than silently editing the record.",
+          "Each extracted value carried a citation link that opened the source page at the highlighted passage. An adjuster could correct a value in one action, and that wrote to a review queue instead of quietly changing the record.",
       },
       {
         title: "Confidence routing",
@@ -71,7 +71,7 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Evaluation harness",
         detail:
-          "A golden set of 180 labelled historical claims — chosen with the claims team, not by the engineers — was scored on every prompt or model change, with regression reports in review.",
+          "A golden set of 180 labelled historical claims, picked with the claims team, was scored on every prompt or model change. Regression reports went into review with each run.",
       },
     ],
     implementation: [
@@ -83,7 +83,7 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Week 3–5 · Prototype",
         detail:
-          "Thin slice over a sample document set, scored against a first golden set. Result: strong on structured forms, weak on photo evidence — decision made to exclude photo-derived fields from v1.",
+          "A thin slice over a sample document set, scored against a first golden set. It read structured forms well and photo evidence badly, so version one left out any field derived from a photograph.",
       },
       {
         title: "Week 6–12 · Build",
@@ -93,18 +93,18 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Week 13–16 · Parallel run",
         detail:
-          "Assistant output compared against manual classification on the live queue for three weeks. Mismatch reports reviewed jointly before switch-on.",
+          "The assistant's output was compared against the manual classification on the live queue for three weeks, and the mismatch reports were reviewed jointly before it was switched on.",
       },
       {
         title: "Week 17+ · Release and monitor",
         detail:
-          "Staged rollout by team, dashboards for latency, cost per claim and correction rate, plus a monthly review to grow the golden set.",
+          "Staged rollout team by team, dashboards for latency, cost per claim and correction rate, and a monthly review to keep growing the golden set.",
       },
     ],
     results: [
       {
         label: "Time to classify a new claim",
-        value: "Target reduction agreed in discovery — measured after release",
+        value: "Target reduction agreed in discovery, measured after release",
         verified: false,
         note: "Replace with the figure measured in the client's own reporting once a real study is approved.",
       },
@@ -118,14 +118,14 @@ export const caseStudies: CaseStudy[] = [
         label: "Queue ageing",
         value: "Instrumented as an operational measure",
         verified: false,
-        note: "Business outcome to be supplied with client sign-off.",
+        note: "Business outcome to be supplied once the client approves publication.",
       },
     ],
     lessons: [
-      "Excluding photo evidence from version one was the decision that kept the project credible.",
+      "Leaving photo evidence out of version one was the decision that kept the project credible.",
       "Adjusters accepted the tool quickly once citations were visible; before that, no accuracy figure convinced them.",
       "A golden set built with the operations team became the shared reference for every argument about quality.",
-      "Cost per claim mattered to finance more than model choice — measuring it from day one avoided a late surprise.",
+      "Cost per claim mattered more to finance than the choice of model. Measuring it from day one avoided a late surprise.",
     ],
     relatedSlugs: ["ops-reporting-pipeline", "freight-doc-flow"],
   },
@@ -136,7 +136,7 @@ export const caseStudies: CaseStudy[] = [
     category: "Automation",
     year: "Sample",
     summary:
-      "Six spreadsheets and one very busy analyst became one governed pipeline: the same report, generated in minutes, with the analyst moved to actual analysis.",
+      "Six spreadsheets and one fully occupied analyst became a single governed pipeline that produces the same weekly report in minutes, leaving the analyst to do the analysis part.",
     problem:
       "Leadership reporting depended on manual extracts from four systems and a shared workbook. It was late, frequently wrong in small ways, and impossible to audit.",
     solutionOverview:
@@ -146,7 +146,7 @@ export const caseStudies: CaseStudy[] = [
     background:
       "The organisation had grown by acquisition, so each site reported differently. Finance, operations and the regional leads each maintained a private version of the numbers and defended them.",
     challenge:
-      "The technical work was straightforward. The hard part was agreeing ownership of definitions — what counts as a completed job, and who decides when two sites disagree.",
+      "The technical work was straightforward. The hard part was agreeing who owns a definition: what counts as a completed job, and who decides when two sites disagree about it.",
     objectives: [
       "One agreed definition set, documented and owned",
       "Weekly pack produced without manual assembly",
@@ -237,7 +237,7 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Idempotent intake",
         detail:
-          "Email and portal submissions land in a durable queue. Replays are safe, and a system outage becomes a growing backlog with an alert rather than lost paperwork.",
+          "Email and portal submissions land in a durable queue, and replays are safe. An upstream outage therefore shows up as a growing backlog with an alert attached.",
       },
       {
         title: "Tiered matching",
@@ -252,7 +252,7 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Operational visibility",
         detail:
-          "Queue depth, matching rate by tier, exception ageing and a per-branch view. Alerts fire on ageing, not on raw error counts.",
+          "Queue depth, matching rate by tier, exception ageing and a branch view. Alerts fire on how long an item has been waiting, which a raw error count never tells you.",
       },
     ],
     implementation: [
@@ -297,7 +297,7 @@ export const caseStudies: CaseStudy[] = [
     category: "Transformation",
     year: "Sample",
     summary:
-      "Instead of a rewrite that froze the business for eighteen months, the old system was replaced in seven vertical slices, each shipped and each reversible.",
+      "The old system was replaced in seven vertical slices, each shipped and each reversible, which is how the business avoided the eighteen-month freeze a rewrite would have meant.",
     problem:
       "A monolith written before the current team existed held the daily operating process. Every change was risky, every vendor quote for replacement assumed a full rewrite.",
     solutionOverview:
@@ -307,7 +307,7 @@ export const caseStudies: CaseStudy[] = [
     background:
       "The organisation had tried a package selection twice. Both stalled in configuration workshops because the in-house system encoded rules nobody could fully articulate.",
     challenge:
-      "The system's behaviour was the requirement, and it was undocumented. Replacement work had to discover it empirically rather than ask staff to remember it.",
+      "The system's behaviour was the requirement, and it was undocumented. Replacement work had to discover it empirically, because staff could not recall rules they had stopped noticing years ago.",
     objectives: [
       "Understand what the current system actually does, with evidence",
       "Replace highest-friction capabilities first without a freeze",
@@ -323,7 +323,7 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Edge seams",
         detail:
-          "Routing at the edge let new services take over one journey at a time while the monolith kept the rest, with per-route rollback in configuration rather than a release.",
+          "Routing at the edge let a new service take over one flow at a time while the monolith kept the rest. Rolling back was a configuration change, so it did not need a release.",
       },
       {
         title: "Shared data with a contract",
@@ -339,7 +339,7 @@ export const caseStudies: CaseStudy[] = [
     implementation: [
       { title: "Phase 1 · 6 weeks", detail: "Replay harness, behaviour inventory, constraint register, target architecture reviewed with internal engineers." },
       { title: "Phase 2 · slices 1–3", detail: "Reporting, approvals and scheduling moved out. Each slice shipped with its baseline tests passing." },
-      { title: "Phase 3 · slices 4–7", detail: "Customer-facing journey, then internal admin, then billing handoff, then the last read path." },
+      { title: "Phase 3 · slices 4–7", detail: "The screens customers use, then internal admin, then billing handoff, then the last read path." },
       { title: "Phase 4", detail: "Legacy write paths retired, archival of obsolete tables, decommission runbook executed with the operations team." },
     ],
     results: [
@@ -363,10 +363,10 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     lessons: [
-      "Capturing behaviour empirically resolved arguments that workshops could not.",
-      "Choosing to share the database — with a contract and a documented exit — traded a small amount of purity for a large amount of safety.",
+      "Capturing behaviour empirically settled arguments that workshops could not.",
+      "Sharing the legacy database cost a little architectural tidiness and bought a lot of safety, as long as the contract and the exit were both written down.",
       "Instrumenting in slice one made slice seven boring, which was the point.",
-      "Decommissioning needs its own plan and sign-off; it never happens as a side effect.",
+      "Decommissioning needs its own plan and a named approval. It never happens as a side effect.",
     ],
     relatedSlugs: ["ops-reporting-pipeline", "freight-doc-flow"],
   },
@@ -377,9 +377,9 @@ export const caseStudies: CaseStudy[] = [
     category: "Observability",
     year: "Sample",
     summary:
-      "A pager that had trained people to ignore it was replaced with symptom-based alerts, agreed SLOs and traces that answered the question during the incident.",
+      "A pager that had trained people to ignore it was replaced with alerts based on what users actually feel, SLOs product agreed to, and traces that answered the question during the incident.",
     problem:
-      "The platform had outgrown its monitoring. Rules were written for servers, not users, so real degradations hid inside a wall of noise and engineers distrusted their own dashboards.",
+      "The platform had outgrown its monitoring. Rules were written around host health. Real degradations therefore hid inside a wall of noise, and engineers stopped believing their own dashboards.",
     solutionOverview:
       "OpenTelemetry instrumentation across services and queues, three dashboard audiences, error budgets negotiated with product, and an incident process that produced written reviews.",
     stack: ["OpenTelemetry", "Go", "Node.js", "Prometheus", "Grafana", "Loki", "Tempo", "Terraform"],
@@ -387,10 +387,10 @@ export const caseStudies: CaseStudy[] = [
     background:
       "Two senior engineers knew how the system fit together. A hiring freeze meant that knowledge was not spreading, and on-call rotation was burning them.",
     challenge:
-      "The tooling budget was already committed. The work had to make the existing stack useful rather than sell a new platform.",
+      "The tooling budget was already committed. The work had to make the existing stack useful, and a new platform was not on the table.",
     objectives: [
       "Instrument the request path end to end, including queues",
-      "Reduce alert volume while catching every real user-facing incident",
+      "Reduce alert volume while still catching every incident a customer would notice",
       "Agree SLOs product will honour in roadmap decisions",
       "Enable a second-tier engineer to run an incident",
     ],
@@ -398,17 +398,17 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Trace-first instrumentation",
         detail:
-          "Context propagated through services and async jobs, so a trace showed the full user journey. Sampling kept volume affordable without losing error paths.",
+          "Context propagated through services and async jobs, so one trace followed a request from the click through to the queue. Sampling kept the volume affordable without dropping error paths.",
       },
       {
-        title: "Symptom-based alerting",
+        title: "Alerting on what users feel",
         detail:
-          "Rules rewritten to fire on user-visible symptoms with a page-worthy threshold, plus tickets instead of pages for conditions with no urgent action. Volume dropped in the first fortnight.",
+          "Rules were rewritten to fire on symptoms a customer would notice, with a threshold worth waking somebody for. Conditions with no urgent action became tickets. Volume dropped in the first fortnight.",
       },
       {
         title: "Three audiences, three dashboards",
         detail:
-          "Executive SLO status, on-call triage view, and a service deep-dive. Each had a documented purpose; anything without one was deleted.",
+          "Executive SLO status, the on-call triage view, and the per-service detail view. Each had a documented purpose; anything without one was deleted.",
       },
       {
         title: "Incident practice",
@@ -421,7 +421,7 @@ export const caseStudies: CaseStudy[] = [
       { title: "Week 3–4", detail: "SLO negotiation with product and engineering leads; error budget policy written down." },
       { title: "Week 5–9", detail: "Instrumentation across the critical paths, dashboard builds, alert rewrite in a shadow period." },
       { title: "Week 10–12", detail: "Cut over alerting, runbook workshops, game-day exercises with the team." },
-      { title: "After", detail: "Monthly reliability review using burn-rate data to justify the next piece of work." },
+      { title: "After", detail: "A monthly reliability review, using error budget burn data to pick the next piece of work." },
     ],
     results: [
       {
@@ -447,7 +447,7 @@ export const caseStudies: CaseStudy[] = [
       "Deleting dashboards nobody could explain was the fastest way to gain credibility with the team.",
       "A shadow period for new alert rules prevented the rewrite from becoming an outage of its own.",
       "Error budgets only work when product agrees to the trade before the incident happens.",
-      "The game day taught more than the documentation — rehearsing the runbook was the point.",
+      "The game day taught more than the documentation did. Rehearsing a runbook is what made it usable under pressure.",
     ],
     relatedSlugs: ["freight-doc-flow", "legacy-branch-system"],
   },

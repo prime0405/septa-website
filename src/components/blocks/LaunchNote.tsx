@@ -46,7 +46,7 @@ export function IntegrationNotice() {
 
   if (status === null) {
     return (
-      <Callout kind="warn" title="Demo mode — no backend reachable">
+      <Callout kind="warn" title="Demo mode: no backend reachable">
         The site cannot reach <code className="font-mono">{apiBase}</code>. Nothing you submit right now
         can be received, and the form will report a failure rather than pretend to succeed.{" "}
         {import.meta.env.DEV ? (

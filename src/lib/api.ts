@@ -41,7 +41,7 @@ async function post<T>(path: string, body: unknown, json = false): Promise<T> {
     });
   } catch {
     throw new ApiError(
-      "We could not reach our servers. Check your connection and try again — your answers are still on this page.",
+      "We could not reach our servers. Check your connection and try again. Your answers are still on this page.",
       {},
       undefined,
       "network",

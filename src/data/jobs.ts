@@ -27,7 +27,7 @@ export const openingsNote =
 
 export const applicationChecklist = [
   "The area of work you want, and one or two sentences on why.",
-  "Something you have built, fixed, migrated or improved — internal tools count.",
+  "Something you have built, fixed, migrated or improved. Internal tools count.",
   "How you got unstuck in a piece of work that did not go to plan.",
   "Your availability and the kind of engagement you are after.",
 ];
