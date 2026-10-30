@@ -12,6 +12,7 @@ function Shell({
   children,
   className,
   as = "label",
+  srOnlyLabel = false,
 }: {
   id: string;
   label: ReactNode;
@@ -21,12 +22,14 @@ function Shell({
   children: ReactNode;
   className?: string;
   as?: "label" | "fieldset";
+  /** Keeps the label for screen readers only, for fields laid out inline. */
+  srOnlyLabel?: boolean;
 }) {
   const Tag = as;
   return (
     <Tag className={cn("block", className)} {...(as === "fieldset" ? {} : { htmlFor: id })}>
       {label ? (
-        <span className="mb-2 flex flex-wrap items-baseline gap-2">
+        <span className={cn(srOnlyLabel ? "sr-only" : "mb-2 flex flex-wrap items-baseline gap-2")}>
           <span
             className={cn(
               "text-[0.86rem] font-medium text-fg",
@@ -76,6 +79,7 @@ type BaseProps = {
   name?: string;
   autoComplete?: string;
   disabled?: boolean;
+  srOnlyLabel?: boolean;
 };
 
 export function TextField({
@@ -218,7 +222,7 @@ export function RadioCards({
                 "group relative flex cursor-pointer items-start gap-3 rounded-card border p-3.5 transition-colors duration-200",
                 checked
                   ? "border-mint/55 bg-mint/[0.07]"
-                  : "border-line bg-[#10171c] hover:border-muted/50",
+                  : "border-line bg-surface hover:border-muted/50",
               )}
             >
               <input
@@ -237,7 +241,7 @@ export function RadioCards({
                   checked ? "border-mint bg-mint" : "border-line group-hover:border-muted",
                 )}
               >
-                {checked ? <span className="size-1.5 rounded-full bg-[#06251e]" /> : null}
+                {checked ? <span className="size-1.5 rounded-full bg-brand-pearl" /> : null}
               </span>
               <span className="min-w-0">
                 <span
@@ -300,8 +304,8 @@ export function CheckboxField({
           className={cn(
             "mt-[3px] flex size-[18px] shrink-0 items-center justify-center rounded-[6px] border transition-colors",
             checked
-              ? "border-mint bg-mint text-[#06251e]"
-      : cn("border-line bg-[#10171c] group-hover:border-muted", error && "border-rose/60"),
+              ? "border-mint bg-mint text-brand-pearl"
+      : cn("border-line bg-surface group-hover:border-muted", error && "border-rose/60"),
           )}
         >
           {checked ? (
@@ -345,7 +349,7 @@ export function FileField({
     <Shell id={fid} label={label} hint={hint} error={error} optional>
       <div
         className={cn(
-          "flex flex-wrap items-center gap-3 rounded-card border border-dashed bg-[#0e1418] p-3",
+          "flex flex-wrap items-center gap-3 rounded-card border border-dashed bg-ink-raised p-3",
           error ? "border-rose/50" : "border-line",
         )}
       >

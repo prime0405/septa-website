@@ -1,38 +1,74 @@
 @import "tailwindcss";
 
+/*
+ * Louis George Café — the brand manual's primary typeface (page 16), self-hosted from
+ * src/assets/fonts. Light is a separate family in the source files, not a weight,
+ * so it is declared as its own face at weight 300. Free for commercial use;
+ * licence text ships next to the fonts.
+ */
+@font-face {
+  font-family: "Louis George Cafe";
+  src: url("./assets/fonts/louis-george-cafe-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Louis George Cafe";
+  src: url("./assets/fonts/louis-george-cafe-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Louis George Cafe";
+  src: url("./assets/fonts/louis-george-cafe-italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Louis George Cafe";
+  src: url("./assets/fonts/louis-george-cafe-light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --color-ink: #0a1013;
-  --color-ink-raised: #0d1317;
-  --color-surface: #131b21;
-  --color-surface-raised: #19232a;
-  --color-line: #26333b;
-  --color-line-soft: #1e282e;
-  --color-fg: #d8e4e3;
-  --color-muted: #93a8a9;
-  --color-faint: #61757c;
-  /* `mint*` is the historical token name for the brand accent. It now carries a
-     brightened version of the Septa mark's teal so CTAs, active nav and focus
-     rings all sit in the same hue family as the logo. */
-  --color-mint: #6fd4b8;
-  --color-mint-bright: #93e8d0;
-  --color-mint-deep: #1e6b5c;
+  /*
+   * Brand palette (manual p.15): Black #000000, Black Pearl #061820,
+   * Tradewind #6DB1AE, White #FFFFFF. Every other tone here is a lightness step on
+   * Black Pearl's hue so the site stays predominantly dark with white kept sparse.
+   */
+  --color-ink: #061820;
+  --color-ink-raised: #081f29;
+  --color-surface: #0a2833;
+  --color-surface-raised: #0e3341;
+  --color-line: #1a4553;
+  --color-line-soft: #123542;
+  --color-fg: #dcebe9;
+  --color-muted: #94b2b3;
+  --color-faint: #5f8189;
+  /* `mint*` is the historical token name for the accent; it now carries Tradewind. */
+  --color-mint: #6db1ae;
+  --color-mint-bright: #92c6c3;
+  --color-mint-deep: #2b6462;
   --color-amber: #e2c078;
   --color-rose: #e08a8a;
 
-  /* Brand colours sampled from the Septa mark (public/septa-mark.jpg). */
-  --color-brand-teal: #6fafa3;
-  --color-brand-sage: #c6d6ce;
-  --color-brand-ink: #0e1a21;
+  --color-brand-teal: #6db1ae;
+  --color-brand-pearl: #061820;
 
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, sans-serif;
+  --font-sans: "Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Louis George Cafe", "Open Sans Variable", ui-sans-serif, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
 
   --radius-card: 18px;
   --radius-pill: 999px;
 
   --shadow-soft: 0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 20px 40px -28px rgb(0 0 0 / 0.9);
-  --shadow-glow: 0 0 0 1px rgb(111 212 184 / 0.28), 0 12px 48px -18px rgb(111 212 184 / 0.35);
+  --shadow-glow: 0 0 0 1px rgb(109 177 174 / 0.28), 0 12px 48px -18px rgb(109 177 174 / 0.35);
 
   --animate-float: float 9s ease-in-out infinite;
   --animate-drift: drift 14s ease-in-out infinite;
@@ -40,6 +76,23 @@
   --animate-pulse-node: pulse-node 3.2s ease-in-out infinite;
   --animate-sweep: sweep 2.4s ease-in-out infinite;
   --animate-spin-slow: spin 26s linear infinite;
+  --animate-aurora: aurora 22s ease-in-out infinite alternate;
+  --animate-aurora-slow: aurora 34s ease-in-out infinite alternate-reverse;
+
+  @keyframes aurora {
+    0% {
+      transform: translate3d(-7%, -5%, 0) scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate3d(5%, 3%, 0) scale(1.14);
+      opacity: 0.85;
+    }
+    100% {
+      transform: translate3d(-2%, 7%, 0) scale(1.03);
+      opacity: 0.6;
+    }
+  }
 
   @keyframes float {
     0%,
@@ -131,7 +184,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-mint) 32%, transparent);
+    background: color-mix(in oklab, var(--color-mint) 38%, transparent);
     color: #fff;
   }
 
@@ -146,15 +199,15 @@
     height: 11px;
   }
   ::-webkit-scrollbar-track {
-    background: #0b1114;
+    background: var(--color-ink);
   }
   ::-webkit-scrollbar-thumb {
-    background: #28323a;
-    border: 3px solid #0b1114;
+    background: var(--color-line);
+    border: 3px solid var(--color-ink);
     border-radius: 99px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #36444d;
+    background: var(--color-line-soft);
   }
 
   input,
@@ -172,7 +225,7 @@
   textarea,
   select {
     width: 100%;
-    background: #0e1418;
+    background: var(--color-ink-raised);
     border: 1px solid var(--color-line);
     border-radius: 12px;
     padding: 0.75rem 0.9rem;
@@ -185,7 +238,7 @@
 
   input::placeholder,
   textarea::placeholder {
-    color: #5c6b73;
+    color: var(--color-faint);
   }
 
   input:focus,
@@ -193,8 +246,8 @@
   select:focus {
     outline: none;
     border-color: color-mix(in oklab, var(--color-mint) 55%, var(--color-line));
-    box-shadow: 0 0 0 3px rgb(111 212 184 / 0.12);
-    background: #11181d;
+    box-shadow: 0 0 0 3px rgb(109 177 174 / 0.14);
+    background: var(--color-ink-raised);
   }
 
   input[aria-invalid="true"],
@@ -251,7 +304,7 @@
 }
 
 .card {
-  background: linear-gradient(180deg, #172026 0%, #121a1f 100%);
+  background: linear-gradient(180deg, var(--color-surface-raised) 0%, var(--color-surface) 100%);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
@@ -299,13 +352,13 @@
 
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgb(38 51 59 / 0.55) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(38 51 59 / 0.55) 1px, transparent 1px);
+    linear-gradient(to right, rgb(26 69 83 / 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(26 69 83 / 0.6) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
 .dot-bg {
-  background-image: radial-gradient(rgb(111 212 184 / 0.16) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(109 177 174 / 0.18) 1px, transparent 1px);
   background-size: 26px 26px;
 }
 
@@ -314,7 +367,7 @@
 }
 
 .glow-mint {
-  background: radial-gradient(circle at 50% 50%, rgb(111 212 184 / 0.16), transparent 68%);
+  background: radial-gradient(circle at 50% 50%, rgb(109 177 174 / 0.18), transparent 68%);
   filter: blur(30px);
 }
 
@@ -334,13 +387,13 @@
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: #172026;
+  background: var(--color-surface);
 }
 .skeleton::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgb(111 212 184 / 0.08), transparent);
+  background: linear-gradient(90deg, transparent, rgb(109 177 174 / 0.1), transparent);
   animation: var(--animate-sweep);
 }
 
@@ -350,7 +403,7 @@
   top: -3.5rem;
   z-index: 100;
   background: var(--color-mint);
-  color: #06251e;
+  color: var(--color-brand-pearl);
   padding: 0.6rem 1rem;
   border-radius: 10px;
   font-weight: 600;

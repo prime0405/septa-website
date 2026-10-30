@@ -33,7 +33,7 @@ export function Section({
   const tones = {
     ink: "bg-ink",
     raised: "bg-ink-raised",
-    surface: "bg-[#10171c]",
+    surface: "bg-surface",
     none: "",
   } as const;
   return (
@@ -187,7 +187,7 @@ export function Unconfigured({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-lg border border-dashed border-line bg-[#0e1418] px-2.5 py-1 text-[0.8rem] text-faint",
+        "inline-flex items-center gap-1.5 rounded-lg border border-dashed border-line bg-ink-raised px-2.5 py-1 text-[0.8rem] text-faint",
         className,
       )}
       title={showLaunchNotes ? `Add the real ${what} in ${where}` : `The real ${what} is not supplied yet`}
@@ -224,7 +224,7 @@ export function Callout({
     warn: { icon: AlertTriangle, cls: "border-amber/35 bg-amber/[0.07] text-fg", ic: "text-amber" },
     success: { icon: Check, cls: "border-mint/40 bg-mint/[0.08] text-fg", ic: "text-mint" },
     danger: { icon: AlertTriangle, cls: "border-rose/45 bg-rose/[0.08] text-fg", ic: "text-rose" },
-    setup: { icon: Wrench, cls: "border-line bg-[#0e1418] text-muted", ic: "text-mint" },
+    setup: { icon: Wrench, cls: "border-line bg-ink-raised text-muted", ic: "text-mint" },
   } as const;
   const { icon: Icon, cls, ic } = map[kind];
   return (

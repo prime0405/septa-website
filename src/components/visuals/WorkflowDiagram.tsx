@@ -30,7 +30,7 @@ export function WorkflowDiagram({ className }: { className?: string }) {
           )}
           {connected ? "After: one connected flow" : "Before: manual handoffs"}
         </div>
-        <div className="flex items-center gap-1 rounded-pill border border-line bg-[#0d1317] p-1">
+        <div className="flex items-center gap-1 rounded-pill border border-line bg-ink-raised p-1">
           {[
             { v: false, l: "Disconnected" },
             { v: true, l: "Automated" },
@@ -43,7 +43,7 @@ export function WorkflowDiagram({ className }: { className?: string }) {
               className={cn(
                 "rounded-pill px-3 py-1.5 text-[0.78rem] font-medium transition-colors",
                 connected === o.v
-                  ? "bg-mint text-[#06251e]"
+                  ? "bg-mint text-brand-pearl"
                   : "text-muted hover:text-fg",
               )}
             >
@@ -71,18 +71,18 @@ export function WorkflowDiagram({ className }: { className?: string }) {
             width="92"
             height="80"
             rx="14"
-            fill={connected ? "#12262e" : "#131b20"}
-            stroke={connected ? "#6fd4b8" : "#26333b"}
+            fill={connected ? "#123542" : "#0a2833"}
+            stroke={connected ? "#6db1ae" : "#1a4553"}
             strokeDasharray={connected ? undefined : "4 4"}
             style={{ transition: "all .35s ease" }}
           />
-          <text x="242" y="184" textAnchor="middle" fill={connected ? "#6fd4b8" : "#61757c"} fontSize="10" fontFamily="var(--font-mono)">
+          <text x="242" y="184" textAnchor="middle" fill={connected ? "#6db1ae" : "#5f8189"} fontSize="10" fontFamily="var(--font-mono)">
             AUTOMATION
           </text>
-          <text x="242" y="200" textAnchor="middle" fill={connected ? "#6fd4b8" : "#61757c"} fontSize="10" fontFamily="var(--font-mono)">
+          <text x="242" y="200" textAnchor="middle" fill={connected ? "#6db1ae" : "#5f8189"} fontSize="10" fontFamily="var(--font-mono)">
             LAYER
           </text>
-          <text x="242" y="220" textAnchor="middle" fill="#93a8a9" fontSize="8.5" fontFamily="var(--font-mono)">
+          <text x="242" y="220" textAnchor="middle" fill="#94b2b3" fontSize="8.5" fontFamily="var(--font-mono)">
             {connected ? "rules · retries · alerts" : "waiting"}
           </text>
 
@@ -103,23 +103,23 @@ export function WorkflowDiagram({ className }: { className?: string }) {
                   width={w}
                   height={h}
                   rx="10"
-                  fill="#11181d"
-                  stroke="#26333b"
+                  fill="#0e3341"
+                  stroke="#1a4553"
                 />
-                <text x={x + 12} y={s.y + 25} fill="#93a8a9" fontSize="10.5" fontFamily="var(--font-sans)">
+                <text x={x + 12} y={s.y + 25} fill="#94b2b3" fontSize="10.5" fontFamily="var(--font-sans)">
                   {s.label}
                 </text>
                 <path
                   d={d}
                   fill="none"
-                  stroke={connected ? "#6fd4b8" : "#26333b"}
+                  stroke={connected ? "#6db1ae" : "#1a4553"}
                   strokeWidth="1.3"
                   strokeDasharray={connected ? undefined : "3 6"}
                   opacity={connected ? 0.85 : 0.5}
                   style={{ transition: "all .35s ease" }}
                 />
                 {connected ? (
-                  <circle r="3" fill="#6fd4b8">
+                  <circle r="3" fill="#6db1ae">
                     <animateMotion
                       dur="2.8s"
                       begin={`${i * 0.45}s`}
@@ -128,7 +128,7 @@ export function WorkflowDiagram({ className }: { className?: string }) {
                     />
                   </circle>
                 ) : (
-                  <text x={startX + 16} y={startY + 3} fill="#4e5c66" fontSize="12">
+                  <text x={startX + 16} y={startY + 3} fill="#5f8189" fontSize="12">
                     ✕
                   </text>
                 )}

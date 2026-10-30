@@ -90,6 +90,8 @@ export const api = {
     post<SubmissionResult>("/request", payload, true),
   careers: (payload: Record<string, unknown>) =>
     post<SubmissionResult>("/careers", payload, true),
+  newsletter: (payload: Record<string, unknown>) =>
+    post<SubmissionResult>("/newsletter", payload, true),
   careersWithCv: (payload: Record<string, unknown>, file: File | null) => {
     const fd = new FormData();
     for (const [k, v] of Object.entries(payload)) {

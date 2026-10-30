@@ -172,6 +172,11 @@ var careerSchema = import_zod.z.object({
   consent,
   _hp: honeypot
 });
+var newsletterSchema = import_zod.z.object({
+  email: emailField,
+  consent,
+  _hp: honeypot
+});
 var statusSchema = import_zod.z.object({
   ok: import_zod.z.boolean(),
   backend: import_zod.z.literal("septa-api"),
@@ -397,7 +402,7 @@ function createRateLimiter(options) {
 var import_node_crypto = require("node:crypto");
 var import_node_fs2 = require("node:fs");
 var import_postgres = __toESM(require("postgres"), 1);
-var streams = ["contact", "requests", "applications"];
+var streams = ["contact", "requests", "applications", "newsletter"];
 var ALREADY_EXISTS = /* @__PURE__ */ new Set(["42P06", "42P07", "42710"]);
 function assertUsableTable(stream) {
   if (!streams.includes(stream)) {
@@ -825,7 +830,8 @@ function cvUnavailableMessage() {
 var STREAM_LABELS = {
   contact: "Contact enquiry",
   requests: "Service request",
-  applications: "Career application"
+  applications: "Career application",
+  newsletter: "Newsletter subscription"
 };
 var FIELD_LABELS = {
   fullName: "Name",
@@ -1139,6 +1145,7 @@ function createApp() {
   const limiter = (name) => createRateLimiter({ name, max: config.rateLimit.max, windowMs: config.rateLimit.windowMs });
   const handleContact = (req, res) => handleJson(contactSchema, "contact", req, res);
   const handleRequest = (req, res) => handleJson(requestSchema, "requests", req, res);
+  const handleNewsletter = (req, res) => handleJson(newsletterSchema, "newsletter", req, res);
   const handleStatus = (_req, res) => {
     try {
       res.status(200).json(statusBody());
@@ -1167,6 +1174,7 @@ function createApp() {
   app2.post("/api/contact", limiter("contact"), handleContact);
   app2.post("/api/request", limiter("request"), handleRequest);
   app2.post("/api/careers", limiter("careers"), handleCareers);
+  app2.post("/api/newsletter", limiter("newsletter"), handleNewsletter);
   app2.use("/api", (_req, res) => {
     res.status(404).json({ message: "Unknown API endpoint." });
   });

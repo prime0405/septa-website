@@ -9,9 +9,9 @@ export type Maybe<T> = T | null;
 export const site = {
   name: "Septa",
   legalName: "Septa",
-  tagline: "Build Smarter. Automate Better. Scale Faster.",
+  tagline: "Technology That Moves Your Business Forward.",
   description:
-    "Septa is a technology company that designs and builds AI-powered products, traditional software products, workflow automation, modernised systems, observability and technical capacity for organisations.",
+    "We help businesses turn ideas into digital products through AI-assisted and traditional product development, streamline operations with workflow automation, access skilled technology talent, improve system reliability, and drive digital transformation.",
   /** Set VITE_SITE_URL at build time to emit canonical + absolute Open Graph URLs. */
   url: (import.meta.env.VITE_SITE_URL as string | undefined) ?? null,
   /** Current year for the footer copyright. */
@@ -28,7 +28,19 @@ export const site = {
     responseTime: null as Maybe<string>,
   },
 
-  social: [] as { label: string; href: string }[],
+  /**
+   * Supplied by Septa as handle names, not URLs. Each href is the platform's standard
+   * profile pattern with that handle dropped in — click-test every one before launch.
+   */
+  social: [
+    { label: "X — @septa_academy", href: "https://x.com/septa_academy" },
+    { label: "X — @septasoftware", href: "https://x.com/septasoftware" },
+    { label: "LinkedIn — Septa Academy", href: "https://www.linkedin.com/company/septa-academy" },
+    { label: "LinkedIn — Septa Software", href: "https://www.linkedin.com/company/septasoftware" },
+    { label: "Instagram — @septa_academy", href: "https://www.instagram.com/septa_academy" },
+    { label: "Instagram — @septasoftware", href: "https://www.instagram.com/septasoftware" },
+    { label: "Facebook — Septa Academy", href: "https://www.facebook.com/septa-academy" },
+  ] as { label: string; href: string }[],
 
   maps: {
     /** Google Maps / analytics ids stay empty until provided. */

@@ -515,7 +515,7 @@ function StepHeader({
 }) {
   const pct = ((step + 1) / STEPS.length) * 100;
   return (
-    <div className="border-b border-line bg-[#0d1317] px-5 py-4 sm:px-7">
+    <div className="border-b border-line bg-ink-raised px-5 py-4 sm:px-7">
       <ol className="flex items-center gap-1 overflow-x-auto pb-3">
         {STEPS.map((s, i) => {
           const state = i === step ? "current" : i < step ? "done" : i <= maxVisited ? "visited" : "todo";
@@ -616,7 +616,7 @@ function ReviewList({
   return (
     <div className="space-y-4">
       {groups.map((g) => (
-        <div key={g.step} className="rounded-card border border-line bg-[#10171c]">
+        <div key={g.step} className="rounded-card border border-line bg-surface">
           <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
             <p className="font-mono text-[0.7rem] tracking-wider text-faint uppercase">
               Step {g.step + 1} · {STEPS[g.step].label}
@@ -669,7 +669,7 @@ function RequestConfirmation({ result, onRestart }: { result: SubmissionResult; 
       </div>
       {result.note ? <Callout kind="setup" className="mt-5">{result.note}</Callout> : null}
 
-      <div className="mt-6 rounded-card border border-line bg-[#10171c] p-5">
+      <div className="mt-6 rounded-card border border-line bg-surface p-5">
         <p className="eyebrow mb-3">What happens next</p>
         <ol className="space-y-2.5 text-[0.9rem] text-muted">
           <li className="flex gap-3">

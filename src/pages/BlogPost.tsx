@@ -47,13 +47,13 @@ function BlockView({ block }: { block: Block }) {
       );
     case "quote":
       return (
-        <blockquote className="my-8 border-l-2 border-mint/60 bg-[#101b20] px-6 py-5">
+        <blockquote className="my-8 border-l-2 border-mint/60 bg-surface px-6 py-5">
           <p className="font-display text-[1.12rem] leading-relaxed text-fg">{block.text}</p>
         </blockquote>
       );
     case "code":
       return (
-        <pre className="my-7 overflow-x-auto rounded-card border border-line bg-[#0d1317] p-5 font-mono text-[0.82rem] leading-relaxed text-muted">
+        <pre className="my-7 overflow-x-auto rounded-card border border-line bg-ink-raised p-5 font-mono text-[0.82rem] leading-relaxed text-muted">
           <code>{block.text}</code>
         </pre>
       );
@@ -73,7 +73,7 @@ function Contents({ blocks }: { blocks: Block[] }) {
   const heads = blocks.filter((b) => b.type === "h2");
   if (heads.length < 2) return null;
   return (
-    <nav aria-label="Article contents" className="mb-10 rounded-card border border-line bg-[#10171c] p-5">
+    <nav aria-label="Article contents" className="mb-10 rounded-card border border-line bg-surface p-5">
       <p className="eyebrow mb-3">In this article</p>
       <ol className="space-y-2">
         {heads.map((h, i) =>
@@ -291,7 +291,7 @@ export default function BlogPost() {
             </div>
 
             <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
-              <Card className="border-mint/25 bg-[#101b20] p-5">
+              <Card className="border-mint/25 bg-surface p-5">
                 <p className="eyebrow mb-3">Working on this yourself?</p>
                 <p className="text-[0.88rem] leading-relaxed text-muted">
                   Send the situation. If this article is relevant to you, the conversation is

@@ -8,7 +8,10 @@ export type ServiceContent = {
   icon: "ai" | "automation" | "transformation" | "observability" | "talent" | "product";
   navBlurb: string;
   heroTitle: string;
+  /** Supplied marketing lead. */
   lead: string;
+  /** Deeper engineering framing, shown as the first body paragraph. */
+  detail?: string;
   /** Business problems the service addresses. */
   problems: string[];
   /** What is actually done, grouped the way a buyer would read it. */
@@ -30,9 +33,11 @@ export const services: ServiceContent[] = [
     slug: "ai-product-development",
     name: "AI Product Development",
     icon: "ai",
-    navBlurb: "AI strategy, prototypes and production systems that hold up under real users.",
-    heroTitle: "AI products that survive contact with reality",
-    lead: "Most AI pilots stall between the demo and production. We work from the decision you want the system to make backwards — through evaluation, data readiness, guardrails and deployment — so the result is a product people trust with their work, not a chat window bolted onto a spreadsheet.",
+    navBlurb: "Intelligent, user-focused products from idea to market-ready launch.",
+    heroTitle: "Bring your product ideas to life with AI-assisted development",
+    lead: "We use AI-assisted product development to turn your ideas into market-ready products within 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering to build products that solve real problems and support your business growth.",
+    detail:
+      "Most AI pilots stall between the demo and production. We work from the decision you want the system to make backwards — through evaluation, data readiness, guardrails and deployment — so the result is a product people trust with their work, not a chat window bolted onto a spreadsheet.",
     problems: [
       "A promising prototype that never made it past a proof of concept.",
       "Answers generated without ground truth, so nobody dares act on them.",
@@ -217,9 +222,11 @@ export const services: ServiceContent[] = [
     slug: "workflow-automation",
     name: "Workflow Automation",
     icon: "automation",
-    navBlurb: "Connect the systems your team already uses and remove the manual handoffs.",
-    heroTitle: "Stop paying people to copy and paste",
-    lead: "Automation work rarely fails because of the technology. It fails because nobody mapped the real process, or because a script was written with no owner, no retries and no alerting. We instrument the workflow first, then build the connections that survive a bad day upstream.",
+    navBlurb: "Automation that frees your teams from routine tasks.",
+    heroTitle: "Work smarter, not harder",
+    lead: "Repetitive tasks drain productivity and distract from strategic priorities. Tell us your organisational needs: Septa partners with you to identify bottlenecks, map critical workflows, and deliver automation solutions that free your teams from routine tasks, enabling sharper focus, faster execution, and sustainable growth.",
+    detail:
+      "Automation work rarely fails because of the technology. It fails because nobody mapped the real process, or because a script was written with no owner, no retries and no alerting. We instrument the workflow first, then build the connections that survive a bad day upstream.",
     problems: [
       "The same record typed into three systems by three different people.",
       "Approvals that live in email and stall for days.",
@@ -384,9 +391,11 @@ export const services: ServiceContent[] = [
     slug: "digital-transformation",
     name: "Digital Transformation",
     icon: "transformation",
-    navBlurb: "Modernise legacy systems and operations without stopping the business.",
-    heroTitle: "Modernisation without the big-bang gamble",
-    lead: "A transformation programme fails when it treats old systems as a moral failing rather than a set of specific constraints. We work in the boring, decisive order: understand what the current system actually does, decide what must keep working exactly as it does, then replace the rest in slices that ship value while the lights stay on.",
+    navBlurb: "Replace outdated systems with digital solutions that unlock efficiency.",
+    heroTitle: "Experience growth without limits",
+    lead: "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth — so your business thrives in the digital age.",
+    detail:
+      "A transformation programme fails when it treats old systems as a moral failing rather than a set of specific constraints. We work in the boring, decisive order: understand what the current system actually does, decide what must keep working exactly as it does, then replace the rest in slices that ship value while the lights stay on.",
     problems: [
       "Core operations running on software nobody fully understands.",
       "A vendor licence renewal that costs more than rebuilding.",
@@ -552,9 +561,11 @@ export const services: ServiceContent[] = [
     slug: "observability-monitoring",
     name: "Observability & Monitoring",
     icon: "observability",
-    navBlurb: "Metrics, logs and traces that answer questions during an incident.",
-    heroTitle: "Know what is broken before your customers do",
-    lead: "Monitoring tells you a server is red. Observability lets an engineer answer \"which request path degraded, for whom, and why\" in the middle of an incident. We implement the three signals together, wire them to alerts with owners, and remove the noise that trained your team to ignore the phone.",
+    navBlurb: "Real-time visibility that catches issues before they escalate.",
+    heroTitle: "Data-driven insights keep your systems reliable",
+    lead: "Every minute of downtime drains revenue, damages reputation, and stalls growth. Our observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
+    detail:
+      "Monitoring tells you a server is red. Observability lets an engineer answer \"which request path degraded, for whom, and why\" in the middle of an incident. We implement the three signals together, wire them to alerts with owners, and remove the noise that trained your team to ignore the phone.",
     problems: [
       "Incidents reconstructed from guesswork and terminal scrollback.",
       "Alerts firing at 3am for conditions nobody can act on.",
@@ -718,9 +729,11 @@ export const services: ServiceContent[] = [
     slug: "talent-solution",
     name: "Talent Solution",
     icon: "talent",
-    navBlurb: "Technical people and teams that plug into your delivery model.",
-    heroTitle: "Engineering capacity you can plan around",
-    lead: "Hiring good engineers slowly is its own kind of outage. Whether you need one specialist who can work unsupervised, a squad that owns a product line, or a vetted contractor for a defined piece of work, the useful question is the same: who is accountable for the outcome, and how quickly can they start? That is what we arrange.",
+    navBlurb: "The right experts at the right time to support your growth.",
+    heroTitle: "Hiring designed to fuel your vision",
+    lead: "Connecting you with top tech talents to fuel innovation and accelerate growth. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
+    detail:
+      "Hiring good engineers slowly is its own kind of outage. Whether you need one specialist who can work unsupervised, a squad that owns a product line, or a vetted contractor for a defined piece of work, the useful question is the same: who is accountable for the outcome, and how quickly can they start? That is what we arrange.",
     problems: [
       "A role open for five months while the roadmap waits.",
       "Contractors who need six weeks of context before producing.",

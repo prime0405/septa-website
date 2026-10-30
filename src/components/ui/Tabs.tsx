@@ -30,7 +30,7 @@ export function Tabs({ tabs, className }: { tabs: Tab[]; className?: string }) {
         role="tablist"
         aria-label="Section views"
         onKeyDown={onKeyDown}
-        className="flex gap-1 overflow-x-auto rounded-pill border border-line bg-[#0e1418] p-1"
+        className="flex gap-1 overflow-x-auto rounded-pill border border-line bg-ink-raised p-1"
       >
         {tabs.map((t) => {
           const selected = t.id === current?.id;
@@ -49,7 +49,7 @@ export function Tabs({ tabs, className }: { tabs: Tab[]; className?: string }) {
               onClick={() => setActive(t.id)}
               className={cn(
                 "relative shrink-0 rounded-pill px-4 py-2 text-[0.85rem] font-medium whitespace-nowrap transition-colors",
-                selected ? "text-[#06251e]" : "text-muted hover:text-fg",
+                selected ? "text-brand-pearl" : "text-muted hover:text-fg",
               )}
             >
               {selected ? (

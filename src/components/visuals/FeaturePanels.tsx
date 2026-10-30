@@ -19,7 +19,7 @@ export function AiDeliveryPanel({ className }: { className?: string }) {
 
   return (
     <div className={cn("card overflow-hidden", className)}>
-      <div className="flex items-center gap-2 border-b border-line bg-[#0d1317] px-4 py-2.5">
+      <div className="flex items-center gap-2 border-b border-line bg-ink-raised px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
           <span className="size-2.5 rounded-full bg-line" />
           <span className="size-2.5 rounded-full bg-line" />
@@ -38,7 +38,7 @@ export function AiDeliveryPanel({ className }: { className?: string }) {
           </div>
         ))}
       </pre>
-      <div className="grid grid-cols-3 divide-x divide-line border-t border-line bg-[#0d1317]">
+      <div className="grid grid-cols-3 divide-x divide-line border-t border-line bg-ink-raised">
         {[
           { Icon: ScanLine, label: "Red-team suite" },
           { Icon: ShieldCheck, label: "PII boundaries" },
@@ -74,7 +74,7 @@ export function ArchitectureStack({ className }: { className?: string }) {
               "group flex items-center gap-4 rounded-card border px-4 py-3.5 transition-colors",
               l.tone === "mint"
                 ? "border-mint/30 bg-mint/[0.06] hover:border-mint/60"
-                : "border-line bg-[#11181d] hover:border-muted/40",
+                : "border-line bg-surface-raised hover:border-muted/40",
             )}
             style={{ marginLeft: `${Math.abs(i - 2) * 10}px` }}
           >

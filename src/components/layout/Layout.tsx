@@ -44,7 +44,7 @@ function BackToTop() {
             window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })
           }
           aria-label="Back to top"
-          className="fixed right-5 bottom-5 z-40 flex size-11 items-center justify-center rounded-full border border-line bg-[#10171c]/90 text-muted backdrop-blur-sm transition-colors hover:border-mint/50 hover:text-mint"
+          className="fixed right-5 bottom-5 z-40 flex size-11 items-center justify-center rounded-full border border-line bg-surface/90 text-muted backdrop-blur-sm transition-colors hover:border-mint/50 hover:text-mint"
         >
           <ArrowUp className="size-4.5" aria-hidden />
         </motion.button>

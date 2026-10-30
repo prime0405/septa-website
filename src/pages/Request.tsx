@@ -84,7 +84,7 @@ export default function Request() {
 
       <Section className="section">
         <div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
-          <div>
+          <div className="min-w-0">
             {preselected ? (
               <Callout kind="info" title="Service preselected" className="mb-6">
                 <p>
@@ -167,7 +167,7 @@ export default function Request() {
             ]}
           />
         </div>
-        <div className="mt-10 flex flex-wrap items-center gap-3 rounded-card border border-line bg-[#10171c] px-5 py-4 text-[0.86rem] text-muted">
+        <div className="mt-10 flex flex-wrap items-center gap-3 rounded-card border border-line bg-surface px-5 py-4 text-[0.86rem] text-muted">
           <Sparkles className="size-4 shrink-0 text-mint" aria-hidden />
           Short is fine. “Our finance team rebuilds this report by hand every month” is a complete
           brief to start from.

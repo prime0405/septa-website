@@ -72,9 +72,19 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
         aside={<ServiceAside page={page} />}
       />
 
+      {page.detail ? (
+        <Section className="py-10">
+          <Reveal>
+            <p className="prose-body max-w-3xl border-l-2 border-mint/45 pl-5 text-[1.02rem]">
+              {page.detail}
+            </p>
+          </Reveal>
+        </Section>
+      ) : null}
+
       {isProduct(page) ? (
         <Section className="py-10">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-card border border-line bg-[#10171c] px-5 py-4 text-[0.88rem] text-muted">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-card border border-line bg-surface px-5 py-4 text-[0.88rem] text-muted">
             <span className="font-mono text-[0.7rem] tracking-wider text-mint uppercase">Track</span>
             <span>{page.framing}</span>
             {serviceMatch ? (
@@ -101,7 +111,7 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
               {page.problems.map((p, i) => (
                 <li
                   key={p}
-                  className="group flex gap-4 rounded-card border border-line bg-[#11181d] px-4 py-3.5 transition-colors hover:border-mint/40"
+                  className="group flex gap-4 rounded-card border border-line bg-surface-raised px-4 py-3.5 transition-colors hover:border-mint/40"
                 >
                   <span className="mt-0.5 font-mono text-[0.72rem] text-faint transition-colors group-hover:text-mint">
                     {String(i + 1).padStart(2, "0")}
@@ -156,7 +166,7 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
           <div className="grid gap-4 sm:grid-cols-2">
             {page.benefits.map((b, i) => (
               <Reveal key={b.title} delay={i * 0.04}>
-                <div className="relative overflow-hidden rounded-card border border-line bg-[#11181d] p-5">
+                <div className="relative overflow-hidden rounded-card border border-line bg-surface-raised p-5">
                   <div
                     aria-hidden
                     className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-mint/70 to-transparent"
@@ -183,7 +193,7 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
             <div className="grid gap-3">
               {page.useCases.map((u, i) => (
                 <Reveal key={u.title} delay={i * 0.04}>
-                  <div className="flex flex-col gap-1 rounded-card border border-line bg-[#10171c] px-5 py-4 sm:flex-row sm:items-baseline sm:gap-6">
+                  <div className="flex flex-col gap-1 rounded-card border border-line bg-surface px-5 py-4 sm:flex-row sm:items-baseline sm:gap-6">
                     <h3 className="w-full shrink-0 text-[0.98rem] sm:w-56">{u.title}</h3>
                     <p className="text-[0.88rem] leading-relaxed text-muted">{u.detail}</p>
                   </div>
@@ -269,7 +279,7 @@ function ServiceAside({ page }: { page: Page }) {
   const items: ReactNode = (
     <ul className="space-y-2.5">
       {page.capabilities.map((c) => (
-        <li key={c.group} className="flex items-center justify-between gap-4 rounded-lg border border-line bg-[#10171c] px-4 py-3">
+        <li key={c.group} className="flex items-center justify-between gap-4 rounded-lg border border-line bg-surface px-4 py-3">
           <span className="text-[0.88rem] text-muted">{c.group}</span>
           <span className="font-mono text-[0.72rem] text-mint">{c.items.length}</span>
         </li>
@@ -279,7 +289,7 @@ function ServiceAside({ page }: { page: Page }) {
   return (
     <div className="relative">
       <div aria-hidden className="glow-mint pointer-events-none absolute inset-0 opacity-50" />
-      <div className="relative rounded-card border border-line bg-[#0d1317]/80 p-5 backdrop-blur-sm">
+      <div className="relative rounded-card border border-line bg-ink-raised/80 p-5 backdrop-blur-sm">
         <p className="mb-4 font-mono text-[0.68rem] tracking-[0.18em] text-faint uppercase">
           Coverage on this page
         </p>

@@ -1,8 +1,9 @@
 # Septa — company website
 
 A complete, multi-route marketing site for Septa with its own submission backend: contact
-enquiries, five-step service requests and career applications are validated in the browser,
-validated again on the server, written to the database and (once SMTP is configured) emailed.
+enquiries, five-step service requests, career applications and footer newsletter sign-ups are
+validated in the browser, validated again on the server, written to the database and (once SMTP
+is configured) emailed.
 It is live on Vercel as one project: static frontend plus the API as a Node serverless function
 on Postgres, with CV uploads stored as private Vercel Blob objects.
 
@@ -36,7 +37,7 @@ npm run build       # tsc -b && vite build -> dist/, then build:api -> api/[...a
 npm run build:api   # bundle the API into the Vercel Function entry (run by `build`)
 npm run preview     # serve the built frontend
 npm run start:api   # API only, no watcher
-npm run smoke       # 22 end-to-end API checks (needs a running API)
+npm run smoke       # 26 end-to-end API checks (needs a running API)
 npm run api:inbox   # read stored submissions from the terminal
 npm run lint        # oxlint
 ```
@@ -60,16 +61,17 @@ rows into the production store — only a target on `localhost` is allowed to wr
 
 ## What is complete
 
-**Pages (15 routes + detail pages).** `/`, `/about`, `/services` + 5 service pages,
+**Pages (16 routes + detail pages).** `/`, `/about`, `/services` + 5 service pages,
 `/product-development` + 2 track pages, `/case-studies` + 5 studies, `/blog` + 6 articles,
-`/careers`, `/contact`, `/request`, `/privacy`, `/terms`, and a 404 that lists real destinations.
-`/case-study` and `/career` redirect to their canonical paths. Every route is a real route with
-its own `<title>`, description and breadcrumb — no scroll-jacking.
+`/careers`, `/faq`, `/contact`, `/request`, `/privacy`, `/terms`, and a 404 that lists real
+destinations. `/case-study` and `/career` redirect to their canonical paths. Every route is a real
+route with its own `<title>`, description and breadcrumb — no scroll-jacking. `/faq` is generated
+from the same service and track data as the pages it links to, so it cannot drift from them.
 
 **Forms.** Contact, the 5-step Request wizard (draft saved to `localStorage`, per-step
-validation, review screen, server-confirmed receipt with a reference id) and the Careers
-application (optional CV upload). Server re-validates everything with the same Zod schemas the
-browser uses.
+validation, review screen, server-confirmed receipt with a reference id), the Careers application
+(optional CV upload) and the footer Newsletter sign-up. Server re-validates everything with the
+same Zod schemas the browser uses.
 
 **Verified on 2026-10-24:** `tsc -b` clean, `vite build` clean, `npm run smoke` **22/22 against
 the local API on SQLite**, **22/22 against the deployed Vercel function on Postgres**, all routes
@@ -77,6 +79,17 @@ and detail pages rendered, and all three forms submitted successfully from the b
 a CV upload written to disk locally and as a private Blob object on the deployment. One further
 contact enquiry was sent through the live site in a browser and read back from Postgres by the
 reference it returned.
+
+**Re-verified on 2026-10-30 after the brand update:** `npm run build` clean, `npm run lint` 7
+warnings / 0 errors, `npm run smoke` **26/26 against the local API** (the four new cases cover the
+newsletter endpoint, including that a honeypot submission stores nothing). In the browser at a
+531 px viewport, all 20 route and detail paths rendered with zero console errors or warnings, no
+page-level horizontal overflow, every internal link resolving to a real route, the `/request`
+service preselection working from `?service=`, the mobile drawer opening with focus moved into the
+panel and body scroll locked, and a newsletter sign-up round-tripping to a stored row that
+`npm run api:inbox -- --stream newsletter` reads back. Full-page desktop screenshots were **not**
+captured in this pass — the in-app browser surface was hidden for most of it — so the wide-layout
+presentation of the new hero has been checked by code and at narrow widths only.
 
 **Anti-fabrication.** Anything Septa has not supplied is rendered as a visible
 *not configured* chip naming the file to set it in — never invented. Case-study results carry an
@@ -91,12 +104,23 @@ themselves templates until a date, entity and jurisdiction exist.
    window, social links, `VITE_SITE_URL`, legal dates / entity / governing law / retention. Until
    the addresses exist, an applicant who is told "we will reply by email" has no email to reply
    to, so the forms only promise storage and a reference.
+   **Social links are unverified.** The revamp brief supplied profile *names* (`septa_academy`,
+   `septasoftware`, …), not URLs, so `site.social` derives `https://<network>/<handle>` from them
+   and the code says so in a comment. Click-test all seven before launch; the brief also lists a
+   "Community" destination with no address, which is deliberately absent rather than guessed.
 2. **SMTP + `INBOX_EMAIL`** — the one remaining backend gap. Submissions are written and
    confirmed, but nothing is emailed, so `npm run api:inbox` (or the database) is currently the
    only way enquiries are seen. Until this is set, each receipt shows an amber
-   *"Stored on the server, not emailed yet"* pill, which is the truth rather than a bug.
-3. **Real content** — replace the 5 sample case studies, 6 sample articles and any company facts.
-4. **Legal review** — the privacy notice and terms are structurally complete, not advice.
+   *"Stored on the server, not emailed yet"* pill, which is the truth rather than a bug. The
+   newsletter receipt also states plainly that nothing will be sent until Septa has a newsletter.
+3. **Testimonials** — the brief names the section but supplies no quotes. The home page renders an
+   explicitly empty placeholder that tells the reader where to add approved quotes
+   (`src/data/content.ts`). Do not fill it with invented praise.
+4. **Partner logos** — the eight partner names came from the brief and render as text. No logo
+   files were supplied and nothing is claimed about the scope of any relationship, so approval is
+   needed before any artwork or wording goes in.
+5. **Real content** — replace the 5 sample case studies, 6 sample articles and any company facts.
+6. **Legal review** — the privacy notice and terms are structurally complete, not advice.
 
 Done since this section was written: the backend is hosted (Vercel Function), submissions persist
 in Postgres, and CV uploads are stored privately — see *Hosting*.
@@ -114,6 +138,7 @@ GET  /api/health     ->  same body (for uptime checks)
 POST /api/contact    ->  201 { ok, id, receivedAt, forwarded, note? }
 POST /api/request    ->  same
 POST /api/careers    ->  same  (JSON, or multipart/form-data with an optional `cv` file part)
+POST /api/newsletter ->  same  (email + consent only; stored in the `newsletter` stream)
 ```
 
 Failure shapes: `422` + `{ message, errors: {field: message} }` for validation, `422` + a
@@ -170,7 +195,7 @@ Pages read entirely from data files — no JSX edits needed to publish:
 | `src/data/cases.ts` | `/case-studies` and each study |
 | `src/data/posts.ts` | `/blog` and each article |
 | `src/data/jobs.ts` | `/careers` openings (`openings: []` = honest empty state) |
-| `src/data/content.ts` | mission, values, process, approach, contact copy |
+| `src/data/content.ts` | mission, values, process, approach, contact copy, the Septa Advantage pillars, service-overview and services-intro lines, partner names, testimonials (empty until approved) |
 | `src/lib/site.ts` | company facts, legal config, privacy lists |
 
 Adding a case study: append an object to `cases` with a unique `slug`, set `verified: true` on a
@@ -181,12 +206,35 @@ application form switches from "expression of interest" to applying for that rol
 
 ## Styling and brand
 
-Tailwind v4, configured in CSS at `src/index.css` under `@theme`. The accent token is still
-called `--color-mint` for historical reasons; it now holds `#6fd4b8`, a brightened version of the
-teal sampled from the Septa mark (`#6fafa3`), and the neutral surfaces sit in the same blue-ink
-family as the logo. The mark itself is an inline SVG (`src/components/layout/Logo.tsx`) built
-from two petal paths, plus `public/favicon.svg`, `public/septa-mark.jpg` (social card) and
-`index.html` meta. Fonts are self-hosted through `@fontsource-variable` — no CDN requests.
+Tailwind v4, configured in CSS at `src/index.css` under `@theme`. The palette is the Septa brand
+manual's, not a designer's guess at it: pure black `#000000`, Black Pearl `#061820`, Tradewind
+`#6DB1AE` and white. The dark surfaces are a ramp built off Black Pearl (`--color-ink` `#061820`,
+`--color-ink-raised` `#081f29`, `--color-surface` `#0a2833`, `--color-surface-raised` `#0e3341`,
+`--color-line` `#1a4553`), and Tradewind is the accent — still named `--color-mint` for historical
+reasons, with `--color-mint-bright` `#92c6c3` and `--color-mint-deep` `#2b6462` beside it. Text
+tokens (`--color-fg` `#dcebe9`, `--color-muted` `#94b2b3`, `--color-faint` `#5f8189`) are tinted
+teal rather than neutral grey so the whole page sits in the brand hue. No component carries a
+hard-coded hex; the only literal colours outside `@theme` are inside SVG visuals, where attributes
+cannot read a CSS custom property.
+
+**Type.** The manual specifies Louis George Café as the primary face and Open Sans as the
+secondary. Both are self-hosted — Louis George Café from `src/assets/fonts/` via four
+`@font-face` blocks (light / regular / bold / italic), Open Sans and JetBrains Mono through
+`@fontsource-variable`. No CDN font requests. `--font-display` is Louis George Café with an Open
+Sans fallback; headings use it, body copy uses Open Sans.
+The bundled licence states the font is free for personal and business use including web graphics,
+but it is not an OFL-style licence and does not name webfont embedding explicitly — worth
+confirming with the designer before this faces a large paid audience.
+
+**Logo.** Rebuilt as vector from the supplied artwork rather than traced from a screenshot: two
+fin paths, one Tradewind and one `currentColor`, so a single component recolours itself for any
+background. The path data lives in `src/components/layout/brandPaths.ts` and is rendered by
+`src/components/layout/Logo.tsx` (`Logo` = mark, `Wordmark` = full lockup). Standalone exports in
+`public/` for anyone who wants the file rather than the component: `septa-logo.svg` (white
+wordmark, for dark backgrounds), `septa-logo-ink.svg` (Black Pearl wordmark, for light ones),
+`septa-mark.svg`, plus `favicon.svg`, `favicon.png` (512²) and `apple-touch-icon.png` (180²).
+The site itself is dark-only by design; the light lockup exists because the brand manual requires
+it, not because there is a theme switch.
 
 Motion respects `prefers-reduced-motion`: every animation is gated on `useReducedMotion()`, the
 reading progress bar disappears, and smooth scrolling becomes instant.
@@ -249,7 +297,7 @@ Function instead of returning HTML.
    halfway when a running editor holds a native binary and leaves `node_modules` gutted.
 4. **Verify**: `curl https://<domain>/api/status` must report `"storage": "postgres:…"`, then
    `API_BASE_URL=https://<domain> ALLOW_LIVE_SUBMISSIONS=true npx vercel env run -- npm run smoke`
-   must be 22/22, then read back what it wrote with `npx vercel env run -- npm run api:inbox`. If a
+   must be 26/26, then read back what it wrote with `npx vercel env run -- npm run api:inbox`. If a
    Function fails, `npx vercel logs --deployment <url>` shows the crash — and retry once before
    believing it, because a cold start plus a first database connection is the slowest request the
    site makes.
@@ -268,9 +316,10 @@ keep `.env` out of git, and re-run `npm run smoke` against the deployed URL.
 index.html            meta, fonts, favicon
 vercel.json           build, output dir, SPA rewrite that leaves /api alone
 api/[...all].js       generated Function entry, committed so git builds find it
+public/               brand exports (septa-logo.svg, -ink, mark) + favicons + og-default.png
 src/
   App.tsx             routes, lazy pages, Suspense, ErrorBoundary
-  pages/              15 route components
+  pages/              16 route components
   components/         layout/ blocks/ forms/ ui/ visuals/
   data/               all editorial content
   lib/                api client, forms, validation, site config, paths, hooks
@@ -287,6 +336,6 @@ server/
   notify.ts           optional nodemailer forwarding
   rate-limit.ts       fixed-window per endpoint+IP
 scripts/
-  smoke.ts            22-case API test (refuses to write on a live target unless allowed)
+  smoke.ts            26-case API test (refuses to write on a live target unless allowed)
   inbox.ts            read submissions from the terminal
 ```

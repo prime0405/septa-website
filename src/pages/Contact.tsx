@@ -61,7 +61,7 @@ function ContactRow({
   keyName: string;
 }) {
   return (
-    <li className="flex items-start gap-4 rounded-card border border-line bg-[#11181d] px-5 py-4">
+    <li className="flex items-start gap-4 rounded-card border border-line bg-surface-raised px-5 py-4">
       <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-mint/25 bg-mint/[0.07] text-mint">
         {icon}
       </span>

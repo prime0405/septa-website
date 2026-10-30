@@ -14,8 +14,10 @@ export const products: ProductContent[] = [
     icon: "ai",
     serviceSlug: "ai-product-development",
     navBlurb: "From ambiguous idea to an AI feature you can measure and defend.",
-    heroTitle: "Build the AI product, properly",
-    lead: "The product-development track is where an AI idea becomes software: a scoped feature, an honest evaluation baseline, an architecture your team can operate, and a release that can be rolled back. It is the build half of the AI Product Development service.",
+    heroTitle: "Bring your product ideas to market faster with AI",
+    lead: "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering to bring your vision to life.",
+    detail:
+      "This is the product-development track where an AI idea becomes software: a scoped feature, an honest evaluation baseline, an architecture your team can operate, and a release that can be rolled back. It is the build half of the AI Product Development service.",
     framing:
       "The service page explains what we offer and how we think. This page walks through what the build actually involves, step by step.",
     problems: [
@@ -156,8 +158,10 @@ export const products: ProductContent[] = [
     icon: "product",
     serviceSlug: undefined,
     navBlurb: "Web and software products engineered to be maintained by whoever comes next.",
-    heroTitle: "Software built to be lived in, not just launched",
-    lead: "Dashboards, platforms, marketplaces, portals, APIs, mobile backends — conventional product work, done with the discipline that keeps a codebase cheap to change two years after launch: clear architecture, tests that catch real regressions, sensible data modelling and honest documentation.",
+    heroTitle: "Great products start with great partnerships",
+    lead: "We turn ideas into intelligent products that solve real problems, delight users, and drive growth, powered by smart strategy and thoughtful design.",
+    detail:
+      "Dashboards, platforms, marketplaces, portals, APIs, mobile backends — conventional product work, done with the discipline that keeps a codebase cheap to change two years after launch: clear architecture, tests that catch real regressions, sensible data modelling and honest documentation.",
     framing:
       "This is the non-generative counterpart to the AI product track: the same engineering discipline applied to ordinary, demanding software.",
     problems: [

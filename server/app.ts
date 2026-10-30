@@ -9,6 +9,7 @@ import express, {
 import {
   careerSchema,
   contactSchema,
+  newsletterSchema,
   requestSchema,
   type ApiStatus,
   type SubmissionResult,
@@ -45,8 +46,9 @@ import {
 /**
  * Septa API — contact, service-request and career submissions.
  *
- *   GET  /api/status | /api/health                  -> ApiStatus
+ *   GET  /api/status | /api/health                     -> ApiStatus
  *   POST /api/contact | /api/request | /api/careers -> SubmissionResult
+ *   POST /api/newsletter                             -> SubmissionResult
  *
  * `ok: true` is returned only for a row that was written to the database. Validation
  * problems are 422, honeypot traffic is a generic 422 with nothing stored, and a storage
@@ -268,6 +270,8 @@ export function createApp(): Express {
 
   const handleContact: RequestHandler = (req, res) => handleJson(contactSchema, "contact", req, res);
   const handleRequest: RequestHandler = (req, res) => handleJson(requestSchema, "requests", req, res);
+  const handleNewsletter: RequestHandler = (req, res) =>
+    handleJson(newsletterSchema, "newsletter", req, res);
 
   const handleStatus = (_req: Request, res: Response) => {
     try {
@@ -301,6 +305,7 @@ export function createApp(): Express {
   app.post("/api/contact", limiter("contact"), handleContact);
   app.post("/api/request", limiter("request"), handleRequest);
   app.post("/api/careers", limiter("careers"), handleCareers);
+  app.post("/api/newsletter", limiter("newsletter"), handleNewsletter);
 
   // Anything else under /api is a JSON 404. Uploads are never mounted as static files.
   app.use("/api", (_req: Request, res: Response) => {

@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Compass, Layers, Search, Send, Users2 } from "lucide-react";
 import { AiDeliveryPanel, ArchitectureStack } from "../components/visuals/FeaturePanels";
-import { HeroDiagram } from "../components/visuals/HeroDiagram";
 import { ProcessSteps } from "../components/visuals/ProcessSteps";
 import { CaseCard, PostCard, ServiceCard } from "../components/blocks/cards";
-import { Logo } from "../components/layout/Logo";
 import { CtaBand } from "../components/blocks/PageHero";
 import { LaunchNoteInline } from "../components/blocks/LaunchNote";
 import { Button } from "../components/ui/Button";
@@ -18,12 +16,28 @@ import {
   SectionHeading,
 } from "../components/ui/primitives";
 import { caseStudies } from "../data/cases";
+import { advantageIntro, advantagePillars, partners, serviceOverview } from "../data/content";
 import { posts } from "../data/posts";
 import { serviceBySlug } from "../data/services";
 import { products } from "../data/products";
 import { site } from "../lib/site";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
+
+const techStrip = [
+  "React",
+  "TypeScript",
+  "Node.js",
+  "Python",
+  "PostgreSQL",
+  "OpenTelemetry",
+  "Retrieval-augmented generation",
+  "Model evaluation",
+  "Kubernetes",
+  "Terraform",
+  "Grafana",
+  "Workflow orchestration",
+];
 
 const deliveryProcess = [
   { title: "Discovery", detail: "Find the real decision, the actual constraint and the system that quietly runs the process.", note: "Week 1–2" },
@@ -43,88 +57,161 @@ export default function Home() {
   return (
     <>
       {/* ------------------------------ hero ------------------------------ */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-45" />
+      <section className="relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
+        <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-35 mask-fade" />
         <div
           aria-hidden
-          className="pointer-events-none absolute top-[-18%] left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-mint/[0.09] blur-[110px]"
+          className="animate-aurora pointer-events-none absolute top-[-22%] left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-mint/[0.13] blur-[120px]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-[-14%] left-[-7%] hidden size-[360px] opacity-[0.055] lg:block"
-        >
-          <Logo className="size-full" />
-        </div>
-        <div className="wrap relative grid items-center gap-12 py-16 sm:py-20 lg:min-h-[calc(100svh-72px)] lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:py-10">
-          <div>
+          className="animate-aurora-slow pointer-events-none absolute top-[18%] left-[8%] hidden h-[380px] w-[380px] rounded-full bg-mint/[0.07] blur-[110px] lg:block"
+        />
+        <div
+          aria-hidden
+          className="animate-aurora pointer-events-none absolute top-[6%] right-[6%] hidden h-[320px] w-[420px] rounded-full bg-mint/[0.06] blur-[110px] lg:block"
+        />
+
+        <div className="wrap relative">
+          <div className="mx-auto max-w-4xl text-center">
             <Reveal>
-              <p className="eyebrow mb-5">
-                AI · Software · Automation · Transformation · Observability · Talent
+              <span className="inline-flex max-w-full items-center justify-center gap-2 rounded-2xl border border-mint/25 bg-surface/70 px-3.5 py-1.5 text-left font-mono text-[0.66rem] leading-relaxed tracking-[0.12em] text-mint uppercase sm:rounded-pill sm:text-[0.68rem]">
+                <span className="size-1.5 shrink-0 rounded-full bg-mint" aria-hidden />
+                <span>AI · Software · Automation · Transformation · Observability · Talent</span>
+              </span>
+            </Reveal>
+
+            <Reveal delay={0.06}>
+              <h1 className="mt-7 text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[0.96]">
+                Technology That Moves
+                <br className="hidden sm:block" /> Your{" "}
+                <span className="text-mint">Business Forward.</span>
+              </h1>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <p className="prose-body mx-auto mt-6 max-w-2xl text-[1.06rem]">
+                We help businesses turn ideas into digital products through AI-assisted and
+                traditional product development, streamline operations with workflow automation,
+                access skilled technology talent, improve system reliability, and drive digital
+                transformation.
               </p>
             </Reveal>
 
-            <h1 className="text-[clamp(2.5rem,6.6vw,4.4rem)] leading-[0.98]">
-              Build Smarter.
-              <br />
-              Automate Better.
-              <br />
-              <span className="text-mint">Scale Faster.</span>
-            </h1>
+            <Reveal delay={0.18}>
+              <div className="mt-9 flex flex-wrap justify-center gap-3">
+                <Button to={paths.services()} size="lg" iconEnd={<ArrowRight className="size-4" />}>
+                  Explore Our Services
+                </Button>
+                <Button to={paths.contact()} size="lg" variant="outline-mint">
+                  Let’s Work Together
+                </Button>
+              </div>
+            </Reveal>
+          </div>
 
-            <p className="prose-body mt-6 max-w-xl text-[1.06rem]">
-              Septa helps organisations turn hard operational problems into intelligent products,
-              connected workflows and modern systems — then keeps them running. We design, build,
-              test, deploy and observe software, and strengthen the teams around it.
+          <Reveal delay={0.24}>
+            <div className="relative mx-auto mt-16 max-w-5xl rounded-[26px] border border-mint/18 bg-ink-raised/60 p-1.5 shadow-glow">
+              <div className="rounded-[20px] border border-line bg-surface/50">
+                <div className="grid gap-px sm:grid-cols-3">
+                  {[
+                    {
+                      Icon: Layers,
+                      title: "Custom software solutions",
+                      detail:
+                        "AI-assisted and traditional product development, engineered to stay cheap to change.",
+                      to: paths.products(),
+                    },
+                    {
+                      Icon: Users2,
+                      title: "Top-tier tech talent",
+                      detail:
+                        "Specialists and squads that plug into your delivery model and own outcomes.",
+                      to: paths.service("talent-solution"),
+                    },
+                    {
+                      Icon: Compass,
+                      title: "Reliable systems",
+                      detail:
+                        "Automation, observability and modernisation that keep what you run accountable.",
+                      to: paths.service("observability-monitoring"),
+                    },
+                  ].map(({ Icon, title, detail, to }) => (
+                    <Link
+                      key={title}
+                      to={to}
+                      className="group flex flex-col gap-3 p-6 text-left transition-colors hover:bg-surface-raised/70"
+                    >
+                      <span className="flex size-9 items-center justify-center rounded-xl border border-line bg-surface text-mint">
+                        <Icon className="size-4" aria-hidden strokeWidth={2} />
+                      </span>
+                      <span className="text-[1.02rem] text-fg group-hover:text-mint">{title}</span>
+                      <span className="text-[0.86rem] leading-relaxed text-muted">{detail}</span>
+                      <span className="mt-auto inline-flex items-center gap-1.5 font-mono text-[0.68rem] tracking-wider text-faint uppercase transition-colors group-hover:text-mint">
+                        Learn more
+                        <ArrowRight className="size-3" aria-hidden />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.3}>
+            <p className="prose-body mx-auto mt-10 max-w-2xl text-center text-[0.95rem]">
+              {serviceOverview}
             </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button to={paths.services()} size="lg" iconEnd={<ArrowRight className="size-4" />}>
-                Explore Our Services
-              </Button>
-              <Button to={paths.request()} size="lg" variant="outline-mint">
-                Request a Service
-              </Button>
-            </div>
-
-            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[0.75rem] text-faint">
-              <span className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-mint" aria-hidden />
-                discovery → prototype → build → ship → observe
-              </span>
-              <span>Your repository, your accounts, your code</span>
-              <span className="hidden sm:inline">Senior engineers in the work, not beside it</span>
-            </div>
-          </div>
-
-          <div className="relative">
-            <HeroDiagram className="mx-auto w-full max-w-[520px]" />
-          </div>
+          </Reveal>
         </div>
 
-        {/* tech strip */}
-        <div className="relative border-t border-line-soft bg-[#0b1114]">
+        <div className="relative mt-14 border-y border-line-soft">
           <div className="wrap flex gap-3 overflow-x-auto py-4 [scrollbar-width:none]">
-            {[
-              "React",
-              "TypeScript",
-              "Node.js",
-              "Python",
-              "PostgreSQL",
-              "OpenTelemetry",
-              "Retrieval-augmented generation",
-              "Model evaluation",
-              "Kubernetes",
-              "Terraform",
-              "Grafana",
-              "Workflow orchestration",
-            ].map((t) => (
-              <span key={t} className="shrink-0 rounded-pill border border-line px-3 py-1 font-mono text-[0.72rem] whitespace-nowrap text-faint">
+            {techStrip.map((t) => (
+              <span
+                key={t}
+                className="shrink-0 rounded-pill border border-line px-3 py-1 font-mono text-[0.72rem] whitespace-nowrap text-faint"
+              >
                 {t}
               </span>
             ))}
           </div>
         </div>
       </section>
+
+      {/* -------------------------- Septa advantage ------------------------- */}
+      <Section tone="raised" className="section border-y border-line-soft">
+        <SectionHeading
+          eyebrow="The Septa Advantage"
+          title="Why the combination matters"
+          lead={advantageIntro}
+          className="mb-10"
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {advantagePillars.map((pillar, i) => (
+            <Reveal key={pillar.title} delay={i * 0.05} className={i === 0 ? "lg:col-span-1" : ""}>
+              <Card className="card-hover h-full p-6">
+                <span className="font-mono text-[0.72rem] text-mint/70">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 text-[1.08rem]">{pillar.title}</h3>
+                <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{pillar.detail}</p>
+              </Card>
+            </Reveal>
+          ))}
+          <Reveal delay={0.25}>
+            <Card className="flex h-full flex-col justify-between gap-5 border-mint/25 bg-surface p-6">
+              <p className="prose-body text-[0.92rem]">
+                Five commitments, one accountable team. Every engagement gets the same spine:
+                discovery, prototype, build, evaluate, ship, operate.
+              </p>
+              <Button to={paths.about()} variant="secondary" size="sm" iconEnd={<ArrowRight className="size-4" />}>
+                How we work
+              </Button>
+            </Card>
+          </Reveal>
+        </div>
+      </Section>
 
       {/* -------------------------- company intro -------------------------- */}
       <Section className="section">
@@ -213,7 +300,7 @@ export default function Home() {
                 to={paths.product(p.slug)}
                 className="card card-hover group flex items-center gap-4 p-5"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-line bg-[#10171c] text-mint">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface text-mint">
                   <Layers className="size-5" aria-hidden />
                 </span>
                 <span className="min-w-0 flex-1">
@@ -298,7 +385,7 @@ export default function Home() {
                   { Icon: Search, label: "Tests on the paths that would actually hurt" },
                   { Icon: Send, label: "Deploys with rollback that has been practised" },
                 ].map(({ Icon, label }) => (
-                  <div key={label} className="flex gap-3 rounded-card border border-line bg-[#10171c] p-3.5">
+                  <div key={label} className="flex gap-3 rounded-card border border-line bg-surface p-3.5">
                     <Icon className="mt-0.5 size-4 shrink-0 text-mint" aria-hidden />
                     <span className="text-[0.86rem] leading-snug text-muted">{label}</span>
                   </div>
@@ -473,6 +560,50 @@ export default function Home() {
             </Card>
           </Reveal>
         </div>
+      </Section>
+
+      {/* ----------------------------- partners ---------------------------- */}
+      <Section className="section">
+        <SectionHeading
+          eyebrow="Our partners"
+          title="Organisations we work alongside"
+          lead="Named by Septa. No logos were supplied, so these are text only, and nothing here describes the scope or length of any individual relationship."
+          className="mb-8"
+        />
+        <Reveal>
+          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-4">
+            {partners.map((name) => (
+              <li
+                key={name}
+                className="flex items-center justify-center bg-surface px-4 py-7 text-center text-[1.02rem] tracking-tight text-muted transition-colors hover:bg-surface-raised hover:text-fg"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </Section>
+
+      {/* ---------------------------- testimonial --------------------------- */}
+      <Section tone="raised" className="section border-y border-line-soft">
+        <SectionHeading
+          eyebrow="Testimonial"
+          title="Waiting on real quotes"
+          lead="The revamp brief reserves a testimonial section but supplies no content for it. Inventing one would be a fabricated client reference, so this stays visibly empty until Septa provides approved quotes."
+          className="mb-8"
+        />
+        <Reveal>
+          <div className="rounded-card border border-dashed border-line bg-surface p-8 text-center sm:p-12">
+            <p className="prose-body mx-auto max-w-lg text-[0.95rem]">
+              To populate this section, add approved client quotes to{" "}
+              <code className="font-mono text-mint">src/data/content.ts</code> once they exist.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <SampleTag label="No testimonial content supplied" />
+              <LaunchNoteInline label="Needs client approval before publication" />
+            </div>
+          </div>
+        </Reveal>
       </Section>
 
       <CtaBand secondary={{ label: "Ask a question first", to: paths.contact() }} />

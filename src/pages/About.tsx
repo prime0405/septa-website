@@ -115,7 +115,7 @@ export default function About() {
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {statsPlaceholders.map((s, i) => (
-            <div key={s.label} className="rounded-card border border-dashed border-line bg-[#10171c] p-5">
+            <div key={s.label} className="rounded-card border border-dashed border-line bg-surface p-5">
               <p className="text-[0.82rem] text-faint">{s.label}</p>
               {s.value ? (
                 <p className="mt-3 font-display text-[1.9rem] text-mint">{s.value}</p>
@@ -143,7 +143,7 @@ export default function About() {
         />
         <div className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
           {values.map((v, i) => (
-            <div key={v.title} className="group relative bg-[#11181d] p-6 transition-colors hover:bg-surface">
+            <div key={v.title} className="group relative bg-surface-raised p-6 transition-colors hover:bg-surface">
               <span className="font-mono text-[0.7rem] text-faint transition-colors group-hover:text-mint">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -180,7 +180,7 @@ export default function About() {
                     {group.items.map((item) => (
                       <span
                         key={item}
-                        className="rounded-lg border border-line bg-[#10171c] px-3 py-1.5 text-[0.83rem] text-muted transition-colors hover:border-mint/40 hover:text-fg"
+                        className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[0.83rem] text-muted transition-colors hover:border-mint/40 hover:text-fg"
                       >
                         {item}
                       </span>
@@ -251,7 +251,7 @@ export default function About() {
             <div className="grid gap-3">
               {howWeWork.map((h, i) => (
                 <Reveal key={h.title} delay={i * 0.04}>
-                  <div className="rounded-card border border-line bg-[#11181d] px-5 py-4">
+                  <div className="rounded-card border border-line bg-surface-raised px-5 py-4">
                     <h3 className="text-[1rem]">{h.title}</h3>
                     <p className="mt-1.5 text-[0.9rem] leading-relaxed text-muted">{h.detail}</p>
                   </div>
@@ -286,7 +286,7 @@ export default function About() {
                 </p>
               </Callout>
 
-              <Card className="border-mint/25 bg-[#101b20] p-6">
+              <Card className="border-mint/25 bg-surface p-6">
                 <p className="text-[0.95rem] text-fg">Working with {site.name}?</p>
                 <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
                   The fastest way to find out whether we are the right fit is to describe the problem.

@@ -232,6 +232,18 @@ export const careerSchema = z.object({
 
 export type CareerPayload = z.infer<typeof careerSchema>;
 
+/* ------------------------------------------------------------------ */
+/* Newsletter                                                          */
+/* ------------------------------------------------------------------ */
+
+export const newsletterSchema = z.object({
+  email: emailField,
+  consent,
+  _hp: honeypot,
+});
+
+export type NewsletterPayload = z.infer<typeof newsletterSchema>;
+
 export const statusSchema = z.object({
   ok: z.boolean(),
   backend: z.literal("septa-api"),

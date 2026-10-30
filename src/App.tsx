@@ -13,6 +13,7 @@ const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const ProductHub = lazy(() => import("./pages/ProductHub"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
+const Faq = lazy(() => import("./pages/Faq"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -41,7 +42,7 @@ class ErrorBoundary extends Component<
             The rest of the site still works. Reloading usually clears it; if it does not, the
             detail below is enough for us to fix it.
           </p>
-          <pre className="mt-4 overflow-x-auto rounded-card border border-line bg-[#0d1317] p-3 font-mono text-[0.75rem] text-rose">
+          <pre className="mt-4 overflow-x-auto rounded-card border border-line bg-ink-raised p-3 font-mono text-[0.75rem] text-rose">
             {String(this.state.error?.message ?? this.state.error)}
           </pre>
           <div className="mt-6 flex gap-3">
@@ -79,6 +80,7 @@ export default function App() {
             <Route path="/product-development" element={<ProductHub />} />
             <Route path="/product-development/:slug" element={<ProductDetail />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/faq" element={<Faq />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<Contact />} />

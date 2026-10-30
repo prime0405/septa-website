@@ -71,6 +71,7 @@ export const footerColumns: NavGroup[] = [
       { label: "Case Studies", href: "/case-studies" },
       { label: "Career", href: "/careers" },
       { label: "Blog", href: "/blog" },
+      { label: "FAQ", href: "/faq" },
       { label: "Contact Us", href: "/contact" },
     ],
   },

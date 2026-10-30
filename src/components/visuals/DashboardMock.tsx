@@ -37,7 +37,7 @@ function Sparkline({
   width?: number;
   tone?: "mint" | "amber" | "rose";
 }) {
-  const colors = { mint: "#6fd4b8", amber: "#e2c078", rose: "#e08a8a" } as const;
+  const colors = { mint: "#6db1ae", amber: "#e2c078", rose: "#e08a8a" } as const;
   const max = Math.max(...data);
   const min = Math.min(...data);
   const span = Math.max(1, max - min);
@@ -124,7 +124,7 @@ export function DashboardMock({ className }: { className?: string }) {
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {kpis.map((k) => (
-          <div key={k.label} className="rounded-card border border-line bg-[#10171c] p-3.5">
+          <div key={k.label} className="rounded-card border border-line bg-surface p-3.5">
             <p className="font-mono text-[0.68rem] tracking-wider text-faint uppercase">{k.label}</p>
             <p className="mt-1 font-display text-[1.35rem] text-fg tabular-nums">
               {loading ? <span className="skeleton inline-block h-6 w-20 rounded" /> : k.value}
@@ -135,7 +135,7 @@ export function DashboardMock({ className }: { className?: string }) {
           </div>
         ))}
       </div>
-      <div className="rounded-card border border-line bg-[#10171c] p-4">
+      <div className="rounded-card border border-line bg-surface p-4">
         <div className="mb-2 flex items-center justify-between">
           <p className="font-mono text-[0.72rem] tracking-wider text-muted uppercase">
             Latency distribution · sample window 30 min
@@ -164,7 +164,7 @@ export function DashboardMock({ className }: { className?: string }) {
     <div className="overflow-hidden rounded-card border border-line">
       <table className="w-full text-left text-[0.85rem]">
         <caption className="sr-only">Sample distributed traces with durations</caption>
-        <thead className="bg-[#10171c] font-mono text-[0.68rem] tracking-wider text-faint uppercase">
+        <thead className="bg-surface font-mono text-[0.68rem] tracking-wider text-faint uppercase">
           <tr>
             <th scope="col" className="px-4 py-2.5 font-normal">Trace</th>
             <th scope="col" className="px-4 py-2.5 font-normal">Route</th>
@@ -174,7 +174,7 @@ export function DashboardMock({ className }: { className?: string }) {
         </thead>
         <tbody className="divide-y divide-line">
           {TRACES.map((t) => (
-            <tr key={t.id} className="bg-[#11181d] transition-colors hover:bg-surface">
+            <tr key={t.id} className="bg-surface-raised transition-colors hover:bg-surface">
               <td className="px-4 py-2.5 font-mono text-[0.78rem] text-muted">{t.id}</td>
               <td className="px-4 py-2.5 text-fg">{t.route}</td>
               <td className="px-4 py-2.5">
@@ -215,7 +215,7 @@ export function DashboardMock({ className }: { className?: string }) {
             key={a.title}
             className={cn(
               "flex flex-wrap items-start gap-3 rounded-card border p-4 transition-colors",
-              isAcked ? "border-mint/30 bg-mint/[0.05]" : "border-line bg-[#11181d]",
+              isAcked ? "border-mint/30 bg-mint/[0.05]" : "border-line bg-surface-raised",
             )}
           >
             <TriangleAlert
@@ -257,7 +257,7 @@ export function DashboardMock({ className }: { className?: string }) {
 
   return (
     <div className={cn("card overflow-hidden", className)}>
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-[#0d1317] px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-ink-raised px-4 py-3">
         <div className="flex items-center gap-2.5">
           <span className="size-2 rounded-full bg-mint" aria-hidden />
           <p className="font-mono text-[0.78rem] text-muted">

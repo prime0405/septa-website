@@ -308,7 +308,7 @@ function Row({
   always?: boolean;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-line bg-[#11181d] px-4 py-3">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-line bg-surface-raised px-4 py-3">
       <span className="font-mono text-[0.7rem] tracking-wider text-faint uppercase">{label}</span>
       {value ? (
         <span className="text-[0.9rem] text-fg">{value}</span>

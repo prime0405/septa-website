@@ -88,7 +88,7 @@ function printHelp(): void {
 Septa submission inbox (reads ${storageLabel()})
 
   npm run api:inbox
-  npm run api:inbox -- --stream contact|requests|applications
+  npm run api:inbox -- --stream contact|requests|applications|newsletter
   npm run api:inbox -- --limit 50
   npm run api:inbox -- --json
   npm run api:inbox -- --full

@@ -90,7 +90,7 @@ export default function Blog() {
         }
         aside={
           <Reveal>
-            <div className="relative rounded-card border border-line bg-[#0d1317]/85 p-6">
+            <div className="relative rounded-card border border-line bg-ink-raised/85 p-6">
               <div aria-hidden className="dot-bg absolute inset-0 opacity-40" />
               <div className="relative">
                 <p className="eyebrow mb-4">Longest reads</p>
@@ -149,7 +149,7 @@ export default function Blog() {
                 value={query}
                 onChange={(e) => update({ q: e.target.value })}
                 placeholder="e.g. evaluation, error budget"
-                className="w-full rounded-pill border border-line bg-[#0e1418] py-2.5 pr-4 pl-10 text-[0.9rem] text-fg placeholder:text-faint"
+                className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[0.9rem] text-fg placeholder:text-faint"
               />
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function Blog() {
                   "rounded-pill border px-3.5 py-1.5 text-[0.82rem] transition-colors",
                   active
                     ? "border-mint/50 bg-mint/10 text-mint"
-                    : "border-line bg-[#0e1418] text-muted hover:border-muted/50 hover:text-fg",
+                    : "border-line bg-ink-raised text-muted hover:border-muted/50 hover:text-fg",
                 )}
               >
                 {cat}
@@ -298,7 +298,7 @@ export default function Blog() {
                 {["p", "h2", "h3", "ul", "quote", "code"].map((b) => (
                   <span
                     key={b}
-                    className="rounded-md border border-line bg-[#10171c] px-2.5 py-1 font-mono text-[0.74rem] text-muted"
+                    className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[0.74rem] text-muted"
                   >
                     {b}
                   </span>

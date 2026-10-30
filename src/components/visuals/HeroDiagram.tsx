@@ -35,15 +35,15 @@ export function HeroDiagram({ className }: { className?: string }) {
       >
         <defs>
           <linearGradient id="hd-stroke" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#6fd4b8" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#6fd4b8" stopOpacity="0.18" />
+            <stop offset="0%" stopColor="#6db1ae" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#6db1ae" stopOpacity="0.18" />
           </linearGradient>
           <radialGradient id="hd-core" cx="50%" cy="35%" r="70%">
-            <stop offset="0%" stopColor="#1f2e36" />
-            <stop offset="100%" stopColor="#0b1114" />
+            <stop offset="0%" stopColor="#123542" />
+            <stop offset="100%" stopColor="#061820" />
           </radialGradient>
           <pattern id="hd-dots" width="18" height="18" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.1" fill="#26333b" />
+            <circle cx="1.5" cy="1.5" r="1.1" fill="#1a4553" />
           </pattern>
         </defs>
 
@@ -53,7 +53,7 @@ export function HeroDiagram({ className }: { className?: string }) {
           cy={C}
           r="196"
           fill="none"
-          stroke="#1e282e"
+          stroke="#123542"
           strokeWidth="1"
         />
 
@@ -64,7 +64,7 @@ export function HeroDiagram({ className }: { className?: string }) {
             cy={C}
             r="184"
             fill="none"
-            stroke="#2d3a43"
+            stroke="#1a4553"
             strokeWidth="1"
             strokeDasharray="2 16"
           />
@@ -81,7 +81,7 @@ export function HeroDiagram({ className }: { className?: string }) {
               <path
                 d={d}
                 fill="none"
-                stroke="#6fd4b8"
+                stroke="#6db1ae"
                 strokeOpacity="0.55"
                 strokeWidth="1.4"
                 strokeDasharray="4 20"
@@ -101,8 +101,8 @@ export function HeroDiagram({ className }: { className?: string }) {
                 width={html}
                 height={html}
                 rx="13"
-                fill="#131b20"
-                stroke="#2d3a43"
+                fill="#0a2833"
+                stroke="#1a4553"
                 className={reduce ? undefined : cn("origin-center animate-float")}
                 style={reduce ? undefined : { animationDelay: `${i * 0.9}s` }}
               />
@@ -118,7 +118,7 @@ export function HeroDiagram({ className }: { className?: string }) {
                 x={html / 2}
                 y={html + 17}
                 textAnchor="middle"
-                fill="#93a8a9"
+                fill="#94b2b3"
                 fontSize="10.5"
                 fontFamily="var(--font-mono)"
                 letterSpacing="0.6"
@@ -131,14 +131,14 @@ export function HeroDiagram({ className }: { className?: string }) {
 
         {/* core */}
         <g>
-          <circle cx={C} cy={C} r="74" fill="none" stroke="#6fd4b8" strokeOpacity="0.14" />
-          <circle cx={C} cy={C} r="62" fill="url(#hd-core)" stroke="#3d4c56" />
+          <circle cx={C} cy={C} r="74" fill="none" stroke="#6db1ae" strokeOpacity="0.14" />
+          <circle cx={C} cy={C} r="62" fill="url(#hd-core)" stroke="#2b6462" />
           <circle
             cx={C}
             cy={C}
             r="62"
             fill="none"
-            stroke="#6fd4b8"
+            stroke="#6db1ae"
             strokeOpacity="0.45"
             strokeWidth="1"
             strokeDasharray="60 300"
@@ -148,7 +148,7 @@ export function HeroDiagram({ className }: { className?: string }) {
             x={C}
             y={C - 8}
             textAnchor="middle"
-            fill="#d8e4e3"
+            fill="#dcebe9"
             fontSize="19"
             fontFamily="var(--font-display)"
             fontWeight="600"
@@ -160,21 +160,21 @@ export function HeroDiagram({ className }: { className?: string }) {
             x={C}
             y={C + 12}
             textAnchor="middle"
-            fill="#6fd4b8"
+            fill="#6db1ae"
             fontSize="8.5"
             fontFamily="var(--font-mono)"
             letterSpacing="2.4"
           >
             DELIVERY CORE
           </text>
-          <line x1={C - 26} y1={C + 24} x2={C + 26} y2={C + 24} stroke="#26333b" />
-          <circle cx={C - 26} cy={C + 24} r="1.8" fill="#6fd4b8" className={reduce ? undefined : "animate-pulse-node"} />
+          <line x1={C - 26} y1={C + 24} x2={C + 26} y2={C + 24} stroke="#1a4553" />
+          <circle cx={C - 26} cy={C + 24} r="1.8" fill="#6db1ae" className={reduce ? undefined : "animate-pulse-node"} />
         </g>
       </svg>
 
       {/* corner telemetry chips keep the composition technical, not decorative filler */}
       <div className="pointer-events-none absolute top-2 right-2 hidden sm:block">
-        <div className="rounded-lg border border-line bg-[#0d1317]/90 px-2.5 py-1.5 font-mono text-[0.66rem] text-faint">
+        <div className="rounded-lg border border-line bg-ink-raised/90 px-2.5 py-1.5 font-mono text-[0.66rem] text-faint">
           discovery → build → ship → observe
         </div>
       </div>

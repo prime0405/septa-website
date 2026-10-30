@@ -144,7 +144,9 @@ function storeReadable(): boolean {
   return apiStorage.length > 0 && apiStorage === storageLabel();
 }
 
-async function readStoredCount(stream?: "contact" | "requests" | "applications"): Promise<number> {
+async function readStoredCount(
+  stream?: "contact" | "requests" | "applications" | "newsletter",
+): Promise<number> {
   if (!storeReadable()) return -1;
   return (await listInbox(stream, 500)).length;
 }
@@ -504,6 +506,57 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
       assert(!!retryAfter, "429 must include Retry-After");
       assert(lastMessage === RATE_LIMIT_MESSAGE, `unexpected 429 message: "${lastMessage}"`);
       log(`Retry-After=${retryAfter}s`);
+    },
+  },
+  {
+    group: "newsletter",
+    name: "POST /api/newsletter valid -> 201 + SubmissionResult",
+    run: async () => {
+      const res = await jsonPost("/api/newsletter", {
+        email: "subscriber+smoke@example.com",
+        consent: true,
+        _hp: "",
+      });
+      assert(res.status === 201, `expected 201, got ${res.status} (${res.raw.slice(0, 200)})`);
+      assert(res.json?.ok === true, "a 201 must carry ok: true");
+      assert(typeof res.json?.id === "string", "missing reference id");
+    },
+  },
+  {
+    group: "newsletter",
+    name: "POST /api/newsletter invalid email -> 422 with a field message",
+    run: async () => {
+      const res = await jsonPost("/api/newsletter", { email: "not-an-email", consent: true });
+      assert(res.status === 422, `expected 422, got ${res.status}`);
+      assert(typeof res.fieldErrors.email === "string", "missing email field error");
+    },
+  },
+  {
+    group: "newsletter",
+    name: "POST /api/newsletter without consent -> 422",
+    run: async () => {
+      const res = await jsonPost("/api/newsletter", { email: "someone@example.com", consent: false });
+      assert(res.status === 422, `expected 422, got ${res.status}`);
+      assert(typeof res.fieldErrors.consent === "string", "missing consent field error");
+    },
+  },
+  {
+    group: "newsletter",
+    name: "POST /api/newsletter honeypot -> generic 422 and nothing stored",
+    run: async (log) => {
+      const before = await readStoredCount("newsletter");
+      const res = await jsonPost("/api/newsletter", {
+        email: "bot@example.com",
+        consent: true,
+        _hp: "https://spam.example",
+      });
+      assert(res.status === 422, `expected 422, got ${res.status}`);
+      assert(res.messageText !== VALIDATION_MESSAGE, "honeypot must not return the field-error message");
+      if (before >= 0) {
+        const after = await readStoredCount("newsletter");
+        assert(after === before, `newsletter rows moved ${before} -> ${after}`);
+        log(`newsletter rows unchanged at ${after}`);
+      }
     },
   },
 ];

@@ -193,3 +193,51 @@ export const howWeWork = [
       "Client-facing delivery has busy weeks; sustained overtime is treated as a planning failure to fix, not a normal cost of work.",
   },
 ];
+
+/** Supplied by the Septa website revamp brief. */
+export const advantageIntro =
+  "Septa combines modern engineering, product innovation, and AI-powered insights to help organizations scale faster, simplify complexity, and capture opportunities with confidence.";
+
+export const advantagePillars = [
+  {
+    title: "Intelligent by Design",
+    detail: "AI-driven solutions tailored to your goals, never one-size-fits-all.",
+  },
+  {
+    title: "Built to Scale",
+    detail: "Flexible products and systems designed to grow with your business.",
+  },
+  {
+    title: "Human-Centered Technology",
+    detail: "Smart automation powered by human insight for better decisions.",
+  },
+  {
+    title: "Delivery You Can Trust",
+    detail: "Agile execution with transparency, reliability, and measurable results.",
+  },
+  {
+    title: "Proactive, End-to-End Support",
+    detail: "Septa AI handles requests, resolves issues, and keeps your product running smoothly.",
+  },
+];
+
+export const serviceOverview =
+  "From startups to enterprises, we craft custom software solutions, provide top-tier tech talent, and upskill professionals for the future of work.";
+
+export const servicesIntro =
+  "We help businesses and individuals thrive through product development and tech talent solutions.";
+
+/**
+ * Named by Septa in the revamp brief. No logos were supplied, so these render as text
+ * only, and nothing is claimed about the scope of each relationship.
+ */
+export const partners = [
+  "Enyata",
+  "Chinat Group",
+  "Halogen Group",
+  "MTN",
+  "Preppod",
+  "Atos",
+  "Blusalt",
+  "Toviri UK",
+];

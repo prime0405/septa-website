@@ -18,7 +18,7 @@ import { config, storageLabel } from "./config.ts";
  * ascending placeholder order.
  */
 
-export const streams = ["contact", "requests", "applications"] as const;
+export const streams = ["contact", "requests", "applications", "newsletter"] as const;
 export type Stream = (typeof streams)[number];
 
 export interface StoredSubmission {
@@ -356,6 +356,9 @@ export function summarize(submission: StoredSubmission): string {
   };
   if (submission.stream === "contact") {
     return `${str("fullName")} <${str("email")}> · ${str("inquiryType")}`;
+  }
+  if (submission.stream === "newsletter") {
+    return `<${str("email")}> · newsletter`;
   }
   if (submission.stream === "requests") {
     return `${str("fullName")} <${str("email")}> · ${str("service")} · ${str("projectName")}`;

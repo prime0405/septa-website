@@ -59,7 +59,7 @@ export default function NotFound() {
               <li key={l.to}>
                 <Link
                   to={l.to}
-                  className="group flex items-center justify-between gap-4 rounded-card border border-line bg-[#11181d] px-4 py-3 transition-colors hover:border-mint/45"
+                  className="group flex items-center justify-between gap-4 rounded-card border border-line bg-surface-raised px-4 py-3 transition-colors hover:border-mint/45"
                 >
                   <span>
                     <span className="block text-[0.93rem] text-fg group-hover:text-mint">
@@ -85,7 +85,7 @@ export default function NotFound() {
               <li key={s.slug}>
                 <Link
                   to={paths.service(s.slug)}
-                  className="group flex items-center justify-between gap-4 rounded-card border border-line bg-[#11181d] px-4 py-3 transition-colors hover:border-mint/45"
+                  className="group flex items-center justify-between gap-4 rounded-card border border-line bg-surface-raised px-4 py-3 transition-colors hover:border-mint/45"
                 >
                   <span>
                     <span className="block text-[0.93rem] text-fg group-hover:text-mint">

@@ -68,7 +68,7 @@ export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boo
       <div
         aria-hidden
         className={cn(
-          "relative shrink-0 border-line bg-[#0d1519]",
+          "relative shrink-0 border-line bg-ink-raised",
           featured ? "border-b lg:border-r lg:border-b-0 lg:w-[38%]" : "",
         )}
       >
@@ -101,7 +101,7 @@ export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boo
         </dl>
         <div className="mt-5 flex flex-wrap gap-1.5">
           {study.stack.slice(0, featured ? 7 : 4).map((t) => (
-            <span key={t} className="rounded-md border border-line bg-[#10171c] px-2 py-1 font-mono text-[0.7rem] text-muted">
+            <span key={t} className="rounded-md border border-line bg-surface px-2 py-1 font-mono text-[0.7rem] text-muted">
               {t}
             </span>
           ))}
@@ -160,7 +160,7 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
         className="card card-hover group relative grid gap-6 overflow-hidden p-6 sm:p-8 lg:grid-cols-[1.2fr_1fr]"
       >
         <div className="flex flex-col">{inner}</div>
-        <div aria-hidden className="relative min-h-40 overflow-hidden rounded-card border border-line bg-[#0d1519]">
+        <div aria-hidden className="relative min-h-40 overflow-hidden rounded-card border border-line bg-ink-raised">
           <div className="grid-bg absolute inset-0 opacity-70" />
           <div className="glow-mint absolute inset-0 opacity-60" />
           <div className="absolute inset-x-5 bottom-5 space-y-2">
@@ -187,7 +187,7 @@ export function CapabilityRow({ items }: { items: string[] }) {
   return (
     <ul className="flex flex-wrap gap-1.5">
       {items.map((i) => (
-        <li key={i} className="rounded-md border border-line bg-[#10171c] px-2.5 py-1 font-mono text-[0.74rem] text-muted">
+        <li key={i} className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[0.74rem] text-muted">
           {i}
         </li>
       ))}

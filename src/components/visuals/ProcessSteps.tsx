@@ -26,7 +26,7 @@ export function ProcessSteps({
         )}
       >
         {steps.map((s, i) => (
-          <li key={s.title} className="group relative bg-[#11181d] p-5 transition-colors hover:bg-surface">
+          <li key={s.title} className="group relative bg-surface-raised p-5 transition-colors hover:bg-surface">
             <div className="mb-3 flex items-center gap-3">
               <span className="font-mono text-[0.7rem] tracking-[0.2em] text-mint">
                 {String(i + 1).padStart(2, "0")}

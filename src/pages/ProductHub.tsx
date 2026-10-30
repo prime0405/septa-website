@@ -148,7 +148,7 @@ export default function ProductHub() {
                   {p.capabilities.map((c) => (
                     <span
                       key={c.group}
-                      className="rounded-pill border border-line bg-[#10171c] px-3 py-1 text-[0.76rem] text-muted"
+                      className="rounded-pill border border-line bg-surface px-3 py-1 text-[0.76rem] text-muted"
                     >
                       {c.group}
                     </span>

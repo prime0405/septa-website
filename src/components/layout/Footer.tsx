@@ -5,18 +5,19 @@ import { paths } from "../../lib/paths";
 import { site } from "../../lib/site";
 import { Button } from "../ui/Button";
 import { Unconfigured } from "../ui/primitives";
+import { NewsletterForm } from "../forms/NewsletterForm";
 import { Wordmark } from "./Logo";
 
 export function Footer() {
   const { email, phone, addressLines } = site.contact;
 
   return (
-    <footer className="relative mt-auto border-t border-line bg-[#0b1114]">
+    <footer className="relative mt-auto border-t border-line bg-ink">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
       {/* final conversion band */}
       <div className="relative wrap">
-        <div className="my-10 flex flex-col gap-5 overflow-hidden rounded-card border border-mint/25 bg-gradient-to-br from-[#0f1d22] via-[#10171c] to-[#0d1317] p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="my-10 flex flex-col gap-5 overflow-hidden rounded-card border border-mint/25 bg-gradient-to-br from-surface via-surface-raised to-ink-raised p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-xl">
             <p className="eyebrow mb-3">Next step</p>
             <h2 className="text-[clamp(1.35rem,2.6vw,1.9rem)]">
@@ -82,7 +83,7 @@ export function Footer() {
           </ul>
 
           {site.social.length > 0 ? (
-            <ul className="mt-5 flex gap-2">
+            <ul className="mt-5 flex flex-wrap gap-2">
               {site.social.map((s) => (
                 <li key={s.href}>
                   <a
@@ -97,6 +98,16 @@ export function Footer() {
               ))}
             </ul>
           ) : null}
+
+          <div className="mt-8 border-t border-line-soft pt-6">
+            <p className="mb-1.5 font-mono text-[0.66rem] tracking-[0.18em] text-faint uppercase">
+              Newsletter
+            </p>
+            <p className="mb-3 text-[0.84rem] leading-relaxed text-muted">
+              Occasional notes on what we built and what it taught us. No cadence is promised yet.
+            </p>
+            <NewsletterForm />
+          </div>
         </div>
 
         {footerColumns.map((col) => (

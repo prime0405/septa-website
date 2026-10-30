@@ -73,17 +73,20 @@ export function Nav() {
       className={cn(
         "sticky top-0 z-50 transition-[background,border-color,box-shadow,backdrop-filter] duration-300",
         scrolled || openGroup || drawer
-          ? "border-b border-line bg-[#0a1013]/92 backdrop-blur-md"
+          ? "border-b border-line bg-ink/92 backdrop-blur-md"
           : "border-b border-transparent bg-transparent",
       )}
     >
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div className="wrap flex h-[72px] items-center justify-between gap-4">
+      <div className="wrap flex h-[72px] items-center justify-between gap-4 lg:grid lg:grid-cols-[auto_1fr_auto]">
         <BrandLink />
 
-        <nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
+        <nav
+          aria-label="Primary"
+          className="hidden items-center justify-center gap-0.5 lg:flex"
+        >
           {primaryNav.map((item) =>
             item.groups ? (
               <div
@@ -239,7 +242,7 @@ function MegaPanel({ item, open }: { item: NavItem; open: boolean }) {
               </div>
             ))}
 
-            <div className="relative overflow-hidden rounded-card border border-mint/25 bg-[#101b20] p-4">
+            <div className="relative overflow-hidden rounded-card border border-mint/25 bg-surface p-4">
               <div aria-hidden className="dot-bg absolute inset-0 opacity-40" />
               <div className="relative">
                 <Sparkles className="size-4 text-mint" aria-hidden />
@@ -319,7 +322,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
         animate={reduce ? { opacity: 1 } : { x: 0 }}
         exit={reduce ? { opacity: 0 } : { x: "100%" }}
         transition={{ type: "spring", stiffness: 380, damping: 38 }}
-        className="fixed inset-y-0 right-0 z-50 flex w-[min(92vw,420px)] flex-col border-l border-line bg-[#0b1114] lg:hidden"
+        className="fixed inset-y-0 right-0 z-50 flex w-[min(92vw,420px)] flex-col border-l border-line bg-ink lg:hidden"
       >
         <div className="flex h-[72px] items-center justify-between border-b border-line px-4">
           <BrandLink label="Septa — close menu" />
@@ -339,7 +342,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
             {primaryNav.map((item) => (
               <li key={item.href}>
                 {item.groups ? (
-                  <div className="rounded-card border border-line bg-[#10171c] p-1.5">
+                  <div className="rounded-card border border-line bg-surface p-1.5">
                     <NavLink
                       to={item.href}
                       className={({ isActive }) =>

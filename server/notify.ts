@@ -24,6 +24,7 @@ const STREAM_LABELS: Record<string, string> = {
   contact: "Contact enquiry",
   requests: "Service request",
   applications: "Career application",
+  newsletter: "Newsletter subscription",
 };
 
 const FIELD_LABELS: Record<string, string> = {

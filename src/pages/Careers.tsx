@@ -68,7 +68,7 @@ export default function Careers() {
         }
         aside={
           <Reveal>
-            <div className="relative rounded-card border border-line bg-[#0d1317]/85 p-6">
+            <div className="relative rounded-card border border-line bg-ink-raised/85 p-6">
               <div aria-hidden className="dot-bg absolute inset-0 opacity-40" />
               <div className="relative">
                 <p className="eyebrow mb-4">What we look for</p>
@@ -247,7 +247,7 @@ export default function Careers() {
             <div className="grid gap-3">
               {howWeWork.map((h, i) => (
                 <Reveal key={h.title} delay={i * 0.04}>
-                  <div className="rounded-card border border-line bg-[#11181d] px-5 py-4">
+                  <div className="rounded-card border border-line bg-surface-raised px-5 py-4">
                     <h3 className="text-[1rem]">{h.title}</h3>
                     <p className="mt-1.5 text-[0.9rem] leading-relaxed text-muted">{h.detail}</p>
                   </div>

@@ -70,9 +70,9 @@ export function PageHero({
 }
 
 export function CtaBand({
-  title = "Ready to talk about the work?",
-  lead = "Send a request with as much or as little detail as you have. We will come back with a clear point of view.",
-  primaryLabel = "Request a Service",
+  title = "Let’s build what’s next, together!",
+  lead = "Whether you need an AI-powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
+  primaryLabel = "Start a request",
   secondary,
 }: {
   title?: string;
@@ -82,7 +82,7 @@ export function CtaBand({
 }) {
   return (
     <section className="wrap section">
-      <div className="relative overflow-hidden rounded-card border border-line bg-[#10171c] px-6 py-10 sm:px-10 sm:py-12">
+      <div className="relative overflow-hidden rounded-card border border-line bg-surface px-6 py-10 sm:px-10 sm:py-12">
         <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-50" />
         <div
           aria-hidden
@@ -90,7 +90,7 @@ export function CtaBand({
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-6 -bottom-10 hidden size-52 text-brand-teal opacity-[0.07] sm:block"
+          className="pointer-events-none absolute -right-6 -bottom-10 hidden size-52 text-fg opacity-[0.06] sm:block"
         >
           <Logo className="size-full" />
         </div>

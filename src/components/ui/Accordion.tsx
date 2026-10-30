@@ -35,7 +35,7 @@ export function Accordion({
         const pid = `${group}-panel-${i}`;
         const bid = `${group}-button-${i}`;
         return (
-          <div key={item.q} className="bg-[#11181d]">
+          <div key={item.q} className="bg-surface-raised">
             <h3>
               <button
                 id={bid}

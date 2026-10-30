@@ -97,7 +97,7 @@ export default function Services() {
             <div aria-hidden className="glow-mint pointer-events-none absolute inset-0 opacity-45" />
             <nav
               aria-label="Jump to a service"
-              className="relative rounded-card border border-line bg-[#0d1317]/85 p-3"
+              className="relative rounded-card border border-line bg-ink-raised/85 p-3"
             >
               <p className="px-3 pt-2 pb-3 font-mono text-[0.68rem] tracking-[0.18em] text-faint uppercase">
                 Service index
@@ -111,7 +111,7 @@ export default function Services() {
                         "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-surface",
                       )}
                     >
-                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-line bg-[#11181d] text-muted transition-colors group-hover:border-mint/45 group-hover:text-mint">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-line bg-surface-raised text-muted transition-colors group-hover:border-mint/45 group-hover:text-mint">
                         <ServiceIcon icon={s.icon} className="size-4" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -150,7 +150,7 @@ export default function Services() {
           ))}
 
           <Reveal delay={services.length * 0.04} className="h-full">
-            <Card className="flex h-full flex-col justify-between border-mint/30 bg-[#101b20] p-6">
+            <Card className="flex h-full flex-col justify-between border-mint/30 bg-surface p-6">
               <div>
                 <span className="flex size-11 items-center justify-center rounded-xl border border-mint/35 bg-mint/10 text-mint">
                   <Compass className="size-5.5" />

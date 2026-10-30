@@ -30,7 +30,7 @@ function StackRow({ study }: { study: CaseStudy }) {
         { k: "Period", v: study.year },
         { k: "Services used", v: study.services.map((s) => serviceBySlug(s)?.name ?? s).join(", ") },
       ].map((row) => (
-        <div key={row.k} className="bg-[#11181d] px-5 py-4">
+        <div key={row.k} className="bg-surface-raised px-5 py-4">
           <dt className="font-mono text-[0.68rem] tracking-wider text-faint uppercase">{row.k}</dt>
           <dd className="mt-1.5 text-[0.92rem] text-fg">{row.v}</dd>
         </div>
@@ -123,7 +123,7 @@ export default function CaseDetail() {
           <Reveal>
             <div className="relative">
               <div aria-hidden className="glow-mint pointer-events-none absolute inset-0 opacity-45" />
-              <div className="relative rounded-card border border-line bg-[#0d1317]/85 p-5">
+              <div className="relative rounded-card border border-line bg-ink-raised/85 p-5">
                 <p className="mb-4 font-mono text-[0.68rem] tracking-[0.18em] text-faint uppercase">
                   At a glance
                 </p>
@@ -141,7 +141,7 @@ export default function CaseDetail() {
                     {study.stack.map((t) => (
                       <span
                         key={t}
-                        className="rounded-md border border-line bg-[#10171c] px-2 py-1 font-mono text-[0.7rem] text-muted"
+                        className="rounded-md border border-line bg-surface px-2 py-1 font-mono text-[0.7rem] text-muted"
                       >
                         {t}
                       </span>
@@ -166,7 +166,7 @@ export default function CaseDetail() {
             <div>
               <SectionHeading as="h2" eyebrow="02 The challenge" title="What made it hard" className="mb-5" />
               <p className="prose-body text-[1rem]">{study.challenge}</p>
-              <Card className="mt-6 border-mint/25 bg-[#101b20] p-5">
+              <Card className="mt-6 border-mint/25 bg-surface p-5">
                 <p className="eyebrow mb-3">Problem statement</p>
                 <p className="text-[0.95rem] leading-relaxed text-fg">{study.problem}</p>
               </Card>
@@ -178,7 +178,7 @@ export default function CaseDetail() {
                 {study.objectives.map((o, i) => (
                   <li
                     key={o}
-                    className="flex gap-3.5 rounded-card border border-line bg-[#11181d] px-4 py-3.5"
+                    className="flex gap-3.5 rounded-card border border-line bg-surface-raised px-4 py-3.5"
                   >
                     <span className="font-mono text-[0.72rem] text-mint">{String(i + 1).padStart(2, "0")}</span>
                     <span className="text-[0.9rem] text-muted">{o}</span>
@@ -193,7 +193,7 @@ export default function CaseDetail() {
               <div className="space-y-4">
                 {study.solution.map((s, i) => (
                   <Reveal key={s.title} delay={i * 0.04}>
-                    <div className="relative overflow-hidden rounded-card border border-line bg-[#11181d] p-5">
+                    <div className="relative overflow-hidden rounded-card border border-line bg-surface-raised p-5">
                       <div
                         aria-hidden
                         className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-mint/70 to-transparent"
@@ -232,7 +232,7 @@ export default function CaseDetail() {
                 {study.stack.map((t) => (
                   <span
                     key={t}
-                    className="rounded-md border border-line bg-[#10171c] px-2.5 py-1 font-mono text-[0.74rem] text-muted"
+                    className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[0.74rem] text-muted"
                   >
                     {t}
                   </span>
@@ -288,7 +288,7 @@ export default function CaseDetail() {
                 {study.lessons.map((l, i) => (
                   <li
                     key={l}
-                    className="flex gap-4 rounded-card border border-line bg-[#11181d] px-5 py-4"
+                    className="flex gap-4 rounded-card border border-line bg-surface-raised px-5 py-4"
                   >
                     <span className="font-mono text-[0.72rem] text-mint/80">
                       {String(i + 1).padStart(2, "0")}
@@ -320,7 +320,7 @@ export default function CaseDetail() {
                       {to ? (
                         <Link
                           to={to}
-                          className="group flex items-center justify-between gap-3 rounded-lg border border-line bg-[#10171c] px-3.5 py-2.5 transition-colors hover:border-mint/45"
+                          className="group flex items-center justify-between gap-3 rounded-lg border border-line bg-surface px-3.5 py-2.5 transition-colors hover:border-mint/45"
                         >
                           {row}
                           <ArrowRight className="size-3.5 text-faint group-hover:text-mint" aria-hidden />
@@ -336,7 +336,7 @@ export default function CaseDetail() {
               </ul>
             </Card>
 
-            <Card className="border-mint/25 bg-[#101b20] p-5">
+            <Card className="border-mint/25 bg-surface p-5">
               <p className="eyebrow mb-3">Talk about your version</p>
               <p className="text-[0.88rem] leading-relaxed text-muted">
                 Send the situation in your own words. We reply with which parts of this approach
