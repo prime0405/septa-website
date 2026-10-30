@@ -238,7 +238,7 @@ export function RadioCards({
                 aria-hidden
                 className={cn(
                   "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border transition-colors",
-                  checked ? "border-mint bg-mint" : "border-line group-hover:border-muted",
+                  checked ? "border-brand-teal bg-brand-teal" : "border-line group-hover:border-muted",
                 )}
               >
                 {checked ? <span className="size-1.5 rounded-full bg-brand-pearl" /> : null}
@@ -304,7 +304,7 @@ export function CheckboxField({
           className={cn(
             "mt-[3px] flex size-[18px] shrink-0 items-center justify-center rounded-[6px] border transition-colors",
             checked
-              ? "border-mint bg-mint text-brand-pearl"
+              ? "border-brand-teal bg-brand-teal text-brand-pearl"
       : cn("border-line bg-surface group-hover:border-muted", error && "border-rose/60"),
           )}
         >

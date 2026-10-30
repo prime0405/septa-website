@@ -12,7 +12,7 @@ export function Footer() {
   const { email, phone, addressLines } = site.contact;
 
   return (
-    <footer className="relative mt-auto border-t border-line bg-ink">
+    <footer className="relative mt-auto border-t border-line bg-ink-raised">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
       {/* final conversion band */}

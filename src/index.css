@@ -38,27 +38,36 @@
 @theme {
   /*
    * Brand palette (manual p.15): Black #000000, Black Pearl #061820,
-   * Tradewind #6DB1AE, White #FFFFFF. Every other tone here is a lightness step on
-   * Black Pearl's hue so the site stays predominantly dark with white kept sparse.
+   * Tradewind #6DB1AE, White #FFFFFF. Light mode: white is the page, Black Pearl is
+   * the type, and Tradewind is the accent.
+   *
+   * Tradewind itself is only 2.5:1 on white, so it is not used as text. The accent
+   * tokens below are Tradewind taken down Black Pearl's hue until each one clears
+   * WCAG AA on white; `brand-teal` stays the unchanged brand value and is reserved
+   * for solid fills that carry Black Pearl text on top.
    */
-  --color-ink: #061820;
-  --color-ink-raised: #081f29;
-  --color-surface: #0a2833;
-  --color-surface-raised: #0e3341;
-  --color-line: #1a4553;
-  --color-line-soft: #123542;
-  --color-fg: #dcebe9;
-  --color-muted: #94b2b3;
-  --color-faint: #5f8189;
-  /* `mint*` is the historical token name for the accent; it now carries Tradewind. */
-  --color-mint: #6db1ae;
-  --color-mint-bright: #92c6c3;
-  --color-mint-deep: #2b6462;
-  --color-amber: #e2c078;
-  --color-rose: #e08a8a;
+  --color-ink: #ffffff;
+  --color-ink-raised: #eef4f4;
+  --color-surface: #f6faf9;
+  --color-surface-raised: #ffffff;
+  --color-line: #cfe0de;
+  --color-line-soft: #e0ecea;
+  --color-fg: #061820;
+  --color-muted: #3a5a63;
+  --color-faint: #56707a;
+  /* `mint*` is the historical token name for the accent; it now carries deep Tradewind. */
+  --color-mint: #2c7a74;
+  --color-mint-bright: #1b625e;
+  --color-mint-deep: #12403f;
+  --color-amber: #8a6a15;
+  --color-rose: #b0413e;
 
   --color-brand-teal: #6db1ae;
+  --color-brand-teal-lift: #8ac2bf;
   --color-brand-pearl: #061820;
+  --color-brand-pearl-raised: #10313e;
+  /* Values that stay dark whatever the page does: the core disc, and type on it. */
+  --color-brand-white: #ffffff;
 
   --font-sans: "Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Louis George Cafe", "Open Sans Variable", ui-sans-serif, sans-serif;
@@ -67,8 +76,8 @@
   --radius-card: 18px;
   --radius-pill: 999px;
 
-  --shadow-soft: 0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 20px 40px -28px rgb(0 0 0 / 0.9);
-  --shadow-glow: 0 0 0 1px rgb(109 177 174 / 0.28), 0 12px 48px -18px rgb(109 177 174 / 0.35);
+  --shadow-soft: 0 1px 2px 0 rgb(6 24 32 / 0.05), 0 18px 38px -28px rgb(6 24 32 / 0.35);
+  --shadow-glow: 0 0 0 1px rgb(109 177 174 / 0.55), 0 16px 34px -18px rgb(43 109 106 / 0.3);
 
   --animate-float: float 9s ease-in-out infinite;
   --animate-drift: drift 14s ease-in-out infinite;
@@ -146,6 +155,7 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    color-scheme: light;
   }
 
   body {
@@ -184,8 +194,8 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-mint) 38%, transparent);
-    color: #fff;
+    background: color-mix(in oklab, var(--color-brand-teal) 55%, white);
+    color: var(--color-brand-pearl);
   }
 
   :focus-visible {
@@ -245,16 +255,16 @@
   textarea:focus,
   select:focus {
     outline: none;
-    border-color: color-mix(in oklab, var(--color-mint) 55%, var(--color-line));
-    box-shadow: 0 0 0 3px rgb(109 177 174 / 0.14);
+    border-color: color-mix(in oklab, var(--color-mint) 70%, var(--color-line));
+    box-shadow: 0 0 0 3px rgb(44 122 116 / 0.22);
     background: var(--color-ink-raised);
   }
 
   input[aria-invalid="true"],
   textarea[aria-invalid="true"],
   select[aria-invalid="true"] {
-    border-color: color-mix(in oklab, var(--color-rose) 60%, var(--color-line));
-    box-shadow: 0 0 0 3px rgb(224 138 138 / 0.1);
+    border-color: color-mix(in oklab, var(--color-rose) 70%, var(--color-line));
+    box-shadow: 0 0 0 3px rgb(176 65 62 / 0.14);
   }
 
   select {
@@ -318,7 +328,7 @@
 }
 .card-hover:hover {
   transform: translateY(-3px);
-  border-color: color-mix(in oklab, var(--color-mint) 34%, var(--color-line));
+  border-color: color-mix(in oklab, var(--color-mint) 55%, var(--color-line));
   box-shadow: var(--shadow-glow);
 }
 
@@ -352,13 +362,20 @@
 
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgb(26 69 83 / 0.6) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(26 69 83 / 0.6) 1px, transparent 1px);
+    linear-gradient(to right, color-mix(in oklab, var(--color-brand-pearl) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-brand-pearl) 12%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 56px 56px;
 }
 
 .dot-bg {
-  background-image: radial-gradient(rgb(109 177 174 / 0.18) 1px, transparent 1px);
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-mint) 35%, transparent) 1px,
+    transparent 1px
+  );
   background-size: 26px 26px;
 }
 
@@ -367,7 +384,11 @@
 }
 
 .glow-mint {
-  background: radial-gradient(circle at 50% 50%, rgb(109 177 174 / 0.18), transparent 68%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in oklab, var(--color-brand-teal) 30%, transparent),
+    transparent 68%
+  );
   filter: blur(30px);
 }
 
@@ -393,7 +414,12 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgb(109 177 174 / 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--color-brand-teal) 45%, transparent),
+    transparent
+  );
   animation: var(--animate-sweep);
 }
 
@@ -402,7 +428,7 @@
   left: 0.75rem;
   top: -3.5rem;
   z-index: 100;
-  background: var(--color-mint);
+  background: var(--color-brand-teal);
   color: var(--color-brand-pearl);
   padding: 0.6rem 1rem;
   border-radius: 10px;

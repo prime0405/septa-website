@@ -233,7 +233,7 @@ export default function BlogPost() {
               <span>
                 By <span className="text-fg">{post.author}</span>
               </span>
-              <span aria-hidden className="text-line">
+              <span aria-hidden className="text-faint">
                 |
               </span>
               <span className="flex flex-wrap gap-1.5">

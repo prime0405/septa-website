@@ -37,7 +37,11 @@ function Sparkline({
   width?: number;
   tone?: "mint" | "amber" | "rose";
 }) {
-  const colors = { mint: "#6db1ae", amber: "#e2c078", rose: "#e08a8a" } as const;
+  const colors = {
+    mint: "var(--color-mint)",
+    amber: "var(--color-amber)",
+    rose: "var(--color-rose)",
+  } as const;
   const max = Math.max(...data);
   const min = Math.min(...data);
   const span = Math.max(1, max - min);
@@ -48,24 +52,24 @@ function Sparkline({
     <svg viewBox={`0 0 ${width} ${height}`} className="h-11 w-full" role="img" aria-label="Sample trend">
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={colors[tone]} stopOpacity="0.28" />
-          <stop offset="100%" stopColor={colors[tone]} stopOpacity="0" />
+          <stop offset="0%" style={{ stopColor: colors[tone], stopOpacity: 0.28 }} />
+          <stop offset="100%" style={{ stopColor: colors[tone], stopOpacity: 0 }} />
         </linearGradient>
       </defs>
       <polygon points={`0,${height} ${pts.join(" ")} ${width},${height}`} fill={`url(#${id})`} />
       <polyline
         points={pts.join(" ")}
         fill="none"
-        stroke={colors[tone]}
         strokeWidth="1.6"
         strokeLinejoin="round"
         strokeLinecap="round"
+        style={{ stroke: colors[tone] }}
       />
       <circle
         cx={width}
         cy={height - ((data[data.length - 1] - min) / span) * (height - 6) - 3}
         r="2.4"
-        fill={colors[tone]}
+        style={{ fill: colors[tone] }}
       />
     </svg>
   );

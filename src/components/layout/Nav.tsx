@@ -213,7 +213,7 @@ function MegaPanel({ item, open }: { item: NavItem; open: boolean }) {
           transition={{ duration: reduce ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="absolute top-[calc(100%+10px)] left-1/2 w-[720px] -translate-x-1/2"
         >
-          <div className="card grid grid-cols-[1fr_1fr_220px] gap-6 overflow-hidden p-5 shadow-[0_30px_70px_-40px_rgba(0,0,0,.95)]">
+          <div className="card grid grid-cols-[1fr_1fr_220px] gap-6 overflow-hidden p-5 shadow-[0_30px_70px_-40px_rgb(6_24_32/0.35)]">
             {item.groups?.map((g) => (
               <div key={g.heading}>
                 <p className="mb-3 font-mono text-[0.66rem] tracking-[0.18em] text-faint uppercase">
@@ -302,7 +302,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
     <>
       <motion.div
         key="scrim"
-        className="fixed inset-0 z-40 bg-black/70 backdrop-blur-[2px] lg:hidden"
+        className="fixed inset-0 z-40 bg-brand-pearl/35 backdrop-blur-[2px] lg:hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

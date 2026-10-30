@@ -55,7 +55,7 @@ export function Tabs({ tabs, className }: { tabs: Tab[]; className?: string }) {
               {selected ? (
                 <motion.span
                   layoutId={`${group}-pill`}
-                  className="absolute inset-0 rounded-pill bg-mint"
+                  className="absolute inset-0 rounded-pill bg-brand-teal"
                   transition={{ type: "spring", stiffness: 420, damping: 34 }}
                 />
               ) : null}

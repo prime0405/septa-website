@@ -35,27 +35,20 @@ export function HeroDiagram({ className }: { className?: string }) {
       >
         <defs>
           <linearGradient id="hd-stroke" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#6db1ae" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#6db1ae" stopOpacity="0.18" />
+            <stop offset="0%" style={{ stopColor: "var(--color-mint)", stopOpacity: 0.85 }} />
+            <stop offset="100%" style={{ stopColor: "var(--color-mint)", stopOpacity: 0.25 }} />
           </linearGradient>
           <radialGradient id="hd-core" cx="50%" cy="35%" r="70%">
-            <stop offset="0%" stopColor="#123542" />
-            <stop offset="100%" stopColor="#061820" />
+            <stop offset="0%" style={{ stopColor: "var(--color-brand-pearl-raised)" }} />
+            <stop offset="100%" style={{ stopColor: "var(--color-brand-pearl)" }} />
           </radialGradient>
           <pattern id="hd-dots" width="18" height="18" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.1" fill="#1a4553" />
+            <circle cx="1.5" cy="1.5" r="1.1" className="fill-line" />
           </pattern>
         </defs>
 
-        <circle cx={C} cy={C} r="196" fill="url(#hd-dots)" opacity="0.55" />
-        <circle
-          cx={C}
-          cy={C}
-          r="196"
-          fill="none"
-          stroke="#123542"
-          strokeWidth="1"
-        />
+        <circle cx={C} cy={C} r="196" fill="url(#hd-dots)" opacity="0.9" />
+        <circle cx={C} cy={C} r="196" fill="none" strokeWidth="1" className="stroke-line" />
 
         {/* rotating measurement ring */}
         <g className={reduce ? undefined : "origin-center animate-spin-slow"}>
@@ -64,9 +57,9 @@ export function HeroDiagram({ className }: { className?: string }) {
             cy={C}
             r="184"
             fill="none"
-            stroke="#1a4553"
             strokeWidth="1"
             strokeDasharray="2 16"
+            className="stroke-line"
           />
         </g>
 
@@ -81,11 +74,10 @@ export function HeroDiagram({ className }: { className?: string }) {
               <path
                 d={d}
                 fill="none"
-                stroke="#6db1ae"
-                strokeOpacity="0.55"
+                strokeOpacity="0.7"
                 strokeWidth="1.4"
                 strokeDasharray="4 20"
-                className={reduce ? undefined : "animate-dash"}
+                className={cn("stroke-mint", reduce ? undefined : "animate-dash")}
               />
             </g>
           );
@@ -101,9 +93,8 @@ export function HeroDiagram({ className }: { className?: string }) {
                 width={html}
                 height={html}
                 rx="13"
-                fill="#0a2833"
-                stroke="#1a4553"
-                className={reduce ? undefined : cn("origin-center animate-float")}
+                strokeWidth="1"
+                className={cn("fill-ink-raised stroke-line", reduce ? undefined : "origin-center animate-float")}
                 style={reduce ? undefined : { animationDelay: `${i * 0.9}s` }}
               />
               <foreignObject width={html} height={html}>
@@ -118,10 +109,10 @@ export function HeroDiagram({ className }: { className?: string }) {
                 x={html / 2}
                 y={html + 17}
                 textAnchor="middle"
-                fill="#94b2b3"
                 fontSize="10.5"
                 fontFamily="var(--font-mono)"
                 letterSpacing="0.6"
+                className="fill-muted"
               >
                 {label}
               </text>
@@ -131,28 +122,27 @@ export function HeroDiagram({ className }: { className?: string }) {
 
         {/* core */}
         <g>
-          <circle cx={C} cy={C} r="74" fill="none" stroke="#6db1ae" strokeOpacity="0.14" />
-          <circle cx={C} cy={C} r="62" fill="url(#hd-core)" stroke="#2b6462" />
+          <circle cx={C} cy={C} r="74" fill="none" strokeOpacity="0.3" className="stroke-mint" />
+          <circle cx={C} cy={C} r="62" fill="url(#hd-core)" className="stroke-brand-teal" />
           <circle
             cx={C}
             cy={C}
             r="62"
             fill="none"
-            stroke="#6db1ae"
-            strokeOpacity="0.45"
+            strokeOpacity="0.7"
             strokeWidth="1"
             strokeDasharray="60 300"
-            className={reduce ? undefined : "origin-center animate-spin-slow"}
+            className={cn("stroke-brand-teal", reduce ? undefined : "origin-center animate-spin-slow")}
           />
           <text
             x={C}
             y={C - 8}
             textAnchor="middle"
-            fill="#dcebe9"
             fontSize="19"
             fontFamily="var(--font-display)"
             fontWeight="600"
             letterSpacing="3"
+            className="fill-brand-white"
           >
             SEPTA
           </text>
@@ -160,15 +150,20 @@ export function HeroDiagram({ className }: { className?: string }) {
             x={C}
             y={C + 12}
             textAnchor="middle"
-            fill="#6db1ae"
             fontSize="8.5"
             fontFamily="var(--font-mono)"
             letterSpacing="2.4"
+            className="fill-brand-teal"
           >
             DELIVERY CORE
           </text>
-          <line x1={C - 26} y1={C + 24} x2={C + 26} y2={C + 24} stroke="#1a4553" />
-          <circle cx={C - 26} cy={C + 24} r="1.8" fill="#6db1ae" className={reduce ? undefined : "animate-pulse-node"} />
+          <line x1={C - 26} y1={C + 24} x2={C + 26} y2={C + 24} className="stroke-brand-pearl-raised" />
+          <circle
+            cx={C - 26}
+            cy={C + 24}
+            r="1.8"
+            className={cn("fill-brand-teal", reduce ? undefined : "animate-pulse-node")}
+          />
         </g>
       </svg>
 

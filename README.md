@@ -223,14 +223,25 @@ application form switches from "expression of interest" to applying for that rol
 
 Tailwind v4, configured in CSS at `src/index.css` under `@theme`. The palette is the Septa brand
 manual's, not a designer's guess at it: pure black `#000000`, Black Pearl `#061820`, Tradewind
-`#6DB1AE` and white. The dark surfaces are a ramp built off Black Pearl (`--color-ink` `#061820`,
-`--color-ink-raised` `#081f29`, `--color-surface` `#0a2833`, `--color-surface-raised` `#0e3341`,
-`--color-line` `#1a4553`), and Tradewind is the accent — still named `--color-mint` for historical
-reasons, with `--color-mint-bright` `#92c6c3` and `--color-mint-deep` `#2b6462` beside it. Text
-tokens (`--color-fg` `#dcebe9`, `--color-muted` `#94b2b3`, `--color-faint` `#5f8189`) are tinted
-teal rather than neutral grey so the whole page sits in the brand hue. No component carries a
-hard-coded hex; the only literal colours outside `@theme` are inside SVG visuals, where attributes
-cannot read a CSS custom property.
+`#6DB1AE` and white. The site is **light**: white is the page, Black Pearl is the type, and
+Tradewind is the accent. Every surface is a step on that pairing (`--color-ink` `#ffffff`,
+`--color-ink-raised` `#eef4f4` for recessed wells and the footer band, `--color-surface`
+`#f6faf9`, `--color-surface-raised` `#ffffff` for cards, `--color-line` `#cfe0de`), and the text
+tokens are Black Pearl taken up in lightness steps (`--color-fg` `#061820`, `--color-muted`
+`#3a5a63`, `--color-faint` `#56707a`).
+
+Tradewind itself is only 2.5:1 on white, so it is never used as text. The accent exists in two
+roles: `--color-brand-teal` `#6db1ae` is the unchanged brand value and is reserved for solid fills
+that carry Black Pearl on top (primary button, selected tab pill, checked boxes, the logo fin) at
+7.4:1; `--color-mint` `#2c7a74` is Tradewind taken down the same hue until it clears WCAG AA on
+white, and it is what every `text-mint`, `border-mint` and tinted `bg-mint/x` on the site actually
+resolves to. `--color-amber` and `--color-rose` are darkened the same way for status text. The
+pairings were checked by computing contrast ratios against every surface, not by eye: body text
+18.1:1, muted 7.4:1, faint 5.3:1, accent 5.1:1, amber 5.1:1, rose 5.7:1.
+No component carries a hard-coded hex. The only literal colour outside `@theme` is the Tradewind
+fin in `Logo.tsx`, which is brand-fixed; the SVG visuals use Tailwind `fill-*` / `stroke-*`
+utilities or an inline `style`, because `var()` does not resolve inside an SVG presentation
+attribute.
 
 **Type.** The manual specifies Louis George Café as the primary face and Open Sans as the
 secondary. Both are self-hosted — Louis George Café from `src/assets/fonts/` via four
@@ -248,8 +259,15 @@ background. The path data lives in `src/components/layout/brandPaths.ts` and is 
 `public/` for anyone who wants the file rather than the component: `septa-logo.svg` (white
 wordmark, for dark backgrounds), `septa-logo-ink.svg` (Black Pearl wordmark, for light ones),
 `septa-mark.svg`, plus `favicon.svg`, `favicon.png` (512²) and `apple-touch-icon.png` (180²).
-The site itself is dark-only by design; the light lockup exists because the brand manual requires
-it, not because there is a theme switch.
+There is no theme switch: the site ships light. The wordmark picks its own colour from
+`currentColor`, so it renders correctly anywhere, and `septa-logo.svg` is kept in `public/` for
+dark placements the brand manual still calls for. The original brief asked for a predominantly dark
+site and the hero was composed against the supplied dark motion reference; on 2026-10-30 that was
+reversed at the owner's request, which is why the hero's glows, grid and dot textures are all
+token-derived rather than painted — they were re-tinted by one `@theme` block, not redrawn. The one
+element that deliberately stays dark on a white page is the delivery-core disc in
+`HeroDiagram.tsx`, which uses `--color-brand-pearl` and `--color-brand-pearl-raised` so it reads as
+a Black Pearl disc with white and Tradewind type on it.
 
 Motion respects `prefers-reduced-motion`: every animation is gated on `useReducedMotion()`, the
 reading progress bar disappears, and smooth scrolling becomes instant.

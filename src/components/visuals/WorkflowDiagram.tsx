@@ -43,7 +43,7 @@ export function WorkflowDiagram({ className }: { className?: string }) {
               className={cn(
                 "rounded-pill px-3 py-1.5 text-[0.78rem] font-medium transition-colors",
                 connected === o.v
-                  ? "bg-mint text-brand-pearl"
+                  ? "bg-brand-teal text-brand-pearl"
                   : "text-muted hover:text-fg",
               )}
             >
@@ -71,18 +71,39 @@ export function WorkflowDiagram({ className }: { className?: string }) {
             width="92"
             height="80"
             rx="14"
-            fill={connected ? "#123542" : "#0a2833"}
-            stroke={connected ? "#6db1ae" : "#1a4553"}
+            className={connected ? "fill-brand-teal stroke-mint" : "fill-ink-raised stroke-line"}
             strokeDasharray={connected ? undefined : "4 4"}
             style={{ transition: "all .35s ease" }}
           />
-          <text x="242" y="184" textAnchor="middle" fill={connected ? "#6db1ae" : "#5f8189"} fontSize="10" fontFamily="var(--font-mono)">
+          <text
+            x="242"
+            y="184"
+            textAnchor="middle"
+            fontSize="10"
+            fontFamily="var(--font-mono)"
+            className={connected ? "fill-brand-pearl" : "fill-faint"}
+          >
             AUTOMATION
           </text>
-          <text x="242" y="200" textAnchor="middle" fill={connected ? "#6db1ae" : "#5f8189"} fontSize="10" fontFamily="var(--font-mono)">
+          <text
+            x="242"
+            y="200"
+            textAnchor="middle"
+            fontSize="10"
+            fontFamily="var(--font-mono)"
+            className={connected ? "fill-brand-pearl" : "fill-faint"}
+          >
             LAYER
           </text>
-          <text x="242" y="220" textAnchor="middle" fill="#94b2b3" fontSize="8.5" fontFamily="var(--font-mono)">
+          <text
+            x="242"
+            y="220"
+            textAnchor="middle"
+            fontSize="8.5"
+            fontFamily="var(--font-mono)"
+            fillOpacity={connected ? 0.75 : 1}
+            className={connected ? "fill-brand-pearl" : "fill-faint"}
+          >
             {connected ? "rules · retries · alerts" : "waiting"}
           </text>
 
@@ -103,23 +124,28 @@ export function WorkflowDiagram({ className }: { className?: string }) {
                   width={w}
                   height={h}
                   rx="10"
-                  fill="#0e3341"
-                  stroke="#1a4553"
+                  className="fill-surface-raised stroke-line"
                 />
-                <text x={x + 12} y={s.y + 25} fill="#94b2b3" fontSize="10.5" fontFamily="var(--font-sans)">
+                <text
+                  x={x + 12}
+                  y={s.y + 25}
+                  fontSize="10.5"
+                  fontFamily="var(--font-sans)"
+                  className="fill-muted"
+                >
                   {s.label}
                 </text>
                 <path
                   d={d}
                   fill="none"
-                  stroke={connected ? "#6db1ae" : "#1a4553"}
+                  className={connected ? "stroke-mint" : "stroke-line"}
                   strokeWidth="1.3"
                   strokeDasharray={connected ? undefined : "3 6"}
                   opacity={connected ? 0.85 : 0.5}
                   style={{ transition: "all .35s ease" }}
                 />
                 {connected ? (
-                  <circle r="3" fill="#6db1ae">
+                  <circle r="3" className="fill-mint">
                     <animateMotion
                       dur="2.8s"
                       begin={`${i * 0.45}s`}
@@ -128,7 +154,7 @@ export function WorkflowDiagram({ className }: { className?: string }) {
                     />
                   </circle>
                 ) : (
-                  <text x={startX + 16} y={startY + 3} fill="#5f8189" fontSize="12">
+                  <text x={startX + 16} y={startY + 3} fontSize="12" className="fill-faint">
                     ✕
                   </text>
                 )}
