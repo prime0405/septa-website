@@ -5,6 +5,7 @@ import { ArrowUp } from "lucide-react";
 import { Footer } from "./Footer";
 import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
+import { CursorHalo } from "../ui/CursorHalo";
 import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
 
 function useScrollReset() {
@@ -83,6 +84,7 @@ export function Layout() {
       {showIntro && held && pathname === "/" ? (
         <IntroCurtain onDone={() => setShowIntro(false)} />
       ) : null}
+      <CursorHalo />
     </>
   );
 }

@@ -284,16 +284,30 @@ curtain is still covering. It runs once per browser session (`sessionStorage`), 
 `prefers-reduced-motion`, and never when the tab is backgrounded at boot, because a curtain nobody
 watched is only a delay. The arming decision is memoised, so React's double render in development
 cannot start a second one.
-The hero headline staggers in by word, and two pointer effects follow the cursor on devices that
-have one: cards under `a.card` carry a 7% Tradewind radial wash that tracks the pointer
-(`src/components/ui/PointerGlow.tsx`), and the hero's two CTAs drift up to 8px toward it
-(`Button`'s `magnetic` prop). Both write through one rAF-coalesced handler in
-`src/lib/pointerGlow.tsx`, and both require `(hover: hover) and (pointer: fine)`. The magnet is a
-transform only, so it composes with the existing `active:translate-y-[1px]` press instead of
-fighting it. The wash is capped at 7% because a brighter tint on a white card pulls `text-mint`
-under AA; with it spliced into the stack the worst measured pair on the site is 5.0:1.
-All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and smooth
-scrolling becomes instant.
+The hero headline staggers in by word. Every section label decodes into place: `Decode`
+(`src/components/ui/Decode.tsx`) churns random glyphs, then resolves them left to right ~34ms per
+character once the line scrolls into view, once. The real text never leaves the DOM and only
+reserves the width, so a screen reader reads the label rather than the noise and the line cannot
+jitter inside the flex row it sits in.
+Two pointer effects follow the cursor on devices that have one. Cards under `a.card` carry a 7%
+Tradewind radial wash that tracks the pointer (`src/components/ui/PointerGlow.tsx`) and lean up to
+7° to face it (`usePointerTrack("tilt")` in `src/lib/pointerGlow.tsx` writes `--rx`/`--ry`; the
+`.tilt` rule in `src/index.css` composes them with the pre-existing 3px hover lift and restates
+`transform` inside `:hover` so it does not lose the cascade to `.card-hover:hover`). The angle is
+clamped, because a card can slide out from under a still cursor and a raw ratio would then read a
+pointer 900px outside the box. The hero's two CTAs drift up to 8px toward the pointer instead
+(`Button`'s `magnetic` prop). All of them write through one rAF-coalesced handler and require
+`(hover: hover) and (pointer: fine)`. On top of that, `CursorHalo` (`src/components/ui/CursorHalo.tsx`)
+draws a 24px ring that lags the pointer and a 6px dot that sits exactly on it, and both grow 1.9×
+over anything clickable; the native cursor stays where it is, because replacing it is the part
+people notice when they are aiming at a form field, and the loop stops itself once it has caught up
+so a still pointer costs nothing. The wash is capped at 7% because a brighter tint on a white card
+pulls `text-mint` under AA; with it spliced into the stack the worst measured pair on the site is
+5.0:1.
+The homepage hero also has depth: `useScroll` on the hero section drives three layers at different
+rates as it leaves the viewport (grid 70px, aurora 130px, copy −26px, the last one against the
+first two). All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
+smooth scrolling becomes instant.
 
 ## Hosting
 

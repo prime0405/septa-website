@@ -335,6 +335,24 @@
   box-shadow: var(--shadow-glow);
 }
 
+/* Cards that lean toward the cursor. `transform` is restated inside :hover so this
+   rule is not outranked by .card-hover:hover above, and the existing lift rides in
+   through --lift instead of replacing the rotation. */
+.tilt {
+  transition:
+    transform 0.18s ease-out,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.tilt,
+.tilt:hover {
+  transform: perspective(780px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+    translateY(var(--lift, 0px));
+}
+.tilt:hover {
+  --lift: -3px;
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.7rem;

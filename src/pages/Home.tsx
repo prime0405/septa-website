@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, Compass, Layers, Search, Send, Users2 } from "lucide-react";
 import { useIntroHeld } from "../lib/intro";
 import { AiDeliveryPanel, ArchitectureStack } from "../components/visuals/FeaturePanels";
@@ -70,6 +71,15 @@ function Rise({ i, held, children }: { i: number; held: boolean; children: React
 export default function Home() {
   usePageMeta({ title: site.name });
   const held = useIntroHeld();
+  const heroRef = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const gridY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 70]);
+  const auroraY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 130]);
+  const copyY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : -26]);
 
   const ai = serviceBySlug("ai-product-development")!;
   const talent = serviceBySlug("talent-solution")!;
@@ -77,22 +87,17 @@ export default function Home() {
   return (
     <>
       {/* ------------------------------ hero ------------------------------ */}
-      <section className="relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
-        <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-35 mask-fade" />
-        <div
-          aria-hidden
-          className="animate-aurora pointer-events-none absolute top-[-22%] left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-mint/[0.13] blur-[120px]"
-        />
-        <div
-          aria-hidden
-          className="animate-aurora-slow pointer-events-none absolute top-[18%] left-[8%] hidden h-[380px] w-[380px] rounded-full bg-mint/[0.07] blur-[110px] lg:block"
-        />
-        <div
-          aria-hidden
-          className="animate-aurora pointer-events-none absolute top-[6%] right-[6%] hidden h-[320px] w-[420px] rounded-full bg-mint/[0.06] blur-[110px] lg:block"
-        />
+      <section ref={heroRef} className="relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
+        <motion.div aria-hidden style={{ y: gridY }} className="pointer-events-none absolute inset-0">
+          <div className="grid-bg absolute inset-0 opacity-35 mask-fade" />
+        </motion.div>
+        <motion.div aria-hidden style={{ y: auroraY }} className="pointer-events-none absolute inset-0">
+          <div className="animate-aurora absolute top-[-22%] left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-mint/[0.13] blur-[120px]" />
+          <div className="animate-aurora-slow absolute top-[18%] left-[8%] hidden h-[380px] w-[380px] rounded-full bg-mint/[0.07] blur-[110px] lg:block" />
+          <div className="animate-aurora absolute top-[6%] right-[6%] hidden h-[320px] w-[420px] rounded-full bg-mint/[0.06] blur-[110px] lg:block" />
+        </motion.div>
 
-        <div className="wrap relative">
+        <motion.div style={{ y: copyY }} className="wrap relative">
           <div className="mx-auto max-w-4xl text-center">
             <Reveal>
               <span className="inline-flex max-w-full items-center justify-center gap-2 rounded-2xl border border-mint/25 bg-surface/70 px-3.5 py-1.5 text-left font-mono text-[0.66rem] leading-relaxed tracking-[0.12em] text-mint uppercase sm:rounded-pill sm:text-[0.68rem]">
@@ -186,7 +191,7 @@ export default function Home() {
               {serviceOverview}
             </p>
           </Reveal>
-        </div>
+        </motion.div>
 
         <div className="relative mt-14 border-y border-line-soft">
           <div className="wrap flex gap-3 overflow-x-auto py-4 [scrollbar-width:none]">

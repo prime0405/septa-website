@@ -24,13 +24,14 @@ export function ServiceCard({
   index?: number;
   compact?: boolean;
 }) {
-  const track = usePointerTrack<HTMLAnchorElement>("glow");
+  const track = usePointerTrack<HTMLAnchorElement>("tilt", 7);
   return (
     <Link
       to={href}
       onPointerMove={track.onPointerMove}
+      onPointerLeave={track.onPointerLeave}
       className={cn(
-        "card card-hover group relative isolate flex flex-col overflow-hidden p-6",
+        "card card-hover tilt group relative isolate flex flex-col overflow-hidden p-6",
         compact && "p-5",
       )}
     >
@@ -61,13 +62,14 @@ export function ServiceCard({
 }
 
 export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boolean }) {
-  const track = usePointerTrack<HTMLAnchorElement>("glow");
+  const track = usePointerTrack<HTMLAnchorElement>("tilt", 7);
   return (
     <Link
       to={paths.case(study.slug)}
       onPointerMove={track.onPointerMove}
+      onPointerLeave={track.onPointerLeave}
       className={cn(
-        "card card-hover group relative isolate flex flex-col overflow-hidden",
+        "card card-hover tilt group relative isolate flex flex-col overflow-hidden",
         featured ? "lg:col-span-2 lg:flex-row lg:items-stretch" : "",
       )}
     >
@@ -126,7 +128,7 @@ export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boo
 }
 
 export function PostCard({ post, variant = "default" }: { post: Post; variant?: "default" | "featured" | "compact" }) {
-  const track = usePointerTrack<HTMLAnchorElement>("glow");
+  const track = usePointerTrack<HTMLAnchorElement>("tilt", 7);
   const inner = (
     <>
       <div className="flex flex-wrap items-center gap-2">
@@ -166,7 +168,8 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
       <Link
         to={paths.post(post.slug)}
         onPointerMove={track.onPointerMove}
-        className="card card-hover group relative isolate grid gap-6 overflow-hidden p-6 sm:p-8 lg:grid-cols-[1.2fr_1fr]"
+        onPointerLeave={track.onPointerLeave}
+        className="card card-hover tilt group relative isolate grid gap-6 overflow-hidden p-6 sm:p-8 lg:grid-cols-[1.2fr_1fr]"
       >
         <PointerGlow radius={340} />
         <div className="flex flex-col">{inner}</div>
@@ -190,8 +193,9 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
     <Link
       to={paths.post(post.slug)}
       onPointerMove={track.onPointerMove}
+      onPointerLeave={track.onPointerLeave}
       className={cn(
-        "card card-hover group relative isolate flex flex-col overflow-hidden p-5",
+        "card card-hover tilt group relative isolate flex flex-col overflow-hidden p-5",
         variant === "compact" && "p-4",
       )}
     >

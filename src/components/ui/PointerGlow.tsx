@@ -12,8 +12,9 @@ import { useReducedMotion } from "motion/react";
  * It sits at `z-index: -10` inside a card that also has `isolate`, which paints it above the
  * card's own background and below its text.
  *
- * Pair it with `usePointerTrack("glow")` on the card element; without that handler the
- * highlight parks in the middle of the card instead of following the cursor.
+ * Pair it with `usePointerTrack("glow")` or `("tilt")` on the card element — tilt writes the
+ * position too, so one handler drives both effects. Without either, the highlight parks in the
+ * middle of the card instead of following the cursor.
  */
 export function PointerGlow({ radius = 240 }: { radius?: number }) {
   const reduce = useReducedMotion();

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useReducedMotion, motion } from "motion/react";
 import { useIntroHeld } from "../../lib/intro";
+import { Decode } from "./Decode";
 import {
   AlertTriangle,
   ArrowRight,
@@ -45,7 +46,11 @@ export function Section({
 }
 
 export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return <span className={cn("eyebrow", className)}>{children}</span>;
+  return (
+    <span className={cn("eyebrow", className)}>
+      {typeof children === "string" ? <Decode text={children} /> : children}
+    </span>
+  );
 }
 
 export function SectionHeading({
