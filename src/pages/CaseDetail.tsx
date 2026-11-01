@@ -290,7 +290,7 @@ export default function CaseDetail() {
                     key={l}
                     className="flex gap-4 rounded-card border border-line bg-surface-raised px-5 py-4"
                   >
-                    <span className="font-mono text-[0.72rem] text-mint/80">
+                    <span className="font-mono text-[0.72rem] text-mint">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="text-[0.93rem] text-muted">{l}</span>

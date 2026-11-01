@@ -33,7 +33,7 @@ export function AiDeliveryPanel({ className }: { className?: string }) {
       <pre className="overflow-x-auto p-4 font-mono text-[0.74rem] leading-relaxed sm:p-5">
         {lines.map((l, i) => (
           <div key={i} className="flex gap-3">
-            <span className="w-5 shrink-0 text-right text-faint/60 select-none">{i + 1}</span>
+            <span className="w-5 shrink-0 text-right text-faint select-none">{i + 1}</span>
             <code className={l.c}>{l.t || " "}</code>
           </div>
         ))}

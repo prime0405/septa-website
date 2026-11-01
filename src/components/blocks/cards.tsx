@@ -4,8 +4,10 @@ import type { CaseStudy } from "../../data/cases";
 import type { Post } from "../../data/posts";
 import type { ServiceContent } from "../../data/services";
 import { cn, formatDate, readingTime } from "../../lib/cn";
+import { usePointerTrack } from "../../lib/pointerGlow";
 import { paths } from "../../lib/paths";
 import { Button } from "../ui/Button";
+import { PointerGlow } from "../ui/PointerGlow";
 import { Pill, SampleTag } from "../ui/primitives";
 import { ServiceIcon } from "./ServiceIcon";
 
@@ -22,15 +24,17 @@ export function ServiceCard({
   index?: number;
   compact?: boolean;
 }) {
+  const track = usePointerTrack<HTMLAnchorElement>("glow");
   return (
     <Link
       to={href}
+      onPointerMove={track.onPointerMove}
       className={cn(
-        "card card-hover group relative flex flex-col overflow-hidden p-6",
+        "card card-hover group relative isolate flex flex-col overflow-hidden p-6",
         compact && "p-5",
       )}
     >
-      <div aria-hidden className="pointer-events-none absolute -top-16 -right-16 size-40 rounded-full bg-mint/[0.07] opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+      <PointerGlow />
       <div className="flex items-start justify-between gap-4">
         <span className="flex size-11 items-center justify-center rounded-xl border border-mint/25 bg-mint/[0.07] text-mint transition-colors group-hover:border-mint/50">
           <ServiceIcon icon={service.icon} className="size-5.5" />
@@ -57,14 +61,17 @@ export function ServiceCard({
 }
 
 export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boolean }) {
+  const track = usePointerTrack<HTMLAnchorElement>("glow");
   return (
     <Link
       to={paths.case(study.slug)}
+      onPointerMove={track.onPointerMove}
       className={cn(
-        "card card-hover group flex flex-col overflow-hidden",
+        "card card-hover group relative isolate flex flex-col overflow-hidden",
         featured ? "lg:col-span-2 lg:flex-row lg:items-stretch" : "",
       )}
     >
+      <PointerGlow radius={320} />
       <div
         aria-hidden
         className={cn(
@@ -119,6 +126,7 @@ export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boo
 }
 
 export function PostCard({ post, variant = "default" }: { post: Post; variant?: "default" | "featured" | "compact" }) {
+  const track = usePointerTrack<HTMLAnchorElement>("glow");
   const inner = (
     <>
       <div className="flex flex-wrap items-center gap-2">
@@ -157,8 +165,10 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
     return (
       <Link
         to={paths.post(post.slug)}
-        className="card card-hover group relative grid gap-6 overflow-hidden p-6 sm:p-8 lg:grid-cols-[1.2fr_1fr]"
+        onPointerMove={track.onPointerMove}
+        className="card card-hover group relative isolate grid gap-6 overflow-hidden p-6 sm:p-8 lg:grid-cols-[1.2fr_1fr]"
       >
+        <PointerGlow radius={340} />
         <div className="flex flex-col">{inner}</div>
         <div aria-hidden className="relative min-h-40 overflow-hidden rounded-card border border-line bg-ink-raised">
           <div className="grid-bg absolute inset-0 opacity-70" />
@@ -177,7 +187,15 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
   }
 
   return (
-    <Link to={paths.post(post.slug)} className={cn("card card-hover group flex flex-col p-5", variant === "compact" && "p-4")}>
+    <Link
+      to={paths.post(post.slug)}
+      onPointerMove={track.onPointerMove}
+      className={cn(
+        "card card-hover group relative isolate flex flex-col overflow-hidden p-5",
+        variant === "compact" && "p-4",
+      )}
+    >
+      <PointerGlow />
       {inner}
     </Link>
   );

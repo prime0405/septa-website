@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useReducedMotion, motion } from "motion/react";
+import { useIntroHeld } from "../../lib/intro";
 import {
   AlertTriangle,
   ArrowRight,
@@ -257,14 +258,19 @@ export function Reveal({
   as?: "div" | "li" | "section";
 }) {
   const reduce = useReducedMotion();
+  const held = useIntroHeld();
   const MotionTag = motion[as as "div"];
   if (reduce) return <div className={className}>{children}</div>;
   return (
     <MotionTag
       className={className}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px 0px -60px 0px" }}
+      {...(held
+        ? {}
+        : {
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true, margin: "-60px 0px -60px 0px" },
+          })}
       transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}

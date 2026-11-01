@@ -55,11 +55,14 @@
   --color-fg: #061820;
   --color-muted: #3a5a63;
   --color-faint: #56707a;
-  /* `mint*` is the historical token name for the accent; it now carries deep Tradewind. */
-  --color-mint: #2c7a74;
+  /* `mint*` is the historical token name for the accent; it now carries deep Tradewind.
+   * These two are set so the accent still clears AA *on its own tint*: labels and selected
+   * states put `mint` or `amber` text inside a 10% chip of the same colour, which costs
+   * about 0.6 of contrast, so the plain text value would land at 4.24:1 there. */
+  --color-mint: #286f6a;
   --color-mint-bright: #1b625e;
   --color-mint-deep: #12403f;
-  --color-amber: #8a6a15;
+  --color-amber: #785c11;
   --color-rose: #b0413e;
 
   --color-brand-teal: #6db1ae;

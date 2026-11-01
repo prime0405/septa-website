@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 import { cn } from "../../lib/cn";
+import { usePointerTrack } from "../../lib/pointerGlow";
 
 type Variant = "primary" | "secondary" | "ghost" | "outline-mint" | "text";
 type Size = "sm" | "md" | "lg";
 
 const base =
   "relative inline-flex items-center justify-center gap-2 font-medium rounded-pill transition-[background,border-color,color,box-shadow,transform] duration-200 ease-out select-none whitespace-nowrap disabled:opacity-50 disabled:pointer-events-none active:translate-y-[1px]";
+
+// Set only on a magnetic button, so the pull is a translate and the press stays a translate.
+const magnet = "translate-x-[var(--tx,0px)] translate-y-[var(--ty,0px)]";
 
 const variants: Record<Variant, string> = {
   primary:
@@ -31,6 +35,8 @@ type CommonProps = {
   iconStart?: ReactNode;
   iconEnd?: ReactNode;
   block?: boolean;
+  /** Drift a few pixels toward the cursor while it is over the button. */
+  magnetic?: boolean;
 };
 
 type ButtonAsButton = CommonProps &
@@ -65,10 +71,14 @@ export function Button(props: ButtonProps) {
     iconStart,
     iconEnd,
     block,
+    magnetic,
     ...rest
   } = props;
 
-  const classes = cn(base, variants[variant], sizes[size], block && "w-full", className);
+  const track = usePointerTrack<HTMLElement>("magnet");
+  const handlers = magnetic ? track : {};
+
+  const classes = cn(base, variants[variant], sizes[size], block && "w-full", magnetic && magnet, className);
   const inner = (
     <>
       {iconStart}
@@ -80,7 +90,7 @@ export function Button(props: ButtonProps) {
   if ("to" in props && props.to !== undefined) {
     const { to, ...linkRest } = rest as { to: string };
     return (
-      <Link to={to} className={classes} {...(linkRest as object)}>
+      <Link to={to} className={classes} {...(linkRest as object)} {...handlers}>
         {inner}
       </Link>
     );
@@ -94,6 +104,7 @@ export function Button(props: ButtonProps) {
         className={classes}
         rel={(props as ButtonAsAnchor).rel ?? "noreferrer"}
         {...(anchorRest as object)}
+        {...handlers}
       >
         {inner}
       </a>
@@ -105,6 +116,7 @@ export function Button(props: ButtonProps) {
       type={(props as ButtonAsButton).type ?? "button"}
       className={classes}
       {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+      {...handlers}
     >
       {inner}
     </button>

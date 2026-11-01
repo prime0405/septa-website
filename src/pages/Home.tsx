@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
+import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Compass, Layers, Search, Send, Users2 } from "lucide-react";
+import { useIntroHeld } from "../lib/intro";
 import { AiDeliveryPanel, ArchitectureStack } from "../components/visuals/FeaturePanels";
 import { ProcessSteps } from "../components/visuals/ProcessSteps";
 import { CaseCard, PostCard, ServiceCard } from "../components/blocks/cards";
@@ -48,8 +51,25 @@ const deliveryProcess = [
   { title: "Operate", detail: "Improve against the baseline, hand over properly, stay reachable.", note: "Then repeat" },
 ];
 
+/** One headline word, rising into place. `held` keeps it waiting for the curtain. */
+function Rise({ i, held, children }: { i: number; held: boolean; children: ReactNode }) {
+  const reduce = useReducedMotion();
+  if (reduce) return <span className="inline-block">{children}</span>;
+  return (
+    <motion.span
+      className="inline-block"
+      initial={{ opacity: 0, y: "0.45em" }}
+      animate={held ? { opacity: 0, y: "0.45em" } : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.62, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
 export default function Home() {
   usePageMeta({ title: site.name });
+  const held = useIntroHeld();
 
   const ai = serviceBySlug("ai-product-development")!;
   const talent = serviceBySlug("talent-solution")!;
@@ -81,13 +101,16 @@ export default function Home() {
               </span>
             </Reveal>
 
-            <Reveal delay={0.06}>
-              <h1 className="mt-7 text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[0.96]">
-                Technology That Moves
-                <br className="hidden sm:block" /> Your{" "}
-                <span className="text-mint">Business Forward.</span>
-              </h1>
-            </Reveal>
+            <h1 className="mt-7 text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[0.96]">
+              <Rise i={0} held={held}>Technology</Rise>{" "}
+              <Rise i={1} held={held}>That</Rise>{" "}
+              <Rise i={2} held={held}>Moves</Rise>
+              <br className="hidden sm:block" /> <Rise i={3} held={held}>Your</Rise>{" "}
+              <span className="text-mint">
+                <Rise i={4} held={held}>Business</Rise>{" "}
+                <Rise i={5} held={held}>Forward.</Rise>
+              </span>
+            </h1>
 
             <Reveal delay={0.12}>
               <p className="prose-body mx-auto mt-6 max-w-2xl text-[1.06rem]">
@@ -100,10 +123,10 @@ export default function Home() {
 
             <Reveal delay={0.18}>
               <div className="mt-9 flex flex-wrap justify-center gap-3">
-                <Button to={paths.services()} size="lg" iconEnd={<ArrowRight className="size-4" />}>
+                <Button to={paths.services()} size="lg" magnetic iconEnd={<ArrowRight className="size-4" />}>
                   Explore Our Services
                 </Button>
-                <Button to={paths.contact()} size="lg" variant="outline-mint">
+                <Button to={paths.contact()} size="lg" variant="outline-mint" magnetic>
                   Let’s Work Together
                 </Button>
               </div>
@@ -191,7 +214,7 @@ export default function Home() {
           {advantagePillars.map((pillar, i) => (
             <Reveal key={pillar.title} delay={i * 0.05} className={i === 0 ? "lg:col-span-1" : ""}>
               <Card className="card-hover h-full p-6">
-                <span className="font-mono text-[0.72rem] text-mint/70">
+                <span className="font-mono text-[0.72rem] text-mint">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 text-[1.08rem]">{pillar.title}</h3>
@@ -498,7 +521,7 @@ export default function Home() {
           ].map((w, i) => (
             <Reveal key={w.title} delay={i * 0.04}>
               <div className="group flex gap-4 border-l border-line pl-5 transition-colors hover:border-mint/50">
-                <span className="font-mono text-[0.72rem] text-mint/70">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-[0.72rem] text-mint">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <h3 className="text-[1.05rem]">{w.title}</h3>
                   <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">{w.detail}</p>

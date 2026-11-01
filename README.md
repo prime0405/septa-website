@@ -233,11 +233,17 @@ tokens are Black Pearl taken up in lightness steps (`--color-fg` `#061820`, `--c
 Tradewind itself is only 2.5:1 on white, so it is never used as text. The accent exists in two
 roles: `--color-brand-teal` `#6db1ae` is the unchanged brand value and is reserved for solid fills
 that carry Black Pearl on top (primary button, selected tab pill, checked boxes, the logo fin) at
-7.4:1; `--color-mint` `#2c7a74` is Tradewind taken down the same hue until it clears WCAG AA on
+7.4:1; `--color-mint` `#286f6a` is Tradewind taken down the same hue until it clears WCAG AA on
 white, and it is what every `text-mint`, `border-mint` and tinted `bg-mint/x` on the site actually
 resolves to. `--color-amber` and `--color-rose` are darkened the same way for status text. The
 pairings were checked by computing contrast ratios against every surface, not by eye: body text
-18.1:1, muted 7.4:1, faint 5.3:1, accent 5.1:1, amber 5.1:1, rose 5.7:1.
+18.1:1, muted 7.4:1, faint 5.3:1, accent 5.9:1, amber 6.3:1, rose 5.7:1.
+Accents are set to survive their own tints, not just white: labels and selected states put accent
+text inside a 10% chip of the same hue, which costs about half a ratio point, and the worst such
+pair (`text-rose` on `bg-rose/10`) still measures 4.95:1. For the same reason no text token is ever
+drawn at reduced alpha. `text-mint/70` on `--color-ink-raised` measures 2.96:1 and `text-faint/60`
+on white measures 2.42:1; both appeared in the gutter numbers of the step lists and the code panel,
+and both now use the solid token.
 No component carries a hard-coded hex. The only literal colour outside `@theme` is the Tradewind
 fin in `Logo.tsx`, which is brand-fixed; the SVG visuals use Tailwind `fill-*` / `stroke-*`
 utilities or an inline `style`, because `var()` does not resolve inside an SVG presentation
@@ -269,8 +275,25 @@ element that deliberately stays dark on a white page is the delivery-core disc i
 `HeroDiagram.tsx`, which uses `--color-brand-pearl` and `--color-brand-pearl-raised` so it reads as
 a Black Pearl disc with white and Tradewind type on it.
 
-Motion respects `prefers-reduced-motion`: every animation is gated on `useReducedMotion()`, the
-reading progress bar disappears, and smooth scrolling becomes instant.
+**Motion.** `src/components/IntroCurtain.tsx` covers the first paint of a session with two Black
+Pearl panels and "Welcome to Septa", holds ~1.15s, then parts them over 0.9s. Clicking or pressing
+Esc skips it. It locks the page while running and releases `document.body` on its way out, and the
+real homepage is underneath it the whole time: the layer is `aria-hidden`, and `Reveal` reads
+`useIntroHeld()` from `src/lib/intro.ts` so no `whileInView` observer is consumed by content the
+curtain is still covering. It runs once per browser session (`sessionStorage`), never under
+`prefers-reduced-motion`, and never when the tab is backgrounded at boot, because a curtain nobody
+watched is only a delay. The arming decision is memoised, so React's double render in development
+cannot start a second one.
+The hero headline staggers in by word, and two pointer effects follow the cursor on devices that
+have one: cards under `a.card` carry a 7% Tradewind radial wash that tracks the pointer
+(`src/components/ui/PointerGlow.tsx`), and the hero's two CTAs drift up to 8px toward it
+(`Button`'s `magnetic` prop). Both write through one rAF-coalesced handler in
+`src/lib/pointerGlow.tsx`, and both require `(hover: hover) and (pointer: fine)`. The magnet is a
+transform only, so it composes with the existing `active:translate-y-[1px]` press instead of
+fighting it. The wash is capped at 7% because a brighter tint on a white card pulls `text-mint`
+under AA; with it spliced into the stack the worst measured pair on the site is 5.0:1.
+All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and smooth
+scrolling becomes instant.
 
 ## Hosting
 
