@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
-import { Eyebrow } from "../ui/primitives";
+import { Eyebrow, MaskRise } from "../ui/primitives";
 import { Logo } from "../layout/Logo";
 import { paths } from "../../lib/paths";
 
@@ -58,7 +58,9 @@ export function PageHero({
         <div className={cn("grid gap-10", aside ? "lg:grid-cols-[1.15fr_1fr] lg:items-center" : "")}>
           <div className={cn(!aside && "max-w-3xl")}>
             {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
-            <h1 className="text-[clamp(2.1rem,5.2vw,3.6rem)]">{title}</h1>
+            <MaskRise>
+              <h1 className="text-[clamp(2.1rem,5.2vw,3.6rem)]">{title}</h1>
+            </MaskRise>
             {lead ? <p className="prose-body mt-5 max-w-2xl text-[1.05rem]">{lead}</p> : null}
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-2">{meta}</div> : null}
             {actions ? <div className="mt-7 flex flex-wrap gap-3">{actions}</div> : null}
@@ -97,7 +99,9 @@ export function CtaBand({
         </div>
         <div className="relative max-w-2xl">
           <Eyebrow className="mb-4">Start here</Eyebrow>
-          <h2 className="text-[clamp(1.6rem,3.4vw,2.4rem)]">{title}</h2>
+          <MaskRise>
+            <h2 className="text-[clamp(1.6rem,3.4vw,2.4rem)]">{title}</h2>
+          </MaskRise>
           <p className="prose-body mt-4">{lead}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button to={paths.request()} size="lg">

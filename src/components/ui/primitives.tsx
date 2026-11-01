@@ -53,6 +53,37 @@ export function Eyebrow({ children, className }: { children: ReactNode; classNam
   );
 }
 
+/**
+ * The rise used by section titles: the line travels up out of a hard clipping edge instead of
+ * fading in, so it reads as one object moving rather than a filter changing.
+ *
+ * The padding under the mask is what keeps descenders from being cut once the line has landed,
+ * and the matching negative margin means the box still occupies exactly the height of the text.
+ * While the curtain is up the line waits below the edge, then `Reveal`'s release contract hands
+ * it to `whileInView` — the same rule every other entrance on the site follows.
+ */
+export function MaskRise({ children, className }: { children: ReactNode; className?: string }) {
+  const reduce = useReducedMotion();
+  const held = useIntroHeld();
+  if (reduce) return <div className={className}>{children}</div>;
+  return (
+    <div className={cn("-mb-[0.16em] overflow-hidden pb-[0.16em]", className)}>
+      <motion.div
+        initial={{ y: "110%" }}
+        {...(held
+          ? {}
+          : {
+              whileInView: { y: 0 },
+              viewport: { once: true, margin: "-40px 0px -40px 0px" },
+            })}
+        transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
 export function SectionHeading({
   eyebrow,
   title,
@@ -80,14 +111,16 @@ export function SectionHeading({
     >
       <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center")}>
         {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
-        <H
-          className={cn(
-            "text-[clamp(1.75rem,3.6vw,2.7rem)]",
-            H === "h1" && "text-[clamp(2.1rem,5.4vw,3.9rem)]",
-          )}
-        >
-          {title}
-        </H>
+        <MaskRise>
+          <H
+            className={cn(
+              "text-[clamp(1.75rem,3.6vw,2.7rem)]",
+              H === "h1" && "text-[clamp(2.1rem,5.4vw,3.9rem)]",
+            )}
+          >
+            {title}
+          </H>
+        </MaskRise>
         {lead ? <p className="prose-body mt-4 text-[1.02rem]">{lead}</p> : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}

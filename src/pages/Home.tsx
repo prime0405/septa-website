@@ -194,15 +194,21 @@ export default function Home() {
         </motion.div>
 
         <div className="relative mt-14 border-y border-line-soft">
-          <div className="wrap flex gap-3 overflow-x-auto py-4 [scrollbar-width:none]">
-            {techStrip.map((t) => (
-              <span
-                key={t}
-                className="shrink-0 rounded-pill border border-line px-3 py-1 font-mono text-[0.72rem] whitespace-nowrap text-faint"
-              >
-                {t}
-              </span>
-            ))}
+          <div className="marquee py-4">
+            <div className="marquee-inner">
+              {[0, 1].map((copy) => (
+                <div key={copy} className="marquee-group" aria-hidden={copy === 1 || undefined}>
+                  {techStrip.map((t) => (
+                    <span
+                      key={t}
+                      className="shrink-0 rounded-pill border border-line px-3 py-1 font-mono text-[0.72rem] whitespace-nowrap text-faint"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

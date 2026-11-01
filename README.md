@@ -306,7 +306,15 @@ pulls `text-mint` under AA; with it spliced into the stack the worst measured pa
 5.0:1.
 The homepage hero also has depth: `useScroll` on the hero section drives three layers at different
 rates as it leaves the viewport (grid 70px, aurora 130px, copy −26px, the last one against the
-first two). All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
+first two). Section headings rise out of a mask (`MaskRise` in `src/components/ui/primitives.tsx`
+wraps the title in `overflow-hidden` and slides it up from 110%; the 0.16em padding plus equal
+negative margin is what keeps descenders from being clipped without changing the layout by a pixel),
+and the homepage technology strip scrolls as a marquee: two identical groups inside one
+`translate3d(-50%, 0, 0)` loop, so the seam is invisible, and the copy is `aria-hidden` so assistive
+tech reads the list once. It pauses on hover and, under `prefers-reduced-motion`, the animation is
+dropped, the duplicate is removed and the strip becomes a plain horizontal scroller instead of
+hiding content behind a mask.
+All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
 smooth scrolling becomes instant.
 
 ## Hosting
