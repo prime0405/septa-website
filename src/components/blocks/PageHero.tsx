@@ -29,7 +29,11 @@ export function PageHero({
   className?: string;
 }) {
   return (
-    <section className={cn("relative overflow-hidden border-b border-line-soft", className)}>
+    // `band` puts the same masked 82% veil under this header as the sections below it carry, because
+    // the breadcrumb and the action row are the smallest type on the page and they otherwise sit
+    // directly on the moving wash. Its own decorative layers are positioned children, so they still
+    // paint on top of the veil.
+    <section className={cn("band relative overflow-hidden border-b border-line-soft", className)}>
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40 mask-fade" />
       <div
         aria-hidden

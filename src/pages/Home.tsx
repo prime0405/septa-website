@@ -88,7 +88,9 @@ export default function Home() {
   return (
     <>
       {/* ------------------------------ hero ------------------------------ */}
-      <section ref={heroRef} className="relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
+      {/* `band` keeps the moving wash from reaching the 10.5px mint label directly; the veil sits
+          under this section's own decorative layers, so the plate, grid and aurora are unchanged. */}
+      <section ref={heroRef} className="band relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
         <motion.div
           aria-hidden
           style={{ y: plateY }}

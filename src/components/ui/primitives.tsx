@@ -36,10 +36,14 @@ export function Section({
   // moving underneath the bands instead of the site going flat white between them. 82% is the point
   // at which the measured worst case (the darkest region of the plate, plus a mesh node landing on a
   // tinted chip) still leaves the smallest label tokens on the site at 4.5:1.
+  // The veil is painted by `.band::before` in src/index.css, not by a background class, because it
+  // needs a horizontal mask: 82% across the reading column and 30% in the gutters, which is the
+  // mirror image of the wash's mask. That is what lets the backdrop reach the eye without a single
+  // pixel behind the copy changing.
   const tones = {
-    ink: "bg-ink/82",
-    raised: "bg-ink-raised/82",
-    surface: "bg-surface/82",
+    ink: "band",
+    raised: "band band-raised",
+    surface: "band band-surface",
     none: "",
   } as const;
   return (

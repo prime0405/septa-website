@@ -316,21 +316,47 @@ brighter tint on a white card
 pulls `text-mint` under AA; with it spliced into the stack the worst measured pair on the site is
 5.0:1.
 Behind all of it the page never stands still. `BackgroundFX` (`src/components/BackgroundFX.tsx`)
-renders two fixed layers on every route: a colour wash (a slow-panned watercolour plate, a creeping
-grid, two drifting orbs and a beam that crosses the viewport every 26s) at `z-0`, and a canvas of
+renders two fixed layers on every route: a colour wash (a panned watercolour plate, a creeping
+grid, two drifting orbs and a beam that crosses the viewport every 15s) at `z-0`, and a canvas of
 nodes that wander and link to their neighbours in a separate layer at `z-20`, above the section
 bands. The split exists because of contrast, not layering. Measured against a `source-over`
-composite of everything that can coincide, a full-strength wash under the text column put the
-smallest label tokens at 4.2:1, so `.bgfx-wash` is a horizontal `mask-image` that keeps the wash at
-full strength outside the reading column and 30% of it inside, and every section tone is an 82%
-veil instead of a solid fill so the drift still reads through the bands. The mesh is the one layer
-allowed to cross type, so it is budgeted once at the layer rather than per stroke: the canvas draws
-opaque `#6db1ae` lines and dots, which means two crossing lines cannot darken a pixel more than one
-does, and CSS `opacity: 0.07` scales the whole thing. `--color-faint` was darkened from `#56707a` to
-`#4d6772` in the same pass, because it carries the 10.5–11.5px mono labels and the mesh crossing an
-`ink-raised` chip pulled it to 4.29:1. After that, a DOM walk over ten routes that composites each
-element's own ancestor backgrounds with the worst-case wash leak and a mesh node landing on the
-glyph reports no pair under AA.
+composite of everything that can coincide, a full-strength wash under the text column puts the
+smallest label tokens under AA.
+
+The answer is two masks that are mirror images of one another, both keyed to the same
+`50% ± 600px / ± 760px` geometry. `.bgfx-wash` keeps the wash at full strength outside the reading
+column and 30% of it inside. `.band::before` is how every section tone is painted now, a
+`z-index: -1` pseudo-element rather than a background class, which lets it hold the veil at 82%
+white across the column and open it to 30% in the gutters; `main` is `relative z-10`, so the veil
+still lands above the wash and below the copy. What the pairing buys is amplitude exactly where
+nothing writes: the gutter composite moves from about `#fafafa` to `#accfcf`, while every pixel
+behind type is arithmetically the value that was already audited. It holds because `.wrap` is
+1220px wide with 2rem of padding, so the last glyph sits 578px from centre and the veil only starts
+ramping at 600px, and because cards, chips and panels are opaque fills. The stop positions are
+wrapped in `max(0px, …)` / `min(100%, …)`: on a viewport narrow enough to make `50% - 760px`
+negative, a bare negative stop resolves inconsistently and can drop the ramp across the middle of
+the screen, where the text is. With the clamps the gutters simply disappear and the page keeps the
+column treatment.
+Both heroes carry the same veil (`band` on `PageHero` and on the homepage hero, which is why those
+two sections set it explicitly instead of going through `Section tone`): their copy used to sit on
+the raw wash, and the pair that failed because of it was the active nav link, `text-mint` at 14.4px
+over a header that is still transparent at the top of a page. Against a composite of the plate at
+its darkest, an orb and beam at their peaks and a mesh node on the glyph it measured 4.38:1; under
+the same worst case the veil takes it to 4.85:1.
+
+The mesh is the one layer allowed to cross type, so it is budgeted once at the layer rather than per
+stroke: the canvas draws opaque `#6db1ae` lines and dots, which means two crossing lines cannot
+darken a pixel more than one does, and `opacity: 0.16` behind a mask that retains 0.44 of it across
+the column puts the worst pixel behind a glyph back at the 7% it was before. `--color-faint` was
+darkened from `#56707a` to `#4d6772` in the same pass, because it carries the 10.5–11.5px mono
+labels and the mesh crossing an `ink-raised` chip pulled it to 4.29:1. After that, a DOM walk over
+ten routes that composites each element's own ancestor backgrounds with the worst-case wash leak and
+a mesh node landing on the glyph reports no pair under AA.
+Periods matter as much as colour here: at 76s the plate pans about one pixel a second and reads as a
+static tint, so the layers now run at 22–34s with the travel doubled and the nodes drift at
+0.34px/frame at ~30fps. Only the *speed* and the *gutter alpha* changed; every peak value behind the
+column is the one the model above was solved against, because motion costs attention and only
+darkness costs contrast.
 The canvas caps its node count by viewport area, holds near 30fps, resizes off a `ResizeObserver`
 rather than the window (a detached surface can report 0×0 and later become a real viewport without
 firing a resize, and a 1×1 canvas stays empty for the rest of the visit), stops on

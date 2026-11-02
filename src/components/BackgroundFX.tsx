@@ -64,13 +64,13 @@ export function BackgroundFX() {
       canvas.width = Math.max(1, Math.round(width * dpr));
       canvas.height = Math.max(1, Math.round(height * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.max(14, Math.min(52, Math.round((width * height) / 30000)));
+      const count = Math.max(18, Math.min(64, Math.round((width * height) / 21000)));
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.17,
-        vy: (Math.random() - 0.5) * 0.17,
-        r: 0.9 + Math.random() * 1.5,
+        vx: (Math.random() - 0.5) * 0.34,
+        vy: (Math.random() - 0.5) * 0.34,
+        r: 0.9 + Math.random() * 1.6,
       }));
     };
 
