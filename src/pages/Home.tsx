@@ -10,9 +10,9 @@ import { CaseCard, PostCard, ServiceCard } from "../components/blocks/cards";
 import { CtaBand } from "../components/blocks/PageHero";
 import { LaunchNoteInline } from "../components/blocks/LaunchNote";
 import { Button } from "../components/ui/Button";
+import { AutoRollList } from "../components/ui/AutoRollList";
 import {
   Card,
-  MarkerList,
   Pill,
   Reveal,
   SampleTag,
@@ -78,6 +78,7 @@ export default function Home() {
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 70]);
+  const plateY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 46]);
   const auroraY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 130]);
   const copyY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : -26]);
 
@@ -88,11 +89,24 @@ export default function Home() {
     <>
       {/* ------------------------------ hero ------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
+        <motion.div
+          aria-hidden
+          style={{ y: plateY }}
+          className="pointer-events-none absolute inset-x-[-4%] top-[4%] h-[460px]"
+        >
+          <img
+            src="/img/plate-hero.jpg"
+            alt=""
+            decoding="async"
+            className="plate-drift-slow size-full object-cover opacity-[0.55] mask-fade"
+          />
+          <div className="absolute inset-0 bg-ink/82" />
+        </motion.div>
         <motion.div aria-hidden style={{ y: gridY }} className="pointer-events-none absolute inset-0">
           <div className="grid-bg absolute inset-0 opacity-35 mask-fade" />
         </motion.div>
         <motion.div aria-hidden style={{ y: auroraY }} className="pointer-events-none absolute inset-0">
-          <div className="animate-aurora absolute top-[-22%] left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-mint/[0.13] blur-[120px]" />
+          <div className="animate-aurora absolute top-[-22%] left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-mint/[0.08] blur-[120px]" />
           <div className="animate-aurora-slow absolute top-[18%] left-[8%] hidden h-[380px] w-[380px] rounded-full bg-mint/[0.07] blur-[110px] lg:block" />
           <div className="animate-aurora absolute top-[6%] right-[6%] hidden h-[320px] w-[420px] rounded-full bg-mint/[0.06] blur-[110px] lg:block" />
         </motion.div>
@@ -269,7 +283,8 @@ export default function Home() {
                 We take work in three shapes: build something new, fix or modernise something that
                 exists, and strengthen the team doing it. Most engagements mix all three.
               </p>
-              <MarkerList
+              <AutoRollList
+                interval={3400}
                 items={[
                   { label: "Products with AI inside them", detail: "Grounded, evaluated, and reversible when a model changes." },
                   { label: "Software that stays cheap to change", detail: "Typed, tested, documented, and handed over properly." },
@@ -366,19 +381,16 @@ export default function Home() {
                 answer means with your domain team, build the evaluation set that encodes it, and
                 ship behind flags with citations, guardrails and cost tracking from the first release.
               </p>
-              <div className="mt-7 space-y-3">
-                {[
+              <AutoRollList
+                className="mt-7"
+                interval={2800}
+                items={[
                   "Retrieval with source citations",
                   "Golden-set evaluation running in the pipeline",
                   "Latency, cost and correction rates on one dashboard",
                   "Refusal policy and human review where errors are costly",
-                ].map((l) => (
-                  <p key={l} className="flex items-start gap-3 text-[0.92rem] text-muted">
-                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-mint" aria-hidden />
-                    {l}
-                  </p>
-                ))}
-              </div>
+                ]}
+              />
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button to={paths.service("ai-product-development")} size="md">
                   How we build AI products
@@ -484,7 +496,7 @@ export default function Home() {
             </Button>
           </div>
           <Reveal delay={0.06}>
-            <ProcessSteps steps={deliveryProcess} columns={3} />
+            <ProcessSteps steps={deliveryProcess} columns={3} autoRoll />
           </Reveal>
         </div>
       </Section>

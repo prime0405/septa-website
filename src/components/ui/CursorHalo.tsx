@@ -5,13 +5,13 @@ const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 const GROWABLE = "a, button, input, textarea, select, summary, [data-cursor='grow']";
 
 /**
- * A Tradewind ring that trails the pointer and a dot that sits exactly on it, both
- * growing over anything clickable.
+ * A Tradewind ring that trails the pointer and a dot that sits exactly on it, both growing over
+ * anything clickable.
  *
- * The native cursor stays where it is: replacing it is the part people notice when they
- * are trying to aim at a form field. The loop lerps toward the pointer and stops itself
- * once it has caught up, so a still cursor costs nothing, and it never starts at all on
- * touch or under `prefers-reduced-motion`.
+ * This is now the only pointer on screen: while it runs, `html.cursor-none` suppresses the system
+ * arrow, so the dot is what people aim with. That is only ever applied on a fine-pointer device
+ * with motion enabled, and it is removed again when the component unmounts. The loop lerps toward
+ * the pointer and stops itself once it has caught up, so a still cursor costs nothing.
  */
 export function CursorHalo() {
   const reduce = useReducedMotion();
@@ -23,6 +23,8 @@ export function CursorHalo() {
     const ringEl = ring.current;
     const dotEl = dot.current;
     if (!ringEl || !dotEl) return;
+
+    document.documentElement.classList.add("cursor-none");
 
     let x = 0;
     let y = 0;
@@ -86,6 +88,7 @@ export function CursorHalo() {
       window.removeEventListener("pointermove", move);
       document.documentElement.removeEventListener("mouseleave", hide);
       window.removeEventListener("blur", hide);
+      document.documentElement.classList.remove("cursor-none");
       cancelAnimationFrame(frame);
     };
   }, [reduce]);
@@ -97,12 +100,12 @@ export function CursorHalo() {
       <div
         ref={ring}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[60] -ml-3 -mt-3 size-6 rounded-full border border-mint/45 opacity-0 will-change-transform transition-opacity duration-300"
+        className="pointer-events-none fixed top-0 left-0 z-[80] -ml-3 -mt-3 size-6 rounded-full border border-mint/55 opacity-0 will-change-transform transition-opacity duration-300"
       />
       <div
         ref={dot}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[60] -ml-[3px] -mt-[3px] size-1.5 rounded-full bg-mint opacity-0 will-change-transform transition-opacity duration-200"
+        className="pointer-events-none fixed top-0 left-0 z-[80] -ml-[3.5px] -mt-[3.5px] size-[7px] rounded-full bg-mint opacity-0 shadow-[0_0_0_3px_rgba(255,255,255,0.75)] will-change-transform transition-opacity duration-200"
       />
     </>
   );

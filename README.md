@@ -275,6 +275,13 @@ element that deliberately stays dark on a white page is the delivery-core disc i
 `HeroDiagram.tsx`, which uses `--color-brand-pearl` and `--color-brand-pearl-raised` so it reads as
 a Black Pearl disc with white and Tradewind type on it.
 
+The six `public/img/plate-*.jpg` files are generated abstract brand art, not stock photography and
+not documentation: there is no client, product or team imagery for this site yet. Four are mapped
+from a case or post slug by `src/lib/plates.ts`; `plate-hero.jpg` fronts the page heroes and
+`plate-aurora.jpg` is the page-wide wash. They are encoded
+from their PNG sources by `scripts/encode-plates.ps1`, which resizes, flattens onto white and writes
+JPEG at a fixed quality (28–87KB each). Replace them with real photography as soon as it exists.
+
 **Motion.** `src/components/IntroCurtain.tsx` covers the first paint of a session with two Black
 Pearl panels and "Welcome to Septa", holds ~1.15s, then parts them over 0.9s. Clicking or pressing
 Esc skips it. It locks the page while running and releases `document.body` on its way out, and the
@@ -299,11 +306,52 @@ pointer 900px outside the box. The hero's two CTAs drift up to 8px toward the po
 (`Button`'s `magnetic` prop). All of them write through one rAF-coalesced handler and require
 `(hover: hover) and (pointer: fine)`. On top of that, `CursorHalo` (`src/components/ui/CursorHalo.tsx`)
 draws a 24px ring that lags the pointer and a 6px dot that sits exactly on it, and both grow 1.9×
-over anything clickable; the native cursor stays where it is, because replacing it is the part
-people notice when they are aiming at a form field, and the loop stops itself once it has caught up
-so a still pointer costs nothing. The wash is capped at 7% because a brighter tint on a white card
+over anything clickable; the loop stops itself once it has caught up so a still pointer costs
+nothing, and while it runs it adds `cursor-none` to `<html>` so the arrow is gone and the halo is
+the only pointer on screen. It is applied to the whole document rather than to the interactive
+elements, because `cursor` inherits and a parent's `cursor: pointer` would otherwise win over a
+child. The class is added only when the loop is eligible, so a touch device or a
+`prefers-reduced-motion` visitor keeps the system cursor. The wash is capped at 7% because a
+brighter tint on a white card
 pulls `text-mint` under AA; with it spliced into the stack the worst measured pair on the site is
 5.0:1.
+Behind all of it the page never stands still. `BackgroundFX` (`src/components/BackgroundFX.tsx`)
+renders two fixed layers on every route: a colour wash (a slow-panned watercolour plate, a creeping
+grid, two drifting orbs and a beam that crosses the viewport every 26s) at `z-0`, and a canvas of
+nodes that wander and link to their neighbours in a separate layer at `z-20`, above the section
+bands. The split exists because of contrast, not layering. Measured against a `source-over`
+composite of everything that can coincide, a full-strength wash under the text column put the
+smallest label tokens at 4.2:1, so `.bgfx-wash` is a horizontal `mask-image` that keeps the wash at
+full strength outside the reading column and 30% of it inside, and every section tone is an 82%
+veil instead of a solid fill so the drift still reads through the bands. The mesh is the one layer
+allowed to cross type, so it is budgeted once at the layer rather than per stroke: the canvas draws
+opaque `#6db1ae` lines and dots, which means two crossing lines cannot darken a pixel more than one
+does, and CSS `opacity: 0.07` scales the whole thing. `--color-faint` was darkened from `#56707a` to
+`#4d6772` in the same pass, because it carries the 10.5–11.5px mono labels and the mesh crossing an
+`ink-raised` chip pulled it to 4.29:1. After that, a DOM walk over ten routes that composites each
+element's own ancestor backgrounds with the worst-case wash leak and a mesh node landing on the
+glyph reports no pair under AA.
+The canvas caps its node count by viewport area, holds near 30fps, resizes off a `ResizeObserver`
+rather than the window (a detached surface can report 0×0 and later become a real viewport without
+firing a resize, and a 1×1 canvas stays empty for the rest of the visit), stops on
+`visibilitychange`, and never starts under `prefers-reduced-motion`.
+Abstract art stands in for photography that does not exist yet: `src/lib/plates.ts` maps a slug to
+one of five generated plates, used on case-study covers, the featured post panel, the page-hero band
+and the homepage hero. They are decorative brand art, not documentation, and say so. Because the
+plates contain real ink, `PageHero`'s band and the homepage hero layer sit at 55% image opacity
+behind an 82% white veil, and no small text is left on top of an artwork panel: the case-study
+category and client descriptor moved into the card's text column, and the featured post's sample
+labels sit on a solid caption bar.
+`AutoRollList` (`src/components/ui/AutoRollList.tsx`, timing in `src/lib/useRollCycle.ts`) advances
+itself through a list, one item at a time, and stops dead under the pointer. The clock is the
+progress fill's own `animationend` rather than a parallel `setTimeout`, so pausing the animation
+pauses the list and the two cannot drift apart; `data-roll-paused="true"` drives
+`animation-play-state`, and is also set when the block leaves the screen or takes focus. A spring
+rail slides to the active row and the emphasis is carried by tone (`bg-mint/[0.06]` plus accent
+text) rather than opacity, because dimming the inactive rows to 60% had put their body copy at
+2.4:1. Used on the homepage capability lists and, with `autoRoll`, on the delivery process strip.
+Under reduced motion the fill is not rendered at all: a 0.001ms animation would fire `animationend`
+continuously, and the list degrades to a plain static list.
 The homepage hero also has depth: `useScroll` on the hero section drives three layers at different
 rates as it leaves the viewport (grid 70px, aurora 130px, copy −26px, the last one against the
 first two). Section headings rise out of a mask (`MaskRise` in `src/components/ui/primitives.tsx`

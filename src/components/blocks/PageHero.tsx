@@ -35,6 +35,22 @@ export function PageHero({
         aria-hidden
         className="pointer-events-none absolute -top-24 -right-24 size-[420px] rounded-full bg-mint/[0.07] blur-[90px]"
       />
+      {/* The contour plate runs along the foot of every interior page header, fading into the body
+          so the band reads as depth rather than a pasted-in picture. */}
+      <div
+        aria-hidden
+        className="plate-fade pointer-events-none absolute inset-x-0 bottom-0 h-40 overflow-hidden sm:h-48"
+      >
+        {/* plate-hero carries a few genuinely dark strokes, so the band under the breadcrumb and
+            the action row is a tint rather than an image: 55% plate behind an 82% white veil. */}
+        <img
+          src="/img/plate-hero.jpg"
+          alt=""
+          decoding="async"
+          className="plate-drift absolute inset-[-10%] size-[120%] object-cover object-bottom opacity-[0.55]"
+        />
+        <div className="absolute inset-0 bg-ink/82" />
+      </div>
       <div className="wrap relative py-14 sm:py-18">
         {crumbs.length ? (
           <nav aria-label="Breadcrumb" className="mb-6">

@@ -4,6 +4,7 @@ import type { CaseStudy } from "../../data/cases";
 import type { Post } from "../../data/posts";
 import type { ServiceContent } from "../../data/services";
 import { cn, formatDate, readingTime } from "../../lib/cn";
+import { plateFor } from "../../lib/plates";
 import { usePointerTrack } from "../../lib/pointerGlow";
 import { paths } from "../../lib/paths";
 import { Button } from "../ui/Button";
@@ -74,24 +75,30 @@ export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boo
       )}
     >
       <PointerGlow radius={320} />
+      {/* Art only: the plate has real ink in it, so nothing this small is allowed to sit on top. */}
       <div
         aria-hidden
         className={cn(
-          "relative shrink-0 border-line bg-ink-raised",
-          featured ? "border-b lg:border-r lg:border-b-0 lg:w-[38%]" : "",
+          "relative shrink-0 overflow-hidden border-line bg-ink-raised",
+          featured ? "border-b lg:border-r lg:border-b-0 lg:w-[38%]" : "min-h-24",
         )}
       >
-        <div className={cn("grid-bg absolute inset-0 opacity-60")} />
-        <div className="dot-bg absolute inset-0 opacity-40" />
-        <div className="relative flex h-full min-h-28 flex-col justify-between p-5">
-          <Pill tone="mint" className="self-start">
-            {study.category}
-          </Pill>
-          <p className="font-mono text-[0.7rem] text-faint">{study.clientDescriptor}</p>
-        </div>
+        <img
+          src={plateFor(study.slug)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="plate-drift absolute inset-[-8%] size-[116%] object-cover"
+        />
+        <div className="absolute inset-0 bg-ink/45" />
+        <div className="dot-bg absolute inset-0 opacity-25" />
       </div>
 
       <div className="flex flex-1 flex-col p-6">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <Pill tone="mint">{study.category}</Pill>
+          <span className="font-mono text-[0.7rem] text-faint">{study.clientDescriptor}</span>
+        </div>
         <h3 className={cn("group-hover:text-mint transition-colors", featured ? "text-[1.4rem]" : "text-[1.12rem]")}>
           {study.title}
         </h3>
@@ -174,9 +181,19 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
         <PointerGlow radius={340} />
         <div className="flex flex-col">{inner}</div>
         <div aria-hidden className="relative min-h-40 overflow-hidden rounded-card border border-line bg-ink-raised">
+          <img
+            src={plateFor(post.slug)}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="plate-drift-slow absolute inset-[-8%] size-[116%] object-cover"
+          />
+          <div className="absolute inset-0 bg-ink/60" />
           <div className="grid-bg absolute inset-0 opacity-70" />
           <div className="glow-mint absolute inset-0 opacity-60" />
-          <div className="absolute inset-x-5 bottom-5 space-y-2">
+          {/* The caption sits on a solid bar, not on the wash: the plates carry real ink, and a
+              0.62rem label cannot afford to guess which part of the image it landed on. */}
+          <div className="absolute inset-x-4 bottom-4 space-y-1.5 rounded-card bg-ink px-3 py-2.5">
             {["reading time", "sample editorial content", "placeholder author"].map((l, i) => (
               <div key={l} className="flex items-center gap-2">
                 <span className={cn("h-1.5 rounded-full bg-mint/30", i === 0 ? "w-24" : i === 1 ? "w-36" : "w-16")} />

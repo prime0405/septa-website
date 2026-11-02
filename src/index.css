@@ -54,7 +54,10 @@
   --color-line-soft: #e0ecea;
   --color-fg: #061820;
   --color-muted: #3a5a63;
-  --color-faint: #56707a;
+  /* The mesh drifts over the whole page, including over the chips, so the token that carries the
+     smallest type on the site (10.5-11.5px mono labels) is darkened to keep a full step of margin:
+     #56707a measured 4.29:1 on an ink-raised chip once the mesh crossed it. */
+  --color-faint: #4d6772;
   /* `mint*` is the historical token name for the accent; it now carries deep Tradewind.
    * These two are set so the accent still clears AA *on its own tint*: labels and selected
    * states put `mint` or `amber` text inside a 10% chip of the same colour, which costs
@@ -445,6 +448,185 @@
 
 .mask-fade {
   mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 35%, transparent 78%);
+}
+
+/* ---------- ambient background (BackgroundFX) ---------- */
+
+/* Strong colour lives in the gutters, not behind the words. The wash is a horizontal mask:
+   full strength outside the 1220px reading column, ~30% of it inside, and it collapses to the
+   dim column value entirely on narrow screens where there is no gutter to pour it into.
+   The ratio is what keeps body copy at AA over a moving backdrop: measured over the darkest
+   region of plate-aurora (#83ACAE), a full-strength wash under a section band put the smallest
+   label tokens at 4.2:1. */
+.bgfx-wash {
+  mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(50% - 760px),
+    rgb(0 0 0 / 0.3) calc(50% - 600px) calc(50% + 600px),
+    #000 calc(50% + 760px),
+    #000 100%
+  );
+}
+
+/* The mesh is the one thing allowed to cross the text, so it is capped by the whole-layer
+   opacity rather than per-stroke alpha: strokes are drawn opaque inside the canvas, which means
+   two crossing lines cannot add up to a darker pixel than a single one. 7% of Tradewind is the
+   most that keeps the lightest label on the site at AA even where a node lands on a chip. */
+.bgfx-mesh {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+/* The plate is a watercolour wash of Tradewind, panned and scaled very slowly so the whole
+   page drifts under the content. Scroll depth arrives from JS as --bgfx-slow / --bgfx-fast. */
+.bgfx-plate {
+  animation: bgfx-pan 76s ease-in-out infinite alternate;
+}
+.bgfx-grid {
+  animation: bgfx-grid 52s linear infinite;
+}
+.bgfx-beam {
+  background: linear-gradient(
+    104deg,
+    transparent,
+    color-mix(in oklab, var(--color-brand-teal) 26%, transparent) 46%,
+    transparent
+  );
+  filter: blur(46px);
+  opacity: 0;
+  animation: bgfx-beam 26s ease-in-out infinite;
+}
+.bgfx-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(110px);
+}
+.bgfx-orb-a {
+  top: 8%;
+  left: 6%;
+  height: 420px;
+  width: 420px;
+  background: color-mix(in oklab, var(--color-brand-teal) 22%, transparent);
+  animation: bgfx-orb-a 38s ease-in-out infinite alternate;
+}
+.bgfx-orb-b {
+  right: 4%;
+  bottom: 12%;
+  height: 360px;
+  width: 480px;
+  background: color-mix(in oklab, var(--color-mint) 14%, transparent);
+  animation: bgfx-orb-b 46s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes bgfx-pan {
+  0% {
+    transform: translate3d(-2.5%, -1%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(2.5%, 2%, 0) scale(1.14);
+  }
+}
+@keyframes bgfx-grid {
+  to {
+    background-position: 56px 56px;
+  }
+}
+@keyframes bgfx-beam {
+  0%,
+  8% {
+    transform: translate3d(-70%, -14%, 0) rotate(9deg);
+    opacity: 0;
+  }
+  26% {
+    opacity: 0.5;
+  }
+  52% {
+    opacity: 0.5;
+  }
+  76%,
+  100% {
+    transform: translate3d(190%, 16%, 0) rotate(9deg);
+    opacity: 0;
+  }
+}
+@keyframes bgfx-orb-a {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate3d(14%, 18%, 0) scale(1.22);
+    opacity: 0.8;
+  }
+}
+@keyframes bgfx-orb-b {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate3d(-16%, -12%, 0) scale(0.92);
+    opacity: 0.7;
+  }
+}
+
+/* A plate image that dissolves into the page instead of ending on a hard edge. */
+.plate-fade {
+  mask-image: linear-gradient(to top, #000 12%, transparent 92%);
+}
+
+/* Plates are oversized by their callers, so this drift never exposes an edge. */
+.plate-drift,
+.plate-drift-slow {
+  animation: plate-drift 26s ease-in-out infinite alternate;
+}
+.plate-drift-slow {
+  animation-duration: 44s;
+}
+@keyframes plate-drift {
+  0% {
+    transform: translate3d(-1.6%, 1.2%, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(1.6%, -1.2%, 0) scale(1.08);
+  }
+}
+
+/* ---------- the pointer ---------- */
+
+/* The halo is the cursor now, so the system arrow is suppressed. Only ever set on a
+   fine-pointer device with motion enabled, and only while CursorHalo is mounted. */
+html.cursor-none,
+html.cursor-none * {
+  cursor: none !important;
+}
+
+/* ---------- self-advancing lists ---------- */
+
+/* The tick under the active item fills over exactly one interval, so the wait reads as
+   distance rather than mystery. Hover or focus freezes it, because the CSS pause is driven
+   off the same data attribute that stops the timer. */
+.roll-fill {
+  transform-origin: left center;
+  animation: roll-fill var(--roll-interval, 3200ms) linear forwards;
+}
+[data-roll-paused="true"] .roll-fill {
+  animation-play-state: paused;
+}
+@keyframes roll-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .glow-mint {

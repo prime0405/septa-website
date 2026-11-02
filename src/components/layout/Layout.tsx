@@ -5,6 +5,7 @@ import { ArrowUp } from "lucide-react";
 import { Footer } from "./Footer";
 import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
+import { BackgroundFX } from "../BackgroundFX";
 import { CursorHalo } from "../ui/CursorHalo";
 import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
 
@@ -73,9 +74,10 @@ export function Layout() {
   // stays outside that wrapper, because inert would swallow its click-to-skip too.
   return (
     <>
-      <div className="flex min-h-dvh flex-col bg-ink" inert={showIntro && held}>
+      <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
+        <BackgroundFX />
         <Nav />
-        <main id="main" className="flex-1">
+        <main id="main" className="relative z-10 flex-1">
           <Outlet />
         </main>
         <Footer />

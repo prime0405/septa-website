@@ -49,3 +49,7 @@ node_modules
 # Skill files installed by agent tooling, not part of the website source
 /.agents
 /skills-lock.json
+
+# Raw image-generator output that scripts/encode-plates.ps1 encodes from; the shipped art
+# is the JPEG in public/img, so the multi-megabyte PNG sources stay out of history
+/vibe_images

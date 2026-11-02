@@ -32,10 +32,14 @@ export function Section({
   bleed?: boolean;
   as?: "section" | "div";
 }) {
+  // Every tone is an 82% veil rather than a solid fill, so the drifting wash behind the page keeps
+  // moving underneath the bands instead of the site going flat white between them. 82% is the point
+  // at which the measured worst case (the darkest region of the plate, plus a mesh node landing on a
+  // tinted chip) still leaves the smallest label tokens on the site at 4.5:1.
   const tones = {
-    ink: "bg-ink",
-    raised: "bg-ink-raised",
-    surface: "bg-surface",
+    ink: "bg-ink/82",
+    raised: "bg-ink-raised/82",
+    surface: "bg-surface/82",
     none: "",
   } as const;
   return (
