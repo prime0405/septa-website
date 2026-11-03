@@ -4,6 +4,7 @@ import { ArrowRight, Check } from "lucide-react";
 import type { ProductContent } from "../../data/products";
 import type { ServiceContent } from "../../data/services";
 import { paths } from "../../lib/paths";
+import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
 import {
   Card,
@@ -40,23 +41,26 @@ function ServiceVisual({ page }: { page: Page }) {
 
 export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label: string; to?: string }[] }) {
   const serviceMatch = isProduct(page) && page.serviceSlug ? paths.service(page.serviceSlug) : null;
+  // Septa supplied the film for this one header; everything else keeps the contour plate.
+  const video = isProduct(page) ? undefined : page.heroVideo;
 
   return (
     <>
       <PageHero
+        video={video}
         crumbs={crumbs}
         eyebrow={isProduct(page) ? "Product development track" : "Service"}
         title={page.heroTitle}
         lead={page.lead}
         meta={
           <>
-            <Pill tone="mint">
+            <Pill tone={video ? "film" : "mint"}>
               <ServiceIcon icon={page.icon} className="size-3.5" strokeWidth={2} />
               {page.name}
             </Pill>
-            <Pill tone="line">{page.capabilities.length} capability groups</Pill>
-            <Pill tone="line">{page.process.length}-step process</Pill>
-            <Pill tone="line">{page.faq.length} common questions</Pill>
+            <Pill tone={video ? "film" : "line"}>{page.capabilities.length} capability groups</Pill>
+            <Pill tone={video ? "film" : "line"}>{page.process.length}-step process</Pill>
+            <Pill tone={video ? "film" : "line"}>{page.faq.length} common questions</Pill>
           </>
         }
         actions={
@@ -69,7 +73,7 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
             </Button>
           </>
         }
-        aside={<ServiceAside page={page} />}
+        aside={<ServiceAside page={page} onFilm={Boolean(video)} />}
       />
 
       {page.detail ? (
@@ -275,22 +279,46 @@ export function ServiceTemplate({ page, crumbs }: { page: Page; crumbs: { label:
   );
 }
 
-function ServiceAside({ page }: { page: Page }) {
+function ServiceAside({ page, onFilm }: { page: Page; onFilm: boolean }) {
   const items: ReactNode = (
     <ul className="space-y-2.5">
       {page.capabilities.map((c) => (
-        <li key={c.group} className="flex items-center justify-between gap-4 rounded-lg border border-line bg-surface px-4 py-3">
-          <span className="text-[0.88rem] text-muted">{c.group}</span>
-          <span className="font-mono text-[0.72rem] text-mint">{c.items.length}</span>
+        <li
+          key={c.group}
+          className={cn(
+            "flex items-center justify-between gap-4 rounded-lg border px-4 py-3",
+            onFilm ? "border-brand-teal/20 bg-brand-white/[0.06]" : "border-line bg-surface",
+          )}
+        >
+          <span className={cn("text-[0.88rem]", onFilm ? "text-brand-white/88" : "text-muted")}>
+            {c.group}
+          </span>
+          <span className={cn("font-mono text-[0.72rem]", onFilm ? "text-brand-white" : "text-mint")}>
+            {c.items.length}
+          </span>
         </li>
       ))}
     </ul>
   );
   return (
     <div className="relative">
-      <div aria-hidden className="glow-mint pointer-events-none absolute inset-0 opacity-50" />
-      <div className="relative rounded-card border border-line bg-ink-raised/80 p-5 backdrop-blur-sm">
-        <p className="mb-4 font-mono text-[0.68rem] tracking-[0.18em] text-faint uppercase">
+      {!onFilm ? (
+        <div aria-hidden className="glow-mint pointer-events-none absolute inset-0 opacity-50" />
+      ) : null}
+      <div
+        className={cn(
+          "relative rounded-card border p-5",
+          // No backdrop filter on the film: blurring a source that changes frame by frame is a
+          // per-frame cost on top of the decode, so the panel carries its own darkness instead.
+          onFilm ? "border-brand-teal/25 bg-brand-pearl/70" : "border-line bg-ink-raised/80 backdrop-blur-sm",
+        )}
+      >
+        <p
+          className={cn(
+            "mb-4 font-mono text-[0.68rem] tracking-[0.18em] uppercase",
+            onFilm ? "text-brand-white/72" : "text-faint",
+          )}
+        >
           Coverage on this page
         </p>
         {items}

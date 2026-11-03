@@ -23,6 +23,8 @@ export type ServiceContent = {
   faq: { q: string; a: string }[];
   /** Which illustrative visual to embed: workflow diagram or dashboard mock. */
   visual?: "workflow" | "dashboard" | "ai";
+  /** Film that runs behind this page's hero header, supplied by Septa. */
+  heroVideo?: string;
   related: { label: string; to: string }[];
   /** Capabilities that must be confirmed by Septa before they read as an established offering. */
   unconfirmed: string[];
@@ -207,6 +209,7 @@ export const services: ServiceContent[] = [
       },
     ],
     visual: "ai",
+    heroVideo: "/video/ai-product-development.mp4",
     related: [
       { label: "Traditional Product Development", to: "/product-development/traditional" },
       { label: "Workflow Automation", to: "/services/workflow-automation" },

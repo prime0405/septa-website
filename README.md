@@ -368,6 +368,29 @@ plates contain real ink, `PageHero`'s band and the homepage hero layer sit at 55
 behind an 82% white veil, and no small text is left on top of an artwork panel: the case-study
 category and client descriptor moved into the card's text column, and the featured post's sample
 labels sit on a solid caption bar.
+One page swaps its plate for a film: Septa supplied `public/video/ai-product-development.mp4`, which
+`PageHero` runs behind the AI Product Development header when the service data carries a `heroVideo`.
+That clip is not a watercolour. Sampled as ASCII luminance maps, its mean never leaves the range
+0.048–0.114, but individual cells reach 234–255 and the bright clusters drift straight through the
+middle of the frame, so a flat scrim either erases the film or lets a particle pass behind an 11px
+label and break AA. `.film-veil` is therefore the section-band mask again — 82% across the reading
+column, 34% in the gutters — with a wider ramp (1100px rather than 760px, because a bright field
+makes a narrow edge read as a box). A pure-white particle under the full veil leaves
+`rgb(55, 73, 79)`, and against that ground the header's every text pair is measured: title 7.98,
+lead 6.63, eyebrow 6.42, breadcrumb 5.07, chip label 6.50, aside 7.48–9.83. What that number also
+settles is colour: the deepest Tradewind on the same ground is 3.44, which is fine for a rule and
+not for a label, so on the film all type is Pearl White and the brand accent stays in the graphics
+(the eyebrow rule, the chip tint, the primary button, the aside border). Playback is driven by an
+`IntersectionObserver` rather than the `autoplay` attribute, so a header that has been scrolled past
+stops decoding; `prefers-reduced-motion` never attaches the observer and the first frame stays on
+screen; the section paints Black Pearl under the clip, so the failure mode is a plain dark header
+rather than a broken one. Verified in the built bundle: the element reaches `readyState` 4 at
+1280×720, and because there is no `autoplay` attribute the first frame it advances to can only have
+come from the observer's `play()`, which resolves without an autoplay rejection. What is *not*
+verified is a continuous run: the browser used for these checks keeps its tab hidden, and Chrome
+suspends media in a hidden document after ~70ms regardless of who asked for it, so the loop itself
+needs a real window. Every interior page keeps its white band — the workflow page's hero still
+measures `::before` opacity 0.82 with the plate at 0.55 and no `<video>` in the DOM.
 `AutoRollList` (`src/components/ui/AutoRollList.tsx`, timing in `src/lib/useRollCycle.ts`) advances
 itself through a list, one item at a time, and stops dead under the pointer. The clock is the
 progress fill's own `animationend` rather than a parallel `setTimeout`, so pausing the animation

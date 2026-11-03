@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { useReducedMotion } from "motion/react";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
 import { Eyebrow, MaskRise } from "../ui/primitives";
@@ -18,6 +19,7 @@ export function PageHero({
   aside,
   meta,
   className,
+  video,
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
@@ -27,47 +29,73 @@ export function PageHero({
   aside?: ReactNode;
   meta?: ReactNode;
   className?: string;
+  /** Septa-supplied film that runs behind this header instead of the contour plate. */
+  video?: string;
 }) {
+  const onFilm = Boolean(video);
   return (
     // `band` puts the same masked 82% veil under this header as the sections below it carry, because
     // the breadcrumb and the action row are the smallest type on the page and they otherwise sit
     // directly on the moving wash. Its own decorative layers are positioned children, so they still
-    // paint on top of the veil.
-    <section className={cn("band relative overflow-hidden border-b border-line-soft", className)}>
-      <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40 mask-fade" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 -right-24 size-[420px] rounded-full bg-mint/[0.07] blur-[90px]"
-      />
-      {/* The contour plate runs along the foot of every interior page header, fading into the body
-          so the band reads as depth rather than a pasted-in picture. */}
-      <div
-        aria-hidden
-        className="plate-fade pointer-events-none absolute inset-x-0 bottom-0 h-40 overflow-hidden sm:h-48"
-      >
-        {/* plate-hero carries a few genuinely dark strokes, so the band under the breadcrumb and
-            the action row is a tint rather than an image: 55% plate behind an 82% white veil. */}
-        <img
-          src="/img/plate-hero.jpg"
-          alt=""
-          decoding="async"
-          className="plate-drift absolute inset-[-10%] size-[120%] object-cover object-bottom opacity-[0.55]"
-        />
-        <div className="absolute inset-0 bg-ink/82" />
-      </div>
+    // paint on top of the veil. With a film the same job is done by `.film-veil`, and the surface
+    // under it is Black Pearl so that a header whose video never decodes is a plain dark header.
+    <section
+      className={cn(
+        "relative overflow-hidden",
+        onFilm
+          ? "on-film border-b border-brand-teal/25 bg-brand-pearl"
+          : "band border-b border-line-soft",
+        className,
+      )}
+    >
+      {onFilm ? (
+        <FilmBackdrop src={video ?? ""} />
+      ) : (
+        <>
+          <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40 mask-fade" />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 -right-24 size-[420px] rounded-full bg-mint/[0.07] blur-[90px]"
+          />
+          {/* The contour plate runs along the foot of every interior page header, fading into the body
+              so the band reads as depth rather than a pasted-in picture. */}
+          <div
+            aria-hidden
+            className="plate-fade pointer-events-none absolute inset-x-0 bottom-0 h-40 overflow-hidden sm:h-48"
+          >
+            {/* plate-hero carries a few genuinely dark strokes, so the band under the breadcrumb and
+                the action row is a tint rather than an image: 55% plate behind an 82% white veil. */}
+            <img
+              src="/img/plate-hero.jpg"
+              alt=""
+              decoding="async"
+              className="plate-drift absolute inset-[-10%] size-[120%] object-cover object-bottom opacity-[0.55]"
+            />
+            <div className="absolute inset-0 bg-ink/82" />
+          </div>
+        </>
+      )}
       <div className="wrap relative py-14 sm:py-18">
         {crumbs.length ? (
           <nav aria-label="Breadcrumb" className="mb-6">
-            <ol className="flex flex-wrap items-center gap-1 font-mono text-[0.72rem] text-faint">
+            <ol
+              className={cn(
+                "flex flex-wrap items-center gap-1 font-mono text-[0.72rem]",
+                onFilm ? "text-brand-white/72" : "text-faint",
+              )}
+            >
               {crumbs.map((c, i) => (
                 <li key={c.label} className="flex items-center gap-1">
                   {i > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
                   {c.to ? (
-                    <Link to={c.to} className="transition-colors hover:text-mint">
+                    <Link
+                      to={c.to}
+                      className={cn("transition-colors", onFilm ? "hover:text-brand-white" : "hover:text-mint")}
+                    >
                       {c.label}
                     </Link>
                   ) : (
-                    <span className="text-muted">{c.label}</span>
+                    <span className={onFilm ? "text-brand-white/88" : "text-muted"}>{c.label}</span>
                   )}
                 </li>
               ))}
@@ -79,7 +107,9 @@ export function PageHero({
           <div className={cn(!aside && "max-w-3xl")}>
             {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
             <MaskRise>
-              <h1 className="text-[clamp(2.1rem,5.2vw,3.6rem)]">{title}</h1>
+              <h1 className={cn("text-[clamp(2.1rem,5.2vw,3.6rem)]", onFilm && "text-brand-white")}>
+                {title}
+              </h1>
             </MaskRise>
             {lead ? <p className="prose-body mt-5 max-w-2xl text-[1.05rem]">{lead}</p> : null}
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-2">{meta}</div> : null}
@@ -89,6 +119,44 @@ export function PageHero({
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * The film behind a header, and the scrim that makes copy legible over it.
+ *
+ * Playback is driven by an observer rather than the `autoplay` attribute so a header that has been
+ * scrolled past stops decoding, and it never starts under `prefers-reduced-motion` — the first
+ * frame stays on screen instead, which is the same picture the video opens on.
+ */
+function FilmBackdrop({ src }: { src: string }) {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduce) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting) el.play().catch(() => undefined);
+      else el.pause();
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reduce]);
+
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      <video
+        ref={ref}
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 size-full object-cover"
+      />
+      <div className="film-veil absolute inset-0" />
+    </div>
   );
 }
 

@@ -528,6 +528,50 @@
   );
 }
 
+/* ---------- the film hero (AI Product Development) ---------- */
+
+/* Septa supplied a 12s clip for the AI page header. Sampled as ASCII luminance maps it is a dark
+   field with drifting clusters of near-white particles: mean relative luminance never exceeds
+   0.114, but individual cells reach 234-255 and they pass straight through the middle of the
+   frame, so a flat scrim has to pick a side — light enough and a particle behind a glyph puts the
+   copy under AA, heavy enough and the clip stops being a film. The veil therefore keeps the
+   reading-column geometry of `.band::before` and changes only the values: 82% across the column
+   (0.82 x pure white leaves rgb(55,73,79), the ground every hero pair is measured against in the
+   README) and 0.82 x 0.415 = 34% in the open gutters, where the `.wrap` proof says nothing but
+   the film lives. The ramp is wider than the section bands' — 1100px instead of 760 — because a
+   bright field makes the 160px edge read as a box. The section also paints Black Pearl under the
+   clip, which is what makes the worst case a plain dark header rather than a broken one if the
+   video never decodes. */
+.film-veil {
+  background: var(--color-brand-pearl);
+  opacity: 0.82;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.415) 0,
+    rgb(0 0 0 / 0.415) max(0px, calc(50% - 1100px)),
+    #000 max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
+    rgb(0 0 0 / 0.415) min(100%, calc(50% + 1100px)),
+    rgb(0 0 0 / 0.415) 100%
+  );
+}
+
+/* Nothing that small survives a coloured accent on this ground: the deepest Tradewind measured over
+   a particle that has passed through the full veil lands at 3.44:1, which is fine for a rule and
+   not fine for an 11px label. So on the film all type is Pearl White and the accent stays in the
+   graphics — the eyebrow rule, the chip tints, the primary button. The selectors are scoped
+   because `.eyebrow` and `.prose-body` are unlayered rules, which outrank a Tailwind utility
+   however it is ordered. */
+.on-film .eyebrow {
+  color: rgb(255 255 255 / 0.86);
+}
+.on-film .eyebrow::before {
+  background: color-mix(in oklab, var(--color-brand-teal) 65%, transparent);
+}
+.on-film .prose-body {
+  color: rgb(255 255 255 / 0.88);
+}
+
 /* The plate is a watercolour wash of Tradewind, panned and scaled so the whole page drifts under
    the content. The periods here matter as much as the colour: at 76s the pan moves about one
    pixel a second and reads as a static tint, so every layer runs roughly twice as fast and twice
