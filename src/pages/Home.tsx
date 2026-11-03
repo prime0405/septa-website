@@ -115,14 +115,7 @@ export default function Home() {
 
         <motion.div style={{ y: copyY }} className="wrap relative">
           <div className="mx-auto max-w-4xl text-center">
-            <Reveal>
-              <span className="inline-flex max-w-full items-center justify-center gap-2 rounded-2xl border border-mint/25 bg-surface/70 px-3.5 py-1.5 text-left font-mono text-[0.66rem] leading-relaxed tracking-[0.12em] text-mint uppercase sm:rounded-pill sm:text-[0.68rem]">
-                <span className="size-1.5 shrink-0 rounded-full bg-mint" aria-hidden />
-                <span>AI · Software · Automation · Transformation · Observability · Talent</span>
-              </span>
-            </Reveal>
-
-            <h1 className="mt-7 text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[0.96]">
+            <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[0.96]">
               <Rise i={0} held={held}>Technology</Rise>{" "}
               <Rise i={1} held={held}>That</Rise>{" "}
               <Rise i={2} held={held}>Moves</Rise>
@@ -563,26 +556,53 @@ export default function Home() {
       </Section>
 
       {/* ----------------------------- partners ---------------------------- */}
-      <Section className="section">
-        <SectionHeading
-          eyebrow="Our partners"
-          title="Organisations we work alongside"
-          lead="Named by Septa. No logos were supplied, so these are text only, and nothing here describes the scope or length of any individual relationship."
-          className="mb-8"
-        />
-        <Reveal>
-          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-4">
-            {partners.map((name) => (
-              <li
-                key={name}
-                className="flex items-center justify-center bg-surface px-4 py-7 text-center text-[1.02rem] tracking-tight text-muted transition-colors hover:bg-surface-raised hover:text-fg"
-              >
-                {name}
-              </li>
+      {/* A solid Pearl field rather than a veiled band: three of the supplied marks are white
+          artwork drawn for a dark site, so no light ground can carry all seven. Each asset is
+          rendered as one silhouette so the row reads as a single treatment. */}
+      <section className="on-dark section relative border-y border-brand-teal/25 bg-brand-pearl">
+        <div className="wrap">
+          <p className="eyebrow mb-5">Our partners</p>
+          <h2 className="text-[clamp(1.7rem,3.6vw,2.5rem)] text-brand-white">
+            Organisations we work alongside
+          </h2>
+          <p className="prose-body mt-4 max-w-2xl">
+            The names below were supplied by Septa, with each organisation's published mark. Nothing
+            here describes the scope, contract or length of any individual relationship.
+          </p>
+        </div>
+
+        <div className="marquee marquee-logos mt-12">
+          <div className="marquee-inner">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="marquee-group" aria-hidden={copy === 1 || undefined}>
+                {partners.map((p) => (
+                  <span key={p.name} className="flex h-9 shrink-0 items-center">
+                    {p.logo ? (
+                      <img
+                        src={p.logo}
+                        alt=""
+                        decoding="async"
+                        className="logo-mono h-9 w-auto opacity-70 transition-opacity duration-300 hover:opacity-100"
+                      />
+                    ) : (
+                      <span className="text-[1.02rem] tracking-tight whitespace-nowrap text-brand-white/75">
+                        {p.name}
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </div>
             ))}
-          </ul>
-        </Reveal>
-      </Section>
+          </div>
+        </div>
+
+        {/* The strip repeats itself to close the loop, so the names are exposed once, here. */}
+        <ul className="sr-only">
+          {partners.map((p) => (
+            <li key={p.name}>{p.name}</li>
+          ))}
+        </ul>
+      </section>
 
       {/* ---------------------------- testimonial --------------------------- */}
       <Section tone="raised" className="section border-y border-line-soft">

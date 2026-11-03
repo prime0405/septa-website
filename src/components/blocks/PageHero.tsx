@@ -43,7 +43,7 @@ export function PageHero({
       className={cn(
         "relative overflow-hidden",
         onFilm
-          ? "on-film border-b border-brand-teal/25 bg-brand-pearl"
+          ? "on-dark border-b border-brand-teal/25 bg-brand-pearl"
           : "band border-b border-line-soft",
         className,
       )}

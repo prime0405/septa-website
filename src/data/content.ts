@@ -228,16 +228,19 @@ export const servicesIntro =
   "We help businesses and individuals thrive through product development and tech talent solutions.";
 
 /**
- * Named by Septa in the revamp brief. No logos were supplied, so these render as text
- * only, and nothing is claimed about the scope of each relationship.
+ * Named by Septa. `logo` is the official SVG asset Septa supplied, served from this origin
+ * under public/partners. Chinat Group has no asset, so it renders as its name instead.
+ * Nothing is claimed about the scope of each relationship.
  */
-export const partners = [
-  "Enyata",
-  "Chinat Group",
-  "Halogen Group",
-  "MTN",
-  "Preppod",
-  "Atos",
-  "Blusalt",
-  "Toviri UK",
+export type Partner = { name: string; logo?: string };
+
+export const partners: Partner[] = [
+  { name: "Enyata", logo: "/partners/enyata.svg" },
+  { name: "Chinat Group" },
+  { name: "Halogen Group", logo: "/partners/halogen-group.svg" },
+  { name: "MTN", logo: "/partners/mtn.svg" },
+  { name: "Preppod", logo: "/partners/preppod.svg" },
+  { name: "Atos", logo: "/partners/atos.svg" },
+  { name: "Blusalt", logo: "/partners/blusalt.svg" },
+  { name: "Toviri UK", logo: "/partners/toviri-uk.svg" },
 ];

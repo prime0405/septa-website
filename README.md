@@ -411,6 +411,18 @@ and the homepage technology strip scrolls as a marquee: two identical groups ins
 tech reads the list once. It pauses on hover and, under `prefers-reduced-motion`, the animation is
 dropped, the duplicate is removed and the strip becomes a plain horizontal scroller instead of
 hiding content behind a mask.
+The partner row is the same machine carrying the seven SVGs Septa supplied, served from this origin
+under `public/partners/` (each was scanned for `script`, event attributes and external references
+before it was copied in). They are drawn as white silhouettes on a solid Pearl band because three of
+the seven are white artwork exported for a dark site, so no single light ground can carry the set:
+`filter: brightness(0) invert(1)` flattens every mark to one treatment rather than showing seven
+colour schemes side by side. The band is `bg-brand-pearl` and not a veiled `band`, which would let
+the page wash back through it. `gap` and `padding-right` on the group are deliberately the same
+number — the loop shifts by exactly one group, so any difference between the two appears as a jump
+at the seam. Chinat Group has no asset, so its name is rendered as text in the same slot. The logos
+are `alt=""` and the duplicate group is `aria-hidden`; the eight names are exposed once in a
+visually-hidden list instead. Measured on the Pearl ground: heading 18.1:1, lead 14.1:1, eyebrow
+13.5:1, the text fallback 10.4:1, and a silhouette at 70% opacity 9.2:1, where graphics need 3:1.
 All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
 smooth scrolling becomes instant.
 
