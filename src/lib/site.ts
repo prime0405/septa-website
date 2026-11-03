@@ -8,7 +8,8 @@ export type Maybe<T> = T | null;
 
 export const site = {
   name: "Septa",
-  legalName: "Septa",
+  /** Supplied by Septa in the revamp brief; the legal pages print it, the UI prints `name`. */
+  legalName: "Septa Software Engineering Limited",
   tagline: "Technology That Moves Your Business Forward.",
   description:
     "We help businesses turn ideas into digital products through AI-assisted and traditional product development, streamline operations with workflow automation, access skilled technology talent, improve system reliability, and drive digital transformation.",
