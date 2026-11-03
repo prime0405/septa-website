@@ -17,10 +17,17 @@ import {
   Reveal,
   SampleTag,
   Section,
-  SectionHeading,
+  SectionHero,
 } from "../components/ui/primitives";
 import { caseStudies } from "../data/cases";
-import { advantageIntro, advantagePillars, partners, serviceOverview } from "../data/content";
+import {
+  advantageIntro,
+  advantagePillars,
+  audiences,
+  markets,
+  partners,
+  serviceOverview,
+} from "../data/content";
 import { posts } from "../data/posts";
 import { serviceBySlug } from "../data/services";
 import { products } from "../data/products";
@@ -174,80 +181,83 @@ export default function Home() {
         </div>
       </section>
 
-      {/* -------------------------- Septa advantage ------------------------- */}
+      {/* -------------------------- company intro -------------------------- */}
       <Section tone="raised" className="section border-y border-line-soft">
-        <SectionHeading
-          eyebrow="The Septa Advantage"
-          title="Why the combination matters"
-          lead={advantageIntro}
-          className="mb-10"
+        <SectionHero
+          eyebrow="Company information"
+          title={site.legalName}
+          lead="Septa is a technology company that builds and modernises software: AI products, conventional applications, workflow automation, observability and the teams that sustain them. We are most useful when a system matters, when being wrong has a cost, and somebody has to be accountable afterwards."
+          action={
+            <Button to={paths.about()} variant="secondary" size="sm">
+              About Septa
+            </Button>
+          }
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {advantagePillars.map((pillar, i) => (
-            <Reveal key={pillar.title} delay={i * 0.05} className={i === 0 ? "lg:col-span-1" : ""}>
-              <Card className="card-hover h-full p-6">
-                <span className="font-mono text-[0.72rem] text-mint">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 text-[1.08rem]">{pillar.title}</h3>
-                <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{pillar.detail}</p>
-              </Card>
-            </Reveal>
-          ))}
-          <Reveal delay={0.25}>
-            <Card className="flex h-full flex-col justify-between gap-5 border-mint/25 bg-surface p-6">
-              <p className="prose-body text-[0.92rem]">
-                Five commitments, one accountable team. Every engagement gets the same spine:
-                discovery, prototype, build, evaluate, ship, operate.
-              </p>
-              <Button to={paths.about()} variant="secondary" size="sm" iconEnd={<ArrowRight className="size-4" />}>
-                How we work
-              </Button>
-            </Card>
+        <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <p className="prose-body">
+              We take work in three shapes: build something new, fix or modernise something that
+              exists, and strengthen the team doing it. Most engagements mix all three.
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <AutoRollList
+              interval={3400}
+              items={[
+                { label: "Products with AI inside them", detail: "Grounded, evaluated, and reversible when a model changes." },
+                { label: "Software that stays cheap to change", detail: "Typed, tested, documented, and handed over properly." },
+                { label: "Processes stitched together", detail: "Integrations with retries, ownership and alerting." },
+                { label: "Systems you can see inside", detail: "Metrics, logs and traces wired to alerts people answer." },
+                { label: "Capacity when you are short", detail: "Specialists, squads or hiring support, planned around." },
+              ]}
+            />
           </Reveal>
         </div>
       </Section>
 
-      {/* -------------------------- company intro -------------------------- */}
+      {/* --------------------------- who we serve --------------------------- */}
       <Section className="section">
-        <div className="grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-          <div>
-            <SectionHeading
-              as="h2"
-              eyebrow="Who we are"
-              title="A technology partner for the part that is actually hard"
-              lead="Septa is a technology company that builds and modernises software: AI products, conventional applications, workflow automation, observability and the teams that sustain them. We are most useful when a system matters, when being wrong has a cost, and somebody has to be accountable afterwards."
-              action={
-                <Button to={paths.about()} variant="secondary" size="sm">
-                  About Septa
-                </Button>
-              }
-            />
+        <SectionHero
+          eyebrow="Who we serve"
+          title="The organisations Septa is built for, and where they are"
+          lead="Both lists are Septa's own: the four kinds of organisation this work is aimed at, and the three markets it is sold into."
+        />
+
+        <div className="mt-14">
+          <p className="eyebrow mb-6">Target audience</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {audiences.map((a, i) => (
+              <Reveal key={a.label} delay={i * 0.04}>
+                <Card className="card-hover h-full p-6">
+                  <h3 className="text-[1.05rem]">{a.label}</h3>
+                  <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{a.detail}</p>
+                </Card>
+              </Reveal>
+            ))}
           </div>
-          <Reveal delay={0.1}>
-            <div className="space-y-6">
-              <p className="prose-body">
-                We take work in three shapes: build something new, fix or modernise something that
-                exists, and strengthen the team doing it. Most engagements mix all three.
-              </p>
-              <AutoRollList
-                interval={3400}
-                items={[
-                  { label: "Products with AI inside them", detail: "Grounded, evaluated, and reversible when a model changes." },
-                  { label: "Software that stays cheap to change", detail: "Typed, tested, documented, and handed over properly." },
-                  { label: "Processes stitched together", detail: "Integrations with retries, ownership and alerting." },
-                  { label: "Systems you can see inside", detail: "Metrics, logs and traces wired to alerts people answer." },
-                  { label: "Capacity when you are short", detail: "Specialists, squads or hiring support, planned around." },
-                ]}
-              />
-            </div>
-          </Reveal>
+        </div>
+
+        <div className="mt-14">
+          <p className="eyebrow mb-6">Primary markets</p>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {markets.map((m, i) => (
+              <Reveal key={m.region} delay={i * 0.05}>
+                <div className="border-l border-line pl-5 transition-colors hover:border-mint/50">
+                  <h3 className="text-[1.05rem]">{m.region}</h3>
+                  <p className="mt-1.5 font-mono text-[0.72rem] tracking-[0.08em] text-faint">
+                    {m.countries}
+                  </p>
+                  <p className="mt-3 text-[0.88rem] leading-relaxed text-muted">{m.detail}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </Section>
 
       {/* ----------------------------- services ---------------------------- */}
       <Section tone="raised" className="section border-y border-line-soft">
-        <SectionHeading
+        <SectionHero
           eyebrow="Services"
           title="Five ways we take work"
           lead="Each service has its own page with capabilities, process, use cases and questions we would want answered."
@@ -316,20 +326,15 @@ export default function Home() {
 
       {/* ------------------------ AI feature highlight ---------------------- */}
       <Section className="section">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <SectionHero
+          eyebrow="AI product development"
+          title="From a demo that impresses a room to a feature that survives an audit"
+          lead="The difference between a pilot and a product is measurement. We define what a good answer means with your domain team, build the evaluation set that encodes it, and ship behind flags with citations, guardrails and cost tracking from the first release."
+        />
+        <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <div>
-              <p className="eyebrow mb-5">AI product development</p>
-              <h2 className="text-[clamp(1.7rem,3.6vw,2.5rem)]">
-                From a demo that impresses a room to a feature that survives an audit
-              </h2>
-              <p className="prose-body mt-5">
-                The difference between a pilot and a product is measurement. We define what a good
-                answer means with your domain team, build the evaluation set that encodes it, and
-                ship behind flags with citations, guardrails and cost tracking from the first release.
-              </p>
               <AutoRollList
-                className="mt-7"
                 interval={2800}
                 items={[
                   "Retrieval with source citations",
@@ -356,101 +361,97 @@ export default function Home() {
 
       {/* ------------------- Traditional product development ---------------- */}
       <Section tone="surface" className="section border-y border-line-soft">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <Reveal className="order-2 lg:order-1">
+        <SectionHero
+          eyebrow="Traditional product development"
+          title="Ordinary software, engineered with unusual care"
+          lead="Portals, platforms, APIs, internal tools and data products. Discovery, requirements, design, architecture, build, test, deploy — and the discipline that keeps a codebase cheap to change in year three."
+          action={
+            <Button to={paths.product("traditional")} size="md" variant="outline-mint">
+              See how product work runs
+            </Button>
+          }
+        />
+        <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
             <ArchitectureStack />
           </Reveal>
-          <Reveal delay={0.06} className="order-1 lg:order-2">
-            <div>
-              <p className="eyebrow mb-5">Traditional product development</p>
-              <h2 className="text-[clamp(1.7rem,3.6vw,2.5rem)]">
-                Ordinary software, engineered with unusual care
-              </h2>
-              <p className="prose-body mt-5">
-                Portals, platforms, APIs, internal tools and data products. Discovery, requirements,
-                design, architecture, build, test, deploy — and the discipline that keeps a codebase
-                cheap to change in year three.
-              </p>
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                {[
-                  { Icon: Compass, label: "Discovery and requirements that get written down" },
-                  { Icon: Layers, label: "Architecture reviewed for the next team" },
-                  { Icon: Search, label: "Tests on the paths that would actually hurt" },
-                  { Icon: Send, label: "Deploys with rollback that has been practised" },
-                ].map(({ Icon, label }) => (
-                  <div key={label} className="flex gap-3 rounded-card border border-line bg-surface p-3.5">
-                    <Icon className="mt-0.5 size-4 shrink-0 text-mint" aria-hidden />
-                    <span className="text-[0.86rem] leading-snug text-muted">{label}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8">
-                <Button to={paths.product("traditional")} size="md" variant="outline-mint">
-                  See how product work runs
-                </Button>
-              </div>
+          <Reveal delay={0.06}>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[
+                { Icon: Compass, label: "Discovery and requirements that get written down" },
+                { Icon: Layers, label: "Architecture reviewed for the next team" },
+                { Icon: Search, label: "Tests on the paths that would actually hurt" },
+                { Icon: Send, label: "Deploys with rollback that has been practised" },
+              ].map(({ Icon, label }) => (
+                <div key={label} className="flex gap-3 rounded-card border border-line bg-surface p-3.5">
+                  <Icon className="mt-0.5 size-4 shrink-0 text-mint" aria-hidden />
+                  <span className="text-[0.86rem] leading-snug text-muted">{label}</span>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>
       </Section>
 
-      {/* --------------------------- case studies -------------------------- */}
-      <Section className="section">
-        <SectionHeading
-          eyebrow="Case studies"
-          title="How this kind of work goes"
-          lead="The studies below are illustrative sample scenarios written to show the shape of a Septa engagement: the problem framing, the sequence and the costs of the choices made. They are not client references, and their outcomes are not measured results."
-          action={
-            <Button to={paths.cases()} variant="secondary" size="sm" iconEnd={<ArrowRight className="size-4" />}>
-              All case studies
-            </Button>
-          }
-          className="mb-4"
+      {/* -------------------------- Septa advantage ------------------------- */}
+      <Section tone="raised" className="section border-y border-line-soft">
+        <SectionHero
+          eyebrow="The Septa Advantage"
+          title="Why the combination matters"
+          lead={advantageIntro}
+          className="mb-10"
         />
-        <div className="mb-8 flex flex-wrap items-center gap-3">
-          <SampleTag label="Placeholder content until real studies are approved" />
-          <LaunchNoteInline label="Replace with client-approved case studies" />
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Reveal className="lg:col-span-2">
-            <CaseCard study={caseStudies[0]} featured />
-          </Reveal>
-          {caseStudies.slice(1, 3).map((c, i) => (
-            <Reveal key={c.slug} delay={i * 0.06}>
-              <CaseCard study={c} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {advantagePillars.map((pillar, i) => (
+            <Reveal key={pillar.title} delay={i * 0.05} className={i === 0 ? "lg:col-span-1" : ""}>
+              <Card className="card-hover h-full p-6">
+                <span className="font-mono text-[0.72rem] text-mint">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 text-[1.08rem]">{pillar.title}</h3>
+                <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{pillar.detail}</p>
+              </Card>
             </Reveal>
           ))}
+          <Reveal delay={0.25}>
+            <Card className="flex h-full flex-col justify-between gap-5 border-mint/25 bg-surface p-6">
+              <p className="prose-body text-[0.92rem]">
+                Five commitments, one accountable team. Every engagement gets the same spine:
+                discovery, prototype, build, evaluate, ship, operate.
+              </p>
+              <Button to={paths.about()} variant="secondary" size="sm" iconEnd={<ArrowRight className="size-4" />}>
+                How we work
+              </Button>
+            </Card>
+          </Reveal>
         </div>
       </Section>
 
       {/* ------------------------------ process ---------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-          <div>
-            <SectionHeading
-              eyebrow="Our approach"
-              title="A delivery loop that runs on repeat"
-              lead="Every engagement runs the same spine. What changes is how long each stage takes and who is in the room."
-            />
-            <div className="mt-7 flex flex-wrap gap-2">
-              <Pill tone="mint">Two-week increments</Pill>
-              <Pill tone="line">Working software</Pill>
-              <Pill tone="line">Written decisions</Pill>
-            </div>
-            <Button to={paths.about()} variant="ghost" size="sm" className="mt-6">
+      <Section className="section">
+        <SectionHero
+          eyebrow="Our approach"
+          title="A delivery loop that runs on repeat"
+          lead="Every engagement runs the same spine. What changes is how long each stage takes and who is in the room."
+          action={
+            <Button to={paths.about()} variant="secondary" size="sm">
               More about how we work
             </Button>
-          </div>
-          <Reveal delay={0.06}>
-            <ProcessSteps steps={deliveryProcess} columns={3} autoRoll />
-          </Reveal>
+          }
+        />
+        <div className="mt-7 flex flex-wrap justify-center gap-2">
+          <Pill tone="mint">Two-week increments</Pill>
+          <Pill tone="line">Working software</Pill>
+          <Pill tone="line">Written decisions</Pill>
         </div>
+        <Reveal delay={0.06} className="mt-12 block">
+          <ProcessSteps steps={deliveryProcess} columns={3} autoRoll />
+        </Reveal>
       </Section>
 
       {/* ------------------------------ why us ----------------------------- */}
-      <Section className="section">
-        <SectionHeading
+      <Section tone="surface" className="section border-y border-line-soft">
+        <SectionHero
           eyebrow="Why Septa"
           title="Reasons organisations pick us, in their words"
           lead="These are not testimonials — they are the practical differences we are able to commit to on this page."
@@ -502,56 +503,97 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* --------------------------- case studies -------------------------- */}
+      <Section className="section">
+        <SectionHero
+          eyebrow="Case studies"
+          title="How this kind of work goes"
+          lead="The studies below are illustrative sample scenarios written to show the shape of a Septa engagement: the problem framing, the sequence and the costs of the choices made. They are not client references, and their outcomes are not measured results."
+          action={
+            <Button to={paths.cases()} variant="secondary" size="sm" iconEnd={<ArrowRight className="size-4" />}>
+              All case studies
+            </Button>
+          }
+          className="mb-8"
+        />
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
+          <SampleTag label="Placeholder content until real studies are approved" />
+          <LaunchNoteInline label="Replace with client-approved case studies" />
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          <Reveal className="lg:col-span-2">
+            <CaseCard study={caseStudies[0]} featured />
+          </Reveal>
+          {caseStudies.slice(1, 3).map((c, i) => (
+            <Reveal key={c.slug} delay={i * 0.06}>
+              <CaseCard study={c} />
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
       {/* ------------------------------ talent ----------------------------- */}
       <Section tone="surface" className="section border-y border-line-soft">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
-          <div>
-            <p className="eyebrow mb-5">Talent solutions</p>
-            <h2 className="text-[clamp(1.7rem,3.6vw,2.5rem)]">
-              Sometimes the missing piece is people
-            </h2>
-            <p className="prose-body mt-5">
-              A specialist who can work unsupervised, a squad that owns a product line, or technical
-              screening your hiring team does not have time to run well. Engagement shape is agreed
-              against the outcome rather than a headcount target.
-            </p>
-            <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
-              {[
-                "Technical talent sourcing",
-                "Developer placement",
-                "Dedicated development teams",
-                "Project-based staffing",
-                "Team augmentation",
-                "Technical role matching",
-              ].map((t) => (
-                <li key={t} className="flex items-center gap-2.5 text-[0.9rem] text-muted">
-                  <span className="size-1.5 rounded-full bg-mint/70" aria-hidden />
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button to={paths.service("talent-solution")}>Talent Solution service</Button>
-              <Button to={paths.careers()} variant="secondary" iconStart={<Users2 className="size-4" />}>
+        <SectionHero
+          eyebrow="Talent solutions"
+          title="Sometimes the missing piece is people"
+          lead="A specialist who can work unsupervised, a squad that owns a product line, or technical screening your hiring team does not have time to run well. Engagement shape is agreed against the outcome rather than a headcount target."
+          action={
+            <>
+              <Button to={paths.service("talent-solution")} size="md">
+                Talent Solution service
+              </Button>
+              <Button
+                to={paths.careers()}
+                variant="secondary"
+                size="md"
+                iconStart={<Users2 className="size-4" />}
+              >
                 Work at Septa
               </Button>
-            </div>
-          </div>
-          <Reveal delay={0.08}>
-            <Card className="p-6">
-              <p className="font-mono text-[0.68rem] tracking-[0.18em] text-faint uppercase">
-                Latest writing
-              </p>
-              <div className="mt-4 space-y-4">
-                {posts.slice(0, 3).map((p) => (
-                  <PostCard key={p.slug} post={p} variant="compact" />
-                ))}
-              </div>
-              <Button to={paths.blog()} variant="ghost" size="sm" className="mt-4">
-                Read the blog
-              </Button>
-            </Card>
-          </Reveal>
+            </>
+          }
+        />
+        <Reveal delay={0.06}>
+          <ul className="mx-auto mt-12 grid max-w-3xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "Technical talent sourcing",
+              "Developer placement",
+              "Dedicated development teams",
+              "Project-based staffing",
+              "Team augmentation",
+              "Technical role matching",
+            ].map((t) => (
+              <li
+                key={t}
+                className="flex items-center gap-2.5 rounded-card border border-line bg-surface px-4 py-3.5 text-[0.88rem] text-muted"
+              >
+                <span className="size-1.5 shrink-0 rounded-full bg-mint/70" aria-hidden />
+                {t}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </Section>
+
+      {/* --------------------------- latest writing -------------------------- */}
+      <Section className="section">
+        <SectionHero
+          eyebrow="Latest writing"
+          title="Notes on the parts of this work that usually go wrong"
+          action={
+            <Button to={paths.blog()} variant="secondary" size="sm">
+              Read the blog
+            </Button>
+          }
+        />
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          {posts.slice(0, 3).map((p, i) => (
+            <Reveal key={p.slug} delay={i * 0.05}>
+              <PostCard post={p} variant="compact" />
+            </Reveal>
+          ))}
         </div>
       </Section>
 
@@ -560,12 +602,12 @@ export default function Home() {
           artwork drawn for a dark site, so no light ground can carry all seven. Each asset is
           rendered as one silhouette so the row reads as a single treatment. */}
       <section className="on-dark section relative border-y border-brand-teal/25 bg-brand-pearl">
-        <div className="wrap">
+        <div className="wrap mx-auto max-w-3xl text-center">
           <p className="eyebrow mb-5">Our partners</p>
-          <h2 className="text-[clamp(1.7rem,3.6vw,2.5rem)] text-brand-white">
+          <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04] text-brand-white">
             Organisations we work alongside
           </h2>
-          <p className="prose-body mt-4 max-w-2xl">
+          <p className="prose-body mx-auto mt-5 max-w-2xl text-[1.02rem]">
             The names below were supplied by Septa, with each organisation's published mark. Nothing
             here describes the scope, contract or length of any individual relationship.
           </p>
@@ -606,7 +648,7 @@ export default function Home() {
 
       {/* ---------------------------- testimonial --------------------------- */}
       <Section tone="raised" className="section border-y border-line-soft">
-        <SectionHeading
+        <SectionHero
           eyebrow="Testimonial"
           title="Waiting on real quotes"
           lead="The revamp brief reserves a testimonial section but supplies no content for it. Inventing one would be a fabricated client reference, so this stays visibly empty until Septa provides approved quotes."

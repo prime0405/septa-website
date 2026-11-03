@@ -244,3 +244,47 @@ export const partners: Partner[] = [
   { name: "Blusalt", logo: "/partners/blusalt.svg" },
   { name: "Toviri UK", logo: "/partners/toviri-uk.svg" },
 ];
+
+/**
+ * Septa's own wording from the revamp brief, kept as supplied apart from sentence casing. These
+ * are the audiences the website is written for and the markets it is aimed at.
+ */
+export const audiences = [
+  {
+    label: "Tech-savvy startups & founders",
+    detail:
+      "Early-stage to growth-stage companies looking for reliable AI and software development partners.",
+  },
+  {
+    label: "SMBs and enterprises",
+    detail: "Businesses seeking to integrate AI, automation, or build scalable digital products.",
+  },
+  {
+    label: "Non-technical founders & business leaders",
+    detail: "Professionals with ideas who need full-cycle support from strategy to product launch.",
+  },
+  {
+    label: "Organizations seeking talent solutions",
+    detail:
+      "Companies looking to augment their teams with specialized developers, AI engineers, or product managers.",
+  },
+];
+
+export const markets = [
+  {
+    region: "North America",
+    countries: "US & Canada",
+    detail: "High demand for AI, SaaS, and custom product development.",
+  },
+  {
+    region: "Europe",
+    countries: "Germany, UK, France, Netherlands",
+    detail: "Innovation-driven markets with a strong focus on AI adoption and outsourcing partnerships.",
+  },
+  {
+    region: "Africa",
+    countries: "Nigeria, South Africa, Kenya",
+    detail:
+      "Emerging markets with growing tech adoption and opportunities for AI-driven solutions.",
+  },
+];

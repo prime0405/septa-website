@@ -136,8 +136,37 @@ export function SectionHeading({
   );
 }
 
-export function Divider({ className }: { className?: string }) {
+/**
+ * A section header with the presence of a page hero: centred, one size up from SectionHeading,
+ * with its action under the lead instead of beside the title. The homepage puts one above every
+ * headline, which is the arrangement Septa asked for.
+ */
+export function SectionHero({
+  eyebrow,
+  title,
+  lead,
+  action,
+  className,
+}: {
+  eyebrow?: ReactNode;
+  title: ReactNode;
+  lead?: ReactNode;
+  action?: ReactNode;
+  className?: string;
+}) {
   return (
+    <div className={cn("mx-auto max-w-3xl text-center", className)}>
+      {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
+      <MaskRise>
+        <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">{title}</h2>
+      </MaskRise>
+      {lead ? <p className="prose-body mx-auto mt-5 max-w-2xl text-[1.02rem]">{lead}</p> : null}
+      {action ? <div className="mt-7 flex flex-wrap justify-center gap-3">{action}</div> : null}
+    </div>
+  );
+}
+
+export function Divider({ className }: { className?: string }) {  return (
     <div
       className={cn(
         "mx-auto h-px w-full max-w-[1220px] bg-gradient-to-r from-transparent via-line to-transparent",

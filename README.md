@@ -426,6 +426,21 @@ visually-hidden list instead. Measured on the Pearl ground: heading 18.1:1, lead
 All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
 smooth scrolling becomes instant.
 
+The homepage runs in the order Septa set out in the revamp brief, and every headline on it is a
+centred band header (`SectionHero` in `src/components/ui/primitives.tsx`: eyebrow, one-size-up
+`MaskRise` title, lead, actions underneath) with that section's content below it, rather than the
+older left-aligned heading with a button beside it. The sequence is hero, Company information,
+Who we serve, Services, AI product development, Traditional product development, The Septa
+Advantage, Our approach, Why Septa, Case studies, Talent solutions, Latest writing, Our partners,
+Testimonial, then the closing CTA. Three of the brief's headlines are deliberately not on the site:
+Success Metrics (KPIs), Competitor & Inspiration References and Timeline describe the redesign
+project, not the business, and publishing them would put Septa's internal brief and its competitor
+list on the public page. The two lists the brief does contribute and the site did not have, the four
+target audiences and the three primary markets, are in `src/data/content.ts` as `audiences` and
+`markets` and are printed in Septa's own wording. Because the sections were re-sequenced, the band
+tones (`ink`, `raised`, `surface`) were re-walked so no two neighbours match; that alternation is
+the only thing separating one hero from the next on a long page.
+
 ## Hosting
 
 The site is deployed as **one Vercel project**: the static frontend from `dist/`, and the same
