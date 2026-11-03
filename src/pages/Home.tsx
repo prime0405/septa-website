@@ -155,54 +155,6 @@ export default function Home() {
           </div>
 
           <Reveal delay={0.24}>
-            <div className="relative mx-auto mt-16 max-w-5xl rounded-[26px] border border-mint/18 bg-ink-raised/60 p-1.5 shadow-glow">
-              <div className="rounded-[20px] border border-line bg-surface/50">
-                <div className="grid gap-px sm:grid-cols-3">
-                  {[
-                    {
-                      Icon: Layers,
-                      title: "Custom software solutions",
-                      detail:
-                        "AI-assisted and traditional product development, engineered to stay cheap to change.",
-                      to: paths.products(),
-                    },
-                    {
-                      Icon: Users2,
-                      title: "Top-tier tech talent",
-                      detail:
-                        "Specialists and squads that plug into your delivery model and own outcomes.",
-                      to: paths.service("talent-solution"),
-                    },
-                    {
-                      Icon: Compass,
-                      title: "Reliable systems",
-                      detail:
-                        "Automation, observability and modernisation that keep what you run accountable.",
-                      to: paths.service("observability-monitoring"),
-                    },
-                  ].map(({ Icon, title, detail, to }) => (
-                    <Link
-                      key={title}
-                      to={to}
-                      className="group flex flex-col gap-3 p-6 text-left transition-colors hover:bg-surface-raised/70"
-                    >
-                      <span className="flex size-9 items-center justify-center rounded-xl border border-line bg-surface text-mint">
-                        <Icon className="size-4" aria-hidden strokeWidth={2} />
-                      </span>
-                      <span className="text-[1.02rem] text-fg group-hover:text-mint">{title}</span>
-                      <span className="text-[0.86rem] leading-relaxed text-muted">{detail}</span>
-                      <span className="mt-auto inline-flex items-center gap-1.5 font-mono text-[0.68rem] tracking-wider text-faint uppercase transition-colors group-hover:text-mint">
-                        Learn more
-                        <ArrowRight className="size-3" aria-hidden />
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.3}>
             <p className="prose-body mx-auto mt-10 max-w-2xl text-center text-[0.95rem]">
               {serviceOverview}
             </p>
