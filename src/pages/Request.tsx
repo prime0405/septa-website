@@ -82,7 +82,7 @@ export default function Request() {
         }
       />
 
-      <Section className="section">
+      <Section wall="answers" className="section">
         <div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
           <div className="min-w-0">
             {preselected ? (
@@ -150,7 +150,7 @@ export default function Request() {
         </div>
       </Section>
 
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <SectionHeading
             eyebrow="Useful context"

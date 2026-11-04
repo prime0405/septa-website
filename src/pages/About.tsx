@@ -28,7 +28,7 @@ export default function About() {
       />
 
       {/* ---------------------------- our story ---------------------------- */}
-      <Section className="section">
+      <Section wall="service-automation" className="section">
         <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
           <SectionHeading
             eyebrow="Who We Are"
@@ -46,7 +46,7 @@ export default function About() {
       </Section>
 
       {/* ---------------------------- strengths ---------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
         <div className="grid gap-5 lg:grid-cols-3">
           {about.strengths.map((s, i) => {
             const Icon = strengthIcons[i % strengthIcons.length];
@@ -72,7 +72,7 @@ export default function About() {
       </Section>
 
       {/* --------------------------- vision/mission --------------------------- */}
-      <Section className="section">
+      <Section wall="services" className="section">
         <div className="grid gap-6 lg:grid-cols-2">
           <Reveal className="h-full">
             <Card className="relative flex h-full flex-col overflow-hidden p-7">
@@ -105,7 +105,7 @@ export default function About() {
       </Section>
 
       {/* ------------------------------ values ------------------------------ */}
-      <Section tone="surface" className="section border-y border-line-soft">
+      <Section wall="blog" tone="surface" className="section border-y border-line-soft">
         <SectionHeading eyebrow="About Us" title={about.valuesHeading} className="mb-12" />
         <ul className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
           {about.values.map((value) => (
@@ -123,7 +123,7 @@ export default function About() {
       </Section>
 
       {/* -------------------------- client testimonial -------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="careers" tone="raised" className="section border-y border-line-soft">
         <SectionHero eyebrow="Client Testimonial" title={testimonialTitle} className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {testimonials.map((t, i) => (
@@ -142,6 +142,7 @@ export default function About() {
 
       {/* ------------------------------ call to action ------------------------------ */}
       <CtaSection
+        wall="engage"
         headline={about.cta.headline}
         copy={about.cta.copy}
         label={about.cta.button}

@@ -49,7 +49,7 @@ export default function Careers() {
       />
 
       {/* ---------------------------- our culture ---------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="blog" tone="raised" className="section border-y border-line-soft">
         <SectionHero title="Our Culture" lead={careers.cultureLead} className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {careers.culture.map((c, i) => (
@@ -67,7 +67,7 @@ export default function Careers() {
       </Section>
 
       {/* ------------------------ our value ecosystem ------------------------ */}
-      <Section className="section">
+      <Section wall="use-case" className="section">
         <SectionHeading eyebrow="Values" title="Our Value Ecosystem" className="mb-8" />
         <Reveal>
           <ul className="flex flex-wrap gap-2.5">
@@ -88,7 +88,7 @@ export default function Careers() {
       </Section>
 
       {/* ------------------------- hiring process ------------------------- */}
-      <Section tone="surface" className="section border-y border-line-soft">
+      <Section wall="service-automation" tone="surface" className="section border-y border-line-soft">
         <SectionHero title="Our Hiring Process" lead={careers.hiringLead} className="mb-12" />
         <ol className="grid gap-4">
           {careers.hiring.map((s, i) => (
@@ -108,7 +108,7 @@ export default function Careers() {
       </Section>
 
       {/* ---------------------------- open roles ---------------------------- */}
-      <Section tone="raised" id="open-roles" className="section scroll-mt-24 border-y border-line-soft">
+      <Section wall="service-talent" tone="raised" id="open-roles" className="section scroll-mt-24 border-y border-line-soft">
         <SectionHeading eyebrow="Career" title="Open Roles" className="mb-9" />
         <div className="grid gap-5">
           {openings.map((o, i) => (
@@ -146,7 +146,7 @@ export default function Careers() {
       </Section>
 
       {/* ------------------------------ apply ------------------------------ */}
-      <Section id="apply" className="section scroll-mt-24">
+      <Section wall="engage" id="apply" className="section scroll-mt-24">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading eyebrow="Open Roles" title={careers.rolesCta} />

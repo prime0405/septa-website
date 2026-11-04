@@ -20,7 +20,7 @@ export default function Cases() {
         title="Our Product Development Use Case Study"
       />
 
-      <Section className="section">
+      <Section wall="services" className="section">
         <div className="grid gap-4 lg:grid-cols-2">
           <Reveal className="lg:col-span-2">
             <CaseCard study={useCases[0]} featured />

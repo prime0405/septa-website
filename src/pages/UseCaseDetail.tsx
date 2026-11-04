@@ -77,7 +77,7 @@ export default function UseCaseDetail() {
       />
 
       {/* -------------------------------- the challenge ------------------------------- */}
-      <Section className="section">
+      <Section wall="service-observability" className="section">
         <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
           <SectionHeading eyebrow={study.client} title="The Challenge" className="lg:sticky lg:top-28 lg:self-start" />
           <Reveal>
@@ -87,7 +87,7 @@ export default function UseCaseDetail() {
       </Section>
 
       {/* -------------------------------- our solution -------------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="service-automation" tone="raised" className="section border-y border-line-soft">
         <SectionHeading eyebrow={study.client} title="Our Solution" lead={study.solutionLead} className="mb-10" />
         {study.pillars ? (
           <div className="grid gap-4 sm:grid-cols-2">
@@ -109,7 +109,7 @@ export default function UseCaseDetail() {
 
       {/* ----------------------------- products developed ----------------------------- */}
       {study.products ? (
-        <Section className="section">
+        <Section wall="use-case" className="section">
           <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
             <SectionHeading eyebrow={study.client} title="Products Developed" className="lg:sticky lg:top-28 lg:self-start" />
             <Reveal>
@@ -120,7 +120,7 @@ export default function UseCaseDetail() {
       ) : null}
 
       {/* ------------------------- product development process ------------------------- */}
-      <Section tone="surface" className="section border-y border-line-soft">
+      <Section wall="cases" tone="surface" className="section border-y border-line-soft">
         <SectionHeading eyebrow={study.client} title="Product Development Process" className="mb-10" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {study.process.map((step, i) => (
@@ -140,7 +140,7 @@ export default function UseCaseDetail() {
       </Section>
 
       {/* ----------------------------- tools & technologies ---------------------------- */}
-      <Section className="section">
+      <Section wall="blog" className="section">
         <SectionHeading
           eyebrow={study.client}
           title="Tools & Technologies"
@@ -172,6 +172,7 @@ export default function UseCaseDetail() {
       </Section>
 
       <CtaSection
+        wall="engage"
         headline={study.title}
         copy={study.overview}
         label="Start building"

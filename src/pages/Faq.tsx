@@ -33,7 +33,7 @@ export default function Faq() {
         }
       />
 
-      <Section className="section">
+      <Section wall="service-observability" className="section">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {serviceListings.map((s, i) => (
             <Reveal key={s.slug} delay={i * 0.04} className="h-full">

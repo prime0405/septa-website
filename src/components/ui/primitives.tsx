@@ -13,6 +13,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { showLaunchNotes } from "../../lib/launchNotes";
+import type { BgTheme } from "../../lib/bgThemes";
 import { cn } from "../../lib/cn";
 
 /* ------------------------------- layout ------------------------------- */
@@ -23,6 +24,7 @@ export function Section({
   id,
   tone = "ink",
   bleed = false,
+  wall,
   as: Tag = "section",
 }: {
   children: ReactNode;
@@ -30,6 +32,8 @@ export function Section({
   id?: string;
   tone?: "ink" | "raised" | "surface" | "none";
   bleed?: boolean;
+  /** The wallpaper this headline runs behind. Absent means the section inherits the route's theme. */
+  wall?: BgTheme;
   as?: "section" | "div";
 }) {
   // Every tone is an 82% veil rather than a solid fill, so the drifting wash behind the page keeps
@@ -47,7 +51,11 @@ export function Section({
     none: "",
   } as const;
   return (
-    <Tag id={id} className={cn("relative scroll-mt-24", tones[tone], className)}>
+    <Tag
+      id={id}
+      data-wall={wall}
+      className={cn("relative scroll-mt-24", tones[tone], className)}
+    >
       {bleed ? children : <div className="wrap">{children}</div>}
     </Tag>
   );

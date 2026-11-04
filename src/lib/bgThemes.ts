@@ -1,12 +1,17 @@
 /**
  * Which animated wallpaper a page runs behind its content.
  *
+ * A theme is keyed to a section as well as to a page: `Section` carries an optional `wall` that becomes
+ * a `data-wall` attribute, and `useActiveWall` hands the fixed backdrop whichever one is under the
+ * visitor's eye. On a long page that means several wallpapers in sequence, each matched to the
+ * headline it sits behind; a theme with no `wall` simply keeps whatever the route gives it.
+ *
  * Two halves per theme, both chosen from what the page is about:
  *
  * - A gradient scheme, declared in `src/index.css` under `[data-bg="<theme>"]`. The Septa brand
  *   manual (p.15) supplies four flat colours and no gradient objects, so every stop is a colour-mix
  *   of Black #000000, Black Pearl #061820, Tradewind #6DB1AE and White #FFFFFF; a theme only picks
- *   which of them meet, at what angle, and how fast the ramp travels.
+ *   which of them meet and at what angle.
  * - A plate: the generated abstract artwork that pans inside the wash. Each plate has a different
  *   subject, so a page gets the one that reads like its own work.
  * - A motion subject: the live line art drawn on the mesh canvas over the plate. This is the layer

@@ -76,7 +76,7 @@ export default function Contact() {
       />
 
       {/* ---------------------------- form ----------------------------- */}
-      <Section className="section">
+      <Section wall="answers" className="section">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <div>
             <SectionHeading eyebrow="Contact Us" title={contactCopy.formTitle} className="mb-8" />

@@ -7,6 +7,7 @@ import { Button } from "../ui/Button";
 import { Eyebrow, MaskRise } from "../ui/primitives";
 import { Logo } from "../layout/Logo";
 import { paths } from "../../lib/paths";
+import type { BgTheme } from "../../lib/bgThemes";
 
 export type Crumb = { label: string; to?: string };
 
@@ -20,6 +21,7 @@ export function PageHero({
   meta,
   className,
   video,
+  wall,
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
@@ -31,6 +33,8 @@ export function PageHero({
   className?: string;
   /** Septa-supplied film that runs behind this header instead of the contour plate. */
   video?: string;
+  /** The wallpaper the header runs behind, for the pages that run several in sequence. */
+  wall?: BgTheme;
 }) {
   const onFilm = Boolean(video);
   return (
@@ -40,6 +44,7 @@ export function PageHero({
     // paint on top of the veil. With a film the same job is done by `.film-veil`, and the surface
     // under it is Black Pearl so that a header whose video never decodes is a plain dark header.
     <section
+      data-wall={wall}
       className={cn(
         "relative overflow-hidden",
         onFilm
@@ -161,18 +166,21 @@ function FilmBackdrop({ src }: { src: string }) {
 }
 
 export function CtaBand({
+  wall,
   title = "Let’s build what’s next, together!",
   lead = "Whether you need an AI-powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
   primaryLabel = "Start a request",
   secondary,
 }: {
+  /** The wallpaper the band runs behind. */
+  wall?: BgTheme;
   title?: string;
   lead?: string;
   primaryLabel?: string;
   secondary?: { label: string; to: string };
 }) {
   return (
-    <section className="wrap section">
+    <section data-wall={wall} className="wrap section">
       <div className="relative overflow-hidden rounded-card border border-line bg-surface px-6 py-10 sm:px-10 sm:py-12">
         <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-50" />
         <div

@@ -35,8 +35,24 @@ export function endIntro() {
   armed = false;
   if (!running) return;
   running = false;
+  notify();
+}
+
+/**
+ * Claim the curtain for this mount. React StrictMode builds a component, destroys it and builds it
+ * again in development, so the curtain announces itself on every mount instead of relying on the
+ * decision made during the first render; if it only ran once, the dev double-mount would leave the
+ * homepage uncovered.
+ */
+export function showCurtain() {
+  if (running) return;
+  running = true;
+  armed = true;
+  notify();
+}
+
+function notify() {
   for (const listener of settled) listener();
-  settled.clear();
 }
 
 /**

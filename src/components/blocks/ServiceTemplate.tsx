@@ -56,7 +56,8 @@ export function ServiceTemplate({
       />
 
       {/* ------------------------------ core services ------------------------------ */}
-      <Section className="section">
+      {/* A capability grid is a lattice: discrete tiles, one lit sweep across them. */}
+      <Section wall="use-case" className="section">
         <SectionHeading
           eyebrow={page.name}
           title={page.coreServicesHeading}
@@ -78,7 +79,7 @@ export function ServiceTemplate({
       </Section>
 
       {/* ------------------------------ why choose us ------------------------------ */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="about" tone="raised" className="section border-y border-line-soft">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <SectionHeading eyebrow={page.name} title={page.whyChooseHeading} className="lg:sticky lg:top-28 lg:self-start" />
           <div className="grid gap-4 sm:grid-cols-2">
@@ -102,7 +103,7 @@ export function ServiceTemplate({
 
       {/* --------------------------------- process --------------------------------- */}
       {page.process ? (
-        <Section className="section">
+        <Section wall="service-automation" className="section">
           <SectionHeading
             eyebrow={page.name}
             title={page.processHeading ?? "Our Process"}
@@ -140,7 +141,7 @@ export function ServiceTemplate({
 
       {/* -------------------------------- who we serve ------------------------------- */}
       {page.whoWeServe ? (
-        <Section tone="surface" className="section border-y border-line-soft">
+        <Section wall="services" tone="surface" className="section border-y border-line-soft">
           <SectionHeading eyebrow={page.name} title={page.whoWeServeHeading ?? "Who We Serve"} className="mb-10" />
           <div className="grid gap-4 sm:grid-cols-2">
             {page.whoWeServe.map((u, i) => (
@@ -164,7 +165,7 @@ export function ServiceTemplate({
 
       {/* ---------------------------------- extra ---------------------------------- */}
       {page.extra ? (
-        <Section className="section">
+        <Section wall="blog" className="section">
           <SectionHeading eyebrow={page.name} title={page.extra.heading} className="mb-8" />
           <div className="max-w-3xl space-y-4">
             {page.extra.paragraphs.map((paragraph, i) => (
@@ -178,7 +179,7 @@ export function ServiceTemplate({
 
       {/* ------------------------- sections awaiting copy -------------------------- */}
       {page.pending?.length ? (
-        <Section tone="raised" className="section border-y border-line-soft">
+        <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
           <div className="rounded-card border border-dashed border-line bg-surface p-6 sm:p-8">
             <p className="prose-body mx-auto max-w-2xl text-center text-[0.92rem]">
               {page.pending.join(" and ")} belong on this page. The revamp document asks for them
@@ -193,6 +194,7 @@ export function ServiceTemplate({
 
       {page.cta ? (
         <CtaSection
+          wall="engage"
           headline={page.cta.headline}
           copy={page.cta.copy}
           label={page.cta.label}

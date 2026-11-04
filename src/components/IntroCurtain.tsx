@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Logo } from "./layout/Logo";
-import { endIntro } from "../lib/intro";
+import { endIntro, showCurtain } from "../lib/intro";
 
 /** How long the curtain stays shut, and how long the panels take to part. */
 const HOLD_MS = 1150;
@@ -21,7 +21,10 @@ export function IntroCurtain({ onDone }: { onDone: () => void }) {
   const [drawn, setDrawn] = useState(false);
   const timers = useRef<number[]>([]);
   const finished = useRef(false);
+  const parted = useRef(false);
 
+  // `onDone` has to keep one identity for the life of the curtain; Layout gives it a memoised
+  // callback. A new one on every render would restart the timing effect mid-flight.
   const finish = useCallback(() => {
     if (finished.current) return;
     finished.current = true;
@@ -32,12 +35,16 @@ export function IntroCurtain({ onDone }: { onDone: () => void }) {
 
   /** Part the panels, then release the page once they have nearly cleared. */
   const skip = useCallback(() => {
-    if (finished.current) return;
+    if (finished.current || parted.current) return;
+    parted.current = true;
     setOpen(true);
     timers.current.push(window.setTimeout(finish, PART_MS * 0.4));
   }, [finish]);
 
   useEffect(() => {
+    showCurtain();
+    parted.current = false;
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -51,11 +58,13 @@ export function IntroCurtain({ onDone }: { onDone: () => void }) {
     };
     window.addEventListener("keydown", onKey);
 
+    // Releasing the page is `finish`'s job, not the cleanup's. In development React mounts this
+    // component, tears it down and mounts it again, and a cleanup that called `endIntro` would
+    // uncover the homepage on the way through and never let the curtain back.
     return () => {
       for (const t of timers.current) window.clearTimeout(t);
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = previousOverflow;
-      endIntro();
     };
   }, [finish, skip]);
 

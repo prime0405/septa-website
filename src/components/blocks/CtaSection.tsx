@@ -1,5 +1,6 @@
 import { Button } from "../ui/Button";
 import { MaskRise } from "../ui/primitives";
+import type { BgTheme } from "../../lib/bgThemes";
 
 /**
  * The call-to-action banner exactly as the document writes one: a headline, a line of copy and a
@@ -10,14 +11,17 @@ export function CtaSection({
   copy,
   label,
   to,
+  wall,
 }: {
   headline: string;
   copy: string;
   label: string;
   to: string;
+  /** The wallpaper the banner runs behind, for the pages that run several in sequence. */
+  wall?: BgTheme;
 }) {
   return (
-    <section className="wrap section">
+    <section data-wall={wall} className="wrap section">
       <div className="relative overflow-hidden rounded-card border border-line bg-surface px-6 py-10 sm:px-10 sm:py-12">
         <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-50" />
         <div

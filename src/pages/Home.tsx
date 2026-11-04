@@ -28,7 +28,19 @@ import {
 } from "../data/content";
 import { site } from "../lib/site";
 import { paths } from "../lib/paths";
+import type { BgTheme } from "../lib/bgThemes";
 import { usePageMeta } from "../lib/usePageMeta";
+
+/*
+ * The wallpaper each offering block runs behind. A model being built is a lattice, a product being
+ * taken to market is a stream, a person being matched is the ring field — and no two neighbours
+ * share a subject, so scrolling from one headline into the next always shows the backdrop moving.
+ */
+const blockWalls: Record<string, BgTheme> = {
+  ai: "service-ai",
+  traditional: "cases",
+  talent: "service-talent",
+};
 
 /** One headline word, rising into place. `held` keeps it waiting for the curtain. */
 function Rise({ i, held, children }: { i: number; held: boolean; children: ReactNode }) {
@@ -66,7 +78,11 @@ export default function Home() {
   return (
     <>
       {/* ------------------------------- 1. hero ------------------------------- */}
-      <section ref={heroRef} className="band relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24">
+      <section
+        ref={heroRef}
+        data-wall="home"
+        className="band relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24"
+      >
         <motion.div
           aria-hidden
           style={{ y: plateY }}
@@ -126,7 +142,12 @@ export default function Home() {
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
       {landingBlocks.map((block, i) => (
-        <Section key={block.key} tone={i % 2 ? "surface" : "raised"} className="section border-y border-line-soft">
+        <Section
+          key={block.key}
+          wall={blockWalls[block.key]}
+          tone={i % 2 ? "surface" : "raised"}
+          className="section border-y border-line-soft"
+        >
           <SectionHero
             eyebrow={block.label}
             title={block.headline}
@@ -143,7 +164,10 @@ export default function Home() {
       {/* ---------------------------- 5. our partners ---------------------------- */}
       {/* A solid Pearl field rather than a veiled band: three of the supplied marks are white
           artwork drawn for a dark site, so no light ground can carry all eight. */}
-      <section className="on-dark section relative border-y border-brand-teal/25 bg-brand-pearl">
+      <section
+        data-wall="services"
+        className="on-dark section relative border-y border-brand-teal/25 bg-brand-pearl"
+      >
         <div className="wrap mx-auto max-w-3xl text-center">
           <MaskRise>
             <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04] text-brand-white">
@@ -179,7 +203,7 @@ export default function Home() {
       </section>
 
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
         <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {advantagePillars.map((pillar, i) => (
@@ -197,7 +221,7 @@ export default function Home() {
       </Section>
 
       {/* --------------------------- 7. service overview --------------------------- */}
-      <Section className="section">
+      <Section wall="service-automation" className="section">
         <SectionHero
           eyebrow="Service overview"
           title={serviceOverview}
@@ -222,7 +246,7 @@ export default function Home() {
       </Section>
 
       {/* ----------------------------- 8. testimonial ----------------------------- */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="blog" tone="raised" className="section border-y border-line-soft">
         <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {testimonials.map((t, i) => (
@@ -241,6 +265,7 @@ export default function Home() {
 
       {/* -------------------------- 9. call-to-action banner -------------------------- */}
       <CtaSection
+        wall="engage"
         headline={ctaBanner.headline}
         copy={ctaBanner.subheadline}
         label={ctaBanner.cta}

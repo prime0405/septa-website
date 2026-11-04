@@ -24,6 +24,8 @@ const TEAL = "#6db1ae";
 export function WallMotion({ mode }: { mode: BgMotion }) {
   const reduce = useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  /** The subject the running loop is drawing, which trails `mode` by one fade. */
+  const modeRef = useRef<BgMotion>(mode);
 
   useEffect(() => {
     if (reduce) return;
@@ -297,14 +299,15 @@ export function WallMotion({ mode }: { mode: BgMotion }) {
       stream: drawStream,
       strata: drawStrata,
     };
-    const draw = scenes[mode];
 
     const paint = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000 || 0);
       last = now;
       clock += dt;
       ctx.clearRect(0, 0, width, height);
-      draw(dt);
+      // Read through the ref, so a new subject is picked up on the next frame without tearing down
+      // the loop or re-seeding the field. `useActiveWall` changes this several times a scroll.
+      scenes[modeRef.current](dt);
     };
 
     const loop = (now: number) => {
@@ -344,7 +347,27 @@ export function WallMotion({ mode }: { mode: BgMotion }) {
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [reduce, mode]);
+  }, [reduce]);
+
+  /* The subject changes as the visitor moves between sections, and a cut from one field of line art
+     to another is the one thing this layer must not do: the strokes are faint, but a whole-field
+     change is unmistakable. So the canvas fades out, the scene pointer moves while nothing is visible,
+     and the new field fades up into the same clock. */
+  useEffect(() => {
+    if (reduce) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    if (modeRef.current === mode) return;
+    canvas.classList.add("is-swapping");
+    const swap = window.setTimeout(() => {
+      modeRef.current = mode;
+      canvas.classList.remove("is-swapping");
+    }, 460);
+    return () => {
+      window.clearTimeout(swap);
+      canvas.classList.remove("is-swapping");
+    };
+  }, [mode, reduce]);
 
   if (reduce) return null;
 

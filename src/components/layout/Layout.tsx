@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUp } from "lucide-react";
@@ -68,6 +68,9 @@ export function Layout() {
     if (pathname !== "/") endIntro();
   }, [pathname]);
 
+  // Stable so the curtain's timing effect is never restarted while the panels are on screen.
+  const finishIntro = useCallback(() => setShowIntro(false), []);
+
   // `held` is what stops a curtain that was interrupted by navigation from replaying
   // when the visitor comes back to the homepage in the same session. The page wrapper is
   // inert while it runs so nothing behind the panels can take focus; the curtain itself
@@ -83,9 +86,7 @@ export function Layout() {
         <Footer />
         <BackToTop />
       </div>
-      {showIntro && held && pathname === "/" ? (
-        <IntroCurtain onDone={() => setShowIntro(false)} />
-      ) : null}
+      {showIntro && held && pathname === "/" ? <IntroCurtain onDone={finishIntro} /> : null}
       <CursorHalo />
     </>
   );

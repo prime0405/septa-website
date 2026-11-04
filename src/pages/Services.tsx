@@ -31,7 +31,7 @@ export default function Services() {
         }
       />
 
-      <Section className="section">
+      <Section wall="use-case" className="section">
         <SectionHero eyebrow="Our Services" title={serviceOverview} className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {serviceListings.map((s, i) => (

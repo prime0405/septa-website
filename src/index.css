@@ -516,6 +516,11 @@
    inconsistently and can leave the ramp spilling across the whole viewport on mid-size screens.
    `.band` below is the mirror image of this mask, which is what lets the gutters run bright. */
 .bgfx-wash {
+  transition:
+    --bg-1 1.1s ease,
+    --bg-2 1.1s ease,
+    --bg-3 1.1s ease,
+    --bg-angle 1.1s ease;
   mask-image: linear-gradient(
     to right,
     #000 0,
@@ -573,6 +578,7 @@
   height: 100%;
   opacity: 0.16;
   pointer-events: none;
+  transition: opacity 0.42s ease;
   mask-image: linear-gradient(
     to right,
     #000 0,
@@ -581,6 +587,11 @@
     #000 min(100%, calc(50% + 760px)),
     #000 100%
   );
+}
+/* A new subject hands over while nothing is visible. `WallMotion` holds this for the length of the
+   fade and then releases it, so the field below the copy changes identity without ever cutting. */
+.bgfx-mesh.is-swapping {
+  opacity: 0;
 }
 
 /* ---------- the film hero (AI Product Development) ---------- */
@@ -631,10 +642,41 @@
 
 /* The brand manual (p.15) supplies four flat colours and, checked against every resource dictionary
    in the PDF, not one gradient object — no /Shading, no /Pattern, no /Function. So a "theme" here
-   only decides which of Tradewind, Black Pearl and White meet, at what angle, and how fast the ramp
-   travels. Every stop is a colour-mix of the existing tokens, which keeps the palette honest and
-   keeps the darkest value knowable: the heaviest stop on any page is Black Pearl at 22%, and the
-   wash mask holds the reading column to 30% of whatever these sheets paint. */
+   only decides which of Tradewind, Black Pearl and White meet, and at what angle. Every stop is a
+   colour-mix of the existing tokens, which keeps the palette honest and keeps the darkest value
+   knowable: the heaviest stop on any page is Black Pearl at 22%, and the wash mask holds the reading
+   column to 30% of whatever these sheets paint.
+
+   A theme can also change under a scrolling visitor, because the wallpaper now follows the section
+   rather than the address bar. For that to be a cross-fade instead of a cut, these four vars have to
+   be registered: an unregistered custom property is an opaque string, so its transition is a step at
+   the halfway mark and the wash would blink between two ramps. Registered as a colour and an angle,
+   the browser interpolates each component and the gradient below re-paints from the animated value.
+
+   The period is deliberately NOT one of them. Changing `animation-duration` mid-cycle remaps elapsed
+   time onto progress, so a per-theme duration would jump both sheets out of position at every section
+   boundary. One site-wide period keeps the drift continuous while everything else about the wash
+   changes. */
+@property --bg-1 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(109, 177, 174, 0.52);
+}
+@property --bg-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(40, 111, 106, 0.34);
+}
+@property --bg-3 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(6, 24, 32, 0.22);
+}
+@property --bg-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 118deg;
+}
 [data-bg] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 52%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 34%, transparent);
@@ -644,26 +686,22 @@
 }
 [data-bg="home"] {
   --bg-angle: 112deg;
-  --bg-dur: 26s;
 }
 [data-bg="about"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 48%, transparent);
   --bg-angle: 196deg;
-  --bg-dur: 34s;
 }
 [data-bg="services"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 60%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 28%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 16%, transparent);
   --bg-angle: 74deg;
-  --bg-dur: 24s;
 }
 [data-bg="service-ai"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 58%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 36%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 20%, transparent);
   --bg-angle: 52deg;
-  --bg-dur: 21s;
 }
 /* A routed process: the ramp runs horizontally and fast, so the wash reads as movement along a line
    rather than as a wash. */
@@ -672,7 +710,6 @@
   --bg-2: color-mix(in oklab, var(--color-mint) 22%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 14%, transparent);
   --bg-angle: 8deg;
-  --bg-dur: 18s;
 }
 /* A system being replaced: the Pearl end sits at the ceiling and the ramp climbs, so the page looks
    heavier at the foot than at the head. */
@@ -681,7 +718,6 @@
   --bg-2: color-mix(in oklab, var(--color-mint) 30%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 22%, transparent);
   --bg-angle: 268deg;
-  --bg-dur: 30s;
 }
 /* A system being watched: one bright, narrow sweep on a long period, closer to a scan than a drift. */
 [data-bg="service-observability"] {
@@ -689,32 +725,27 @@
   --bg-2: color-mix(in oklab, var(--color-mint) 16%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 18%, transparent);
   --bg-angle: 164deg;
-  --bg-dur: 16s;
 }
 [data-bg="service-talent"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 50%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 34%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 12%, transparent);
   --bg-angle: 224deg;
-  --bg-dur: 27s;
 }
 [data-bg="cases"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 54%, transparent);
   --bg-angle: 210deg;
-  --bg-dur: 32s;
 }
 [data-bg="use-case"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 52%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 26%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 22%, transparent);
   --bg-angle: 328deg;
-  --bg-dur: 25s;
 }
 [data-bg="blog"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 46%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 38%, transparent);
   --bg-angle: 96deg;
-  --bg-dur: 28s;
 }
 /* The two pages a visitor is meant to act on run the brightest ramp and the shortest period; the
    reference and legal pages run the faintest and the slowest, so they read as calm rather than dull. */
@@ -723,27 +754,23 @@
   --bg-2: color-mix(in oklab, var(--color-mint) 24%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 14%, transparent);
   --bg-angle: 64deg;
-  --bg-dur: 22s;
 }
 [data-bg="engage"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 50%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 32%, transparent);
   --bg-angle: 130deg;
-  --bg-dur: 20s;
 }
 [data-bg="answers"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 32%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 20%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 16%, transparent);
   --bg-angle: 180deg;
-  --bg-dur: 40s;
 }
 [data-bg="legal"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 24%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 16%, transparent);
   --bg-3: color-mix(in oklab, var(--color-brand-pearl) 14%, transparent);
   --bg-angle: 180deg;
-  --bg-dur: 44s;
 }
 
 /* Oversized by 14% on every side, so neither sheet can expose an edge while it pans. Sheet A is the

@@ -118,7 +118,7 @@ export default function Blog() {
         }
       />
 
-      <Section className="section">
+      <Section wall="use-case" className="section">
         <Callout kind="warn" title="Sample editorial content" className="mb-10">
           <p>
             These articles exist to prove out the blog architecture: list, search, filters, article
@@ -263,7 +263,7 @@ export default function Blog() {
       </Section>
 
       {/* ------------------------ content model ------------------------ */}
-      <Section tone="raised" className="section border-y border-line-soft">
+      <Section wall="service-automation" tone="raised" className="section border-y border-line-soft">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <SectionHeading
             eyebrow="Content model"
@@ -310,6 +310,7 @@ export default function Blog() {
       </Section>
 
       <CtaBand
+        wall="engage"
         title="Reading about it is not the same as doing it"
         lead="If one of these articles describes your situation, send the details and we will say what applies to you."
         secondary={{ label: "About Septa", to: paths.about() }}

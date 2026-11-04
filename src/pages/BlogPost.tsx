@@ -251,7 +251,7 @@ export default function BlogPost() {
           </div>
         </header>
 
-        <Section className="section">
+        <Section wall="use-case" className="section">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
             <div>
               <Contents blocks={post.body} />
@@ -354,7 +354,7 @@ export default function BlogPost() {
       </article>
 
       {related.length ? (
-        <Section tone="raised" className="section border-y border-line-soft">
+        <Section wall="service-automation" tone="raised" className="section border-y border-line-soft">
           <SectionHeading
             eyebrow="Related"
             title="Continue reading"
@@ -376,6 +376,7 @@ export default function BlogPost() {
       ) : null}
 
       <CtaBand
+        wall="engage"
         title="Put this into practice"
         lead="Describe what you are dealing with and we will tell you whether the thinking here transfers to your context."
         secondary={{ label: "Read more writing", to: paths.blog() }}
