@@ -38,7 +38,7 @@ export function PageHero({
 }) {
   const onFilm = Boolean(video);
   return (
-    // `band` puts the same masked 82% veil under this header as the sections below it carry, because
+    // `band` puts the same masked 76% veil under this header as the sections below it carry, because
     // the breadcrumb and the action row are the smallest type on the page and they otherwise sit
     // directly on the moving wash. Its own decorative layers are positioned children, so they still
     // paint on top of the veil. With a film the same job is done by `.film-veil`, and the surface
@@ -68,8 +68,9 @@ export function PageHero({
             aria-hidden
             className="plate-fade pointer-events-none absolute inset-x-0 bottom-0 h-40 overflow-hidden sm:h-48"
           >
-            {/* plate-hero carries a few genuinely dark strokes, so the band under the breadcrumb and
-                the action row is a tint rather than an image: 55% plate behind an 82% white veil. */}
+            {/* plate-hero carries a few genuinely dark strokes, so the strip under the breadcrumb and
+                the action row is a tint rather than an image: 55% plate behind its own 82% white
+                overlay, which sits on top of the band veil and is the stricter of the two. */}
             <img
               src="/img/plate-hero.jpg"
               alt=""

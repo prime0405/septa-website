@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Quote } from "lucide-react";
 import { useIntroHeld } from "../lib/intro";
+import { AdvantageReel } from "../components/visuals/AdvantageReel";
 import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { CtaSection } from "../components/blocks/CtaSection";
 import { Button } from "../components/ui/Button";
@@ -15,7 +16,6 @@ import {
 } from "../components/ui/primitives";
 import {
   advantageIntro,
-  advantagePillars,
   ctaBanner,
   hero,
   landingBlocks,
@@ -205,19 +205,9 @@ export default function Home() {
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
       <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
         <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {advantagePillars.map((pillar, i) => (
-            <Reveal key={pillar.title} delay={i * 0.05}>
-              <Card className="card-hover h-full p-6">
-                <span className="font-mono text-[0.72rem] text-mint">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 text-[1.08rem]">{pillar.title}</h3>
-                <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{pillar.detail}</p>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.1}>
+          <AdvantageReel />
+        </Reveal>
       </Section>
 
       {/* --------------------------- 7. service overview --------------------------- */}

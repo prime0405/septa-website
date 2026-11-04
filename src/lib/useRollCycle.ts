@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { FocusEvent } from "react";
 import { useReducedMotion } from "motion/react";
 
 /**
@@ -34,8 +35,23 @@ export function useRollCycle(count: number) {
     setCycle((c) => c + 1);
   }, [count]);
 
+  /* Pointing the reel at a row also bumps the cycle, which remounts the interval fill. A row that was
+     reached by pointer or keypress therefore gets its own full interval before the roll moves on,
+     instead of being skipped the moment the leftover time runs out. */
+  const select = useCallback((index: number) => {
+    setActive(index);
+    setCycle((c) => c + 1);
+  }, []);
+
   // Anything that freezes the fill freezes the roll, because the fill is the clock.
   const frozen = reduce || hovered || focused || !onScreen;
+
+  /* A tap lands focus on the row as surely as a Tab does, and a phone has no `pointerleave` to take
+     it away again, so freezing on any focus would end the walk for the rest of the visit. The browser
+     already knows the difference: it only draws a focus ring for a keyboard. */
+  const focusIn = (e: FocusEvent<HTMLElement>) => {
+    if (e.target instanceof HTMLElement && e.target.matches(":focus-visible")) setFocused(true);
+  };
 
   // A tap fires `pointerenter` on a finger device and nothing ever fires `pointerleave`, so on a
   // phone the first touch would freeze the list for the rest of the visit. "Hover" pause is only
@@ -48,11 +64,13 @@ export function useRollCycle(count: number) {
     cycle,
     frozen,
     advance,
+    select,
+    hoverable,
     ref,
     hoverProps: {
       onPointerEnter: () => hoverable && setHovered(true),
       onPointerLeave: () => hoverable && setHovered(false),
-      onFocusCapture: () => setFocused(true),
+      onFocusCapture: focusIn,
       onBlurCapture: () => setFocused(false),
     },
   };

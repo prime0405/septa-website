@@ -533,10 +533,11 @@
 
 /* Section bands are the other half of the same contract. Painted as a `::before` on a negative
    z-index so it sits under the section's copy but over the wash, and masked to the inverse
-   profile of the wash: 82% white across the reading column (exactly the value the contrast model
-   was verified against, so nothing behind text changes) and 30% in the gutters, which is what
-   lets the moving backdrop reach the eye at all. Text only ever sits inside `.wrap` (1220px) or
-   on an opaque `.card`, never in the outer 30% that this rule opens up. */
+   profile of the wash: 76% of the band colour across the reading column and 30% in the gutters,
+   which is what lets the moving backdrop reach the eye at all. The column value came down from 82%
+   when the wallpaper was asked to carry more presence, and the contrast harness re-measured every
+   run of copy on the page against the new ground. Text only ever sits inside `.wrap` (1220px) or on
+   an opaque `.card`, never in the outer 30% that this rule opens up. */
 .band {
   --band: var(--color-ink);
 }
@@ -552,7 +553,7 @@
   z-index: -1;
   inset: 0;
   background: var(--band);
-  opacity: 0.82;
+  opacity: 0.76;
   pointer-events: none;
   mask-image: linear-gradient(
     to right,
@@ -566,9 +567,11 @@
 
 /* The mesh is the one thing allowed to cross the text, so it is capped by the whole-layer
    opacity rather than per-stroke alpha: strokes are drawn opaque inside the canvas, which means
-   two crossing lines cannot add up to a darker pixel than a single one. The layer runs at 16% and
-   the mask holds it to 0.44 of that across the reading column, so the worst pixel behind a glyph
-   is still 7% of Tradewind, while the gutters get the network at full strength. */
+   two crossing lines cannot add up to a darker pixel than a single one. The layer runs at 28% and
+   the mask holds it to 0.62 of that across the reading column, so the worst pixel behind a glyph
+   is 17% of Tradewind, while the gutters get the network at nearly a third. Both numbers are the
+   ceiling the contrast harness was re-measured against, not an estimate: it hides each run of copy,
+   samples the composited pixels behind it and reports the worst AA ratio of the three passes. */
 .bgfx-mesh {
   display: block;
   position: fixed;
@@ -576,14 +579,14 @@
   z-index: 20;
   width: 100%;
   height: 100%;
-  opacity: 0.16;
+  opacity: 0.28;
   pointer-events: none;
   transition: opacity 0.42s ease;
   mask-image: linear-gradient(
     to right,
     #000 0,
     #000 max(0px, calc(50% - 760px)),
-    rgb(0 0 0 / 0.44) max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
+    rgb(0 0 0 / 0.62) max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
     #000 min(100%, calc(50% + 760px)),
     #000 100%
   );

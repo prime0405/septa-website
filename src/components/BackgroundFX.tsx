@@ -12,8 +12,8 @@ import { WallMotion } from "./visuals/WallMotion";
  * slow grid. It sits behind everything and is masked so that most of it lands in the gutters beside
  * the reading column. The plate is a still on most pages and a generated film where a theme supplies
  * one. `bgfx-mesh` is the live line art on top of it, whose subject changes with the page; it is the
- * one layer allowed to pass over the text, held at a fixed 16% so the smallest label on the site
- * still clears AA where a stroke crosses a chip.
+ * one layer allowed to pass over the text, held so that nothing it paints can reach the eye at more
+ * than 17% Tradewind inside the reading column, which is where the AA measurements are taken.
  *
  * Both layers follow the section under the visitor's eye rather than the address bar, so one long
  * page runs several wallpapers in sequence. Which section that is comes from `useActiveWall`, and

@@ -316,17 +316,25 @@ brighter tint on a white card
 pulls `text-mint` under AA; with it spliced into the stack the worst measured pair on the site is
 5.0:1.
 Behind all of it the page never stands still. `BackgroundFX` (`src/components/BackgroundFX.tsx`)
-renders two fixed layers on every route: a colour wash (a panned watercolour plate, a creeping
-grid, two drifting orbs and a beam that crosses the viewport every 15s) at `z-0`, and a canvas of
-nodes that wander and link to their neighbours in a separate layer at `z-20`, above the section
-bands. The split exists because of contrast, not layering. Measured against a `source-over`
+renders two fixed layers on every route: a colour wash (a panned plate, or a generated film where a
+theme supplies one, plus a creeping grid, a beam that crosses the viewport every 15s and two drifting
+orbs) at `z-0`, and a canvas of live line art in a separate layer at `z-20`, above the section bands.
+The canvas runs one of five subjects, chosen by what the page — or, on a long page, the section under
+the visitor's eye — is about (`src/lib/bgThemes.ts`): a wireframe globe ringed by breathing pulses and
+orbited by motes, a depth-layered node network carrying packets along its links, an isometric cube
+lattice with a light front sweeping across it, a bundle of routed lanes joined by risers, and a stack
+of sheared strata. Every subject also answers to the scroll, because a fixed canvas that ignores the
+page reads as a screensaver: the network shears by node depth, the globe turns, the cube grid slides
+on a two-row period so its wrap cannot be seen, the lanes shift phase, and the strata rise through a
+stack whose attributes are keyed to the slot rather than to the plate. The layer split exists because
+of contrast, not layering. Measured against a `source-over`
 composite of everything that can coincide, a full-strength wash under the text column puts the
 smallest label tokens under AA.
 
 The answer is two masks that are mirror images of one another, both keyed to the same
 `50% ± 600px / ± 760px` geometry. `.bgfx-wash` keeps the wash at full strength outside the reading
 column and 30% of it inside. `.band::before` is how every section tone is painted now, a
-`z-index: -1` pseudo-element rather than a background class, which lets it hold the veil at 82%
+`z-index: -1` pseudo-element rather than a background class, which lets it hold the veil at 76%
 white across the column and open it to 30% in the gutters; `main` is `relative z-10`, so the veil
 still lands above the wash and below the copy. What the pairing buys is amplitude exactly where
 nothing writes: the gutter composite moves from about `#fafafa` to `#accfcf`, while every pixel
@@ -345,22 +353,44 @@ its darkest, an orb and beam at their peaks and a mesh node on the glyph it meas
 the same worst case the veil takes it to 4.85:1.
 
 The mesh is the one layer allowed to cross type, so it is budgeted once at the layer rather than per
-stroke: the canvas draws opaque `#6db1ae` lines and dots, which means two crossing lines cannot
-darken a pixel more than one does, and `opacity: 0.16` behind a mask that retains 0.44 of it across
-the column puts the worst pixel behind a glyph back at the 7% it was before. `--color-faint` was
-darkened from `#56707a` to `#4d6772` in the same pass, because it carries the 10.5–11.5px mono
-labels and the mesh crossing an `ink-raised` chip pulled it to 4.29:1. After that, a DOM walk over
-ten routes that composites each element's own ancestor backgrounds with the worst-case wash leak and
-a mesh node landing on the glyph reports no pair under AA.
+stroke — and the shape of that budget is what lets the art be bold. The ceiling is the *opaque
+colour*, not the coverage: the canvas never draws anything darker than `#6db1ae` at full alpha, so two
+crossing lines, a six-pixel stroke and a filled facet all leave the same worst pixel behind a glyph,
+and `opacity: 0.28` behind a mask that retains 0.62 of it across the column holds that pixel at 17%
+Tradewind however much of the viewport the art ends up painting. Presence therefore has to come from
+weight, size and structure, and from ink *darker* than the ground — the page is light, so a pale
+highlight, however large, simply disappears. That is why the glow sprite is a Tradewind halo rather
+than a white one, and why an alpha below about 0.4 is not a faint stroke on this ground but no stroke
+at all. The dark grounds are the one place where brighter ink is a risk instead of a free lunch,
+because there the copy is white and any halo lifts the ground toward it. Both are measured with the
+wallpaper running: on the homepage Pearl band the brightest pixel under the heading is
+`rgb(23, 49, 56)` — 17% Tradewind over Black Pearl, which is precisely the ceiling the layer is
+budgeted to — and the white display line on it holds at 13.7:1. The marquee's text fallbacks cannot be
+isolated by the same probe, because the track paints every label twice and the clip lands on its own
+twin; composited against that measured ground they come to 9.0:1.
+`--color-faint` was darkened from `#56707a` to `#4d6772` in the same pass, because it carries the
+10.5–11.5px mono labels and the mesh crossing an `ink-raised` chip pulled it to 4.29:1.
+
+Every figure in this section is measured rather than argued, per element: for each run of real copy
+the harness hides that element, screenshots the exact box it occupied and takes the worst background
+pixel against the element's own computed colour, three passes across the animation's cycle. The
+curtain on the way into the homepage is part of that ground, so the harness waits for the panels to
+leave before it shoots — a clip taken while they still cover the viewport reports Black Pearl as the
+background and the headline as 1.00:1. With the layers as they now stand, the worst pair on a light
+page is 5.07:1 (homepage body, 1440×900), 5.48 on About and 6.22 on Services, and 5.16 / 5.36 at
+390×844, where the gutters have disappeared and the whole viewport takes the column value. Over the
+film hero the same harness, switched to take the *brightest* pixel because the type is white, reports
+8.09:1 on the title, 8.80 on the body and 10.89 on the 11.2px eyebrow.
 Periods matter as much as colour here: at 76s the plate pans about one pixel a second and reads as a
-static tint, so the layers now run at 22–34s with the travel doubled and the nodes drift at
-0.34px/frame at ~30fps. Only the *speed* and the *gutter alpha* changed; every peak value behind the
-column is the one the model above was solved against, because motion costs attention and only
-darkness costs contrast.
-The canvas caps its node count by viewport area, holds near 30fps, resizes off a `ResizeObserver`
+static tint, so the wash layers run at 22–34s with the travel doubled, the globe turns roughly once a
+minute, a pulse breathes out and back every 9s and a packet crosses a link in two to five seconds.
+The canvas caps its counts by viewport area (22–68 nodes, around 200 cubes, four to six lanes),
+buckets links and cubes into four weight bands so a field costs four stroke calls rather than a
+thousand, holds near 30fps, resizes off a `ResizeObserver`
 rather than the window (a detached surface can report 0×0 and later become a real viewport without
 firing a resize, and a 1×1 canvas stays empty for the rest of the visit), stops on
-`visibilitychange`, and never starts under `prefers-reduced-motion`.
+`visibilitychange`, and never starts under `prefers-reduced-motion` — where the DOM confirms no canvas
+element exists at all rather than an idle one.
 Abstract art stands in for photography that does not exist yet: `src/lib/plates.ts` maps a slug to
 one of five generated plates, used on case-study covers, the featured post panel, the page-hero band
 and the homepage hero. They are decorative brand art, not documentation, and say so. Because the
@@ -376,10 +406,21 @@ middle of the frame, so a flat scrim either erases the film or lets a particle p
 label and break AA. `.film-veil` is therefore the section-band mask again — 82% across the reading
 column, 34% in the gutters — with a wider ramp (1100px rather than 760px, because a bright field
 makes a narrow edge read as a box). A pure-white particle under the full veil leaves
-`rgb(55, 73, 79)`, and against that ground the header's every text pair is measured: title 7.98,
-lead 6.63, eyebrow 6.42, breadcrumb 5.07, chip label 6.50, aside 7.48–9.83. What that number also
-settles is colour: the deepest Tradewind on the same ground is 3.44, which is fine for a rule and
-not for a label, so on the film all type is Pearl White and the brand accent stays in the graphics
+`rgb(55, 73, 79)`, and against that ground the header's type painted directly on the film is
+re-measured with the new wallpaper running, over a sweep of the page rather than one static frame:
+title 9.18, lead 7.56, the 11.2px eyebrow 8.50 (the worst pixel, i.e. the brightest, since this is
+white text). The breadcrumb, the chip labels and the aside copy are outside that set because each
+sits on its own tinted ground rather than on the raw veil, so they test the tint and not the scrim.
+Two traps in the probe are worth naming, because both produce a confident wrong number. It hides one
+element at a time and samples the box it vacated, so it can only be pointed at whole text runs:
+widening it to every inner `span` returns a meaningless 1.16 for the animated eyebrow, because hiding
+one character of a decoding label leaves its neighbours' white glyphs inside the sampled box. And the
+clip is resolved in document coordinates while `getBoundingClientRect` is viewport-relative, so a
+swept run that forgets to add `scrollY` samples the top of the page for every position and reports
+the whole site as 1.00:1.
+That ground also settles the colour question: the deepest Tradewind on it is 3.44, which is fine
+for a rule and not for a label, so on the film all type is Pearl White and the brand accent stays in
+the graphics
 (the eyebrow rule, the chip tint, the primary button, the aside border). Playback is driven by an
 `IntersectionObserver` rather than the `autoplay` attribute, so a header that has been scrolled past
 stops decoding; `prefers-reduced-motion` never attaches the observer and the first frame stays on
@@ -390,7 +431,7 @@ come from the observer's `play()`, which resolves without an autoplay rejection.
 verified is a continuous run: the browser used for these checks keeps its tab hidden, and Chrome
 suspends media in a hidden document after ~70ms regardless of who asked for it, so the loop itself
 needs a real window. Every interior page keeps its white band — the workflow page's hero still
-measures `::before` opacity 0.82 with the plate at 0.55 and no `<video>` in the DOM.
+measures `::before` opacity 0.76 with the plate at 0.55 and no `<video>` in the DOM.
 `AutoRollList` (`src/components/ui/AutoRollList.tsx`, timing in `src/lib/useRollCycle.ts`) advances
 itself through a list, one item at a time, and stops dead under the pointer. The clock is the
 progress fill's own `animationend` rather than a parallel `setTimeout`, so pausing the animation
