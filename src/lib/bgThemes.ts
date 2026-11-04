@@ -9,6 +9,11 @@
  *   which of them meet, at what angle, and how fast the ramp travels.
  * - A plate: the generated abstract artwork that pans inside the wash. Each plate has a different
  *   subject, so a page gets the one that reads like its own work.
+ * - A motion subject: the live line art drawn on the mesh canvas over the plate. This is the layer
+ *   that actually moves, and it is the reason a page reads as its own wallpaper rather than a
+ *   different tint of the same one.
+ * - Optionally a film: a generated loop that takes the plate slot outright, for the one page where a
+ *   moving picture earns the weight. Its still is used as the poster and as the reduced-motion path.
  */
 export type BgTheme =
   | "home"
@@ -27,33 +32,45 @@ export type BgTheme =
   | "answers"
   | "legal";
 
-type ThemeSpec = { plate: string };
+/**
+ * The five subjects the wallpaper canvas can draw: `rings` is a breathing ring assembly over a wave
+ * field, `plexus` the wandering node network, `lattice` an isometric cube grid with a light sweeping
+ * across it, `stream` a particle flow, and `strata` stacked bands sliding past each other.
+ */
+export type BgMotion = "rings" | "plexus" | "lattice" | "stream" | "strata";
+
+type ThemeSpec = { plate: string; motion: BgMotion; film?: string };
 
 /**
  * The plates are decorative brand art in the Septa palette — network, flow, layers, traces, aurora —
  * and none of them depicts a client, a product or a person.
+ *
+ * The subject each page is handed follows what the page is about: a model being built is a lattice,
+ * a process being routed is a stream, a system being watched is a network, a system being replaced is
+ * strata, a human match is the soft ring field, and the two pages a visitor acts on take the brightest.
  */
 const THEMES: Record<BgTheme, ThemeSpec> = {
-  home: { plate: "/img/plate-aurora.jpg" },
-  about: { plate: "/img/plate-layers.jpg" },
-  services: { plate: "/img/plate-network.jpg" },
-  // Circuit traces for a model being built, flow for a process being routed, stacked layers for a
-  // system being replaced, network for one being watched, and the soft wash for a human match.
-  "service-ai": { plate: "/img/plate-traces.jpg" },
-  "service-automation": { plate: "/img/plate-flow.jpg" },
-  "service-transformation": { plate: "/img/plate-layers.jpg" },
-  "service-observability": { plate: "/img/plate-network.jpg" },
-  "service-talent": { plate: "/img/plate-aurora.jpg" },
-  cases: { plate: "/img/plate-flow.jpg" },
-  "use-case": { plate: "/img/plate-traces.jpg" },
-  blog: { plate: "/img/plate-aurora.jpg" },
-  careers: { plate: "/img/plate-layers.jpg" },
-  engage: { plate: "/img/plate-network.jpg" },
-  answers: { plate: "/img/plate-aurora.jpg" },
-  legal: { plate: "/img/plate-aurora.jpg" },
+  home: { plate: "/img/plate-aurora.jpg", motion: "rings", film: "/video/wall-rings.webm" },
+  about: { plate: "/img/plate-layers.jpg", motion: "strata" },
+  services: { plate: "/img/plate-network.jpg", motion: "plexus" },
+  "service-ai": { plate: "/img/plate-traces.jpg", motion: "lattice" },
+  "service-automation": { plate: "/img/plate-flow.jpg", motion: "stream" },
+  "service-transformation": { plate: "/img/plate-layers.jpg", motion: "strata" },
+  "service-observability": { plate: "/img/plate-network.jpg", motion: "plexus" },
+  "service-talent": { plate: "/img/plate-aurora.jpg", motion: "rings" },
+  cases: { plate: "/img/plate-flow.jpg", motion: "stream" },
+  "use-case": { plate: "/img/plate-traces.jpg", motion: "lattice" },
+  blog: { plate: "/img/plate-aurora.jpg", motion: "rings" },
+  careers: { plate: "/img/plate-layers.jpg", motion: "strata" },
+  engage: { plate: "/img/plate-network.jpg", motion: "plexus" },
+  answers: { plate: "/img/plate-aurora.jpg", motion: "rings" },
+  legal: { plate: "/img/plate-aurora.jpg", motion: "rings" },
 };
 
 export const plateForTheme = (theme: BgTheme): string => THEMES[theme].plate;
+export const motionForTheme = (theme: BgTheme): BgMotion => THEMES[theme].motion;
+/** A generated film for the plate slot, where one exists. Absent means the still plate alone. */
+export const filmForTheme = (theme: BgTheme): string | undefined => THEMES[theme].film;
 
 /**
  * Exact paths first, then longest prefix. Listing the service slugs outright keeps each one on its
