@@ -149,7 +149,7 @@ export default function Blog() {
                 value={query}
                 onChange={(e) => update({ q: e.target.value })}
                 placeholder="e.g. evaluation, error budget"
-                className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[0.9rem] text-fg placeholder:text-faint"
+                className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[1rem] text-fg placeholder:text-faint"
               />
             </div>
           </div>

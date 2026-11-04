@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
 /**
@@ -37,6 +37,11 @@ export function useRollCycle(count: number) {
   // Anything that freezes the fill freezes the roll, because the fill is the clock.
   const frozen = reduce || hovered || focused || !onScreen;
 
+  // A tap fires `pointerenter` on a finger device and nothing ever fires `pointerleave`, so on a
+  // phone the first touch would freeze the list for the rest of the visit. "Hover" pause is only
+  // wired up where a pointer can actually leave.
+  const hoverable = useMemo(() => window.matchMedia("(hover: hover)").matches, []);
+
   return {
     reduce,
     active,
@@ -45,8 +50,8 @@ export function useRollCycle(count: number) {
     advance,
     ref,
     hoverProps: {
-      onPointerEnter: () => setHovered(true),
-      onPointerLeave: () => setHovered(false),
+      onPointerEnter: () => hoverable && setHovered(true),
+      onPointerLeave: () => hoverable && setHovered(false),
       onFocusCapture: () => setFocused(true),
       onBlurCapture: () => setFocused(false),
     },

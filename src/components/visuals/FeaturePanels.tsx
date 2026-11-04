@@ -18,7 +18,7 @@ export function AiDeliveryPanel({ className }: { className?: string }) {
   ];
 
   return (
-    <div className={cn("card overflow-hidden", className)}>
+    <div className={cn("card min-w-0 overflow-hidden", className)}>
       <div className="flex items-center gap-2 border-b border-line bg-ink-raised px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
           <span className="size-2.5 rounded-full bg-line" />

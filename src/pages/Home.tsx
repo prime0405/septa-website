@@ -6,6 +6,7 @@ import { ArrowRight, Compass, Layers, Search, Send, Users2 } from "lucide-react"
 import { useIntroHeld } from "../lib/intro";
 import { AiDeliveryPanel, ArchitectureStack } from "../components/visuals/FeaturePanels";
 import { ProcessSteps } from "../components/visuals/ProcessSteps";
+import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { CaseCard, PostCard, ServiceCard } from "../components/blocks/cards";
 import { CtaBand } from "../components/blocks/PageHero";
 import { LaunchNoteInline } from "../components/blocks/LaunchNote";
@@ -79,6 +80,7 @@ export default function Home() {
   usePageMeta({ title: site.name });
   const held = useIntroHeld();
   const heroRef = useRef<HTMLElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress: heroScroll } = useScroll({
     target: heroRef,
@@ -120,9 +122,17 @@ export default function Home() {
           <div className="animate-aurora absolute top-[6%] right-[6%] hidden h-[320px] w-[420px] rounded-full bg-mint/[0.06] blur-[110px] lg:block" />
         </motion.div>
 
-        <motion.div style={{ y: copyY }} className="wrap relative">
+        {/* The spiral runs over the plate and under the copy. It dims itself to 10% inside the
+            measured box of the headline block, so no glyph ever sits on a stroke stronger than the
+            site-wide mesh's worst pixel, while the gutters and corners get the line at full run. */}
+        <HeroSpiral
+          copyRef={copyRef}
+          className="pointer-events-none absolute inset-0 z-0 size-full"
+        />
+
+        <motion.div ref={copyRef} style={{ y: copyY }} className="wrap relative">
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[0.96]">
+            <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] sm:leading-[0.96]">
               <Rise i={0} held={held}>Technology</Rise>{" "}
               <Rise i={1} held={held}>That</Rise>{" "}
               <Rise i={2} held={held}>Moves</Rise>
@@ -161,7 +171,7 @@ export default function Home() {
           </Reveal>
         </motion.div>
 
-        <div className="relative mt-14 border-y border-line-soft">
+        <div className="relative mt-14 border-y border-line-soft bg-ink/78">
           <div className="marquee py-4">
             <div className="marquee-inner">
               {[0, 1].map((copy) => (

@@ -68,70 +68,78 @@ export function Nav() {
   }, []);
 
   return (
-    <header
-      ref={headerRef}
-      className={cn(
-        "sticky top-0 z-50 transition-[background,border-color,box-shadow,backdrop-filter] duration-300",
-        scrolled || openGroup || drawer
-          ? "border-b border-line bg-ink/92 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent",
-      )}
-    >
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <div className="wrap flex h-[72px] items-center justify-between gap-4 lg:grid lg:grid-cols-[auto_1fr_auto]">
-        <BrandLink />
+    <>
+      <header
+        ref={headerRef}
+        className={cn(
+          "sticky top-0 z-50 transition-[background,border-color,box-shadow,backdrop-filter] duration-300",
+          scrolled || openGroup || drawer
+            ? "border-b border-line bg-ink/92 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent",
+        )}
+      >
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <div className="wrap flex h-[72px] items-center justify-between gap-4 pt-[env(safe-area-inset-top)] lg:grid lg:grid-cols-[auto_1fr_auto]">
+          <BrandLink />
 
-        <nav
-          aria-label="Primary"
-          className="hidden items-center justify-center gap-0.5 lg:flex"
-        >
-          {primaryNav.map((item) =>
-            item.groups ? (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => hoverOpen(item.label)}
-                onMouseLeave={hoverClose}
-              >
-                <NavTrigger
-                  item={item}
-                  open={openGroup === item.label}
-                  onToggle={() =>
-                    setOpenGroup((g) => (g === item.label ? null : item.label))
-                  }
-                />
-                <MegaPanel item={item} open={openGroup === item.label} />
-              </div>
-            ) : (
-              <DesktopLink key={item.href} item={item} />
-            ),
-          )}
-        </nav>
+          <nav
+            aria-label="Primary"
+            className="hidden items-center justify-center gap-0.5 lg:flex"
+          >
+            {primaryNav.map((item) =>
+              item.groups ? (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => hoverOpen(item.label)}
+                  onMouseLeave={hoverClose}
+                >
+                  <NavTrigger
+                    item={item}
+                    open={openGroup === item.label}
+                    onToggle={() =>
+                      setOpenGroup((g) => (g === item.label ? null : item.label))
+                    }
+                  />
+                  <MegaPanel item={item} open={openGroup === item.label} />
+                </div>
+              ) : (
+                <DesktopLink key={item.href} item={item} />
+              ),
+            )}
+          </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          <Button to={REQUEST_HREF} size="sm" iconEnd={<ArrowRight className="size-4" />}>
-            Request a Service
-          </Button>
+          <div className="hidden items-center gap-2 lg:flex">
+            <Button to={REQUEST_HREF} size="sm" iconEnd={<ArrowRight className="size-4" />}>
+              Request a Service
+            </Button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setDrawer((d) => !d)}
+            aria-expanded={drawer}
+            aria-controls="mobile-drawer"
+            className="flex size-11 items-center justify-center rounded-xl border border-line bg-surface text-fg transition-colors hover:border-mint/45 lg:hidden"
+          >
+            <span className="sr-only">{drawer ? "Close menu" : "Open menu"}</span>
+            {drawer ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+          </button>
         </div>
+      </header>
 
-        <button
-          type="button"
-          onClick={() => setDrawer((d) => !d)}
-          aria-expanded={drawer}
-          aria-controls="mobile-drawer"
-          className="flex size-11 items-center justify-center rounded-xl border border-line bg-surface text-fg transition-colors hover:border-mint/45 lg:hidden"
-        >
-          <span className="sr-only">{drawer ? "Close menu" : "Open menu"}</span>
-          {drawer ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
-        </button>
-      </div>
-
+      {/* The drawer is a sibling of the header, not a child. Once the header carries
+          `backdrop-blur-md` — which it does whenever the drawer is open — a non-none backdrop-filter
+          makes it the containing block for every `position: fixed` descendant, and a measured 390px
+          render put the scrim and the panel inside the header's 72px box: the menu opened as a 72px
+          strip with 17 links spilling out of it, and the scrim covered only the nav band, so
+          tapping outside did nothing while the page behind was scroll-locked. */}
       <AnimatePresence>
         {drawer ? <MobileDrawer onClose={() => setDrawer(false)} /> : null}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
 
@@ -322,15 +330,15 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
         animate={reduce ? { opacity: 1 } : { x: 0 }}
         exit={reduce ? { opacity: 0 } : { x: "100%" }}
         transition={{ type: "spring", stiffness: 380, damping: 38 }}
-        className="fixed inset-y-0 right-0 z-50 flex w-[min(92vw,420px)] flex-col border-l border-line bg-ink lg:hidden"
+        className="fixed inset-y-0 right-0 z-50 flex w-[min(92vw,420px)] flex-col border-l border-line bg-ink lg:hidden pb-[env(safe-area-inset-bottom)]"
       >
-        <div className="flex h-[72px] items-center justify-between border-b border-line px-4">
+        <div className="flex h-[72px] items-center justify-between border-b border-line px-4 pt-[env(safe-area-inset-top)]">
           <BrandLink label="Septa: close menu" />
           <button
             ref={firstRef}
             type="button"
             onClick={onClose}
-            className="flex size-10 items-center justify-center rounded-xl border border-line text-muted transition-colors hover:border-rose/50 hover:text-rose"
+            className="flex size-11 items-center justify-center rounded-xl border border-line text-muted transition-colors hover:border-rose/50 hover:text-rose"
           >
             <X className="size-5" aria-hidden />
             <span className="sr-only">Close menu</span>
@@ -347,7 +355,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                       to={item.href}
                       className={({ isActive }) =>
                         cn(
-                          "block rounded-lg px-3 py-2.5 text-[1rem] font-medium",
+                          "block rounded-lg px-3 py-3 text-[1rem] font-medium",
                           isActive ? "text-mint" : "text-fg",
                         )
                       }
@@ -357,15 +365,15 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                     <div className="mt-1 space-y-3 px-3 pb-2">
                       {item.groups.map((g) => (
                         <div key={g.heading}>
-                          <p className="mb-1.5 font-mono text-[0.62rem] tracking-[0.16em] text-faint uppercase">
+                          <p className="mb-1.5 font-mono text-[0.72rem] tracking-[0.16em] text-faint uppercase">
                             {g.heading}
                           </p>
-                          <ul className="space-y-0.5">
+                          <ul className="space-y-1">
                             {g.items.map((c) => (
                               <li key={c.href}>
                                 <Link
                                   to={c.href}
-                                  className="block rounded-lg px-2.5 py-2 text-[0.88rem] text-muted transition-colors hover:bg-surface hover:text-fg"
+                                  className="block rounded-lg px-2.5 py-2.5 text-[0.9rem] text-muted transition-colors hover:bg-surface hover:text-fg"
                                 >
                                   {c.label}
                                 </Link>
@@ -382,7 +390,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                     end={item.href === "/"}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center justify-between rounded-xl px-3 py-3 text-[1.02rem] font-medium transition-colors",
+                        "flex items-center justify-between rounded-xl px-3 py-3.5 text-[1.02rem] font-medium transition-colors",
                         isActive ? "bg-mint/10 text-mint" : "text-fg hover:bg-surface",
                       )
                     }
@@ -400,7 +408,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
           <Button to={REQUEST_HREF} block size="lg" iconEnd={<ArrowRight className="size-4" />}>
             Request a Service
           </Button>
-          <p className="mt-3 text-center text-[0.78rem] text-faint">
+          <p className="mt-3 text-center text-[0.82rem] text-faint">
             Prefer email? Use the contact page and we will route it.
           </p>
         </div>

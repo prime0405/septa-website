@@ -148,7 +148,7 @@ export default function Cases() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="e.g. retrieval, reporting, legacy"
-                className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[0.9rem] text-fg placeholder:text-faint"
+                className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[1rem] text-fg placeholder:text-faint"
               />
             </div>
           </div>

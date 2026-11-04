@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useReducedMotion } from "motion/react";
+import { bgThemeFor } from "../lib/bgThemes";
 
 /**
  * The site-wide moving backdrop, in two layers that answer to different rules.
@@ -16,6 +18,8 @@ import { useReducedMotion } from "motion/react";
  */
 export function BackgroundFX() {
   const reduce = useReducedMotion();
+  const { pathname } = useLocation();
+  const theme = bgThemeFor(pathname);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const depthRef = useRef<HTMLDivElement>(null);
 
@@ -130,28 +134,29 @@ export function BackgroundFX() {
 
     let ro: ResizeObserver | null = null;
     const onVisibility = () => (document.hidden ? stop() : start());
+    const redraw = () => {
+      resize();
+      paint();
+    };
 
     resize();
     paint();
     start();
     // Observed rather than a window listener: the box can go from nothing to something without
     // the window ever reporting a resize, and a 1x1 canvas would stay empty for the whole visit.
+    // The window listener is the fallback for browsers with no ResizeObserver, and it is removed
+    // on cleanup — a phone rotation otherwise keeps firing against an unmounted tree.
     if (typeof ResizeObserver !== "undefined") {
-      ro = new ResizeObserver(() => {
-        resize();
-        paint();
-      });
+      ro = new ResizeObserver(redraw);
       ro.observe(canvas);
     } else {
-      window.addEventListener("resize", () => {
-        resize();
-        paint();
-      });
+      window.addEventListener("resize", redraw);
     }
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       stop();
       ro?.disconnect();
+      window.removeEventListener("resize", redraw);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [reduce]);
@@ -161,8 +166,13 @@ export function BackgroundFX() {
       <div
         ref={depthRef}
         aria-hidden
+        data-bg={theme}
         className="bgfx bgfx-wash pointer-events-none fixed inset-0 z-0 overflow-hidden"
       >
+        {/* The per-page gradient sheets. They paint first, so the plate, grid, beam and orbs sit on
+            top of them and the whole wash still runs under the same mirror mask. */}
+        <div className="bgfx-sheet bgfx-sheet-a" />
+        <div className="bgfx-sheet bgfx-sheet-b" />
         <div
           className="absolute inset-[-8%]"
           style={{ transform: "translate3d(0, var(--bgfx-slow, 0), 0)" }}

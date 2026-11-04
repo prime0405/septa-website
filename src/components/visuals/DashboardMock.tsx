@@ -165,8 +165,8 @@ export function DashboardMock({ className }: { className?: string }) {
 
   const maxMs = Math.max(...TRACES.map((t) => t.ms));
   const traces = (
-    <div className="overflow-hidden rounded-card border border-line">
-      <table className="w-full text-left text-[0.85rem]">
+    <div className="overflow-x-auto rounded-card border border-line">
+      <table className="w-full min-w-[520px] text-left text-[0.85rem]">
         <caption className="sr-only">Sample distributed traces with durations</caption>
         <thead className="bg-surface font-mono text-[0.68rem] tracking-wider text-faint uppercase">
           <tr>

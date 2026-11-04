@@ -319,6 +319,28 @@
   padding-block: clamp(3.5rem, 8vw, 7rem);
 }
 
+/* A grid child's automatic minimum size is its min-content width, and most of the page grids have
+   no explicit track list below `sm`, so the implicit column is free to grow past the phone
+   viewport: the measured 390px homepage document was 505px wide because one code panel's `<pre>`
+   wanted a 483px line. Zeroing the floor lets the track stay inside the container and pushes the
+   overflow into the child that already has `overflow-x: auto`, where it becomes a swipe. */
+.grid > * {
+  min-width: 0;
+}
+
+/* A finger is not a cursor. Every pill-shaped control on the site measures 31-40px tall at
+   390px, under the 44px both Apple and Google ask for, and the measured mobile report listed 33
+   of them on the homepage alone. The floor is applied only where the pointer is coarse, so the
+   desktop density the whole layout is spaced around does not change. */
+@media (pointer: coarse) {
+  a.rounded-pill,
+  button.rounded-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+}
+
 .card {
   background: linear-gradient(180deg, var(--color-surface-raised) 0%, var(--color-surface) 100%);
   border: 1px solid var(--color-line);
@@ -337,7 +359,17 @@
   border-color: color-mix(in oklab, var(--color-mint) 55%, var(--color-line));
   box-shadow: var(--shadow-glow);
 }
-
+/* A touchscreen has no hover to leave, but it does report a sticky `:hover` after every tap, so
+   a tapped card stays lifted and re-tinted until the user taps something else. Both lift styles
+   are therefore only armed where a real pointer can hover; the transition above still runs, the
+   state just never enters. */
+@media (hover: none) {
+  .card-hover:hover {
+    transform: none;
+    border-color: var(--color-line);
+    box-shadow: var(--shadow-soft);
+  }
+}
 /* Cards that lean toward the cursor. `transform` is restated inside :hover so this
    rule is not outranked by .card-hover:hover above, and the existing lift rides in
    through --lift instead of replacing the rotation. */
@@ -354,6 +386,11 @@
 }
 .tilt:hover {
   --lift: -3px;
+}
+@media (hover: none) {
+  .tilt:hover {
+    --lift: 0px;
+  }
 }
 
 /* The technology strip: two identical groups side by side, shifted by exactly one group
@@ -376,7 +413,8 @@
   padding-right: 0.75rem;
 }
 .marquee:hover .marquee-inner,
-.marquee:focus-within .marquee-inner {
+.marquee:focus-within .marquee-inner,
+.marquee:active .marquee-inner {
   animation-play-state: paused;
 }
 
@@ -584,6 +622,129 @@
 }
 .on-dark .prose-body {
   color: rgb(255 255 255 / 0.88);
+}
+
+/* ---------- the per-page gradient themes ---------- */
+
+/* The brand manual (p.15) supplies four flat colours and, checked against every resource dictionary
+   in the PDF, not one gradient object — no /Shading, no /Pattern, no /Function. So a "theme" here
+   only decides which of Tradewind, Black Pearl and White meet, at what angle, and how fast the ramp
+   travels. Every stop is a colour-mix of the existing tokens, which keeps the palette honest and
+   keeps the darkest value knowable: the heaviest stop on any page is Black Pearl at 22%, and the
+   wash mask holds the reading column to 30% of whatever these sheets paint. */
+[data-bg] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 52%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 34%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 24%, transparent);
+  --bg-angle: 118deg;
+  --bg-dur: 30s;
+}
+[data-bg="home"] {
+  --bg-angle: 112deg;
+  --bg-dur: 26s;
+}
+[data-bg="about"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 48%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 32%, transparent);
+  --bg-angle: 196deg;
+  --bg-dur: 34s;
+}
+[data-bg="services"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 60%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 28%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 16%, transparent);
+  --bg-angle: 74deg;
+  --bg-dur: 24s;
+}
+[data-bg="products"] {
+  --bg-2: color-mix(in oklab, var(--color-mint) 40%, transparent);
+  --bg-angle: 150deg;
+}
+[data-bg="cases"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 54%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 30%, transparent);
+  --bg-angle: 210deg;
+  --bg-dur: 32s;
+}
+[data-bg="blog"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 46%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 38%, transparent);
+  --bg-angle: 96deg;
+  --bg-dur: 28s;
+}
+/* The two pages a visitor is meant to act on run the brightest ramp and the shortest period; the
+   reference and legal pages run the faintest and the slowest, so they read as calm rather than dull. */
+[data-bg="careers"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 54%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 24%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 14%, transparent);
+  --bg-angle: 64deg;
+  --bg-dur: 22s;
+}
+[data-bg="engage"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 50%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 32%, transparent);
+  --bg-angle: 130deg;
+  --bg-dur: 20s;
+}
+[data-bg="answers"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 32%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 20%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 16%, transparent);
+  --bg-angle: 180deg;
+  --bg-dur: 40s;
+}
+[data-bg="legal"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 24%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 16%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 14%, transparent);
+  --bg-angle: 180deg;
+  --bg-dur: 44s;
+}
+
+/* Oversized by 14% on every side, so neither sheet can expose an edge while it pans. Sheet A is the
+   diagonal ramp; sheet B is two soft pools plus the Pearl end of the same ramp, running the other
+   way at a longer period so the two never realign into a visible pulse. */
+.bgfx-sheet {
+  position: absolute;
+  inset: -14%;
+  will-change: transform;
+}
+.bgfx-sheet-a {
+  opacity: 0.72;
+  background: linear-gradient(
+    var(--bg-angle),
+    var(--bg-1) 0%,
+    transparent 38%,
+    var(--bg-2) 72%,
+    transparent 100%
+  );
+  animation: bgfx-sheet-a var(--bg-dur) ease-in-out infinite alternate;
+}
+.bgfx-sheet-b {
+  opacity: 0.6;
+  background:
+    radial-gradient(58% 44% at 16% 14%, var(--bg-2) 0%, transparent 66%),
+    radial-gradient(52% 40% at 84% 86%, var(--bg-1) 0%, transparent 64%),
+    linear-gradient(calc(var(--bg-angle) + 180deg), var(--bg-3) 0%, transparent 55%);
+  animation: bgfx-sheet-b calc(var(--bg-dur) * 1.4) ease-in-out infinite alternate-reverse;
+}
+
+@keyframes bgfx-sheet-a {
+  0% {
+    transform: translate3d(-4%, -2%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(4%, 3%, 0) scale(1.14);
+  }
+}
+@keyframes bgfx-sheet-b {
+  0% {
+    transform: translate3d(3%, 2%, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-4%, -3%, 0) scale(1.02);
+  }
 }
 
 /* The plate is a watercolour wash of Tradewind, panned and scaled so the whole page drifts under

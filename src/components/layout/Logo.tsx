@@ -41,7 +41,7 @@ export function BrandLink({ className, label }: { className?: string; label?: st
       to="/"
       aria-label={label ?? "Septa home"}
       className={cn(
-        "group inline-flex items-center rounded-lg text-fg transition-opacity hover:opacity-90",
+        "group inline-flex items-center rounded-lg text-fg transition-opacity max-sm:py-3 hover:opacity-90",
         className
       )}
     >

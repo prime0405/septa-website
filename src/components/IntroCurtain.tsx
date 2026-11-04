@@ -104,7 +104,14 @@ export function IntroCurtain({ onDone }: { onDone: () => void }) {
           }}
         />
         <p className="font-mono text-[0.66rem] tracking-[0.22em] text-brand-teal uppercase">
-          {open ? "" : "click or press esc to skip"}
+          {open ? (
+            ""
+          ) : (
+            <>
+              <span className="max-sm:hidden">click</span>
+              <span className="sm:hidden">tap</span> or press esc to skip
+            </>
+          )}
         </p>
       </div>
     </div>
