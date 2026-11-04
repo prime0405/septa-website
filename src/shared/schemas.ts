@@ -62,23 +62,25 @@ export const phoneField = z
 /* Contact                                                             */
 /* ------------------------------------------------------------------ */
 
-export const inquiryTypes = [
-  "General enquiry",
-  "AI Product Development",
-  "Traditional Product Development",
+export const contactServices = [
+  "AI product development",
+  "Traditional product development",
   "Workflow Automation",
   "Digital Transformation",
   "Observability & Monitoring",
   "Talent Solution",
-  "Partnership",
-  "Something else",
 ] as const;
 
+/**
+ * The six fields the revamp's contact form asks for. `service` is the dropdown it names, `message`
+ * is the long "what are you partnering with us to build" answer.
+ */
 export const contactSchema = z.object({
-  fullName: text("Full name", 120),
-  email: emailField,
+  fullName: text("Name", 120),
+  phone: phoneField,
   company: optionalText(120),
-  inquiryType: z.enum(inquiryTypes, { message: "Choose an enquiry type." }),
+  email: emailField,
+  service: z.enum(contactServices, { message: "Choose the service you need from us." }),
   message: z
     .string()
     .trim()
@@ -192,6 +194,10 @@ export type RequestDraft = Partial<RequestPayload>;
 /* ------------------------------------------------------------------ */
 
 export const disciplines = [
+  // The titles Septa has published as open roles, first, so the Apply buttons on the career page
+  // can preselect them. Everything after this is an area of work rather than a live vacancy.
+  "Sales Manager",
+  "Digital Marketing Specialist",
   "AI / Machine Learning Engineering",
   "Backend Engineering",
   "Frontend Engineering",

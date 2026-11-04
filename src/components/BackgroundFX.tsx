@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useReducedMotion } from "motion/react";
-import { bgThemeFor } from "../lib/bgThemes";
+import { bgThemeFor, plateForTheme } from "../lib/bgThemes";
 
 /**
  * The site-wide moving backdrop, in two layers that answer to different rules.
@@ -20,6 +20,7 @@ export function BackgroundFX() {
   const reduce = useReducedMotion();
   const { pathname } = useLocation();
   const theme = bgThemeFor(pathname);
+  const plate = plateForTheme(theme);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const depthRef = useRef<HTMLDivElement>(null);
 
@@ -179,10 +180,11 @@ export function BackgroundFX() {
         >
           <div className="bgfx-plate size-full">
             <img
-              src="/img/plate-aurora.jpg"
+              key={plate}
+              src={plate}
               alt=""
               decoding="async"
-              className="size-full object-cover opacity-[0.55]"
+              className="bgfx-plate-swap size-full object-cover opacity-[0.55]"
             />
           </div>
         </div>

@@ -1,33 +1,44 @@
-export type Capability = { title: string; detail: string };
-export type ProcessStepData = { title: string; detail: string; note?: string };
+/**
+ * Service page content. Every string is Septa's own wording, transcribed from the document
+ * "SEPTA Website Revamp". Where the document had a spacing or punctuation slip we corrected the
+ * slip, never the sentence. Sections a page is expected to have but the document supplies no copy
+ * for are listed in `pending` and rendered as a visible gap rather than filled in.
+ */
+export type Capability = { title: string; detail?: string };
+export type ProcessSub = { title: string; detail?: string };
+
+export type ProcessStepData = {
+  title: string;
+  detail?: string;
+  /** The sub-items the document nests under a step, e.g. "A. UI Design". */
+  sub?: { heading?: string; lead?: string; items: ProcessSub[] };
+};
 
 export type ServiceContent = {
   slug: string;
   name: string;
   /** Icon registry key, resolved in components/blocks/ServiceIcon.tsx */
   icon: "ai" | "automation" | "transformation" | "observability" | "talent" | "product";
+  /** The line the document gives this service in the homepage "OUR SERVICES" list. */
   navBlurb: string;
   heroTitle: string;
-  /** Supplied marketing lead. */
-  lead: string;
-  /** Deeper engineering framing, shown as the first body paragraph. */
-  detail?: string;
-  /** Business problems the service addresses. */
-  problems: string[];
-  /** What is actually done, grouped the way a buyer would read it. */
-  capabilities: { group: string; items: Capability[] }[];
-  benefits: Capability[];
-  useCases: Capability[];
-  process: ProcessStepData[];
-  deliverables: string[];
-  faq: { q: string; a: string }[];
-  /** Which illustrative visual to embed: workflow diagram or dashboard mock. */
-  visual?: "workflow" | "dashboard" | "ai";
+  intro: string;
+  coreServicesHeading: string;
+  coreServicesLead?: string;
+  coreServices: Capability[];
+  whyChooseHeading: string;
+  whyChoose: Capability[];
+  processHeading?: string;
+  processLead?: string;
+  process?: ProcessStepData[];
+  whoWeServeHeading?: string;
+  whoWeServe?: Capability[];
+  extra?: { heading: string; paragraphs: string[] };
+  cta?: { headline: string; copy: string; label: string; to: string };
   /** Film that runs behind this page's hero header, supplied by Septa. */
   heroVideo?: string;
-  related: { label: string; to: string }[];
-  /** Capabilities that must be confirmed by Septa before they read as an established offering. */
-  unconfirmed: string[];
+  /** Sections expected on this page for which the document gives no copy. */
+  pending?: string[];
 };
 
 export const services: ServiceContent[] = [
@@ -35,848 +46,488 @@ export const services: ServiceContent[] = [
     slug: "ai-product-development",
     name: "AI Product Development",
     icon: "ai",
-    navBlurb: "Products people want to use, built with AI where it genuinely helps.",
-    heroTitle: "Bring your product ideas to life with AI-assisted development",
-    lead: "We use AI-assisted product development to turn your ideas into market-ready products within 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering to build products that solve real problems and support your business growth.",
-    detail:
-      "Most AI pilots stall between the demo and production. We work backwards from the decision you want the system to make, through evaluation, data readiness, guardrails and deployment. Skip that and you ship a chat window bolted onto a spreadsheet.",
-    problems: [
-      "A promising prototype that never made it past a proof of concept.",
-      "Answers generated without ground truth, so nobody dares act on them.",
-      "Model spend growing faster than the value it produces.",
-      "Sensitive customer data pasted into third-party prompts.",
-      "One engineer holding all the context about how the system actually works.",
-    ],
-    capabilities: [
+    navBlurb:
+      "We build intelligent, user-focused products from idea to market-ready launch. We go beyond development; we design and engineer AI-powered solutions that solve real-world problems, adapt to user needs, and scale with your business.",
+    heroTitle: "Web, Mobile & AI Product Development",
+    intro:
+      "We use AI-assisted product development to turn ideas into market-ready digital products within 4–6 weeks. Whether you’re building a mobile app, developing an enterprise solution, or enhancing an existing product with intelligent features, we combine artificial intelligence, product strategy, and engineering to accelerate development and bring your vision to life.",
+    coreServicesHeading: "Core Services",
+    coreServicesLead:
+      "We use AI to accelerate product development, helping you turn your ideas into market-ready digital products within 4–6 weeks. From concept to launch, we combine AI-assisted development, product strategy, and engineering to build products that solve real problems and meet your business needs.",
+    coreServices: [
       {
-        group: "Strategy and discovery",
-        items: [
-          {
-            title: "AI opportunity assessment",
-            detail:
-              "Map the workflows where an AI feature changes an outcome, then rank them by feasible value, data availability and risk.",
-          },
-          {
-            title: "Use-case specification",
-            detail:
-              "Turn a vague ask into a testable brief: inputs, tolerated error rate, human review step, and what success looks like after 90 days.",
-          },
-          {
-            title: "Data readiness review",
-            detail:
-              "Audit the documents, tables and APIs the system will rely on, and name the gaps before they become blockers.",
-          },
-        ],
+        title: "UI/UX Design",
+        detail:
+          "We design user experiences that simplify complex systems and make them intuitive to use. From user research to prototyping and testing.",
       },
       {
-        group: "Product and prototype",
-        items: [
-          {
-            title: "Clickable prototyping",
-            detail:
-              "A working slice against real data in days, so the decision to fund the build is cheap.",
-          },
-          {
-            title: "Interaction design for uncertain output",
-            detail:
-              "Citations, confidence, undo, review queues and escalation paths. Those details decide whether people adopt the feature.",
-          },
-        ],
+        title: "Web Development",
+        detail:
+          "We build scalable web/app platforms that support AI-driven functionality, and our systems are designed for performance, security, and seamless integration with APIs, data pipelines, and third-party services.",
       },
       {
-        group: "Build",
-        items: [
-          {
-            title: "LLM feature development",
-            detail:
-              "Retrieval-augmented generation, tool calling, structured outputs, prompt versioning and caching, against whichever model provider fits your constraints.",
-          },
-          {
-            title: "Machine learning integration",
-            detail:
-              "Classical and gradient-boosted models for prediction, ranking and anomaly detection, served behind the same API surface as generative features.",
-          },
-          {
-            title: "Conversational interfaces",
-            detail:
-              "Assistants scoped to your domain: intent coverage, guardrails, handoff to a human, and transcripts that stay inside your boundary.",
-          },
-          {
-            title: "Agent and workflow orchestration",
-            detail:
-              "Multi-step automations with explicit tool contracts, retries, idempotency and a human approval gate where the risk demands it.",
-          },
-        ],
+        title: "Mobile App Development",
+        detail:
+          "We develop mobile applications that bring AI capabilities directly to users. Our apps are built for performance, usability, and long-term scalability across iOS, Android, and cross-platform environments.",
       },
       {
-        group: "Evaluation, safety and operations",
-        items: [
-          {
-            title: "Evaluation harness",
-            detail:
-              "Golden datasets, regression suites and scored runs, so every prompt or model change has a number attached to it.",
-          },
-          {
-            title: "Observability for AI",
-            detail:
-              "Token spend, latency, refusal and hallucination signals, per-route quality trends, wired into the same dashboards as the rest of the platform.",
-          },
-          {
-            title: "Responsible AI controls",
-            detail:
-              "PII handling, access scoping, red-team test sets, refusal policies, and documentation of known limitations before users meet them.",
-          },
-          {
-            title: "Deployment and iteration",
-            detail:
-              "Staged rollout, offline and online evaluation, rollback plan, then a cadence of improvement against the metrics agreed in discovery.",
-          },
-        ],
+        title: "AI and Machine Learning Integration",
+        detail:
+          "We embed intelligence into your product through machine learning models and AI-driven features. We create systems that enable automation, prediction, and smarter decision-making.",
+      },
+      {
+        title: "End-to-End Delivery",
+        detail:
+          "From ideation to deployment and continuous optimization, we manage the entire product lifecycle. Every solution is built to evolve, adapt to new data, user behavior, and business needs over time.",
       },
     ],
-    benefits: [
+    whyChooseHeading: "Why Choose Septa",
+    whyChoose: [
       {
-        title: "Funded on evidence",
-        detail: "You see a prototype and an evaluation baseline before committing to the full build.",
+        title: "MVP in 4–6 Weeks",
+        detail:
+          "We help you quickly launch MVPs within 4-6 weeks, allowing you to validate ideas, test, and gather data and feedback early.",
       },
       {
-        title: "Accountable answers",
-        detail: "Every output can be traced to the source that produced it, with review where errors are costly.",
+        title: "Faster Design & Iteration",
+        detail:
+          "AI products require continuous refinement. Our rapid design and iteration cycles ensure your product improves quickly based on user interaction and feedback.",
       },
       {
-        title: "Costs that stay sane",
-        detail: "Caching, routing and per-feature budgets keep inference spend tied to value.",
+        title: "Solid Security Infrastructure",
+        detail:
+          "We build secure systems that protect sensitive data, ensure compliance, and support reliable AI operations at scale.",
       },
       {
-        title: "No single-person dependency",
-        detail: "Prompts, evals and infrastructure are versioned and documented like any other product code.",
-      },
-    ],
-    useCases: [
-      {
-        title: "Document-heavy teams",
-        detail: "Contract, claims, compliance and support teams searching thousands of pages with cited answers.",
+        title: "Product Research",
+        detail:
+          "We combine market research with data-driven insights to define the right product strategy, ensuring your solution solves meaningful problems.",
       },
       {
-        title: "Operational triage",
-        detail: "Sorting, summarising and routing inbound work like tickets, applications and alerts, with a human in the loop.",
-      },
-      {
-        title: "Copilot inside your product",
-        detail: "A domain assistant that drafts, explains and acts within your application's own permissions model.",
-      },
-      {
-        title: "Prediction features",
-        detail: "Demand, churn, risk and anomaly scoring where a traditional model beats a large language model.",
+        title: "User-Centered Approach",
+        detail:
+          "We design AI products around human behavior. Complex technologies are translated into simple, intuitive experiences that users can easily understand and trust.",
       },
     ],
+    processHeading: "Our Product Development Process",
+    processLead:
+      "At the core of our approach is an iterative process that aligns user needs, technical feasibility, and business goals. Each phase ensures your AI product is built with clarity, efficiency, and long-term success in mind.",
     process: [
-      { title: "Discovery", detail: "Decision-first scoping, data audit, constraint capture.", note: "Output: ranked use cases" },
-      { title: "Prototype", detail: "One thin slice against real data, with a scoring baseline.", note: "Usually 1–3 weeks" },
-      { title: "Architecture", detail: "Model, retrieval, storage and safety design reviewed with your team.", note: "Output: build plan" },
-      { title: "Build", detail: "Iterative delivery behind feature flags with evaluation gates.", note: "Two-week loops" },
-      { title: "Evaluate", detail: "Regression suite plus human review on sampled production traffic.", note: "Quality bar agreed upfront" },
-      { title: "Deploy & iterate", detail: "Staged rollout, monitoring, cost review, scheduled improvement cycle.", note: "Handover with runbook" },
+      {
+        title: "1. First Contact Call",
+        detail:
+          "We begin with an alignment session to understand your vision, use case, and how AI can create value within your product. This step helps define clear goals and ensures we’re solving the right problem from the start.",
+      },
+      {
+        title: "2. Workshop: Business & Technical Alignment",
+        detail:
+          "We collaborate with stakeholders to define business objectives, technical requirements, data availability, timelines, and operational workflows.",
+        sub: {
+          heading: "Workshop Outputs",
+          lead: "At the end of this phase, we deliver:",
+          items: [
+            { title: "Product Requirements Document (PRD)" },
+            { title: "Technical Requirements Document (TRD)" },
+            { title: "Milestone Document" },
+          ],
+        },
+      },
+      {
+        title: "3. Service Legal Agreement (SLA)",
+        detail:
+          "We formalize expectations through a Service Level Agreement covering delivery standards, system performance, data handling, and support. This ensures transparency, accountability, and alignment before development begins.",
+      },
+      {
+        title: "4. Design Framework",
+        detail:
+          "We define the product structure and user experience, focusing on how users interact with AI features. Wireframes and user flows are created to simplify complex processes and ensure usability.",
+      },
+      {
+        title: "5. Design & Development Setup",
+        sub: {
+          items: [
+            {
+              title: "A. UI Design",
+              detail:
+                "We design high-fidelity interfaces that clearly present outputs, insights, and interactions in a user-friendly way.",
+            },
+            {
+              title: "B. Infrastructure Setup",
+              detail:
+                "We set up scalable infrastructure, including servers, databases, APIs, and data pipelines, to support AI model integration and performance.",
+            },
+          ],
+        },
+      },
+      {
+        title: "6. Execution",
+        sub: {
+          items: [
+            {
+              title: "A. Frontend Implementation",
+              detail:
+                "We build responsive interfaces that allow users to interact seamlessly with AI features and data outputs.",
+            },
+            {
+              title: "B. Backend Endpoint Development",
+              detail:
+                "We develop APIs, integrate machine learning models, and connect services to power intelligent functionality.",
+            },
+            {
+              title: "C. QA (Quality Assurance)",
+              detail:
+                "Testing includes validating outputs, system behavior, API performance, and overall stability to ensure reliability in real-world use.",
+            },
+            {
+              title: "D. Deployment",
+              detail:
+                "We deploy the product in stages, first to staging for validation, then to production, ensuring stability, performance, and minimal downtime.",
+            },
+          ],
+        },
+      },
+      {
+        title: "7. Support",
+        detail: "After launch, we ensure your product continues to perform and improve.",
+        sub: {
+          items: [
+            {
+              title: "A. Monitoring & Fixes",
+              detail:
+                "We monitor system performance, model accuracy, and errors, resolving issues quickly.",
+            },
+            {
+              title: "B. User Feedback",
+              detail:
+                "We collect feedback to refine user experience and improve AI-driven features.",
+            },
+            {
+              title: "C. Continuous Optimization & Handover",
+              detail:
+                "We update models, improve performance, and provide full documentation for long-term sustainability.",
+            },
+          ],
+        },
+      },
     ],
-    deliverables: [
-      "Use-case brief with success criteria",
-      "Working prototype and evaluation baseline",
-      "Architecture and data-flow documentation",
-      "Production feature with tests and eval suite",
-      "Monitoring dashboards and cost reporting",
-      "Runbook, guardrail policy and team handover",
-    ],
-    faq: [
-      {
-        q: "Do we need our own model?",
-        a: "Almost never. The usual answer is a hosted model with strong retrieval, careful prompting and your own evaluation set. We will tell you plainly when a fine-tune or a traditional model is the better tool.",
-      },
-      {
-        q: "How do you stop it inventing answers?",
-        a: "Retrieval with citations, structured outputs where the schema can enforce them, refusal policies for out-of-scope requests, and an eval set that blocks regressions before they ship.",
-      },
-      {
-        q: "What about our data privacy?",
-        a: "Data scoping decisions are made in discovery: which fields may reach a provider, where redaction happens, retention limits, and how access is audited. Where a provider is not acceptable, we design for self-hosted inference.",
-      },
-      {
-        q: "How long before we see something real?",
-        a: "A thin prototype typically runs in two to three weeks from a working data connection. Anything promising a full product in a fortnight is usually hiding the hard parts.",
-      },
-      {
-        q: "Can you work with the team we already have?",
-        a: "Yes. Pairing, code review, architecture guidance and evaluation practice all transfer. Several engagements are advisory, or add people to a team that already exists.",
-      },
-    ],
-    visual: "ai",
+    extra: {
+      heading: "Why Work With Us?",
+      paragraphs: [
+        "Working with us isn’t just about hiring AI experts; it's about teaming up with people who get your vision. We understand the drive to go global and the unique opportunities in Africa. We move fast, but never at the expense of quality, building AI solutions that grow with you and make a real difference, not just a good impression.",
+      ],
+    },
+    cta: {
+      headline: "Let’s Get Started",
+      copy: "The right AI can transform your business. We’ll help you build it and get it in the hands of the right market.",
+      label: "Grow my business with AI",
+      to: "/request",
+    },
     heroVideo: "/video/ai-product-development.mp4",
-    related: [
-      { label: "Traditional Product Development", to: "/product-development/traditional" },
-      { label: "Workflow Automation", to: "/services/workflow-automation" },
-      { label: "Observability & Monitoring", to: "/services/observability-monitoring" },
-    ],
-    unconfirmed: [
-      "Model and cloud provider partnerships or accreditations",
-      "Named regulated-industry experience (finance, healthcare)",
-      "Standing managed-support tiers for AI systems",
-    ],
   },
   {
     slug: "workflow-automation",
     name: "Workflow Automation",
     icon: "automation",
-    navBlurb: "Automation that removes the manual handoffs between your systems.",
-    heroTitle: "Work smarter, not harder",
-    lead: "Repetitive tasks drain productivity and distract from strategic priorities. Tell us your organisational needs: Septa partners with you to identify bottlenecks, map critical workflows, and deliver automation solutions that free your teams from routine tasks, enabling sharper focus, faster execution, and sustainable growth.",
-    detail:
-      "Automation work rarely fails because of the technology. It fails because nobody mapped the real process, or because a script was written with no owner, no retries and no alerting. We instrument the workflow first, then build the connections that survive a bad day upstream.",
-    problems: [
-      "The same record typed into three systems by three different people.",
-      "Approvals that live in email and stall for days.",
-      "Reporting built by hand every Monday morning.",
-      "Zapier-style glue nobody owns, breaking silently.",
-      "Onboarding, offboarding and access requests that depend on one helpful person.",
-    ],
-    capabilities: [
+    navBlurb:
+      "Repetitive tasks drain productivity and distract from strategic priorities. Describe your organizational needs. Septa partners with you to identify bottlenecks, map critical workflows, and deliver automation solutions that free your teams from routine tasks, enabling sharper focus, faster execution, and sustainable growth.",
+    heroTitle: "Workflow & Process Automation",
+    intro:
+      "Manual processes slow you down. Septa designs automation that cuts costs, saves time, and reduces errors, without disrupting your current operations.",
+    coreServicesHeading: "Core Services",
+    coreServices: [
       {
-        group: "Understand the process",
-        items: [
-          {
-            title: "Workflow discovery",
-            detail:
-              "Sit with the people doing the work, trace one real case end to end, and document the exceptions nobody writes down.",
-          },
-          {
-            title: "Process optimisation",
-            detail:
-              "Remove steps before automating them. A faster wrong process is still wrong.",
-          },
-          {
-            title: "Ownership map",
-            detail: "Name the person accountable for each step, each system and each failure mode.",
-          },
-        ],
+        title: "Business Process Automation",
+        detail:
+          "Streamlined internal and customer-facing workflows tailored to your operations.",
       },
       {
-        group: "Build the connections",
-        items: [
-          {
-            title: "API integration",
-            detail:
-              "Auth, pagination, rate limits, webhooks and idempotency handled properly, with contract tests against sandboxes.",
-          },
-          {
-            title: "Data synchronisation",
-            detail:
-              "One-way or two-way sync with conflict rules, an audit trail, and reconciliation when systems disagree.",
-          },
-          {
-            title: "Task automation",
-            detail:
-              "Event-driven jobs: create, enrich, route, notify and escalate, with retries, dead-letter queues and manual replay.",
-          },
-          {
-            title: "Approval workflows",
-            detail:
-              "State machines with roles, delegation, timeouts and a full record of who approved what and when.",
-          },
-          {
-            title: "Internal tools and dashboards",
-            detail:
-              "The ops screen your team actually needs, built on the same data rather than a stale export.",
-          },
-          {
-            title: "Reporting automation",
-            detail:
-              "Scheduled and on-demand reports generated from source systems, delivered where people already work.",
-          },
-        ],
+        title: "Custom Automation Tools",
+        detail: "Scripts and systems designed for your specific needs and data flows.",
       },
       {
-        group: "Keep it running",
-        items: [
-          {
-            title: "Monitoring and alerting",
-            detail:
-              "Every automation has a health check, lag indicator and an owner who is told before the business notices.",
-          },
-          {
-            title: "Maintenance",
-            detail:
-              "Provider API changes, credential rotation and dependency upgrades handled as planned work, before they turn into incidents.",
-          },
-        ],
+        title: "System Integration",
+        detail: "Connecting your apps, databases, and tools for seamless information exchange.",
+      },
+      {
+        title: "Repetitive Task Elimination",
+        detail:
+          "Automating low-value manual work so your team can focus on strategy and service.",
       },
     ],
-    benefits: [
+    whyChooseHeading: "Why Choose Septa",
+    whyChoose: [
       {
-        title: "Hours returned weekly",
-        detail: "Manual handoffs disappear; people spend time on judgement instead of transcription.",
+        title: "Tailored to Your Operations",
+        detail: "We build around your processes instead of forcing new ones.",
       },
       {
-        title: "Fewer silent failures",
-        detail: "Retries plus alerting surface a broken integration in minutes, so bad data does not sit unnoticed for a quarter.",
+        title: "Cost and Time Savings",
+        detail: "Automations that pay for themselves through efficiency gains.",
       },
       {
-        title: "One source of truth",
-        detail: "Conflict rules and lineage replace the argument about which system is right.",
-      },
-      {
-        title: "Audit-ready",
-        detail: "Timestamped event logs and approval trails make compliance reviews boring in the best way.",
+        title: "Low Disruption Delivery",
+        detail: "We implement in phases to keep your operations running smoothly.",
       },
     ],
-    useCases: [
-      {
-        title: "Quote-to-cash",
-        detail: "CRM deal → contract generation → finance system invoice → delivery notification, with human gates.",
-      },
-      {
-        title: "Support escalation",
-        detail: "Ticket triage, ownership routing, customer-context assembly and follow-up without manual chasing.",
-      },
-      {
-        title: "People operations",
-        detail: "Joiner-mover-leaver: accounts, devices, licences and access groups following the HR record.",
-      },
-      {
-        title: "Data and finance hygiene",
-        detail: "Nightly reconciliation, exception queues and monthly close packs built automatically.",
-      },
-    ],
-    process: [
-      { title: "Map", detail: "Shadow the real workflow, including its workarounds.", note: "Output: current-state flow" },
-      { title: "Decide", detail: "Cut steps, pick the trigger and the system of record.", note: "Output: target-state design" },
-      { title: "Build", detail: "Integrations and jobs behind flags, with contract tests.", note: "Sandbox first" },
-      { title: "Parallel run", detail: "Automated and manual paths run side by side and are compared.", note: "Confidence gate" },
-      { title: "Handover", detail: "Alerting, runbook, replay tooling, owner training.", note: "No black boxes" },
-      { title: "Tune", detail: "Regular review of failures, volume and remaining manual steps.", note: "Ongoing or scoped" },
-    ],
-    deliverables: [
-      "Current and target process documentation",
-      "Integration build with tests and replay tooling",
-      "Approval and escalation routing",
-      "Monitoring, alerting and a named owner runbook",
-      "Internal dashboard or reporting pack",
-      "Maintenance plan",
-    ],
-    faq: [
-      {
-        q: "Can you work with the tools we already pay for?",
-        a: "That is the normal case. We integrate against the APIs and webhooks your systems expose and flag the places where a tool's limits will shape the design.",
-      },
-      {
-        q: "What if a system has no API?",
-        a: "Options in order of preference: database or file export, an official connector, a brokered email or queue path, then carefully monitored browser automation as a last resort. We will be explicit about how fragile that last option is.",
-      },
-      {
-        q: "Who owns the automation afterwards?",
-        a: "You do, with tooling that lets you see and replay it. We also offer maintenance arrangements; the shape of that arrangement is confirmed per engagement.",
-      },
-      {
-        q: "How do you avoid breaking production data?",
-        a: "Dry-run mode, sandbox credentials, idempotency keys, feature flags, and a parallel comparison period before the manual path is switched off.",
-      },
-    ],
-    visual: "workflow",
-    related: [
-      { label: "Digital Transformation", to: "/services/digital-transformation" },
-      { label: "AI Product Development", to: "/services/ai-product-development" },
-      { label: "Observability & Monitoring", to: "/services/observability-monitoring" },
-    ],
-    unconfirmed: [
-      "Preferred automation platforms or vendor certifications",
-      "Standard support response times for live automations",
-      "Off-the-shelf connector library already built",
-    ],
+    cta: {
+      headline: "Work Smarter, Not Harder",
+      copy: "Describe your organizational needs.",
+      label: "Partner with Septa",
+      to: "/contact",
+    },
+    pending: ["Our Process", "Who We Serve"],
   },
   {
     slug: "digital-transformation",
     name: "Digital Transformation",
     icon: "transformation",
-    navBlurb: "Replace ageing systems with software that costs less to run.",
-    heroTitle: "Experience growth without limits",
-    lead: "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth, so your business thrives in the digital age.",
-    detail:
-      "A transformation programme fails when it treats old systems as a moral failing rather than a set of specific constraints. We work in the boring, decisive order: understand what the current system actually does, decide what must keep working exactly as it does, then replace the rest in slices that ship value while the lights stay on.",
-    problems: [
-      "Core operations running on software nobody fully understands.",
-      "A vendor licence renewal that costs more than rebuilding.",
-      "Every new feature blocked by a dependency nobody can untangle.",
-      "Paper and spreadsheet processes outside the system of record.",
-      "Two teams maintaining near-identical versions of the same logic.",
-    ],
-    capabilities: [
+    navBlurb:
+      "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth. Discover how we can help your business thrive in the digital age.",
+    heroTitle: "Transform How Your Business Works and Grows",
+    intro:
+      "At Septa, we help businesses modernize the way they operate and grow. Outdated systems are replaced with powerful digital solutions that increase efficiency, cut costs, and elevate customer experiences.",
+    coreServicesHeading: "Core Services",
+    coreServices: [
       {
-        group: "Direction",
-        items: [
-          {
-            title: "Digital strategy",
-            detail:
-              "A roadmap ordered by dependency and value, with cost and risk stated in the same document.",
-          },
-          {
-            title: "Systems and capability audit",
-            detail:
-              "What exists, who uses it, what data flows through it, and what genuinely has to survive the change.",
-          },
-          {
-            title: "Target architecture",
-            detail:
-              "Pragmatic service, data and integration boundaries matched to your team size and operating model.",
-          },
-        ],
+        title: "Process Modernization",
+        detail:
+          "Eliminate manual, outdated workflows and replace them with scalable, tech-driven systems that save time and improve consistency.",
       },
       {
-        group: "Modernisation",
-        items: [
-          {
-            title: "Legacy system modernisation",
-            detail:
-              "Strangler-fig replacement at the seams, shared databases where migration cannot be atomic, and rollback at every step.",
-          },
-          {
-            title: "Platform and software integration",
-            detail:
-              "Connect the purchased systems into one coherent operation instead of hoping they align.",
-          },
-          {
-            title: "Cloud adoption",
-            detail:
-              "Where cloud genuinely helps: landing zones, migration waves, cost modelling, exit paths and operational readiness.",
-          },
-          {
-            title: "Data and process modernisation",
-            detail:
-              "Consolidate reporting, fix master-data ownership, and move shadow spreadsheets into governed flows.",
-          },
-          {
-            title: "Digital product implementation",
-            detail:
-              "Applications for customers and staff that carry the new capabilities where work actually happens.",
-          },
-        ],
+        title: "Cloud Migration",
+        detail:
+          "Move your operations to secure, flexible cloud environments that lower costs, increase access, and keep your business future-ready.",
       },
       {
-        group: "Landing the change",
-        items: [
-          {
-            title: "Change management",
-            detail:
-              "Training, comms, support ramp and named champions, because the software is the easy half.",
-          },
-          {
-            title: "Ongoing optimisation",
-            detail:
-              "Post-launch measurement against the original business case, then iteration on what moved and what did not.",
-          },
-          {
-            title: "Legacy decommissioning",
-            detail:
-              "The unglamorous work of switching the old system off, archiving records and closing the access paths.",
-          },
-        ],
+        title: "Data Intelligence",
+        detail:
+          "We gather, organize, and analyze your data so it becomes a true business asset. By turning raw information into clear insights, we empower you to make informed, strategic decisions that improve operations, guide growth, and deliver measurable results.",
+      },
+      {
+        title: "Customer Experience Upgrades",
+        detail:
+          "Enhance every digital touchpoint; from websites and mobile apps to service portals delivering smoother, faster, and more engaging customer interactions.",
+      },
+      {
+        title: "Change Management Support",
+        detail:
+          "Ensure your teams adopt new systems with ease through training, process alignment, and ongoing support.",
       },
     ],
-    benefits: [
+    whyChooseHeading: "Why Choose Septa",
+    whyChoose: [
       {
-        title: "Continuous operation",
-        detail: "Slice-by-slice replacement keeps the business trading through the change.",
+        title: "Business & Technology Expertise",
+        detail:
+          "We combine strategic insight with technical excellence to deliver solutions that work.",
       },
       {
-        title: "Decisions on evidence",
-        detail: "Each wave carries its own cost, risk and measured outcome rather than a programme-wide promise.",
+        title: "Industry-Specific Strategies",
+        detail:
+          "Tailored digital transformation approaches designed for your sector’s unique challenges.",
       },
       {
-        title: "Reduced vendor lock",
-        detail: "Portability, data ownership and exit paths designed in instead of discovered in a renewal negotiation.",
-      },
-      {
-        title: "Skills left behind",
-        detail: "Your engineers work alongside ours on the real system, so the capability stays after we leave.",
-      },
-    ],
-    useCases: [
-      {
-        title: "End-of-life platform",
-        detail: "A supported-but-aging core system replaced before the vendor withdraws it.",
-      },
-      {
-        title: "Mergers and duplicating stacks",
-        detail: "Two organisations running two versions of everything, converging without freezing delivery.",
-      },
-      {
-        title: "Manual operations ceiling",
-        detail: "Growth limited by admin headcount rather than demand.",
-      },
-      {
-        title: "Regulatory or reporting pressure",
-        detail: "Requirements the current data model cannot honestly satisfy.",
+        title: "Measurable Impact",
+        detail:
+          "Every solution is tracked and optimized to show clear improvements in efficiency, cost savings, and customer satisfaction.",
       },
     ],
-    process: [
-      { title: "Assess", detail: "Systems, data, dependencies, teams and constraints.", note: "2–4 weeks" },
-      { title: "Prioritise", detail: "Sequence by risk removed and value released.", note: "Output: roadmap" },
-      { title: "Pilot", detail: "One vertical slice migrated end to end to prove the pattern.", note: "De-risk early" },
-      { title: "Waves", detail: "Repeat the proven pattern across domains with parallel teams.", note: "Ship every wave" },
-      { title: "Operate", detail: "Monitoring, support model and cost control from day one.", note: "No orphan services" },
-      { title: "Close out", detail: "Decommission legacy, archive, document, hand over.", note: "Formal approval" },
-    ],
-    deliverables: [
-      "Assessment report and target architecture",
-      "Prioritised roadmap with wave-level cost and risk",
-      "Migrated capabilities released incrementally",
-      "Data migration and reconciliation records",
-      "Operational runbook and support model",
-      "Legacy decommission plan and evidence trail",
-    ],
-    faq: [
-      {
-        q: "Is rewriting always the answer?",
-        a: "No. Encapsulating, extending or migrating a working system is often cheaper and lower-risk. The assessment decides the recommendation.",
-      },
-      {
-        q: "How do you handle unknown behaviour in legacy code?",
-        a: "Characterisation: log and replay real traffic, pin down what the system actually does, then lock that behaviour with tests before changing anything.",
-      },
-      {
-        q: "Do you move everything to the cloud?",
-        a: "Only where it earns its place. Some workloads belong on-premise or in a managed service; the cost and compliance model decides, and we document the reasoning either way.",
-      },
-      {
-        q: "What about our staff who rely on the old way?",
-        a: "They are part of the plan: discovery includes them, pilots run with them, and training plus support cover the transition period.",
-      },
-    ],
-    visual: "ai",
-    related: [
-      { label: "Workflow Automation", to: "/services/workflow-automation" },
-      { label: "Traditional Product Development", to: "/product-development/traditional" },
-      { label: "Talent Solution", to: "/services/talent-solution" },
-    ],
-    unconfirmed: [
-      "Certified partner status with any specific cloud provider",
-      "Industry compliance frameworks Septa is formally accredited against",
-      "Managed hosting or support service levels",
-    ],
+    cta: {
+      headline: "Experience growth without limits.",
+      copy: "Discover how we can help your business thrive in the digital age.",
+      label: "Partner with Septa",
+      to: "/contact",
+    },
   },
   {
     slug: "observability-monitoring",
     name: "Observability & Monitoring",
     icon: "observability",
-    navBlurb: "Telemetry and alerting that say what is broken, for whom, and how fast.",
-    heroTitle: "Data-driven insights keep your systems reliable",
-    lead: "Every minute of downtime drains revenue, damages reputation, and stalls growth. Our observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
-    detail:
-      "Monitoring tells you a server is red. Observability lets an engineer answer \"which request path degraded, for whom, and why\" in the middle of an incident. We implement the three signals together, wire them to alerts with owners, and remove the noise that trained your team to ignore the phone.",
-    problems: [
-      "Incidents reconstructed from guesswork and terminal scrollback.",
-      "Alerts firing at 3am for conditions nobody can act on.",
-      "Dashboards that describe the infrastructure but not the user experience.",
-      "No baseline, so nobody can say whether a change made things better.",
-      "Distributed systems where a slow dependency is invisible until it is on fire.",
-    ],
-    capabilities: [
+    navBlurb:
+      "Data-driven insights keep your systems reliable. Every minute of downtime drains revenue, damages reputation, and stalls growth. Our advanced observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
+    heroTitle: "Fix Issues Before They Impact Customers.",
+    intro:
+      "Downtime and performance issues cost money and trust. We provide real-time visibility into your systems so you can detect, respond, and fix problems before they impact customers.",
+    coreServicesHeading: "Core Services",
+    coreServices: [
       {
-        group: "Instrumentation",
-        items: [
-          {
-            title: "Metrics",
-            detail: "Golden signals plus business-level measures, with cardinality budgets so the store stays fast and affordable.",
-          },
-          {
-            title: "Structured logs",
-            detail: "Consistent levels, correlation ids, redaction rules, and sampling that keeps cost under control.",
-          },
-          {
-            title: "Distributed tracing",
-            detail: "Context propagation across services and queues, so one trace covers the whole request path.",
-          },
-          {
-            title: "Real user and synthetic monitoring",
-            detail: "Frontend performance, Core Web Vitals and scripted checks on the flows that make or lose money.",
-          },
-        ],
+        title: "Real-Time Monitoring",
+        detail: "Continuous tracking of system performance, uptime, and security.",
       },
       {
-        group: "Application performance",
-        items: [
-          {
-            title: "APM setup",
-            detail: "Service maps, latency percentiles, error rates, database and dependency breakdowns.",
-          },
-          {
-            title: "Slow-path diagnosis",
-            detail: "Profile the actual bottleneck (queries, N+1 access, serialised calls, cold starts) and fix the top of the list.",
-          },
-        ],
+        title: "Log Management",
+        detail: "Centralized collection and analysis of system logs for faster troubleshooting.",
       },
       {
-        group: "Infrastructure",
-        items: [
-          {
-            title: "Infrastructure monitoring",
-            detail: "Hosts, containers, clusters, queues, jobs and third-party endpoints, with saturation signals that give warning before a service is full.",
-          },
-          {
-            title: "Kubernetes and serverless coverage",
-            detail: "Controller, pod, node and function-level telemetry plus cold-start and throttling visibility.",
-          },
-        ],
+        title: "Performance Optimization",
+        detail: "Identify and resolve performance bottlenecks before they escalate.",
       },
       {
-        group: "Using it under pressure",
-        items: [
-          {
-            title: "Dashboards",
-            detail: "One screen per audience: executive SLOs, an on-call triage view, and a detailed view for the service that is failing.",
-          },
-          {
-            title: "Alerting and routing",
-            detail: "Alerts that fire on what users actually see, with owners, escalation paths, snooze policy and a documented error budget.",
-          },
-          {
-            title: "Incident workflow",
-            detail: "Runbooks, severity definitions, blameless review templates and a record of the time it all took.",
-          },
-          {
-            title: "Reliability improvement",
-            detail: "SLOs negotiated with the business, then a backlog of reliability work justified by how fast the error budget is being spent.",
-          },
-        ],
+        title: "Dashboards & Reporting",
+        detail: "Clear, actionable insights for both technical and business teams.",
       },
     ],
-    benefits: [
+    whyChooseHeading: "Why Choose Septa",
+    whyChoose: [
       {
-        title: "Shorter incidents",
-        detail: "Teams stop triaging by guesswork; the trace and the log line are already there.",
+        title: "Proactive Detection",
+        detail: "Catch and resolve issues before they affect customers.",
       },
       {
-        title: "Alerts worth receiving",
-        detail: "Fewer, sharper, actionable pages restore trust in the paging system.",
+        title: "Custom Monitoring Setups",
+        detail: "Solutions tailored to your infrastructure and workflows.",
       },
       {
-        title: "Capacity decisions with data",
-        detail: "Saturation trends and cost-per-request replace the \"add more nodes\" reflex.",
-      },
-      {
-        title: "Change confidence",
-        detail: "Every deploy is measured against the baseline from before it shipped.",
+        title: "Actionable Insights",
+        detail: "Reporting and analytics that drive better decisions and performance improvements.",
       },
     ],
-    useCases: [
-      {
-        title: "New platform, no telemetry",
-        detail: "Instrument before the first customer incident instead of after.",
-      },
-      {
-        title: "Microservice sprawl",
-        detail: "Nobody can say which service broke the checkout path.",
-      },
-      {
-        title: "Tool already bought",
-        detail: "Datadog, Grafana, New Relic, OpenTelemetry or self-hosted, bought already and doing very little for the licence spend.",
-      },
-      {
-        title: "Chronic reliability debt",
-        detail: "Recurring outages with no shared picture of cause or cost.",
-      },
-    ],
+    processHeading: "Our Process",
     process: [
-      { title: "Audit", detail: "Current signals, tools, response process and gaps.", note: "Output: coverage map" },
-      { title: "Define", detail: "SLOs per service and the user flows worth protecting.", note: "With the business" },
-      { title: "Instrument", detail: "Metrics, logs and traces shipped together behind OpenTelemetry where possible.", note: "Vendor-lean" },
-      { title: "Visualise", detail: "Dashboards per audience and a triage view for on-call.", note: "Reviewed live" },
-      { title: "Alert", detail: "Alerts on visible symptoms, routing, escalation, noise budget enforced.", note: "Page hygiene" },
-      { title: "Improve", detail: "Post-incident reviews and a reliability backlog ordered by error budget spend.", note: "Monthly rhythm" },
-    ],
-    deliverables: [
-      "Observability audit and gap analysis",
-      "SLO definitions agreed with product owners",
-      "Instrumentation code and pipeline configuration",
-      "Dashboard set with documented purpose per screen",
-      "Alert rules, routing table and on-call runbooks",
-      "Cost and retention configuration",
-    ],
-    faq: [
       {
-        q: "Do we have to change monitoring vendors?",
-        a: "Usually not. Instrumentation is standardised where the tool allows, so the existing stack gets more useful and a future move becomes a configuration task rather than a rewrite.",
+        title: "Assess Your Environment",
+        detail:
+          "We review your applications, infrastructure, and monitoring requirements to identify what needs visibility and why.",
       },
       {
-        q: "What is the difference between monitoring and observability in practice?",
-        a: "Monitoring answers questions you predicted. Observability lets you ask new ones. You need both: alerting on the known failure modes, and enough signal richness to investigate the unknown ones.",
+        title: "Configure Monitoring",
+        detail:
+          "We set up relevant metrics, logs, dashboards, and alerts based on your systems and operational priorities.",
       },
       {
-        q: "Won't this make our bill spike?",
-        a: "Cardinality, sampling and retention are designed as part of the work, with a cost model before rollout. Noisy telemetry is a reliability problem as well as a cost one.",
+        title: "Investigate and Diagnose",
+        detail:
+          "When issues arise, we use available monitoring data to help identify root causes and support troubleshooting.",
       },
       {
-        q: "Can you work with our OpenTelemetry setup?",
-        a: "Yes. Where it is partial or misconfigured, the audit states what to fix first and why.",
+        title: "Refine and Optimize",
+        detail:
+          "We use performance trends and system insights to recommend improvements and adapt monitoring as your environment evolves.",
       },
     ],
-    visual: "dashboard",
-    related: [
-      { label: "Workflow Automation", to: "/services/workflow-automation" },
-      { label: "AI Product Development", to: "/services/ai-product-development" },
-      { label: "Digital Transformation", to: "/services/digital-transformation" },
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      {
+        title: "Businesses Running Critical Applications",
+        detail:
+          "Organizations that depend on reliable digital services to support customers and daily operations.",
+      },
+      {
+        title: "Growing Technology Companies",
+        detail:
+          "Businesses scaling their applications and infrastructure that need better visibility into system performance.",
+      },
+      {
+        title: "Engineering and IT Teams",
+        detail:
+          "Technical teams looking to simplify troubleshooting, investigate system issues, and understand application health.",
+      },
+      {
+        title: "Businesses Modernizing Their Infrastructure",
+        detail:
+          "Organizations adopting cloud services, APIs, and interconnected systems that need visibility across their technology environments.",
+      },
     ],
-    unconfirmed: [
-      "Named vendor partnerships (Datadog, Grafana, New Relic, AWS)",
-      "24/7 managed on-call or SOC-style coverage",
-      "Security detection engineering as a standalone offering",
-    ],
+    cta: {
+      headline: "Let's Improve Your System Visibility",
+      copy: "Get clearer insights into your applications and infrastructure, identify performance issues, and make better-informed decisions about system reliability.",
+      label: "Talk to Our Team",
+      to: "/contact",
+    },
   },
   {
     slug: "talent-solution",
     name: "Talent Solution",
     icon: "talent",
-    navBlurb: "Vetted engineers and specialists added to the team you already have.",
-    heroTitle: "Hiring designed to fuel your vision",
-    lead: "Connecting you with top tech talents to fuel innovation and accelerate growth. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
-    detail:
-      "Hiring good engineers slowly is its own kind of outage. One specialist who can work unsupervised, a squad that owns a product line, or a vetted contractor for a defined piece of work: the useful question is the same in every case. Who is accountable for the outcome, and how quickly can they start? That is what we arrange.",
-    problems: [
-      "A role open for five months while the roadmap waits.",
-      "Contractors who need six weeks of context before producing.",
-      "One internal expert holding three systems together.",
-      "Delivery risk you cannot cover with a permanent hire budget.",
-      "Technical screening your hiring team does not have time to run well.",
-    ],
-    capabilities: [
+    navBlurb:
+      "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
+    heroTitle: "Septa Talent Solution",
+    intro:
+      "At Septa Talent Solutions, we take the hassle out of hiring, payroll, and employee benefits management, allowing businesses and organizations to focus on what truly matters: growth and innovation. We specialize in providing highly skilled professionals across various industries while managing everything from payroll processing, tax compliance, pension, HMO, and other employee benefits. Whether you’re a startup, SME, or large enterprise, we ensure seamless workforce management so you can scale without stress.",
+    coreServicesHeading: "Why Choose Us?",
+    coreServices: [
       {
-        group: "Sourcing and placement",
-        items: [
-          {
-            title: "Technical talent sourcing",
-            detail: "Define the real role, search beyond the applicants, and present a shortlist with reasons.",
-          },
-          {
-            title: "Developer placement",
-            detail: "Permanent or contract hires placed into your process, with technical vetting done before you see a CV.",
-          },
-          {
-            title: "Technical role matching",
-            detail: "Mapping a candidate's demonstrated work onto your stack and stage rather than keyword overlap.",
-          },
-        ],
+        title: "Access to a pool of pre-scanned talent solutions",
+        detail:
+          "We have a vast network of professionals across various tech disciplines. Our recruitment process ensures that only highly qualified candidates with the right skill set and expertise make it to your interview stage.",
       },
       {
-        group: "Team-shaped engagements",
-        items: [
-          {
-            title: "Dedicated development teams",
-            detail: "A stable team working against your backlog with your rituals, tools and definition of done.",
-          },
-          {
-            title: "Project-based staffing",
-            detail: "Scoped capacity for a migration, a platform build or a release push, with a clear exit.",
-          },
-          {
-            title: "Team augmentation",
-            detail: "Individual engineers embedded in your squad, sized to the gap you actually have.",
-          },
-        ],
+        title: "Tailored Recruitment process",
+        detail:
+          "We understand every business is unique, so we tailor our recruitment strategies to your specific hiring needs. Whether you need a full-time employee, contract worker, or a team to work with on short-term projects, we help you find the perfect fit.",
       },
       {
-        group: "Hiring support",
-        items: [
-          {
-            title: "Technical screening",
-            detail: "Interview design, take-home or pairing assessments and calibrated feedback your hiring managers can act on.",
-          },
-          {
-            title: "Role and level definition",
-            detail: "Writing the spec so candidates and internal panels agree on what good looks like.",
-          },
-          {
-            title: "Onboarding ramp",
-            detail: "A structured first month so new engineers ship something real early.",
-          },
-        ],
+        title: "Payroll management",
+        detail:
+          "Hassle free salary processing, tax deduction, and compliance. Septa’s payroll management services provide seamless solutions to help businesses streamline their salary processing and maintain compliance with tax laws and labor regulations.",
+      },
+      {
+        title: "Employee benefits administration",
+        detail:
+          "We handle employee benefits administration seamlessly, covering HMO, pensions, insurance, and other welfare benefits. Our goal is to provide a hassle-free experience for both employers and employees.",
       },
     ],
-    benefits: [
+    whyChooseHeading: "Why Businesses Trust Septa Talent Solutions",
+    whyChoose: [
+      { title: "Efficiency", detail: "Faster hiring timelines and zero payroll errors." },
+      { title: "Compliance", detail: "Stay fully aligned with labor laws and tax regulations." },
       {
-        title: "Faster start, fewer dead ends",
-        detail: "Vetting happens before your team's calendar is spent on it.",
+        title: "Employee Experience",
+        detail: "Benefits, welfare, and support that keep employees engaged and retained.",
       },
       {
-        title: "Capacity that flexes",
-        detail: "Scale a squad up for the push, taper it as ownership transfers.",
-      },
-      {
-        title: "Engineers you can name",
-        detail: "Everyone on your project is named, with their own items in your tracker.",
-      },
-      {
-        title: "Knowledge transfer built in",
-        detail: "Documentation, pairing and handover checkpoints are part of the engagement from the start.",
+        title: "Partnership Approach",
+        detail: "We don’t just hire; we become your long-term workforce partner.",
       },
     ],
-    useCases: [
-      {
-        title: "Blocked roadmap",
-        detail: "Committed delivery dates with missing skills behind them.",
-      },
-      {
-        title: "Specialist gap",
-        detail: "ML evaluation, data platform, embedded, security or SRE depth for a defined stretch of work.",
-      },
-      {
-        title: "New product line",
-        detail: "A team assembled around a roadmap that cannot wait on serial hiring.",
-      },
-      {
-        title: "Leaver risk",
-        detail: "Bus-factor coverage for a critical system before the resignation letter arrives.",
-      },
-    ],
+    processHeading: "Our Process",
+    processLead: "We keep things simple, structured, and transparent:",
     process: [
-      { title: "Brief", detail: "Outcome, constraints, must-have skills, and how the work will be judged.", note: "With the hiring lead" },
-      { title: "Model", detail: "Choose placement, augmentation, squad or project shape.", note: "Costed per option" },
-      { title: "Screen", detail: "Technical assessment plus structured evidence packs.", note: "Before you are charged time" },
-      { title: "Start", detail: "Onboarding plan, access, first deliverable in week one.", note: "Ramp tracked" },
-      { title: "Review", detail: "Regular check-ins on delivery quality and how the person fits the team.", note: "Cadence agreed" },
-      { title: "Transition", detail: "Extend, convert to permanent, or hand over with documentation.", note: "Planned exit" },
-    ],
-    deliverables: [
-      "Role or engagement brief",
-      "Shortlist with assessment evidence",
-      "Onboarding and ramp plan",
-      "Delivery review cadence",
-      "Transition or conversion documentation",
-    ],
-    faq: [
       {
-        q: "What engagement shapes are available?",
-        a: "Placement, augmentation, project-based work and dedicated teams are described on this page. Rates, contract terms and notice periods are confirmed per enquiry rather than published here.",
+        title: "Discovery & Needs Assessment",
+        detail: "We start by understanding your business, culture, and specific hiring needs.",
       },
       {
-        q: "How is technical quality checked?",
-        a: "Structured review of past work plus a practical assessment matched to the role. Each decision comes with the reasoning behind it.",
+        title: "Talent Sourcing & Screening",
+        detail:
+          "Using our pre-vetted talent pool and recruitment networks, we source candidates, conduct screening, technical assessments, and background checks.",
       },
       {
-        q: "Where do engineers work from?",
-        a: "Working locations, time-zone overlap and remote or on-site expectations are set in the brief; Septa's own base and footprint are still to be published on this site.",
+        title: "Client Interviews & Selection",
+        detail:
+          "Only the top matches are presented to you for interviews. We facilitate and support the process, ensuring efficiency.",
       },
       {
-        q: "Can a contractor convert to permanent?",
-        a: "Conversions are common in this kind of arrangement and are discussed openly at the start so expectations are aligned.",
+        title: "Onboarding & Integration",
+        detail:
+          "Once you select the right talent, we handle contracts, payroll setup, and employee benefits so they integrate seamlessly into your team.",
+      },
+      {
+        title: "Ongoing Management & Support",
+        detail:
+          "We don’t stop at placement—we continuously manage payroll, compliance, benefits, and employee welfare, while giving you visibility and reports.",
       },
     ],
-    related: [
-      { label: "Careers at Septa", to: "/careers" },
-      { label: "AI Product Development", to: "/services/ai-product-development" },
-      { label: "Digital Transformation", to: "/services/digital-transformation" },
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      { title: "Startups", detail: "Build lean, agile teams without the overhead." },
+      { title: "SMEs", detail: "Access affordable, scalable hiring and payroll solutions." },
+      {
+        title: "Large Enterprises",
+        detail: "Streamline workforce management with compliance and efficiency.",
+      },
+      {
+        title: "International Businesses",
+        detail:
+          "Hire local professionals in Nigeria & Africa with confidence, while we handle the complexities of payroll, tax, and benefits.",
+      },
     ],
-    unconfirmed: [
-      "Actual recruiter versus staffing model, and legal entity for contracts",
-      "Geographies covered and time-zone commitments",
-      "Conversion, guarantee and notice-period terms",
-      "Any claim about speed of shortlisting or fill rates",
-    ],
+    cta: {
+      headline: "Let’s Build What’s Next, Together!",
+      copy: "Whether you need an AI powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
+      label: "Partner with Septa",
+      to: "/contact",
+    },
   },
 ];
 

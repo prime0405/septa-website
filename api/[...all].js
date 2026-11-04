@@ -52,22 +52,20 @@ var phoneField = import_zod.z.string().trim().optional().transform((v) => v && v
   (v) => v === void 0 || /^[+()\-.\s\d]{6,24}$/.test(v),
   "Enter a valid phone number."
 );
-var inquiryTypes = [
-  "General enquiry",
-  "AI Product Development",
-  "Traditional Product Development",
+var contactServices = [
+  "AI product development",
+  "Traditional product development",
   "Workflow Automation",
   "Digital Transformation",
   "Observability & Monitoring",
-  "Talent Solution",
-  "Partnership",
-  "Something else"
+  "Talent Solution"
 ];
 var contactSchema = import_zod.z.object({
-  fullName: text("Full name", 120),
-  email: emailField,
+  fullName: text("Name", 120),
+  phone: phoneField,
   company: optionalText(120),
-  inquiryType: import_zod.z.enum(inquiryTypes, { message: "Choose an enquiry type." }),
+  email: emailField,
+  service: import_zod.z.enum(contactServices, { message: "Choose the service you need from us." }),
   message: import_zod.z.string().trim().min(20, "Please add a little more detail (at least 20 characters).").max(4e3, "Please keep the message under 4,000 characters."),
   consent,
   _hp: honeypot
@@ -143,6 +141,10 @@ var requestSchema = import_zod.z.object({
   ...requestStep4.shape
 });
 var disciplines = [
+  // The titles Septa has published as open roles, first, so the Apply buttons on the career page
+  // can preselect them. Everything after this is an area of work rather than a live vacancy.
+  "Sales Manager",
+  "Digital Marketing Specialist",
   "AI / Machine Learning Engineering",
   "Backend Engineering",
   "Frontend Engineering",
@@ -841,6 +843,7 @@ var FIELD_LABELS = {
   phone: "Phone",
   inquiryType: "Enquiry type",
   service: "Service",
+  message: "Message",
   relatedService: "Related service",
   projectName: "Project name",
   problem: "Problem to solve",

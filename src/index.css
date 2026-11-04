@@ -456,7 +456,10 @@
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-mint);
+  /* The smallest type on the site and the one that sits furthest into the moving wash, so it takes
+     the darker step of the same token pair: at phone widths `--color-mint` measured 4.38:1 against
+     the darkest pixel of its own box, and `mint-bright` is the same hue with room to spare. */
+  color: var(--color-mint-bright);
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -635,7 +638,7 @@
 [data-bg] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 52%, transparent);
   --bg-2: color-mix(in oklab, var(--color-mint) 34%, transparent);
-  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 24%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 22%, transparent);
   --bg-angle: 118deg;
   --bg-dur: 30s;
 }
@@ -645,7 +648,6 @@
 }
 [data-bg="about"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 48%, transparent);
-  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 32%, transparent);
   --bg-angle: 196deg;
   --bg-dur: 34s;
 }
@@ -656,15 +658,57 @@
   --bg-angle: 74deg;
   --bg-dur: 24s;
 }
-[data-bg="products"] {
-  --bg-2: color-mix(in oklab, var(--color-mint) 40%, transparent);
-  --bg-angle: 150deg;
+[data-bg="service-ai"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 58%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 36%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 20%, transparent);
+  --bg-angle: 52deg;
+  --bg-dur: 21s;
+}
+/* A routed process: the ramp runs horizontally and fast, so the wash reads as movement along a line
+   rather than as a wash. */
+[data-bg="service-automation"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 56%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 22%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 14%, transparent);
+  --bg-angle: 8deg;
+  --bg-dur: 18s;
+}
+/* A system being replaced: the Pearl end sits at the ceiling and the ramp climbs, so the page looks
+   heavier at the foot than at the head. */
+[data-bg="service-transformation"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 44%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 30%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 22%, transparent);
+  --bg-angle: 268deg;
+  --bg-dur: 30s;
+}
+/* A system being watched: one bright, narrow sweep on a long period, closer to a scan than a drift. */
+[data-bg="service-observability"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 62%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 16%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 18%, transparent);
+  --bg-angle: 164deg;
+  --bg-dur: 16s;
+}
+[data-bg="service-talent"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 50%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 34%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 12%, transparent);
+  --bg-angle: 224deg;
+  --bg-dur: 27s;
 }
 [data-bg="cases"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 54%, transparent);
-  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 30%, transparent);
   --bg-angle: 210deg;
   --bg-dur: 32s;
+}
+[data-bg="use-case"] {
+  --bg-1: color-mix(in oklab, var(--color-brand-teal) 52%, transparent);
+  --bg-2: color-mix(in oklab, var(--color-mint) 26%, transparent);
+  --bg-3: color-mix(in oklab, var(--color-brand-pearl) 22%, transparent);
+  --bg-angle: 328deg;
+  --bg-dur: 25s;
 }
 [data-bg="blog"] {
   --bg-1: color-mix(in oklab, var(--color-brand-teal) 46%, transparent);
@@ -754,6 +798,19 @@
    arrives from JS as --bgfx-slow / --bgfx-fast. */
 .bgfx-plate {
   animation: bgfx-pan 34s ease-in-out infinite alternate;
+}
+/* A new page mounts a new plate under the same pan. Fading in over the shoulder of the period keeps
+   the swap quiet instead of a cut, and hands opacity back to the element once it has landed. */
+.bgfx-plate-swap {
+  animation: bgfx-plate-in 1.4s ease-out 1;
+}
+@keyframes bgfx-plate-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.55;
+  }
 }
 .bgfx-grid {
   animation: bgfx-grid 22s linear infinite;

@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { useReducedMotion, motion } from "motion/react";
+import { useInView, useReducedMotion, motion } from "motion/react";
 import { useIntroHeld } from "../../lib/intro";
 import { Decode } from "./Decode";
 import {
@@ -67,23 +67,24 @@ export function Eyebrow({ children, className }: { children: ReactNode; classNam
  *
  * The padding under the mask is what keeps descenders from being cut once the line has landed,
  * and the matching negative margin means the box still occupies exactly the height of the text.
- * While the curtain is up the line waits below the edge, then `Reveal`'s release contract hands
- * it to `whileInView` — the same rule every other entrance on the site follows.
+ * While the curtain is up the line waits below the edge and rises when the curtain lifts.
+ *
+ * The observer sits on the mask, not on the line inside it. A line parked at 110% is entirely
+ * outside its own `overflow: hidden` parent, and an intersection rect is clipped by ancestor
+ * overflow, so watching the line reports zero intersection forever and the title never arrives —
+ * which is why this uses `useInView` + `animate` rather than `whileInView`.
  */
 export function MaskRise({ children, className }: { children: ReactNode; className?: string }) {
   const reduce = useReducedMotion();
   const held = useIntroHeld();
+  const maskRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(maskRef, { once: true, margin: "-40px 0px -40px 0px" });
   if (reduce) return <div className={className}>{children}</div>;
   return (
-    <div className={cn("-mb-[0.16em] overflow-hidden pb-[0.16em]", className)}>
+    <div ref={maskRef} className={cn("-mb-[0.16em] overflow-hidden pb-[0.16em]", className)}>
       <motion.div
         initial={{ y: "110%" }}
-        {...(held
-          ? {}
-          : {
-              whileInView: { y: 0 },
-              viewport: { once: true, margin: "-40px 0px -40px 0px" },
-            })}
+        animate={held || !inView ? undefined : { y: 0 }}
         transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}

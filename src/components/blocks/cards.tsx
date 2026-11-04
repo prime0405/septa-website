@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Clock } from "lucide-react";
-import type { CaseStudy } from "../../data/cases";
+import type { UseCase } from "../../data/useCases";
 import type { Post } from "../../data/posts";
 import type { ServiceContent } from "../../data/services";
 import { cn, formatDate, readingTime } from "../../lib/cn";
@@ -9,7 +9,7 @@ import { usePointerTrack } from "../../lib/pointerGlow";
 import { paths } from "../../lib/paths";
 import { Button } from "../ui/Button";
 import { PointerGlow } from "../ui/PointerGlow";
-import { Pill, SampleTag } from "../ui/primitives";
+import { Pill } from "../ui/primitives";
 import { ServiceIcon } from "./ServiceIcon";
 
 const postContent = (p: Post) => p.body.map((b) => ("text" in b ? b.text : "")).join(" ");
@@ -19,11 +19,13 @@ export function ServiceCard({
   href,
   index,
   compact,
+  ctaLabel = "Explore",
 }: {
-  service: Pick<ServiceContent, "name" | "navBlurb" | "icon" | "capabilities">;
+  service: Pick<ServiceContent, "name" | "navBlurb" | "icon" | "coreServices">;
   href: string;
   index?: number;
   compact?: boolean;
+  ctaLabel?: string;
 }) {
   const track = usePointerTrack<HTMLAnchorElement>("tilt", 7);
   return (
@@ -51,18 +53,18 @@ export function ServiceCard({
       <p className="mt-2 flex-1 text-[0.9rem] leading-relaxed text-muted">{service.navBlurb}</p>
       {!compact ? (
         <p className="mt-4 font-mono text-[0.72rem] text-faint">
-          {service.capabilities.length} capability groups · {service.capabilities.reduce((n, g) => n + g.items.length, 0)} areas
+          {service.coreServices.length} core services
         </p>
       ) : null}
       <span className="mt-5 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-mint">
-        Explore service
+        {ctaLabel}
         <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </span>
     </Link>
   );
 }
 
-export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boolean }) {
+export function CaseCard({ study, featured }: { study: UseCase; featured?: boolean }) {
   const track = usePointerTrack<HTMLAnchorElement>("tilt", 7);
   return (
     <Link
@@ -96,38 +98,25 @@ export function CaseCard({ study, featured }: { study: CaseStudy; featured?: boo
 
       <div className="flex flex-1 flex-col p-6">
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <Pill tone="mint">{study.category}</Pill>
-          <span className="font-mono text-[0.7rem] text-faint">{study.clientDescriptor}</span>
+          <Pill tone="mint">{study.kind}</Pill>
+          <span className="font-mono text-[0.7rem] text-faint">{study.client}</span>
         </div>
         <h3 className={cn("group-hover:text-mint transition-colors", featured ? "text-[1.4rem]" : "text-[1.12rem]")}>
           {study.title}
         </h3>
-        {featured ? (
-          <p className="prose-body mt-3 text-[0.92rem]">{study.summary}</p>
-        ) : null}
         <dl className="mt-4 space-y-3 text-[0.86rem]">
           <div>
-            <dt className="font-mono text-[0.68rem] tracking-wider text-faint uppercase">Problem</dt>
-            <dd className="mt-1 text-muted">{featured ? shorten(study.problem) : shorten(study.problem, 130)}</dd>
+            <dt className="font-mono text-[0.68rem] tracking-wider text-faint uppercase">Overview</dt>
+            <dd className="mt-1 text-muted">{featured ? shorten(study.overview) : shorten(study.overview, 130)}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[0.68rem] tracking-wider text-faint uppercase">Approach</dt>
-            <dd className="mt-1 text-muted">{shorten(study.solutionOverview, featured ? 200 : 130)}</dd>
+            <dt className="font-mono text-[0.68rem] tracking-wider text-faint uppercase">The Challenge</dt>
+            <dd className="mt-1 text-muted">{shorten(study.challenge, 130)}</dd>
           </div>
         </dl>
-        <div className="mt-5 flex flex-wrap gap-1.5">
-          {study.stack.slice(0, featured ? 7 : 4).map((t) => (
-            <span key={t} className="rounded-md border border-line bg-surface px-2 py-1 font-mono text-[0.7rem] text-muted">
-              {t}
-            </span>
-          ))}
-        </div>
-        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-          <span className="inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-mint">
-            Read the study
-            <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </span>
-          <SampleTag label="Sample scenario" />
+        <div className="mt-auto flex items-center gap-1.5 pt-5 text-[0.85rem] font-medium text-mint">
+          View Case Study
+          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </div>
       </div>
     </Link>

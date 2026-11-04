@@ -69,9 +69,10 @@ const jsonPost = (path: string, body: unknown) =>
 function contactPayload(extra: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     fullName: "Ada Okafor",
-    email: "ada.okafor@example.com",
+    phone: "+234 803 000 0000",
     company: "Lumen Retail",
-    inquiryType: "Workflow Automation",
+    email: "ada.okafor@example.com",
+    service: "Workflow Automation",
     message: "We reconcile sales data by hand every night and want to automate it.",
     consent: true,
     ...extra,
@@ -239,13 +240,13 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
       const res = await jsonPost("/api/contact", {
         fullName: "A",
         email: "not-an-email",
-        inquiryType: "Not A Real Option",
+        service: "Not A Real Option",
         message: "too short",
         consent: false,
       });
       assert(res.status === 422, `expected 422, got ${res.status}`);
       assert(res.messageText === VALIDATION_MESSAGE, `unexpected message: "${res.messageText}"`);
-      for (const field of ["fullName", "email", "inquiryType", "message", "consent"]) {
+      for (const field of ["fullName", "email", "service", "message", "consent"]) {
         assert(typeof res.fieldErrors[field] === "string", `missing field error for ${field}`);
       }
     },

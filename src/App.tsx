@@ -7,11 +7,9 @@ import { Button } from "./components/ui/Button";
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Cases = lazy(() => import("./pages/Cases"));
-const CaseDetail = lazy(() => import("./pages/CaseDetail"));
+const UseCaseDetail = lazy(() => import("./pages/UseCaseDetail"));
 const Services = lazy(() => import("./pages/Services"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
-const ProductHub = lazy(() => import("./pages/ProductHub"));
-const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Faq = lazy(() => import("./pages/Faq"));
 const Blog = lazy(() => import("./pages/Blog"));
@@ -74,11 +72,9 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/case-studies" element={<Cases />} />
-            <Route path="/case-studies/:slug" element={<CaseDetail />} />
+            <Route path="/case-studies/:slug" element={<UseCaseDetail />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/:slug" element={<ServiceDetail />} />
-            <Route path="/product-development" element={<ProductHub />} />
-            <Route path="/product-development/:slug" element={<ProductDetail />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="/blog" element={<Blog />} />
@@ -87,8 +83,22 @@ export default function App() {
             <Route path="/request" element={<Request />} />
             <Route path="/privacy" element={<Legal kind="privacy" />} />
             <Route path="/terms" element={<Legal kind="terms" />} />
+
+            {/* Single-word spellings people type, and the two product-development pages that the
+                revamp folded back into the service pages and the case-study index. */}
             <Route path="/case-study" element={<Navigate to="/case-studies" replace />} />
             <Route path="/career" element={<Navigate to="/careers" replace />} />
+            <Route path="/use-cases" element={<Navigate to="/case-studies" replace />} />
+            <Route
+              path="/product-development/ai"
+              element={<Navigate to="/services/ai-product-development" replace />}
+            />
+            <Route
+              path="/product-development/traditional"
+              element={<Navigate to="/case-studies" replace />}
+            />
+            <Route path="/product-development" element={<Navigate to="/services" replace />} />
+
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

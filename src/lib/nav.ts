@@ -10,24 +10,6 @@ export const SERVICE_ROUTES: Record<string, string> = {
   "talent-solution": "/services/talent-solution",
 };
 
-export const productDevelopmentLinks: NavChild[] = [
-  {
-    label: "AI Product Development",
-    href: "/product-development/ai",
-    blurb: "Design, build and evaluate AI-enabled products.",
-  },
-  {
-    label: "Traditional Product Development",
-    href: "/product-development/traditional",
-    blurb: "Reliable software products, built to be maintained.",
-  },
-  {
-    label: "Talent Solution",
-    href: "/services/talent-solution",
-    blurb: "Technical people and teams that plug into your delivery.",
-  },
-];
-
 /** Desktop primary navigation. `groups` turns an item into a mega menu. */
 export const primaryNav: NavItem[] = [
   { label: "Home", href: "/" },
@@ -49,10 +31,6 @@ export const primaryNav: NavItem[] = [
           },
           { label: "Talent Solution", href: SERVICE_ROUTES["talent-solution"] },
         ],
-      },
-      {
-        heading: "Product development",
-        items: productDevelopmentLinks,
       },
     ],
   },
@@ -84,10 +62,6 @@ export const footerColumns: NavGroup[] = [
       { label: "Observability & Monitoring", href: SERVICE_ROUTES["observability-monitoring"] },
       { label: "Talent Solution", href: SERVICE_ROUTES["talent-solution"] },
     ],
-  },
-  {
-    heading: "Product development",
-    items: productDevelopmentLinks,
   },
   {
     heading: "Legal",

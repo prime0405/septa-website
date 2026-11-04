@@ -35,6 +35,7 @@ const FIELD_LABELS: Record<string, string> = {
   phone: "Phone",
   inquiryType: "Enquiry type",
   service: "Service",
+  message: "Message",
   relatedService: "Related service",
   projectName: "Project name",
   problem: "Problem to solve",

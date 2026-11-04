@@ -4,25 +4,26 @@ import { ArrowRight, Check, Send } from "lucide-react";
 import { ApiError, api } from "../../lib/api";
 import { useForm, v } from "../../lib/form";
 import { paths } from "../../lib/paths";
-import { contactSchema, inquiryTypes, type SubmissionResult } from "../../shared/schemas";
+import { contactSchema, contactServices, type SubmissionResult } from "../../shared/schemas";
 import { Button } from "../ui/Button";
 import { CheckboxField, Honeypot, SelectField, TextArea, TextField } from "../ui/form";
 import { Callout, Pill } from "../ui/primitives";
 
 type Phase = "form" | "sending" | "done" | "failed";
 
-const emptyValues = (defaultInquiry?: string) => ({
+const emptyValues = () => ({
   fullName: "",
-  email: "",
+  phone: "",
   company: "",
-  inquiryType: defaultInquiry ?? "",
+  email: "",
+  service: "",
   message: "",
   consent: false,
   _hp: "",
 });
 
-export function ContactForm({ defaultInquiry }: { defaultInquiry?: string }) {
-  const form = useForm(contactSchema, emptyValues(defaultInquiry));
+export function ContactForm() {
+  const form = useForm(contactSchema, emptyValues());
   const [phase, setPhase] = useState<Phase>("form");
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
@@ -76,7 +77,7 @@ export function ContactForm({ defaultInquiry }: { defaultInquiry?: string }) {
             variant="secondary"
             size="sm"
             onClick={() => {
-              form.reset(emptyValues(defaultInquiry));
+              form.reset(emptyValues());
               setResult(null);
               setPhase("form");
             }}
@@ -94,7 +95,7 @@ export function ContactForm({ defaultInquiry }: { defaultInquiry?: string }) {
   return (
     <form ref={form.formRef} onSubmit={onSubmit} noValidate className="card space-y-5 p-6 sm:p-8">
       <TextField
-        label="Full name"
+        label="Name"
         value={v(form.values, "fullName")}
         onChange={(x) => form.set("fullName", x)}
         error={form.errors.fullName}
@@ -104,16 +105,17 @@ export function ContactForm({ defaultInquiry }: { defaultInquiry?: string }) {
       />
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField
-          label="Email address"
-          type="email"
-          value={v(form.values, "email")}
-          onChange={(x) => form.set("email", x)}
-          error={form.errors.email}
-          autoComplete="email"
-          placeholder="you@company.com"
+          label="Phone number"
+          optional
+          type="tel"
+          value={v(form.values, "phone")}
+          onChange={(x) => form.set("phone", x)}
+          error={form.errors.phone}
+          autoComplete="tel"
+          maxLength={24}
         />
         <TextField
-          label="Company"
+          label="Company name"
           optional
           value={v(form.values, "company")}
           onChange={(x) => form.set("company", x)}
@@ -122,22 +124,30 @@ export function ContactForm({ defaultInquiry }: { defaultInquiry?: string }) {
           maxLength={120}
         />
       </div>
-      <SelectField
-        label="What is this about?"
-        options={inquiryTypes}
-        value={v(form.values, "inquiryType")}
-        onChange={(x) => form.set("inquiryType", x)}
-        error={form.errors.inquiryType}
+      <TextField
+        label="Email address"
+        type="email"
+        value={v(form.values, "email")}
+        onChange={(x) => form.set("email", x)}
+        error={form.errors.email}
+        autoComplete="email"
+        placeholder="you@company.com"
       />
       <TextArea
-        label="Message"
+        label="What are you partnering with us to build?"
         rows={6}
         maxLength={4000}
         value={v(form.values, "message")}
         onChange={(x) => form.set("message", x)}
         error={form.errors.message}
         hint="A paragraph of context helps more than a one-liner. Please leave out anything confidential."
-        placeholder="What are you trying to do, and what is getting in the way?"
+      />
+      <SelectField
+        label="What service do you need from us?"
+        options={contactServices}
+        value={v(form.values, "service")}
+        onChange={(x) => form.set("service", x)}
+        error={form.errors.service}
       />
       <Honeypot value={v(form.values, "_hp")} onChange={(x) => form.set("_hp", x)} />
       <CheckboxField

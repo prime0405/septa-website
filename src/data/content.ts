@@ -1,200 +1,61 @@
-export const mission = {
-  statement:
-    "Make useful technology ordinary. We help organisations turn a hard operational problem into software, automation or a team that can keep improving it.",
+/**
+ * Every string in this file is Septa's own wording, transcribed from the document
+ * "SEPTA Website Revamp". Nothing here is written by us. Where the document had a spacing or
+ * punctuation slip we corrected the slip, never the sentence.
+ */
+
+import { contactServices } from "../shared/schemas";
+
+/* ---------------------------------- landing page ---------------------------------- */
+
+export const hero = {
+  headline: "Technology That Moves Your Business Forward.",
+  subheadline:
+    "We help businesses turn ideas into digital products through AI-assisted and traditional product development, streamline operations with workflow automation, access skilled technology talent, improve system reliability, and drive digital transformation.",
+  ctaPrimary: "Explore Our Services",
+  ctaSecondary: "Let’s Work Together",
 };
 
-export const vision = {
-  statement:
-    "A market where every serious organisation can build and run good technology, or work with a partner who behaves as if it will still be there in three years.",
+/** The three offering blocks that sit directly under the hero, in the document's order. */
+export type LandingBlock = {
+  key: string;
+  label: string;
+  headline: string;
+  subheading: string;
+  cta: string;
+  to: string;
 };
 
-export const values = [
+export const landingBlocks: LandingBlock[] = [
   {
-    title: "Evidence before promises",
-    detail:
-      "A prototype, a measurement or a written trade-off beats a confident estimate. When we do not know, we say so and find out cheaply.",
+    key: "ai",
+    label: "AI Product Development",
+    headline: "Bring Your Product Ideas to Market Faster with AI-Assisted Development",
+    subheading:
+      "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering that solve user problems and support your business growth.",
+    cta: "Explore AI Product Development",
+    to: "/services/ai-product-development",
   },
   {
-    title: "Built to be lived in",
-    detail:
-      "Software is judged years after launch, by whoever inherits it. We pick the architecture, tests and documentation with that future reader in mind.",
+    key: "traditional",
+    label: "Traditional Product Development",
+    headline: "Great Products Start With Great Partnerships",
+    subheading:
+      "We turn ideas into intelligent products that solve real problems, delight users, and drive growth, powered by smart strategy, and thoughtful design.",
+    cta: "Build with us",
+    to: "/case-studies",
   },
   {
-    title: "Honest about fit",
-    detail:
-      "Some problems should not become an AI project, some codebases should not be rewritten, and some engagements we should not take. We say which one you are in.",
-  },
-  {
-    title: "Named owners",
-    detail:
-      "Named people accountable for delivery, monitoring and outcomes. That includes after handover, when the phone still gets answered.",
-  },
-  {
-    title: "Transfer what we know",
-    detail:
-      "Pairing, review, documentation and runbooks are part of the work. Capability that leaves with us is a failure of the engagement.",
-  },
-];
-
-export const approach = [
-  {
-    title: "Start from the decision",
-    detail:
-      "Every engagement opens with the decision the client is trying to make or the outcome they need to see. That is what sets the scope, ahead of any tool choice.",
-  },
-  {
-    title: "Work in short, visible loops",
-    detail:
-      "Two-week increments, a running system from early on, and demos of real software, not status decks.",
-  },
-  {
-    title: "Prove it before scaling it",
-    detail:
-      "Prototype, measure, then commit. If the evidence says stop, the engagement says stop and writes down why.",
-  },
-  {
-    title: "Design for the next team",
-    detail:
-      "Typed code, tests on meaningful paths, readable infrastructure and documentation written for the person who inherits it.",
-  },
-  {
-    title: "Instrument what we ship",
-    detail:
-      "Latency, errors, cost and usage are visible from the first release, so improvement is argued with data.",
-  },
-  {
-    title: "Hand over properly",
-    detail:
-      "Runbooks, walkthroughs and a defined support window. The goal is your team owning the thing outright.",
+    key: "talent",
+    label: "Talent Solution",
+    headline: "Hiring designed to fuel your vision",
+    subheading:
+      "Connecting you with top tech talents to fuel innovation and accelerate growth.",
+    cta: "Hire Top Tech Talents Now",
+    to: "/services/talent-solution",
   },
 ];
 
-export const whySepta = [
-  {
-    title: "One team across the whole path",
-    detail:
-      "Strategy, product design, engineering, automation, observability and staffing sit in the same conversation instead of being split between vendors who blame each other.",
-  },
-  {
-    title: "Senior and hands-on",
-    detail:
-      "The people who scope the work are the people who build it. No relay race from an account team to a delivery team you never met.",
-  },
-  {
-    title: "Delivery you can inspect",
-    detail:
-      "Your repository, your trackers, your infrastructure accounts. Progress is software running, visible at every increment.",
-  },
-  {
-    title: "Costs stated upfront",
-    detail:
-      "Inference, hosting and integration effort are modelled before commitment, so the finance team is not surprised by the architecture.",
-  },
-  {
-    title: "Reliability as a feature",
-    detail:
-      "Monitoring, alerting and rollback are part of scope on everything we build, so they are never something you have to remember to buy separately.",
-  },
-  {
-    title: "Exit planned from day one",
-    detail:
-      "Documentation, pairing and transition checkpoints so ownership can move to your team whenever you want it to.",
-  },
-];
-
-export const techCapabilities = [
-  {
-    group: "Product and frontend",
-    items: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Design systems", "Accessibility (WCAG-informed work)"],
-  },
-  {
-    group: "Backend and data",
-    items: ["Node.js", "Python", "PostgreSQL", "Redis", "Event queues", "REST and GraphQL APIs", "ETL and sync jobs"],
-  },
-  {
-    group: "AI and applied ML",
-    items: [
-      "Large language model integration",
-      "Retrieval-augmented generation",
-      "Embeddings and vector search",
-      "Evaluation harnesses",
-      "Classical ML for prediction and anomaly detection",
-    ],
-  },
-  {
-    group: "Platform and operations",
-    items: [
-      "Containerised deployment",
-      "Infrastructure as code",
-      "OpenTelemetry instrumentation",
-      "Metrics, logs and tracing",
-      "Alerting and SLO practice",
-    ],
-  },
-  {
-    group: "Ways of working",
-    items: ["Test coverage on critical paths", "Code review", "Trunk-based delivery", "Threat modelling", "Post-incident review"],
-  },
-];
-
-export const statsPlaceholders = [
-  { label: "Years delivering", value: null as string | null },
-  { label: "Engineers and specialists", value: null as string | null },
-  { label: "Systems in production", value: null as string | null },
-  { label: "Client sectors served", value: null as string | null },
-];
-
-export const disciplines = [
-  {
-    title: "AI and machine learning",
-    detail: "Retrieval, evaluation, model integration and the product thinking that keeps those honest.",
-  },
-  {
-    title: "Backend and platform",
-    detail: "Services, data models, queues, APIs and the operational plumbing around them.",
-  },
-  {
-    title: "Frontend and design",
-    detail: "Interfaces people can use with a keyboard, on a phone, under pressure, in poor light.",
-  },
-  {
-    title: "Automation and integration",
-    detail: "Connecting systems, approvals and reporting so manual handoffs stop being a job.",
-  },
-  {
-    title: "Observability and reliability",
-    detail: "Instrumentation, dashboards, alerting and incident practice.",
-  },
-  {
-    title: "Delivery and analysis",
-    detail: "Discovery, requirements, coordination and the hard work of landing change in a real organisation.",
-  },
-];
-
-export const howWeWork = [
-  {
-    title: "Small teams, real authority",
-    detail:
-      "Delivery groups stay small enough that everyone knows the context, and they hold the authority to make engineering decisions themselves.",
-  },
-  {
-    title: "Feedback while building",
-    detail:
-      "Demos every increment, written trade-offs, and a standing invitation to challenge a design before it hardens.",
-  },
-  {
-    title: "Learning is scheduled",
-    detail:
-      "Time for spikes, dependency care and post-incident review is written into the plan.",
-  },
-  {
-    title: "Clear expectations on hours",
-    detail:
-      "Client work has busy weeks. Sustained overtime is a planning failure, and we fix it instead of treating it as a normal cost.",
-  },
-];
-
-/** Supplied by the Septa website revamp brief. Kept verbatim; see README. */
 export const advantageIntro =
   "Septa combines modern engineering, product innovation, and AI-powered insights to help organizations scale faster, simplify complexity, and capture opportunities with confidence.";
 
@@ -227,6 +88,215 @@ export const serviceOverview =
 export const servicesIntro =
   "We help businesses and individuals thrive through product development and tech talent solutions.";
 
+/** The five entries of the document's "OUR SERVICES" list, with the CTA labels it gives each. */
+export const serviceListings = [
+  {
+    slug: "ai-product-development",
+    name: "AI Product Development",
+    detail:
+      "We build intelligent, user-focused products from idea to market-ready launch. We go beyond development; we design and engineer AI-powered solutions that solve real-world problems, adapt to user needs, and scale with your business.",
+    cta: "Work with us",
+  },
+  {
+    slug: "talent-solution",
+    name: "Talent Solutions",
+    detail:
+      "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
+    cta: "The right talent, right when you need it",
+  },
+  {
+    slug: "workflow-automation",
+    name: "Workflow Automation",
+    detail:
+      "Repetitive tasks drain productivity and distract from strategic priorities. Describe your organizational needs. Septa partners with you to identify bottlenecks, map critical workflows, and deliver automation solutions that free your teams from routine tasks, enabling sharper focus, faster execution, and sustainable growth.",
+    cta: "Work Smarter, Not Harder",
+  },
+  {
+    slug: "observability-monitoring",
+    name: "Observability & Monitoring",
+    detail:
+      "Data-driven insights keep your systems reliable. Every minute of downtime drains revenue, damages reputation, and stalls growth. Our advanced observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
+    cta: "Protect my business now",
+  },
+  {
+    slug: "digital-transformation",
+    name: "Digital Transformation",
+    detail:
+      "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth. Discover how we can help your business thrive in the digital age.",
+    cta: "Experience growth without limits.",
+  },
+];
+
+/* ------------------------------------ testimonials ------------------------------------ */
+
+/**
+ * The four quotes the document supplies for the client testimonial section, attributed exactly as
+ * the document attributes them.
+ */
+export const testimonials = [
+  {
+    quote:
+      "Partnering with this team to transform our website has elevated Halogen’s digital presence beyond what we imagined. They didn’t just design a platform, they built a modern, secure, and user-friendly hub that showcases our services and enables seamless client engagement through features like the extranet. Their attention to detail and brand consistency has strengthened client trust and opened new opportunities for engagement. This collaboration set a new benchmark for how we want to be represented online and they delivered it flawlessly.",
+    attribution: "Halogen Group",
+  },
+  {
+    quote:
+      "Partnering with this team to build the EHCC Clock-In App was a turning point for us. They went beyond creating an attendance tool; they delivered a powerful platform that gives us real-time insights into punctuality, participation, and departmental growth. The geofencing and role-based access features ensure accountability, while the intuitive dashboards give our leaders the clarity they need. What truly sets them apart is how they turned a simple need into a game-changing solution that has transformed engagement across our entire community.",
+    attribution: "EHCC Leadership",
+  },
+  {
+    quote:
+      "Partnering with this team brought our vision for Preppod to life in a way that exceeded expectations. They didn’t just build a platform, they created an adaptive learning system that makes music education engaging, measurable, and scalable. From the seamless website to the powerful LMS with secure payments, progress tracking, and role-based dashboards, every detail was thoughtfully designed. Their expertise transformed our idea into a world-class solution and positioned Preppod as a leader in digital education. We couldn’t have asked for a better partner.",
+    attribution: "Preppod Team",
+  },
+  {
+    quote:
+      "Partnering with this team has been an exceptional experience. They didn’t just deliver designs, they crafted a seamless, thoughtfully structured experience where every detail, from visuals to overall flow, feels intentional and professional. Their expertise turned our ideas into a polished solution that exceeded expectations, and their collaborative approach made the entire process smooth and inspiring. Working with such dedicated partners has truly been a pleasure, and the results speak for themselves.",
+    attribution: "Toviri Team",
+  },
+];
+
+/** Section title the document offers for this block, with the alternates it lists. */
+export const testimonialTitle = "What Our Clients Say";
+
+/* ------------------------------------ call to action ------------------------------------ */
+
+export const ctaBanner = {
+  headline: "Let’s Build What’s Next, Together!",
+  subheadline:
+    "Whether you need an AI-powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
+  cta: "Partner with Septa",
+};
+
+/* ---------------------------------------- about page ---------------------------------------- */
+
+export const about = {
+  whoWeAreTagline: "Septa, Your partner for trusted, future-ready technology.",
+  whoWeAre:
+    "At Septa, we are more than a technology partner. We help organizations reimagine how they work, compete, and grow through AI-assisted product development, software engineering, and workflow automation. From turning ideas into market-ready products in 4–6 weeks to streamlining business operations, we deliver technology solutions designed around real business needs.",
+  story: [
+    "At Septa, we are more than a tech company; we are a team of builders, innovators, and problem-solvers committed to shaping the future of work and technology.",
+    "Our strength lies in the diversity of what we do: from AI-powered systems and SaaS platforms to talent solutions that connect organizations with the right people, we design and deliver products that create lasting impact.",
+    "We don’t just follow trends, we stay ahead of them. By combining creativity, technical expertise, and business insight, we provide solutions that drive growth, efficiency, and transformation for our clients.",
+    "Septa is where technology, talent, and innovation converge to move organizations forward.",
+  ],
+  strengths: [
+    {
+      n: "0.1",
+      title: "Expertise",
+      detail:
+        "Our strength lies in the diversity and depth of our team. From AI engineers, product managers, and designers to HR and talent specialists, we bring together cross-functional expertise to deliver end-to-end solutions. Whether it’s building innovative software, providing top-tier talent, or designing scalable learning platforms, we combine technical knowledge with industry best practices to deliver results that matter.",
+    },
+    {
+      n: "0.2",
+      title: "Customer-Centric Approach",
+      detail:
+        "At Septa, we believe your success is our success. We go beyond being service providers; we are partners in your journey. By taking time to understand your unique challenges, we craft tailored solutions that align with your goals, whether in product development, talent acquisition, or business transformation. And because we value long-term partnerships, we provide continuous support to help you adapt, grow, and thrive.",
+    },
+    {
+      n: "0.3",
+      title: "Innovation",
+      detail:
+        "We stay ahead by constantly embracing emerging technologies and industry trends. From AI-driven platforms to cutting-edge digital products, our commitment to innovation allows us to create solutions that bring measurable value, efficiency, and growth to our clients. Innovation isn’t just what we do, it's how we drive lasting impact for businesses and individuals alike.",
+    },
+  ],
+  vision: "To enhance and simplify human interaction with technology.",
+  mission:
+    "Our mission is to put people at the heart of technology, creating intelligent solutions that simplify work, inspire growth, and unlock opportunities. By combining expertise, innovation, and AI, we partner with our clients to shape solutions that make everyday life and business better.",
+  valuesHeading: "OUR VALUES- SCRIBE",
+  values: [
+    { letter: "S", word: "Simplicity" },
+    { letter: "C", word: "Customer collaboration" },
+    { letter: "R", word: "Relevance" },
+    { letter: "I", word: "Intelligent systems" },
+    { letter: "B", word: "Bold" },
+    { letter: "E", word: "Excellence" },
+  ],
+  cta: {
+    headline: "Ready to Build with AI?",
+    copy: "Whether you are scaling with AI across your enterprise or just starting your journey, Septa is your partner for intelligent solutions that work.",
+    button: "Let’s Build Together!",
+  },
+};
+
+/* --------------------------------------- careers page --------------------------------------- */
+
+export const careers = {
+  intro:
+    "At Septa, we believe that talented individuals are the driving force behind our success. We are a dynamic and innovative company that values creativity, collaboration, and continuous learning. Join our team and be part of a diverse community of professionals who are passionate about making a difference in the world",
+  rolesCta: "See open roles",
+  cultureLead:
+    "At Septa, we don’t just build solutions we create an environment where people and ideas thrive.",
+  culture: [
+    {
+      title: "Collaboration & Curiosity",
+      detail:
+        "We believe the best ideas come from working together. Every perspective matters, and curiosity drives us to keep asking “what’s possible?”",
+    },
+    {
+      title: "Creativity in Action",
+      detail:
+        "Challenges inspire us. Whether it’s AI-powered platforms, digital products, or talent solutions, we solve problems with creativity and practical innovation.",
+    },
+    {
+      title: "Growth Mindset",
+      detail:
+        "Learning, experimentation, and ownership are part of who we are. We empower our team to push boundaries and innovate with purpose.",
+    },
+    {
+      title: "Integrity & Transparency",
+      detail:
+        "We work with honesty and openness, ensuring trust at every step with clients, colleagues, and partners.",
+    },
+  ],
+  hiringLead:
+    "At Septa, we believe in a transparent and engaging hiring journey. Here's what to expect when you apply:",
+  hiring: [
+    {
+      title: "1. Application Review",
+      detail:
+        "Our team carefully reviews your resume and portfolio to understand your skills, experience, and alignment with Septa’s mission of building intelligent, practical solutions.",
+    },
+    {
+      title: "2. Introductory Conversation",
+      detail:
+        "A friendly chat to discuss your background, career goals, and interest in Septa. Learn about our culture, exciting projects, and how you can grow with us.",
+    },
+    {
+      title: "3. Assessment & Technical Interview",
+      detail:
+        "For technical and specialized roles, you’ll take on a challenge that reflects real project scenarios, allowing us to see your problem-solving skills and expertise in action. Afterwards, you’ll engage in a detailed conversation with our technical team to dive deeper into your experience, approach, and how you can contribute to impactful projects at Septa.",
+    },
+    {
+      title: "4. Final Interview",
+      detail:
+        "A conversation with senior leadership to align your vision, goals, and career aspirations with Septa’s mission. It's also a chance for you to ask any remaining questions.",
+    },
+    {
+      title: "5. Offer & Onboarding",
+      detail:
+        "If selected, you'll receive an offer and a guided onboarding experience to help you integrate seamlessly into the team and start making an impact from day one.",
+    },
+  ],
+};
+
+/* --------------------------------------- contact page --------------------------------------- */
+
+export const contactCopy = {
+  headline: "Ready to Discover Your Ideal Tech Solution?",
+  lead: "At Septa, we are on a mission to build solutions that drive innovation and growth. Whether you are automating your business conversations, launching a new product, scaling your team, We are here to make the journey seamless.",
+  close: "Let’s turn ideas into impact so you can love what you build.",
+  formTitle: "Share your Idea with SEPTA",
+};
+
+/**
+ * The six services the document lists for the contact form's dropdown. Read from the shared schema
+ * so the option a reader sees is always one the server will accept.
+ */
+export const contactServiceOptions = [...contactServices];
+
+/* ----------------------------------------- page meta ----------------------------------------- */
+
 /**
  * Named by Septa. `logo` is the official SVG asset Septa supplied, served from this origin
  * under public/partners. Chinat Group has no asset, so it renders as its name instead.
@@ -243,48 +313,4 @@ export const partners: Partner[] = [
   { name: "Atos", logo: "/partners/atos.svg" },
   { name: "Blusalt", logo: "/partners/blusalt.svg" },
   { name: "Toviri UK", logo: "/partners/toviri-uk.svg" },
-];
-
-/**
- * Septa's own wording from the revamp brief, kept as supplied apart from sentence casing. These
- * are the audiences the website is written for and the markets it is aimed at.
- */
-export const audiences = [
-  {
-    label: "Tech-savvy startups & founders",
-    detail:
-      "Early-stage to growth-stage companies looking for reliable AI and software development partners.",
-  },
-  {
-    label: "SMBs and enterprises",
-    detail: "Businesses seeking to integrate AI, automation, or build scalable digital products.",
-  },
-  {
-    label: "Non-technical founders & business leaders",
-    detail: "Professionals with ideas who need full-cycle support from strategy to product launch.",
-  },
-  {
-    label: "Organizations seeking talent solutions",
-    detail:
-      "Companies looking to augment their teams with specialized developers, AI engineers, or product managers.",
-  },
-];
-
-export const markets = [
-  {
-    region: "North America",
-    countries: "US & Canada",
-    detail: "High demand for AI, SaaS, and custom product development.",
-  },
-  {
-    region: "Europe",
-    countries: "Germany, UK, France, Netherlands",
-    detail: "Innovation-driven markets with a strong focus on AI adoption and outsourcing partnerships.",
-  },
-  {
-    region: "Africa",
-    countries: "Nigeria, South Africa, Kenya",
-    detail:
-      "Emerging markets with growing tech adoption and opportunities for AI-driven solutions.",
-  },
 ];

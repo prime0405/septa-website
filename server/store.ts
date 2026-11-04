@@ -355,7 +355,9 @@ export function summarize(submission: StoredSubmission): string {
     return typeof value === "string" && value.length > 0 ? value : "-";
   };
   if (submission.stream === "contact") {
-    return `${str("fullName")} <${str("email")}> · ${str("inquiryType")}`;
+    // Rows stored before the contact form carried a service dropdown still hold `inquiryType`.
+    const topic = typeof p.service === "string" && p.service ? p.service : str("inquiryType");
+    return `${str("fullName")} <${str("email")}> · ${topic}`;
   }
   if (submission.stream === "newsletter") {
     return `<${str("email")}> · newsletter`;
