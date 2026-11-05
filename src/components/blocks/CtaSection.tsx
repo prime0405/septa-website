@@ -34,7 +34,7 @@ export function CtaSection({
           </MaskRise>
           <p className="prose-body mt-4">{copy}</p>
           <div className="mt-7">
-            <Button to={to} size="lg">
+            <Button to={to} size="lg" magnetic>
               {label}
             </Button>
           </div>

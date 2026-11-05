@@ -302,9 +302,14 @@ Tradewind radial wash that tracks the pointer (`src/components/ui/PointerGlow.ts
 `.tilt` rule in `src/index.css` composes them with the pre-existing 3px hover lift and restates
 `transform` inside `:hover` so it does not lose the cascade to `.card-hover:hover`). The angle is
 clamped, because a card can slide out from under a still cursor and a raw ratio would then read a
-pointer 900px outside the box. The hero's two CTAs drift up to 8px toward the pointer instead
-(`Button`'s `magnetic` prop). All of them write through one rAF-coalesced handler and require
-`(hover: hover) and (pointer: fine)`. On top of that, `CursorHalo` (`src/components/ui/CursorHalo.tsx`)
+pointer 900px outside the box. Twenty call-to-action buttons drift up to 8px toward the
+pointer instead (`Button`'s `magnetic` prop: the hero pair, every section and page-header action, the
+CTA banners, the footer's two links and the not-found trio — deliberately not the form submits, which
+must not move while someone is typing into the field above them, and not the nav sheet). The drift is a
+`translate`, and so is the 1px press, which is why `Button`'s transition list names `translate` rather
+than `transform`: Tailwind v4 compiles `translate-x-[…]` to the standalone property, so easing
+`transform` there eases nothing and the button snaps frame to frame against a still cursor. All of these
+write through one rAF-coalesced handler and require `(hover: hover) and (pointer: fine)`. On top of that, `CursorHalo` (`src/components/ui/CursorHalo.tsx`)
 draws a 24px ring that lags the pointer and a 6px dot that sits exactly on it, and both grow 1.9×
 over anything clickable; the loop stops itself once it has caught up so a still pointer costs
 nothing, and while it runs it adds `cursor-none` to `<html>` so the arrow is gone and the halo is
@@ -313,12 +318,13 @@ elements, because `cursor` inherits and a parent's `cursor: pointer` would other
 child. The class is added only when the loop is eligible, so a touch device or a
 `prefers-reduced-motion` visitor keeps the system cursor. The wash is capped at 7% because a
 brighter tint on a white card
-pulls `text-mint` under AA; with it spliced into the stack the worst measured pair on the site is
-5.0:1.
+pulls `text-mint` under AA; with it spliced into the stack nothing the sweep measured came below
+4.95:1, which clears AA for small text.
 Behind all of it the page never stands still. `BackgroundFX` (`src/components/BackgroundFX.tsx`)
-renders two fixed layers on every route: a colour wash (a panned plate, or a generated film where a
+renders a fixed colour wash on every route — a panned plate, or a generated film where a
 theme supplies one, plus a creeping grid, a beam that crosses the viewport every 15s and two drifting
-orbs) at `z-0`, and a canvas of live line art in a separate layer at `z-20`, above the section bands.
+orbs — at `z-0`, and the live line art in a separate layer at `z-20`, above the section bands.
+The line art is two canvases, not one, and only the one under the eye is lit: see the handover below.
 The canvas runs one of five subjects, chosen by what the page — or, on a long page, the section under
 the visitor's eye — is about (`src/lib/bgThemes.ts`): a wireframe globe ringed by breathing pulses and
 orbited by motes, a depth-layered node network carrying packets along its links, an isometric cube
@@ -326,7 +332,27 @@ lattice with a light front sweeping across it, a bundle of routed lanes joined b
 of sheared strata. Every subject also answers to the scroll, because a fixed canvas that ignores the
 page reads as a screensaver: the network shears by node depth, the globe turns, the cube grid slides
 on a two-row period so its wrap cannot be seen, the lanes shift phase, and the strata rise through a
-stack whose attributes are keyed to the slot rather than to the plate. The layer split exists because
+stack whose attributes are keyed to the slot rather than to the plate.
+
+Changing that subject mid-scroll is the one place the wallpaper can look broken, so the handover is a
+dissolve rather than a swap. `WallMotion` keeps two mounted scenes and moves the new subject onto the
+dark one; CSS crosses the pair over 1.1s (`.bgfx-mesh[data-on]`), so the line art is at full strength
+on one side or the other for every frame of the change — the earlier version faded the single canvas to
+zero and back, which read as the wallpaper being switched off, and mounting a fresh canvas per subject
+put three of them on screen during a fast scroll. The two are a ceiling, not a convenience: same-colour
+layers composite to `a + b(1 - a)`, which peaks at the single-layer 0.28, so a fade costs no contrast
+and a third canvas would be both an unknown and a GPU bill. `useActiveWall` therefore makes the answer
+sticky twice — a section keeps the centre line until the eye is 28px past its edge, so stopping on the
+boundary and nudging back cannot make two neighbours trade the answer at the rate the wheel fires, and
+a second handover waits 1200ms, a beat longer than the dissolve, before it is allowed to start. The
+wash colours (`@property`-registered, 1.1s) and the plate fade (`.bgfx-plate-swap`, shortened from
+1.4s to 1.1s) run the same length, so a section change is one move instead of three layers arriving at
+three different times. Measured with a page-side frame clock: the pair runs 0.28/0.00 → 0.27/0.01 →
+0.22/0.06 → 0.16/0.12 → 0.11/0.17 → 0.06/0.22 → 0.01/0.27 → 0.00/0.28, the pair sums to 0.28 at every
+sample so no frame has both layers dark, coverage never exceeds 0.28, and ±6px of jitter on a boundary
+produces zero flips.
+
+The layer split exists because
 of contrast, not layering. Measured against a `source-over`
 composite of everything that can coincide, a full-strength wash under the text column puts the
 smallest label tokens under AA.
@@ -373,14 +399,21 @@ twin; composited against that measured ground they come to 9.0:1.
 
 Every figure in this section is measured rather than argued, per element: for each run of real copy
 the harness hides that element, screenshots the exact box it occupied and takes the worst background
-pixel against the element's own computed colour, three passes across the animation's cycle. The
+pixel against the element's own computed colour, three passes across the animation's cycle, at twelve
+stops down the document. The
 curtain on the way into the homepage is part of that ground, so the harness waits for the panels to
 leave before it shoots — a clip taken while they still cover the viewport reports Black Pearl as the
 background and the headline as 1.00:1. With the layers as they now stand, the worst pair on a light
-page is 5.07:1 (homepage body, 1440×900), 5.48 on About and 6.22 on Services, and 5.16 / 5.36 at
-390×844, where the gutters have disappeared and the whole viewport takes the column value. Over the
-film hero the same harness, switched to take the *brightest* pixel because the type is white, reports
-8.09:1 on the title, 8.80 on the body and 10.89 on the 11.2px eyebrow.
+page is 4.97:1 on the homepage and 4.96 on About at 1440×900, and 6.10 on Services; at 390×844, where
+the gutters have disappeared and the whole viewport takes the column value, the same three pages floor
+at 4.95, 5.42 and 5.30. Every one of those floors is an 11.5px mono line — the testimonial attributions
+and the capability labels — and each clears AA for small text by at least 0.45; body copy did not go
+below 5.01 and no display line came under 14. They are lower than the figures this section carried,
+because the sweep replaced a one-frame probe: walking the page meets the darkest moment of the wash
+*and* surfaces labels that a single static frame never looked at. Over the
+film hero the same harness, switched to take the *brightest* pixel because the type is white, gives the
+figures quoted with that section below: 9.18 on the title, 7.56 on the lead and 8.78 on the 11.2px
+eyebrow.
 Periods matter as much as colour here: at 76s the plate pans about one pixel a second and reads as a
 static tint, so the wash layers run at 22–34s with the travel doubled, the globe turns roughly once a
 minute, a pulse breathes out and back every 9s and a packet crosses a link in two to five seconds.
@@ -408,16 +441,24 @@ column, 34% in the gutters — with a wider ramp (1100px rather than 760px, beca
 makes a narrow edge read as a box). A pure-white particle under the full veil leaves
 `rgb(55, 73, 79)`, and against that ground the header's type painted directly on the film is
 re-measured with the new wallpaper running, over a sweep of the page rather than one static frame:
-title 9.18, lead 7.56, the 11.2px eyebrow 8.50 (the worst pixel, i.e. the brightest, since this is
+title 9.18, lead 7.56, the 11.2px eyebrow 8.78 (the worst pixel, i.e. the brightest, since this is
 white text). The breadcrumb, the chip labels and the aside copy are outside that set because each
 sits on its own tinted ground rather than on the raw veil, so they test the tint and not the scrim.
-Two traps in the probe are worth naming, because both produce a confident wrong number. It hides one
+Three traps in the probe are worth naming, because each produces a confident wrong number. It hides one
 element at a time and samples the box it vacated, so it can only be pointed at whole text runs:
 widening it to every inner `span` returns a meaningless 1.16 for the animated eyebrow, because hiding
 one character of a decoding label leaves its neighbours' white glyphs inside the sampled box. And the
 clip is resolved in document coordinates while `getBoundingClientRect` is viewport-relative, so a
 swept run that forgets to add `scrollY` samples the top of the page for every position and reports
-the whole site as 1.00:1.
+the whole site as 1.00:1. The third is the one that cost a wrong fix: the probe decides a run sits on
+the raw ground by walking its ancestors for a `backgroundColor`, but `.card` paints its opaque gradient
+through `background:`, which lands in `background-image` and leaves the colour transparent — so card
+copy was measured as though the wallpaper reached it. That is what the 4.24:1 on the About vision and
+mission labels turned out to be: `text-mint` against the card's own `dot-bg` pattern, at 14% mint over
+the gradient, with the wallpaper nowhere in the box. The number is real and AA is AA, so the labels now
+take `--color-mint-bright`, the darker step of the pair `.eyebrow` already uses for the same reason, and
+the same step went to the clause labels on the legal pages and the process numbers on a use case. Those
+two labels measure 5.40 at 1440×900 and 5.42 at 390×844.
 That ground also settles the colour question: the deepest Tradewind on it is 3.44, which is fine
 for a rule and not for a label, so on the film all type is Pearl White and the brand accent stays in
 the graphics

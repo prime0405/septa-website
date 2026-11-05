@@ -21,10 +21,10 @@ export default function Services() {
         lead={servicesIntro}
         actions={
           <>
-            <Button to={paths.request()} size="lg">
+            <Button to={paths.request()} size="lg" magnetic>
               Let’s Work Together
             </Button>
-            <Button to={paths.contact()} size="lg" variant="secondary">
+            <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
               Contact Us
             </Button>
           </>

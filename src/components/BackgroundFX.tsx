@@ -17,9 +17,9 @@ import { WallMotion } from "./visuals/WallMotion";
  *
  * Both layers follow the section under the visitor's eye rather than the address bar, so one long
  * page runs several wallpapers in sequence. Which section that is comes from `useActiveWall`, and
- * every layer swaps into the new one rather than cutting: the gradient vars transition, the outgoing
- * plate is held until the incoming one has faded up, and the mesh dips to nothing while its subject
- * changes.
+ * every layer dissolves into the new one rather than cutting: the gradient vars transition, the
+ * outgoing plate is held until the incoming one has faded up over it, and the mesh hands over
+ * between two mounted scenes so the line art never leaves the page at any point in the change.
  *
  * Everything here is decorative and pointer-transparent. The canvas caps its work by area, holds at
  * ~30fps, stops when the tab is hidden, and never starts under `prefers-reduced-motion`, where the
@@ -110,8 +110,9 @@ function PlateStack({ plate, film, reduce }: { plate: string; film?: string; red
     prev.current = now;
     if (!old || (old.src === now.src && old.film === now.film)) return;
     setBehind(old);
-    // Matches `bgfx-plate-in`, so the pair hands over exactly as the new layer lands.
-    const hold = window.setTimeout(() => setBehind(null), 1500);
+    // A beat longer than `bgfx-plate-in`, so the outgoing plate is still there for the whole handover
+    // and is gone before anyone could notice it had finished.
+    const hold = window.setTimeout(() => setBehind(null), 1200);
     return () => window.clearTimeout(hold);
   }, [src, onFilm]);
 

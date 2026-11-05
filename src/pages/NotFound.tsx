@@ -35,13 +35,13 @@ export default function NotFound() {
           point you at it or build it.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button to={paths.home()} size="lg">
+          <Button to={paths.home()} size="lg" magnetic>
             Back to home
           </Button>
-          <Button to={paths.services()} size="lg" variant="secondary">
+          <Button to={paths.services()} size="lg" variant="secondary" magnetic>
             Browse services
           </Button>
-          <Button to={paths.request()} size="lg" variant="outline-mint">
+          <Button to={paths.request()} size="lg" variant="outline-mint" magnetic>
             Request a Service
           </Button>
         </div>

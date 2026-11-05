@@ -241,7 +241,7 @@ export default function Legal({ kind }: { kind: "privacy" | "terms" }) {
             <div className="space-y-10">
               {clauses.map((c, i) => (
                 <section key={c.title} id={slug(c.title)} className="scroll-mt-28">
-                  <p className="font-mono text-[0.68rem] tracking-wider text-mint uppercase">
+                  <p className="font-mono text-[0.68rem] tracking-wider text-mint-bright uppercase">
                     clause {String(i + 1).padStart(2, "0")}
                   </p>
                   <h2 className="mt-2 text-[1.35rem]">{c.title}</h2>

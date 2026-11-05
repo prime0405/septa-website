@@ -59,7 +59,7 @@ export default function About() {
                       <span className="flex size-11 items-center justify-center rounded-xl border border-mint/25 bg-mint/[0.07] text-mint">
                         <Icon className="size-5" />
                       </span>
-                      <span className="font-mono text-[0.85rem] text-mint">{s.n}</span>
+                      <span className="font-mono text-[0.85rem] text-mint-bright">{s.n}</span>
                     </div>
                     <h3 className="mt-6 text-[1.25rem]">{s.title}</h3>
                     <p className="mt-3 text-[0.92rem] leading-relaxed text-muted">{s.detail}</p>
@@ -78,7 +78,7 @@ export default function About() {
             <Card className="relative flex h-full flex-col overflow-hidden p-7">
               <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40" />
               <div className="relative">
-                <p className="font-mono text-[0.72rem] tracking-[0.18em] text-mint uppercase">
+                <p className="font-mono text-[0.72rem] tracking-[0.18em] text-mint-bright uppercase">
                   Our Vision
                 </p>
                 <MaskRise>
@@ -94,7 +94,7 @@ export default function About() {
             <Card className="relative flex h-full flex-col overflow-hidden p-7">
               <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-40" />
               <div className="relative">
-                <p className="font-mono text-[0.72rem] tracking-[0.18em] text-mint uppercase">
+                <p className="font-mono text-[0.72rem] tracking-[0.18em] text-mint-bright uppercase">
                   Our Mission
                 </p>
                 <p className="mt-5 text-[1.02rem] leading-relaxed text-muted">{about.mission}</p>

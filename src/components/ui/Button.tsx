@@ -6,8 +6,11 @@ import { usePointerTrack } from "../../lib/pointerGlow";
 type Variant = "primary" | "secondary" | "ghost" | "outline-mint" | "text";
 type Size = "sm" | "md" | "lg";
 
+// Tailwind v4 compiles both the magnet below and the press at the end of this list to the `translate`
+// property rather than to `transform`, so naming `transform` here would ease nothing and the drift
+// would snap frame to frame with the pointer.
 const base =
-  "relative inline-flex items-center justify-center gap-2 font-medium rounded-pill transition-[background,border-color,color,box-shadow,transform] duration-200 ease-out select-none whitespace-nowrap disabled:opacity-50 disabled:pointer-events-none active:translate-y-[1px]";
+  "relative inline-flex items-center justify-center gap-2 font-medium rounded-pill transition-[background,border-color,color,box-shadow,translate] duration-200 ease-out select-none whitespace-nowrap disabled:opacity-50 disabled:pointer-events-none active:translate-y-[1px]";
 
 // Set only on a magnetic button, so the pull is a translate and the press stays a translate.
 const magnet = "translate-x-[var(--tx,0px)] translate-y-[var(--ty,0px)]";

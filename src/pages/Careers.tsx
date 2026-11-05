@@ -42,7 +42,7 @@ export default function Careers() {
           </Pill>
         }
         actions={
-          <Button onClick={scrollToRoles} size="lg">
+          <Button onClick={scrollToRoles} size="lg" magnetic>
             {careers.rolesCta}
           </Button>
         }

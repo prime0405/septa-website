@@ -48,7 +48,7 @@ export function ServiceTemplate({
         }
         actions={
           page.cta ? (
-            <Button to={page.cta.to} size="lg">
+            <Button to={page.cta.to} size="lg" magnetic>
               {page.cta.label}
             </Button>
           ) : null

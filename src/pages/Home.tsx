@@ -128,10 +128,10 @@ export default function Home() {
 
             <Reveal delay={0.18}>
               <div className="mt-9 flex flex-wrap justify-center gap-3">
-                <Button to={paths.services()} size="lg">
+                <Button to={paths.services()} size="lg" magnetic>
                   {hero.ctaPrimary}
                 </Button>
-                <Button to={paths.contact()} size="lg" variant="outline-mint">
+                <Button to={paths.contact()} size="lg" variant="outline-mint" magnetic>
                   {hero.ctaSecondary}
                 </Button>
               </div>
@@ -153,7 +153,7 @@ export default function Home() {
             title={block.headline}
             lead={block.subheading}
             action={
-              <Button to={block.to} size="lg">
+              <Button to={block.to} size="lg" magnetic>
                 {block.cta}
               </Button>
             }

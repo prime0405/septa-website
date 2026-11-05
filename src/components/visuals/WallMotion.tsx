@@ -1,6 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import type { BgMotion } from "../../lib/bgThemes";
+
+/** The handover, and it has to equal the `transition` on `.bgfx-mesh` in `index.css`. */
+const DISSOLVE = 1100;
+
+type Slot = { subject: BgMotion | null; on: boolean; live: boolean };
 
 /**
  * The moving line art that gives each page its own wallpaper.
@@ -23,19 +28,71 @@ import type { BgMotion } from "../../lib/bgThemes";
  * bucketed into four weight bands so a field is four stroke calls rather than thousands, the loop
  * holds at roughly 30fps, it stops when the tab is hidden, and it never starts under
  * `prefers-reduced-motion`.
+ *
+ * Two canvases exist, always, and only the one under the eye is lit. A section change moves the
+ * subject to the dark slot and lets CSS cross the pair over `DISSOLVE` milliseconds, with the field
+ * being left behind still painting until it has landed on nothing, so the line art is at full
+ * strength on one side or the other for every frame of the change. The dip-to-zero version of this
+ * looked like the wallpaper had been switched off, and mounting a fresh canvas per subject put three
+ * of them on screen during a fast scroll — one more than the ceiling arithmetic in `index.css` is
+ * willing to account for.
  */
 export function WallMotion({ mode }: { mode: BgMotion }) {
   const reduce = useReducedMotion();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  /** The subject the running loop is drawing, which trails `mode` by one fade. */
-  const modeRef = useRef<BgMotion>(mode);
+  const [slots, setSlots] = useState<Slot[]>(() => [
+    { subject: mode, on: true, live: true },
+    { subject: null, on: false, live: false },
+  ]);
+  const top = useRef(0);
+  const shown = useRef<BgMotion | null>(mode);
+  const stop = useRef(0);
 
+  /* The commit is written against refs rather than against the `slots` in this closure, because the
+     state it produces is the state that would re-run the effect: read from a snapshot, the second
+     pass of a StrictMode remount would see the same stale answer and hand the page a double flip. */
   useEffect(() => {
     if (reduce) return;
+    if (shown.current === mode) return;
+    shown.current = mode;
+    const next = 1 - top.current;
+    top.current = next;
+    setSlots((s) =>
+      s.map((slot, i) =>
+        i === next
+          ? { subject: mode, on: true, live: true }
+          : { ...slot, on: false, live: true },
+      ),
+    );
+    // The field being left behind has no reason to keep working once it has landed on nothing.
+    window.clearTimeout(stop.current);
+    stop.current = window.setTimeout(() => {
+      setSlots((s) => s.map((slot, i) => (i === next ? slot : { ...slot, live: false })));
+    }, DISSOLVE);
+  }, [mode, reduce]);
+
+  useEffect(() => () => window.clearTimeout(stop.current), []);
+
+  if (reduce) return null;
+
+  return (
+    <>
+      {slots.map((slot, i) => (
+        <WallScene key={i} subject={slot.subject} on={slot.on} live={slot.live} />
+      ))}
+    </>
+  );
+}
+
+function WallScene({ subject, on, live }: { subject: BgMotion | null; on: boolean; live: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!live || subject === null) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const subjectKey = subject;
 
     let width = 0;
     let height = 0;
@@ -689,9 +746,9 @@ export function WallMotion({ mode }: { mode: BgMotion }) {
       last = now;
       clock += dt;
       ctx.clearRect(0, 0, width, height);
-      // Read through the ref, so a new subject is picked up on the next frame without tearing down
-      // the loop or re-seeding the field. `useActiveWall` changes this several times a scroll.
-      scenes[modeRef.current](dt);
+      // The subject is fixed for as long as this slot is lit: `WallMotion` hands a new one over on the
+      // dark slot, so a section change never re-seeds a field that is already on screen.
+      scenes[subjectKey](dt);
     };
 
     const loop = (now: number) => {
@@ -737,29 +794,7 @@ export function WallMotion({ mode }: { mode: BgMotion }) {
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [reduce]);
+  }, [subject, live]);
 
-  /* The subject changes as the visitor moves between sections, and a cut from one field of line art
-     to another is the one thing this layer must not do: the strokes are faint, but a whole-field
-     change is unmistakable. So the canvas fades out, the scene pointer moves while nothing is visible,
-     and the new field fades up into the same clock. */
-  useEffect(() => {
-    if (reduce) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    if (modeRef.current === mode) return;
-    canvas.classList.add("is-swapping");
-    const swap = window.setTimeout(() => {
-      modeRef.current = mode;
-      canvas.classList.remove("is-swapping");
-    }, 460);
-    return () => {
-      window.clearTimeout(swap);
-      canvas.classList.remove("is-swapping");
-    };
-  }, [mode, reduce]);
-
-  if (reduce) return null;
-
-  return <canvas ref={canvasRef} aria-hidden className="bgfx-mesh" />;
+  return <canvas ref={canvasRef} aria-hidden data-on={on ? "1" : "0"} className="bgfx-mesh" />;
 }

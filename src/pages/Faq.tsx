@@ -27,7 +27,7 @@ export default function Faq() {
         eyebrow="FAQ"
         title="Frequently Asked Questions"
         actions={
-          <Button to={paths.contact()} size="lg">
+          <Button to={paths.contact()} size="lg" magnetic>
             Contact Us
           </Button>
         }

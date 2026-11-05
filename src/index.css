@@ -571,7 +571,13 @@
    the mask holds it to 0.62 of that across the reading column, so the worst pixel behind a glyph
    is 17% of Tradewind, while the gutters get the network at nearly a third. Both numbers are the
    ceiling the contrast harness was re-measured against, not an estimate: it hides each run of copy,
-   samples the composited pixels behind it and reports the worst AA ratio of the three passes. */
+   samples the composited pixels behind it and reports the worst AA ratio of the three passes.
+   A section handover shows two of these layers at once, which the same arithmetic already covers:
+   they are the same colour, so at any pixel the combined coverage is a + b(1 - a) with
+   a = 0.28(1 - t) and b = 0.28t, whose maximum is 0.28 at the ends. A fade therefore cannot exceed
+   the steady-state ceiling, which is why the dissolve costs no contrast — and it is the reason the
+   two slots below are a hard limit rather than a convenience: a third layer is the point where the
+   product of three terms starts beating 0.28 again. */
 .bgfx-mesh {
   display: block;
   position: fixed;
@@ -579,9 +585,9 @@
   z-index: 20;
   width: 100%;
   height: 100%;
-  opacity: 0.28;
+  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.42s ease;
+  transition: opacity 1.1s ease-in-out;
   mask-image: linear-gradient(
     to right,
     #000 0,
@@ -591,10 +597,9 @@
     #000 100%
   );
 }
-/* A new subject hands over while nothing is visible. `WallMotion` holds this for the length of the
-   fade and then releases it, so the field below the copy changes identity without ever cutting. */
-.bgfx-mesh.is-swapping {
-  opacity: 0;
+/* The subject under the visitor's eye, and the one still fading out of it. */
+.bgfx-mesh[data-on="1"] {
+  opacity: 0.28;
 }
 
 /* ---------- the film hero (AI Product Development) ---------- */
@@ -830,9 +835,11 @@
   animation: bgfx-pan 34s ease-in-out infinite alternate;
 }
 /* A new page mounts a new plate under the same pan. Fading in over the shoulder of the period keeps
-   the swap quiet instead of a cut, and hands opacity back to the element once it has landed. */
+   the swap quiet instead of a cut, and hands opacity back to the element once it has landed. The
+   length matches the wash colours and the mesh dissolve, so a section change reads as one move
+   rather than three layers arriving at three different times. */
 .bgfx-plate-swap {
-  animation: bgfx-plate-in 1.4s ease-out 1;
+  animation: bgfx-plate-in 1.1s ease-in-out 1;
 }
 @keyframes bgfx-plate-in {
   from {

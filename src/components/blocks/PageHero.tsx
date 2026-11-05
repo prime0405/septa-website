@@ -201,15 +201,15 @@ export function CtaBand({
           </MaskRise>
           <p className="prose-body mt-4">{lead}</p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button to={paths.request()} size="lg">
+            <Button to={paths.request()} size="lg" magnetic>
               {primaryLabel}
             </Button>
             {secondary ? (
-              <Button to={secondary.to} size="lg" variant="secondary">
+              <Button to={secondary.to} size="lg" variant="secondary" magnetic>
                 {secondary.label}
               </Button>
             ) : (
-              <Button to={paths.contact()} size="lg" variant="secondary">
+              <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
                 Contact us
               </Button>
             )}

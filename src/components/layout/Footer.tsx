@@ -29,10 +29,10 @@ export function Footer() {
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Button to={paths.request()} size="lg" iconEnd={<ArrowRight className="size-4" />}>
+            <Button to={paths.request()} size="lg" magnetic iconEnd={<ArrowRight className="size-4" />}>
               Request a Service
             </Button>
-            <Button to={paths.contact()} size="lg" variant="secondary">
+            <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
               Ask a question first
             </Button>
           </div>

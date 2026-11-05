@@ -70,7 +70,7 @@ export default function UseCaseDetail() {
           </>
         }
         actions={
-          <Button to={paths.request(study.client)} size="lg">
+          <Button to={paths.request(study.client)} size="lg" magnetic>
             Start building
           </Button>
         }
@@ -126,7 +126,7 @@ export default function UseCaseDetail() {
           {study.process.map((step, i) => (
             <Reveal key={step.title} delay={i * 0.04}>
               <Card className="h-full p-6">
-                <span className="font-mono text-[0.72rem] text-mint">
+                <span className="font-mono text-[0.72rem] text-mint-bright">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 text-[1.02rem]">{step.title}</h3>

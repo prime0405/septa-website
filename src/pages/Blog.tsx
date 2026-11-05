@@ -80,10 +80,10 @@ export default function Blog() {
         }
         actions={
           <>
-            <Button to={paths.request()} size="lg">
+            <Button to={paths.request()} size="lg" magnetic>
               Work with us
             </Button>
-            <Button to={paths.contact()} size="lg" variant="secondary">
+            <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
               Send us a topic
             </Button>
           </>
