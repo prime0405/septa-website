@@ -52,7 +52,7 @@ export default function About() {
             const Icon = strengthIcons[i % strengthIcons.length];
             return (
               <Reveal key={s.n} delay={i * 0.06} className="h-full">
-                <Card className="card-hover relative flex h-full flex-col overflow-hidden p-7">
+                <Card tilt className="card-hover relative flex h-full flex-col overflow-hidden p-7">
                   <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-35" />
                   <div className="relative flex-1">
                     <div className="flex items-center gap-4">
@@ -75,7 +75,7 @@ export default function About() {
       <Section wall="services" className="section">
         <div className="grid gap-6 lg:grid-cols-2">
           <Reveal className="h-full">
-            <Card className="relative flex h-full flex-col overflow-hidden p-7">
+            <Card tilt className="relative flex h-full flex-col overflow-hidden p-7">
               <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40" />
               <div className="relative">
                 <p className="font-mono text-[0.72rem] tracking-[0.18em] text-mint-bright uppercase">
@@ -91,7 +91,7 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.06} className="h-full">
-            <Card className="relative flex h-full flex-col overflow-hidden p-7">
+            <Card tilt className="relative flex h-full flex-col overflow-hidden p-7">
               <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-40" />
               <div className="relative">
                 <p className="font-mono text-[0.72rem] tracking-[0.18em] text-mint-bright uppercase">
@@ -128,7 +128,7 @@ export default function About() {
         <div className="grid gap-4 md:grid-cols-2">
           {testimonials.map((t, i) => (
             <Reveal key={t.attribution} delay={i * 0.05}>
-              <Card className="flex h-full flex-col p-6 sm:p-7">
+              <Card tilt className="flex h-full flex-col p-6 sm:p-7">
                 <Quote className="size-5 text-mint" aria-hidden />
                 <p className="mt-4 flex-1 text-[0.92rem] leading-relaxed text-muted">“{t.quote}”</p>
                 <p className="mt-5 font-mono text-[0.72rem] tracking-[0.14em] text-faint uppercase">

@@ -296,7 +296,15 @@ The hero headline staggers in by word. Every section label decodes into place: `
 character once the line scrolls into view, once. The real text never leaves the DOM and only
 reserves the width, so a screen reader reads the label rather than the noise and the line cannot
 jitter inside the flex row it sits in.
-Two pointer effects follow the cursor on devices that have one. Cards under `a.card` carry a 7%
+Two pointer effects follow the cursor on devices that have one. The lean and the wash are not
+limited to the link cards any more: `Card` takes a `tilt` prop (`src/components/ui/primitives.tsx`)
+that wires the same handler and the same `PointerGlow` child, so the static content grids lean too —
+the homepage service overview and testimonials, the Services listing grid, About's strengths,
+vision, mission and testimonial, Careers' culture, the service pages' core-service and who-we-serve
+tiles, the case-study process and tool grids, and the FAQ service links. Measured with the pointer
+parked inside a card and the cursor dot taken out of the shot, the copy over the lit wash floors at
+6.24:1 on the homepage grid, 6.00:1 on a case-study tile and 5.51:1 on an About strength — AA for
+small text is 4.5:1. Cards under `a.card` carry a 7%
 Tradewind radial wash that tracks the pointer (`src/components/ui/PointerGlow.tsx`) and lean up to
 7° to face it (`usePointerTrack("tilt")` in `src/lib/pointerGlow.tsx` writes `--rx`/`--ry`; the
 `.tilt` rule in `src/index.css` composes them with the pre-existing 3px hover lift and restates

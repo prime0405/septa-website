@@ -54,7 +54,7 @@ export default function Careers() {
         <div className="grid gap-4 md:grid-cols-2">
           {careers.culture.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.05} className="h-full">
-              <Card className="card-hover flex h-full flex-col p-6 sm:p-7">
+              <Card tilt className="card-hover flex h-full flex-col p-6 sm:p-7">
                 <span className="flex size-11 items-center justify-center rounded-xl border border-mint/25 bg-mint/[0.07] text-mint">
                   <Users className="size-5" />
                 </span>

@@ -15,6 +15,8 @@ import {
 import { showLaunchNotes } from "../../lib/launchNotes";
 import type { BgTheme } from "../../lib/bgThemes";
 import { cn } from "../../lib/cn";
+import { usePointerTrack } from "../../lib/pointerGlow";
+import { PointerGlow } from "./PointerGlow";
 
 /* ------------------------------- layout ------------------------------- */
 
@@ -192,15 +194,34 @@ export function Card({
   children,
   className,
   interactive,
+  tilt,
   as: Tag = "div",
 }: {
   children: ReactNode;
   className?: string;
   interactive?: boolean;
+  /**
+   * The same 3D lean the link cards get: the edge under the cursor turns away from the viewer and
+   * the Tradewind wash follows it. Inert on a touchscreen and under reduced motion, because the
+   * handler that writes the angles refuses to run in either case.
+   */
+  tilt?: boolean;
   as?: "div" | "article" | "li";
 }) {
+  const track = usePointerTrack<HTMLElement>("tilt", 7);
   return (
-    <Tag className={cn("card", interactive && "card-hover", className)}>{children}</Tag>
+    <Tag
+      className={cn(
+        "card",
+        interactive && "card-hover",
+        tilt && "tilt group relative isolate",
+        className,
+      )}
+      {...(tilt ? track : {})}
+    >
+      {tilt ? <PointerGlow /> : null}
+      {children}
+    </Tag>
   );
 }
 

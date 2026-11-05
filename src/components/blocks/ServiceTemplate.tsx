@@ -67,7 +67,7 @@ export function ServiceTemplate({
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {page.coreServices.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.04}>
-              <Card className="card-hover h-full p-6">
+              <Card tilt className="card-hover h-full p-6">
                 <h3 className="text-[1.05rem]">{item.title}</h3>
                 {item.detail ? (
                   <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{item.detail}</p>
@@ -146,7 +146,7 @@ export function ServiceTemplate({
           <div className="grid gap-4 sm:grid-cols-2">
             {page.whoWeServe.map((u, i) => (
               <Reveal key={u.title} delay={i * 0.04}>
-                <Card className="h-full p-6">
+                <Card tilt className="h-full p-6">
                   <div className="flex items-start gap-3">
                     <Check className="mt-1 size-4 shrink-0 text-mint" aria-hidden />
                     <div>

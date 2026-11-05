@@ -36,7 +36,7 @@ export default function Services() {
         <div className="grid gap-4 md:grid-cols-2">
           {serviceListings.map((s, i) => (
             <Reveal key={s.slug} delay={i * 0.05} className={i === 0 ? "md:col-span-2" : ""}>
-              <Card className="card-hover flex h-full flex-col p-6 sm:p-7">
+              <Card tilt className="card-hover flex h-full flex-col p-6 sm:p-7">
                 <h2 className="text-[1.2rem]">{s.name}</h2>
                 <p className="prose-body mt-3 flex-1 text-[0.94rem]">{s.detail}</p>
                 <div className="mt-6">

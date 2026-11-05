@@ -221,7 +221,7 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-2">
           {serviceListings.map((s, i) => (
             <Reveal key={s.slug} delay={i * 0.05} className={i === 0 ? "md:col-span-2" : ""}>
-              <Card className="card-hover flex h-full flex-col p-6 sm:p-7">
+              <Card tilt className="card-hover flex h-full flex-col p-6 sm:p-7">
                 <h3 className="text-[1.2rem]">{s.name}</h3>
                 <p className="prose-body mt-3 flex-1 text-[0.94rem]">{s.detail}</p>
                 <div className="mt-6">
@@ -241,7 +241,7 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-2">
           {testimonials.map((t, i) => (
             <Reveal key={t.attribution} delay={i * 0.05}>
-              <Card className="flex h-full flex-col p-6 sm:p-7">
+              <Card tilt className="flex h-full flex-col p-6 sm:p-7">
                 <Quote className="size-5 text-mint" aria-hidden />
                 <p className="mt-4 flex-1 text-[0.92rem] leading-relaxed text-muted">“{t.quote}”</p>
                 <p className="mt-5 font-mono text-[0.72rem] tracking-[0.14em] text-faint uppercase">

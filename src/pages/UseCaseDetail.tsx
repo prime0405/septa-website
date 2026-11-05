@@ -93,7 +93,7 @@ export default function UseCaseDetail() {
           <div className="grid gap-4 sm:grid-cols-2">
             {study.pillars.map((p, i) => (
               <Reveal key={p.title} delay={i * 0.04}>
-                <Card className="card-hover h-full p-6">
+                <Card tilt className="card-hover h-full p-6">
                   <h3 className="text-[1.05rem]">{p.title}</h3>
                   <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{p.detail}</p>
                 </Card>
@@ -125,7 +125,7 @@ export default function UseCaseDetail() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {study.process.map((step, i) => (
             <Reveal key={step.title} delay={i * 0.04}>
-              <Card className="h-full p-6">
+              <Card tilt className="h-full p-6">
                 <span className="font-mono text-[0.72rem] text-mint-bright">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -150,7 +150,7 @@ export default function UseCaseDetail() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {study.tools.map((group, gi) => (
             <Reveal key={group.heading ?? gi} delay={gi * 0.04}>
-              <Card className="h-full p-6">
+              <Card tilt className="h-full p-6">
                 {group.heading ? (
                   <p className="eyebrow mb-4">{group.heading}</p>
                 ) : null}
