@@ -113,12 +113,17 @@ themselves templates until a date, entity and jurisdiction exist.
    only way enquiries are seen. Until this is set, each receipt shows an amber
    *"Stored on the server, not emailed yet"* pill, which is the truth rather than a bug. The
    newsletter receipt also states plainly that nothing will be sent until Septa has a newsletter.
-3. **Testimonials** — the brief names the section but supplies no quotes. The home page renders an
-   explicitly empty placeholder that tells the reader where to add approved quotes
-   (`src/data/content.ts`). Do not fill it with invented praise.
-4. **Partner logos** — the eight partner names came from the brief and render as text. No logo
-   files were supplied and nothing is claimed about the scope of any relationship, so approval is
-   needed before any artwork or wording goes in.
+3. **Testimonial wording** — the four quotes the document supplies are in place and attributed
+   exactly as the document attributes them (`src/data/content.ts`), and the section is built around
+   them. What the document does not contain is an individual author or a job title for any of them,
+   so the panel credits the organisation — Halogen Group, EHCC Leadership, Preppod Team, Toviri
+   Team — and the site does not invent a person to say them. If Septa wants named spokespeople,
+   those names have to come from the clients.
+4. **Partner logos** — four client marks were supplied and are on file in `public/partners`; three of
+   them (Halogen, Preppod, Toviri) are used in the testimonial panel and the marquee, and EHCC has no
+   artwork so its entry shows the name in type. The eight partner names came from the brief, and
+   nothing is claimed about the scope of any relationship, so approval is still needed before any
+   further artwork or wording goes in.
 5. **Real content** — replace the 5 sample case studies, 6 sample articles and any company facts.
 6. **Legal review** — the privacy notice and terms are structurally complete, not advice.
 
@@ -195,7 +200,7 @@ Pages read entirely from data files — no JSX edits needed to publish:
 | `src/data/cases.ts` | `/case-studies` and each study |
 | `src/data/posts.ts` | `/blog` and each article |
 | `src/data/jobs.ts` | `/careers` openings (`openings: []` = honest empty state) |
-| `src/data/content.ts` | mission, values, process, approach, contact copy, the Septa Advantage pillars, service-overview and services-intro lines, partner names, testimonials (empty until approved) |
+| `src/data/content.ts` | mission, values, process, approach, contact copy, the Septa Advantage pillars, service-overview and services-intro lines, partner names, the four testimonials and their client labels |
 | `src/lib/site.ts` | company facts, legal config, privacy lists |
 
 **Client-written copy is fenced off from editorial cleanup.** The revamp brief supplied certain
@@ -299,8 +304,8 @@ jitter inside the flex row it sits in.
 Two pointer effects follow the cursor on devices that have one. The lean and the wash are not
 limited to the link cards any more: `Card` takes a `tilt` prop (`src/components/ui/primitives.tsx`)
 that wires the same handler and the same `PointerGlow` child, so the static content grids lean too —
-the homepage service overview and testimonials, the Services listing grid, About's strengths,
-vision, mission and testimonial, Careers' culture, the service pages' core-service and who-we-serve
+the homepage service overview, the Services listing grid, About's strengths, vision and mission,
+Careers' culture, the service pages' core-service and who-we-serve
 tiles, the case-study process and tool grids, and the FAQ service links. Measured with the pointer
 parked inside a card and the cursor dot taken out of the shot, the copy over the lit wash floors at
 6.24:1 on the homepage grid, 6.00:1 on a case-study tile and 5.51:1 on an About strength — AA for
@@ -326,8 +331,8 @@ elements, because `cursor` inherits and a parent's `cursor: pointer` would other
 child. The class is added only when the loop is eligible, so a touch device or a
 `prefers-reduced-motion` visitor keeps the system cursor. The wash is capped at 7% because a
 brighter tint on a white card
-pulls `text-mint` under AA; with it spliced into the stack nothing the sweep measured came below
-4.95:1, which clears AA for small text.
+pulls `text-mint` under AA; with it spliced into the stack nothing either harness measured came below
+4.76:1, which clears AA for small text.
 Behind all of it the page never stands still. `BackgroundFX` (`src/components/BackgroundFX.tsx`)
 renders a fixed colour wash on every route — a panned plate, or a generated film where a
 theme supplies one, plus a creeping grid, a beam that crosses the viewport every 15s and two drifting
@@ -353,12 +358,20 @@ and a third canvas would be both an unknown and a GPU bill. `useActiveWall` ther
 sticky twice — a section keeps the centre line until the eye is 28px past its edge, so stopping on the
 boundary and nudging back cannot make two neighbours trade the answer at the rate the wheel fires, and
 a second handover waits 1200ms, a beat longer than the dissolve, before it is allowed to start. The
-wash colours (`@property`-registered, 1.1s) and the plate fade (`.bgfx-plate-swap`, shortened from
-1.4s to 1.1s) run the same length, so a section change is one move instead of three layers arriving at
-three different times. Measured with a page-side frame clock: the pair runs 0.28/0.00 → 0.27/0.01 →
+wash colours (`@property`-registered, 1.1s) and the plate fade run the same length, so a section
+change is one move instead of three layers arriving at three different times. The plate is the layer
+that needed the most care, because a plate is a large image and `decoding="async"` can leave it in
+flight a second after it mounts: `PlateStack` holds the outgoing slot in state alongside the incoming
+one — the swap happens during the render that adopts the new source, so no commit has the slot half
+empty — and only starts the fade once the incoming element has decoded, writing `data-lit` to that
+element rather than to a flag keyed on the source, so a plate that comes back later fades up again
+instead of arriving already lit. The outgoing plate is retired 150ms after the fade begins. Measured
+with a page-side frame clock: the pair runs 0.28/0.00 → 0.27/0.01 →
 0.22/0.06 → 0.16/0.12 → 0.11/0.17 → 0.06/0.22 → 0.01/0.27 → 0.00/0.28, the pair sums to 0.28 at every
 sample so no frame has both layers dark, coverage never exceeds 0.28, and ±6px of jitter on a boundary
-produces zero flips.
+produces zero flips. Across a route change the sampler saw exactly one wash handover, the outgoing
+plate held at 0.55 until the incoming reached 0.52, and there was no frame in which the slot held no
+element or no visible element.
 
 The layer split exists because
 of contrast, not layering. Measured against a `source-over`
@@ -405,23 +418,39 @@ twin; composited against that measured ground they come to 9.0:1.
 `--color-faint` was darkened from `#56707a` to `#4d6772` in the same pass, because it carries the
 10.5–11.5px mono labels and the mesh crossing an `ink-raised` chip pulled it to 4.29:1.
 
-Every figure in this section is measured rather than argued, per element: for each run of real copy
-the harness hides that element, screenshots the exact box it occupied and takes the worst background
-pixel against the element's own computed colour, three passes across the animation's cycle, at twelve
-stops down the document. The
-curtain on the way into the homepage is part of that ground, so the harness waits for the panels to
-leave before it shoots — a clip taken while they still cover the viewport reports Black Pearl as the
-background and the headline as 1.00:1. With the layers as they now stand, the worst pair on a light
-page is 4.97:1 on the homepage and 4.96 on About at 1440×900, and 6.10 on Services; at 390×844, where
-the gutters have disappeared and the whole viewport takes the column value, the same three pages floor
-at 4.95, 5.42 and 5.30. Every one of those floors is an 11.5px mono line — the testimonial attributions
-and the capability labels — and each clears AA for small text by at least 0.45; body copy did not go
-below 5.01 and no display line came under 14. They are lower than the figures this section carried,
-because the sweep replaced a one-frame probe: walking the page meets the darkest moment of the wash
-*and* surfaces labels that a single static frame never looked at. Over the
-film hero the same harness, switched to take the *brightest* pixel because the type is white, gives the
-figures quoted with that section below: 9.18 on the title, 7.56 on the lead and 8.78 on the 11.2px
-eyebrow.
+Every figure in this section is measured rather than argued, and the measurement is split in two,
+because a run of copy is only a test of the wallpaper if the wallpaper is what sits behind it.
+**Copy on the wallpaper:** for each run of real body text the harness hides that element, screenshots
+the exact box it occupied and takes the worst background pixel against the element's own computed
+colour, two passes across the animation's cycle at every stop down the document, at 1440×900 and
+390×844. An element is skipped when it or any ancestor paints a ground of its own — a colour *or* an
+image. That second half matters: the `card` class paints its white-to-`surface` gradient through the
+`background` shorthand, so its computed `background-color` reads `rgba(0, 0, 0, 0)` and every line
+inside a card used to be sampled as though it were standing on the mesh, which is how the advantage
+reel's detail paragraph reported 1.47:1 against the card's own border. **Copy on a painted ground** is
+measured instead by compositing the computed backgrounds of the element and its ancestors, stop by
+stop, and comparing the pair arithmetically — no pixels, so a reel that cycles cannot move the answer
+between the pick and the clip. That check runs over seven routes at both widths and returns 5.59:1 as
+the worst pair on every one of them (`text-faint` on a card's `surface` end), with nothing below AA.
+The curtain on the way into the homepage is part of the first ground, so the harness waits for the
+panels to leave before it shoots — a clip taken while they still cover the viewport reports Black
+Pearl as the background and the headline as 1.00:1. Fixed chrome is put out of the shot at every stop
+for the same reason: the scroll-to-top button is a 44px Pearl circle with a `text-muted` arrow, it
+mounts on scroll, and at 390 the content column reaches the corner it sits in, so any clip that
+grazed it photographed that arrow as the ground. With the layers as they now stand, the worst pair on
+the wallpaper is 5.22:1 on the homepage and 5.24 on About at 1440×900, and 6.06 on Services; at
+390×844, where the gutters have disappeared and the whole viewport takes the column value, the same
+three pages floor at 4.76, 5.20 and 5.22. The floors are the 11.52px client caption under a node on
+the testimonial ring, the hero lead, and the eyebrow and label mono lines; each clears AA for small
+text by at least 0.26, body copy did not go below 5.31 and no display line came under 14.9. They sit
+differently from the figures this section carried until now because the sweep replaced a one-frame probe
+— walking the page meets the darkest moment of the wash *and* surfaces labels a single static frame never
+looked at — and because the painted grounds have now been taken out of it, which removes the darkest
+samples of all: copy that was never standing on the mesh. Re-shooting the three boxes that first phone
+pass reported at 1.05 and 2.4, at their true position and with the button out of the way, puts 13.54:1
+behind the heading and 6.11 and 6.20 behind the two paragraphs. Over the film hero the same harness,
+switched to take the *brightest* pixel because the type is white, gives the figures quoted with that
+section below: 9.18 on the title, 7.56 on the lead and 8.78 on the 11.2px eyebrow.
 Periods matter as much as colour here: at 76s the plate pans about one pixel a second and reads as a
 static tint, so the wash layers run at 22–34s with the travel doubled, the globe turns roughly once a
 minute, a pulse breathes out and back every 9s and a packet crosses a link in two to five seconds.
@@ -513,6 +542,31 @@ at the seam. Chinat Group has no asset, so its name is rendered as text in the s
 are `alt=""` and the duplicate group is `aria-hidden`; the eight names are exposed once in a
 visually-hidden list instead. Measured on the Pearl ground: heading 18.1:1, lead 14.1:1, eyebrow
 13.5:1, the text fallback 10.4:1, and a silhouette at 70% opacity 9.2:1, where graphics need 3:1.
+The client testimonial section is a selector rather than a list — `TestimonialOrbit`
+(`src/components/visuals/TestimonialOrbit.tsx`). The four clients sit on a dashed orbit that crawls
+(`.orbit-path`, 26s) with a dot running the same circle (`useActiveWall`-independent, 22s), the centre
+of the ring holds the initial of whoever is selected, and the quote panel to the right is one card
+holding all four quotes in the same grid cell. There are no photographs in the source material and no
+individual authors, so the selection system is built out of type: the client's initial in a disc, the
+client's name under it, the work label and the supplied mark in the panel, and a link to that client's
+case study. Selecting is a click, never a hover — a pointer crossing the ring on its way to the nav
+must not rewrite the quote out from under the reader, and the measured hover state changes only the
+border and text colours. The four panels share one cell so the section is as tall as the longest quote
+and changing selection cannot resize the page underneath (measured 446px at 1440, 368px at 768, 550px
+at 390, identical for all four). Which panel is showing is a cross-dissolve on the children
+(`.tpanel[data-on]`, staggered 70ms and 140ms), and the inactive three are `inert` and `aria-hidden`
+rather than unmounted, so the panel is never empty and never tabbable twice. It is a `tablist`: one
+`role="tab"` per client with a roving `tabIndex`, arrows and Home/End move selection and focus
+together, the active ring is a shared-element `layoutId` slide, and below `lg` the same DOM becomes a
+snap strip with the panel underneath it and 44px step controls. Measured at all three widths: click,
+keyboard, prev/next and wrap all change the quote, hover never does, `document.scrollWidth` equals the
+viewport, and every run of copy in the section clears AA against the ground actually behind it. The
+section straddles the two harnesses above: the client caption on the ring stands on the mesh and is
+measured with it, at 5.36:1 on the homepage and 5.24 on About at 1440×900 and 4.76 and 5.20 at
+390×844, while the panel paints its own card and is measured with the composited check — 7.07:1 for the
+quote, 17.22 for the client name, 5.71 for the `01 / 04` readout, the same on both pages. With reduced
+motion on, which drops the orbit animations and lists all four clients at once, the ring caption floors
+at 5.13 on the homepage and 5.21 on About and the panel rows do not move.
 All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
 smooth scrolling becomes instant.
 

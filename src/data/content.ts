@@ -132,27 +132,49 @@ export const serviceListings = [
 /**
  * The four quotes the document supplies for the client testimonial section, attributed exactly as
  * the document attributes them.
+ *
+ * The document gives no individual authors, no job titles and no photographs, so the section is built
+ * on what does exist: the organisation the quote is credited to and the use case it came out of.
+ * `org`, `caseSlug` and `kind` are the client name, route and work label already recorded in
+ * `src/data/useCases.ts`, and `logo` is the supplied mark for that client where Septa has one on file.
+ * EHCC has no supplied artwork, so its entry has no logo and the section shows its name in type
+ * rather than inventing one.
  */
 export const testimonials = [
   {
     quote:
       "Partnering with this team to transform our website has elevated Halogen’s digital presence beyond what we imagined. They didn’t just design a platform, they built a modern, secure, and user-friendly hub that showcases our services and enables seamless client engagement through features like the extranet. Their attention to detail and brand consistency has strengthened client trust and opened new opportunities for engagement. This collaboration set a new benchmark for how we want to be represented online and they delivered it flawlessly.",
     attribution: "Halogen Group",
+    org: "Halogen Group",
+    caseSlug: "halogen-group",
+    kind: "Website and extranet",
+    logo: "/partners/halogen-group.svg",
   },
   {
     quote:
       "Partnering with this team to build the EHCC Clock-In App was a turning point for us. They went beyond creating an attendance tool; they delivered a powerful platform that gives us real-time insights into punctuality, participation, and departmental growth. The geofencing and role-based access features ensure accountability, while the intuitive dashboards give our leaders the clarity they need. What truly sets them apart is how they turned a simple need into a game-changing solution that has transformed engagement across our entire community.",
     attribution: "EHCC Leadership",
+    org: "EHCC",
+    caseSlug: "ehcc-clock-in-app",
+    kind: "Web and mobile platform",
   },
   {
     quote:
       "Partnering with this team brought our vision for Preppod to life in a way that exceeded expectations. They didn’t just build a platform, they created an adaptive learning system that makes music education engaging, measurable, and scalable. From the seamless website to the powerful LMS with secure payments, progress tracking, and role-based dashboards, every detail was thoughtfully designed. Their expertise transformed our idea into a world-class solution and positioned Preppod as a leader in digital education. We couldn’t have asked for a better partner.",
     attribution: "Preppod Team",
+    org: "Preppod",
+    caseSlug: "preppod",
+    kind: "Website and LMS",
+    logo: "/partners/preppod.svg",
   },
   {
     quote:
       "Partnering with this team has been an exceptional experience. They didn’t just deliver designs, they crafted a seamless, thoughtfully structured experience where every detail, from visuals to overall flow, feels intentional and professional. Their expertise turned our ideas into a polished solution that exceeded expectations, and their collaborative approach made the entire process smooth and inspiring. Working with such dedicated partners has truly been a pleasure, and the results speak for themselves.",
     attribution: "Toviri Team",
+    org: "Toviri",
+    caseSlug: "toviri",
+    kind: "Mobile platform",
+    logo: "/partners/toviri-uk.svg",
   },
 ];
 

@@ -120,7 +120,7 @@ export function Footer() {
                 <li key={i.href}>
                   <Link
                     to={i.href}
-                    className="text-[0.87rem] text-muted transition-colors hover:text-mint"
+                    className="inline-flex min-h-7 items-center text-[0.87rem] text-muted transition-colors hover:text-mint"
                   >
                     {i.label}
                   </Link>
@@ -138,10 +138,10 @@ export function Footer() {
           © {site.year} {site.name}. All rights reserved.
         </p>
         <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
-          <Link to={paths.privacy()} className="hover:text-fg">
+          <Link to={paths.privacy()} className="inline-flex min-h-7 items-center hover:text-fg">
             Privacy Policy
           </Link>
-          <Link to={paths.terms()} className="hover:text-fg">
+          <Link to={paths.terms()} className="inline-flex min-h-7 items-center hover:text-fg">
             Terms of Service
           </Link>
           <span className="font-mono">AI · Software · Automation · Observability · Talent</span>

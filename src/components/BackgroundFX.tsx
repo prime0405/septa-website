@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { Ref } from "react";
 import { useLocation } from "react-router-dom";
 import { useReducedMotion } from "motion/react";
 import { bgThemeFor, filmForTheme, motionForTheme, plateForTheme } from "../lib/bgThemes";
@@ -97,24 +98,79 @@ export function BackgroundFX() {
  * outgoing one has to stay visible until the incoming one has faded up over it. Without that the
  * wash drops to bare gradient for the length of the fade, which reads as a flicker every time the
  * visitor scrolls into a new headline.
+ *
+ * Two things make that hold. The outgoing plate is moved into `behind` during the same render that
+ * adopts the new one, so no commit ever has the slot half empty, and the fade is started by the
+ * decode rather than by a clock: a plate is a large image, `decoding="async"` can leave it in flight
+ * a second after it mounts, and a timer started at the change can drop the outgoing plate while the
+ * new one is still transparent and has nothing to show.
  */
+const PLATE_FADE = 1100;
+
+type Slot = { src: string; film: boolean };
+
 function PlateStack({ plate, film, reduce }: { plate: string; film?: string; reduce: boolean }) {
   const onFilm = Boolean(film) && !reduce;
-  const src = onFilm ? (film ?? "") : plate;
-  const [behind, setBehind] = useState<{ src: string; film: boolean } | null>(null);
-  const prev = useRef<{ src: string; film: boolean } | null>(null);
+  const wanted: Slot = { src: onFilm ? (film ?? "") : plate, film: onFilm };
+  const [slots, setSlots] = useState<{ current: Slot; behind: Slot | null }>({
+    current: wanted,
+    behind: null,
+  });
+  let { current, behind } = slots;
+  if (current.src !== wanted.src || current.film !== wanted.film) {
+    current = wanted;
+    behind = slots.current;
+    setSlots({ current: wanted, behind: slots.current });
+  }
+  const slotEl = useRef<HTMLImageElement | HTMLVideoElement | null>(null);
+  // One holder for whichever element owns the slot this commit, so the decode gate can reach it
+  // without the still and the film each carrying their own ref.
+  const attach = (el: HTMLImageElement | HTMLVideoElement | null) => {
+    slotEl.current = el;
+  };
 
+  // The fade is written to the element rather than held in state, because it belongs to this element
+  // instance: a plate that comes back later has to fade up again, and a flag keyed on the src would
+  // already be true for it. The two fields it is keyed on are read into locals first, so the effect
+  // sees nothing but its dependencies.
+  const slotSrc = current.src;
+  const slotFilm = current.film;
   useEffect(() => {
-    const now = { src, film: onFilm };
-    const old = prev.current;
-    prev.current = now;
-    if (!old || (old.src === now.src && old.film === now.film)) return;
-    setBehind(old);
-    // A beat longer than `bgfx-plate-in`, so the outgoing plate is still there for the whole handover
-    // and is gone before anyone could notice it had finished.
-    const hold = window.setTimeout(() => setBehind(null), 1200);
-    return () => window.clearTimeout(hold);
-  }, [src, onFilm]);
+    const el = slotEl.current;
+    if (!el) return;
+    let alive = true;
+    let hold = 0;
+    const ready =
+      el instanceof HTMLVideoElement
+        ? new Promise<void>((resolve) => {
+            if (el.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) resolve();
+            else el.addEventListener("canplay", () => resolve(), { once: true });
+          })
+        : el.decode().then(
+            () => undefined,
+            () => undefined
+          );
+    ready.then(() => {
+      if (!alive) return;
+      el.dataset.lit = "1";
+      // Counted from the moment the incoming plate can actually be seen, and a beat longer than the
+      // fade itself, so the outgoing one is still covering the wash when the new one lands. It retires
+      // only the handover it started, in case the visitor has moved on to a third plate by now.
+      hold = window.setTimeout(
+        () =>
+          setSlots((s) =>
+            s.behind !== null && s.current.src === slotSrc && s.current.film === slotFilm
+              ? { ...s, behind: null }
+              : s
+          ),
+        PLATE_FADE + 150
+      );
+    });
+    return () => {
+      alive = false;
+      window.clearTimeout(hold);
+    };
+  }, [slotSrc, slotFilm]);
 
   return (
     <>
@@ -130,15 +186,16 @@ function PlateStack({ plate, film, reduce }: { plate: string; film?: string; red
           />
         )
       ) : null}
-      {onFilm ? (
-        <WallFilm key={src} src={src} poster={plate} />
+      {current.film ? (
+        <WallFilm key={current.src} ref={attach} src={current.src} poster={plate} />
       ) : (
         <img
-          key={src}
-          src={src}
+          key={current.src}
+          ref={attach}
+          src={current.src}
           alt=""
           decoding="async"
-          className="bgfx-plate-swap absolute inset-0 size-full object-cover opacity-[0.55]"
+          className="bgfx-plate-swap absolute inset-0 size-full object-cover"
         />
       )}
     </>
@@ -153,11 +210,21 @@ function PlateStack({ plate, film, reduce }: { plate: string; film?: string; red
  * reduced-motion path renders. Playback follows the tab instead of the `autoplay` attribute: a
  * wallpaper that keeps decoding in a background tab buys nothing and costs battery.
  */
-function WallFilm({ src, poster, swap = true }: { src: string; poster: string; swap?: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
+function WallFilm({
+  src,
+  poster,
+  swap = true,
+  ref,
+}: {
+  src: string;
+  poster: string;
+  swap?: boolean;
+  ref?: Ref<HTMLVideoElement>;
+}) {
+  const play = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const el = ref.current;
+    const el = play.current;
     if (!el) return;
     const sync = () => {
       if (document.hidden) el.pause();
@@ -170,14 +237,21 @@ function WallFilm({ src, poster, swap = true }: { src: string; poster: string; s
 
   return (
     <video
-      ref={ref}
+      ref={(el) => {
+        play.current = el;
+        // The plate slot keeps one holder for whichever element is current, still or film.
+        if (ref) {
+          if (typeof ref === "function") ref(el);
+          else ref.current = el;
+        }
+      }}
       src={src}
       poster={poster}
       muted
       loop
       playsInline
       preload="auto"
-      className={`${swap ? "bgfx-plate-swap " : ""}absolute inset-0 size-full object-cover opacity-[0.55]`}
+      className={`${swap ? "bgfx-plate-swap" : "opacity-[0.55]"} absolute inset-0 size-full object-cover`}
     />
   );
 }

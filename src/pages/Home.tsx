@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import type { ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Quote } from "lucide-react";
 import { useIntroHeld } from "../lib/intro";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
 import { HeroSpiral } from "../components/visuals/HeroSpiral";
+import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import { CtaSection } from "../components/blocks/CtaSection";
 import { Button } from "../components/ui/Button";
 import {
@@ -24,7 +24,6 @@ import {
   serviceOverview,
   servicesIntro,
   testimonialTitle,
-  testimonials,
 } from "../data/content";
 import { site } from "../lib/site";
 import { paths } from "../lib/paths";
@@ -238,19 +237,9 @@ export default function Home() {
       {/* ----------------------------- 8. testimonial ----------------------------- */}
       <Section wall="blog" tone="raised" className="section border-y border-line-soft">
         <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
-        <div className="grid gap-4 md:grid-cols-2">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.attribution} delay={i * 0.05}>
-              <Card tilt className="flex h-full flex-col p-6 sm:p-7">
-                <Quote className="size-5 text-mint" aria-hidden />
-                <p className="mt-4 flex-1 text-[0.92rem] leading-relaxed text-muted">“{t.quote}”</p>
-                <p className="mt-5 font-mono text-[0.72rem] tracking-[0.14em] text-faint uppercase">
-                  — {t.attribution}
-                </p>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.1}>
+          <TestimonialOrbit />
+        </Reveal>
       </Section>
 
       {/* -------------------------- 9. call-to-action banner -------------------------- */}

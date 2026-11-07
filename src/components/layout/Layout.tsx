@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUp } from "lucide-react";
@@ -11,7 +11,11 @@ import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
 
 function useScrollReset() {
   const { pathname, hash } = useLocation();
-  useEffect(() => {
+  // A layout effect, so the reset lands before anything that reads the page on navigation. The
+  // wallpaper selector works out which section is under the eye from scroll position, and its effect
+  // is a passive one inside a child; with a passive reset here it would have measured the page
+  // visitor just left, at the position they just left it, and tinted the backdrop for that.
+  useLayoutEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.slice(1));
       if (el) {
@@ -19,7 +23,11 @@ function useScrollReset() {
         return;
       }
     }
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    // `instant`, not `auto`: `auto` means "follow the CSS", and the global `scroll-behavior: smooth`
+    // turns a route reset into a scroll that takes the visitor back up the page they just left. Every
+    // section on the way has its own wallpaper, so the backdrop re-tints twice on the way to the new
+    // page's own theme and then again when it lands. One frame, one change.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname, hash]);
 }
 

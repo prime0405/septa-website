@@ -451,6 +451,123 @@
   }
 }
 
+/* --------------------------- the testimonial orbit --------------------------- */
+
+/* One DOM, two arrangements. Below the desktop breakpoint the four selectors are a snap strip you
+   swipe; at `lg` the same nodes lift onto a circle and the container becomes the orbit box. A media
+   query rather than two renders is what keeps one set of `role="tab"` ids, one focus order and one
+   shared-element ring — a duplicated desktop and mobile list would still have to hide one of them
+   from assistive tech. */
+.orbit {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Bleed to the viewport edge so the strip starts flush with the page rather than inside the
+     column padding, which is what tells someone on a phone that there is more to swipe. */
+  margin-inline: -1.25rem;
+  padding-inline: 1.25rem;
+}
+.orbit::-webkit-scrollbar {
+  display: none;
+}
+.orbit-node {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+}
+@media (min-width: 640px) {
+  .orbit {
+    margin-inline: -2rem;
+    padding-inline: 2rem;
+    /* The four nodes are 274px of content and the strip is 576px wide at the narrowest width this
+       rule reaches, so centring cannot push anything out of scroll range — the case where
+       `justify-content: center` eats the left edge is a wide-content one, and this strip only carries
+       wide content below 640px, where it stays left-aligned to show there is more to swipe. */
+    justify-content: center;
+  }
+}
+@media (min-width: 1024px) {
+  .orbit {
+    position: relative;
+    display: block;
+    overflow: visible;
+    aspect-ratio: 1;
+    width: min(100%, 26rem);
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+  .orbit-node {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 7.5rem;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* The line the nodes sit on. `vector-effect` keeps it one hairline wide however large the box is
+   drawn, and the offset crawl is what makes the orbit read as a running track rather than a printed
+   circle. */
+.orbit-path {
+  animation: orbit-dash 26s linear infinite;
+}
+@keyframes orbit-dash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+/* The runner sits inset by exactly the path radius, so the dot pinned to its top edge travels the
+   same circle the nodes are fixed on. */
+.orbit-runner {
+  animation: orbit-run 22s linear infinite;
+}
+@keyframes orbit-run {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-path,
+  .orbit-runner {
+    animation: none;
+  }
+}
+
+/* The four panels share one grid cell, so the stack is exactly as tall as the longest quote and a
+   change cannot resize the section under the reader. Which one is showing is a cross-dissolve, not a
+   swap: the outgoing quote is still fading down while the incoming one is still fading up, so there
+   is no frame in which the panel is empty. The stagger is on the children, because four lines that
+   arrive in one beat read as a screen refresh. */
+.tpanel {
+  grid-area: 1 / 1;
+}
+.tpanel > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.34s ease,
+    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tpanel[data-on="1"] > * {
+  opacity: 1;
+  transform: none;
+}
+.tpanel[data-on="1"] > :nth-child(2) {
+  transition-delay: 0.07s;
+}
+.tpanel[data-on="1"] > :nth-child(3) {
+  transition-delay: 0.14s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpanel > * {
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -834,20 +951,17 @@
 .bgfx-plate {
   animation: bgfx-pan 34s ease-in-out infinite alternate;
 }
-/* A new page mounts a new plate under the same pan. Fading in over the shoulder of the period keeps
-   the swap quiet instead of a cut, and hands opacity back to the element once it has landed. The
-   length matches the wash colours and the mesh dissolve, so a section change reads as one move
-   rather than three layers arriving at three different times. */
+/* A new page mounts a new plate under the same pan, and it holds at zero opacity until JS has the
+   image decoded and sets data-lit. Fading rather than cutting keeps the swap quiet, and the length
+   matches the wash colours and the mesh dissolve, so a section change reads as one move rather than
+   three layers arriving at three different times. The outgoing plate stays at 0.55 underneath for
+   the whole of it, so the wash is never uncovered mid-fade. */
 .bgfx-plate-swap {
-  animation: bgfx-plate-in 1.1s ease-in-out 1;
+  opacity: 0;
+  transition: opacity 1.1s ease-in-out;
 }
-@keyframes bgfx-plate-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.55;
-  }
+.bgfx-plate-swap[data-lit="1"] {
+  opacity: 0.55;
 }
 .bgfx-grid {
   animation: bgfx-grid 22s linear infinite;

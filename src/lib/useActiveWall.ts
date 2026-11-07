@@ -48,10 +48,29 @@ export function useActiveWall(): BgTheme | null {
     let frame = 0;
     let timer = 0;
     let holdUntil = 0;
+    // Armed only while the page has no wallpaper to read at all, and dropped as soon as it does.
+    let arriving: MutationObserver | null = null;
     const read = () => {
       frame = 0;
       const mid = window.innerHeight * 0.45;
       const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-wall]"));
+      if (nodes.length === 0) {
+        // The lazy page has not mounted yet, so this frame shows the Suspense fallback: the route's own
+        // theme is the right answer, and it is the one the wash is already wearing when `wall` is null.
+        // But nothing here reads again when the sections arrive, and a page whose first walled section
+        // covers the centre line would sit on the route theme until the visitor happened to scroll. So
+        // watch the page, take the answer once it has one, and stop watching.
+        if (!arriving) {
+          const main = document.getElementById("main");
+          if (main) {
+            arriving = new MutationObserver(onMove);
+            arriving.observe(main, { childList: true, subtree: true });
+          }
+        }
+      } else if (arriving) {
+        arriving.disconnect();
+        arriving = null;
+      }
       let owner: BgTheme | null = null;
       /* The incumbent is asked first, and gets the centre line for `HYSTERESIS` beyond its own edge.
          Without that, stopping one pixel past a boundary and nudging back starts a fresh dissolve on
@@ -113,6 +132,8 @@ export function useActiveWall(): BgTheme | null {
       window.removeEventListener("resize", onMove);
       cancelAnimationFrame(frame);
       window.clearTimeout(timer);
+      arriving?.disconnect();
+      arriving = null;
     };
   }, [reduce, pathname]);
 

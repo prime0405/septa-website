@@ -1,6 +1,7 @@
-import { Award, HeartHandshake, Lightbulb, Quote } from "lucide-react";
+import { Award, HeartHandshake, Lightbulb } from "lucide-react";
 import { CtaSection } from "../components/blocks/CtaSection";
 import { PageHero } from "../components/blocks/PageHero";
+import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import {
   Card,
   MaskRise,
@@ -9,7 +10,7 @@ import {
   SectionHeading,
   SectionHero,
 } from "../components/ui/primitives";
-import { about, testimonialTitle, testimonials } from "../data/content";
+import { about, testimonialTitle } from "../data/content";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
 
@@ -125,19 +126,9 @@ export default function About() {
       {/* -------------------------- client testimonial -------------------------- */}
       <Section wall="careers" tone="raised" className="section border-y border-line-soft">
         <SectionHero eyebrow="Client Testimonial" title={testimonialTitle} className="mb-12" />
-        <div className="grid gap-4 md:grid-cols-2">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.attribution} delay={i * 0.05}>
-              <Card tilt className="flex h-full flex-col p-6 sm:p-7">
-                <Quote className="size-5 text-mint" aria-hidden />
-                <p className="mt-4 flex-1 text-[0.92rem] leading-relaxed text-muted">“{t.quote}”</p>
-                <p className="mt-5 font-mono text-[0.72rem] tracking-[0.14em] text-faint uppercase">
-                  — {t.attribution}
-                </p>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.1}>
+          <TestimonialOrbit />
+        </Reveal>
       </Section>
 
       {/* ------------------------------ call to action ------------------------------ */}
