@@ -119,11 +119,12 @@ themselves templates until a date, entity and jurisdiction exist.
    so the panel credits the organisation — Halogen Group, EHCC Leadership, Preppod Team, Toviri
    Team — and the site does not invent a person to say them. If Septa wants named spokespeople,
    those names have to come from the clients.
-4. **Partner logos** — four client marks were supplied and are on file in `public/partners`; three of
-   them (Halogen, Preppod, Toviri) are used in the testimonial panel and the marquee, and EHCC has no
-   artwork so its entry shows the name in type. The eight partner names came from the brief, and
-   nothing is claimed about the scope of any relationship, so approval is still needed before any
-   further artwork or wording goes in.
+4. **Partner logos** — colour artwork for seven of the eight marquee partners is on file and is what
+   the row reveals on hover (`public/partners/color/`); the same seven are flattened to grey
+   silhouettes for the resting state. Chinat Group has no asset at all, so its entry shows the name in
+   type, and EHCC appears only through the testimonial panel. The eight partner names came from the
+   brief, and nothing is claimed about the scope of any relationship, so approval is still needed
+   before any further artwork or wording goes in.
 5. **Real content** — replace the 5 sample case studies, 6 sample articles and any company facts.
 6. **Legal review** — the privacy notice and terms are structurally complete, not advice.
 
@@ -413,6 +414,17 @@ over a header that is still transparent at the top of a page. Against a composit
 its darkest, an orb and beam at their peaks and a mesh node on the glyph it measured 4.38:1; under
 the same worst case the veil takes it to 4.85:1.
 
+Loudness is a second, separate answer from *which* wall is lit, and `BackgroundFX` is the only place
+that knows both, so it publishes them. It writes `html[data-hero-wall]` and the page sets one custom
+property behind it: `--bgfx-k` is 0.4 by default and 1 while the homepage hero is the lit section. The
+moving layers are grouped so that a single `opacity: var(--bgfx-k)` reaches the plate, the grid, the
+beam and both orbs at once — they animate their own opacity in their own keyframes, so a per-element
+rule would have meant rewriting every stop — and the mesh multiplies its own 0.28 budget by the same
+number. The result is that the hero keeps the field at full strength and every other section runs the
+same art at 40%, which is also why the scrollbar gutter is only re-coloured under
+`html[data-hero-wall="1"]`: the classic Windows gutter paints the root background, so a dark hero with
+a white gutter reads as a page that stops short of the screen edge.
+
 The mesh is the one layer allowed to cross type, so it is budgeted once at the layer rather than per
 stroke — and the shape of that budget is what lets the art be bold. The ceiling is the *opaque
 colour*, not the coverage: the canvas never draws anything darker than `#6db1ae` at full alpha, so two
@@ -544,18 +556,25 @@ and the homepage technology strip scrolls as a marquee: two identical groups ins
 tech reads the list once. It pauses on hover and, under `prefers-reduced-motion`, the animation is
 dropped, the duplicate is removed and the strip becomes a plain horizontal scroller instead of
 hiding content behind a mask.
-The partner row is the same machine carrying the seven SVGs Septa supplied, served from this origin
-under `public/partners/` (each was scanned for `script`, event attributes and external references
-before it was copied in). They are drawn as white silhouettes on a solid Pearl band because three of
-the seven are white artwork exported for a dark site, so no single light ground can carry the set:
-`filter: brightness(0) invert(1)` flattens every mark to one treatment rather than showing seven
-colour schemes side by side. The band is `bg-brand-pearl` and not a veiled `band`, which would let
-the page wash back through it. `gap` and `padding-right` on the group are deliberately the same
+The partner row is the same machine, now on a light band like every other section. Each mark sits in
+a fixed `.partner-slot` holding two absolutely placed images: the supplied artwork flattened to a
+grey silhouette, and the colour artwork Septa provided for the same client under
+`public/partners/color/` (each file was scanned for `script`, event attributes and external
+references before it was copied in). Both live in the same box, so revealing the colour version
+cannot reflow the row, and the fade is a plain opacity pair — `.partner-slot:hover` swaps which one
+is up. The silhouette is `filter: brightness(0)` at 45% rather than the old inverted white because
+the ground is now light; the colour layer is the only place the real brand schemes appear, and only
+one at a time. The marquee already stops while the pointer is anywhere on it, so the mark being
+looked at is a still one. `gap` and `padding-right` on the group are deliberately the same
 number — the loop shifts by exactly one group, so any difference between the two appears as a jump
 at the seam. Chinat Group has no asset, so its name is rendered as text in the same slot. The logos
 are `alt=""` and the duplicate group is `aria-hidden`; the eight names are exposed once in a
-visually-hidden list instead. Measured on the Pearl ground: heading 18.1:1, lead 14.1:1, eyebrow
-13.5:1, the text fallback 10.4:1, and a silhouette at 70% opacity 9.2:1, where graphics need 3:1.
+visually-hidden list instead. The colour files are the artwork exactly as supplied, and two of them
+are full resolution for a box that renders at 176x56, so the layer is `loading="lazy"` and is
+`display: none` under `@media (hover: none)` — a touch device has no hover, so it never pays the
+708KB for a state it can never see, and the row costs 79KB there instead. Measured on the light
+ground with the wallpaper running: the lowest live text reading anywhere on the homepage is 5.29:1,
+and a silhouette at 45% of full black is well over the 3:1 a graphic needs.
 The client testimonial section is a selector rather than a list — `TestimonialOrbit`
 (`src/components/visuals/TestimonialOrbit.tsx`). The four clients sit on a dashed orbit that crawls
 (`.orbit-path`, 26s) with a dot running the same circle (`useActiveWall`-independent, 22s), the centre

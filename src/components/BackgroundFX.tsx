@@ -60,6 +60,19 @@ export function BackgroundFX() {
     };
   }, [reduce]);
 
+  // Two things are answered from the wall that is currently lit, because this is the one place that
+  // knows it. `--bgfx-k` is how loud the moving layers are: only the homepage hero keeps them at
+  // full strength, and every other section runs them at the reduced value set on `html`. The
+  // attribute also picks the scrollbar gutter colour — the classic Windows gutter paints the root
+  // background, so a dark hero with a white gutter reads as a page that stops short of the screen.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.heroWall = theme === "home" ? "1" : "0";
+    return () => {
+      delete root.dataset.heroWall;
+    };
+  }, [theme]);
+
   return (
     <>
       <div
@@ -74,18 +87,26 @@ export function BackgroundFX() {
         <div className="bgfx-sheet bgfx-sheet-b" />
         <div
           className="absolute inset-[-8%]"
-          style={{ transform: "translate3d(0, var(--bgfx-slow, 0), 0)" }}
+          style={{ transform: "translate3d(0, var(--bgfx-slow, 0), 0)", opacity: "var(--bgfx-k, 1)" }}
         >
           <div className="bgfx-plate relative size-full">
             <PlateStack plate={plate} film={film} reduce={Boolean(reduce)} />
           </div>
         </div>
-        <div className="absolute inset-[-4%]" style={{ transform: "translate3d(0, var(--bgfx-fast, 0), 0)" }}>
-          <div className="grid-bg bgfx-grid size-full opacity-[0.16]" />
+        {/* The grid and the light work sit in one opacity group so `--bgfx-k` reaches all of them at
+            once. The orbs and the beam animate their own opacity, which a per-element rule could not
+            scale without rewriting every keyframe stop. */}
+        <div className="pointer-events-none absolute inset-0" style={{ opacity: "var(--bgfx-k, 1)" }}>
+          <div
+            className="absolute inset-[-4%]"
+            style={{ transform: "translate3d(0, var(--bgfx-fast, 0), 0)" }}
+          >
+            <div className="bgfx-grid grid-bg size-full" />
+          </div>
+          <div className="bgfx-beam absolute inset-y-[-30%] left-0 w-[46%]" />
+          <div className="bgfx-orb bgfx-orb-a" />
+          <div className="bgfx-orb bgfx-orb-b" />
         </div>
-        <div className="bgfx-beam absolute inset-y-[-30%] left-0 w-[46%]" />
-        <div className="bgfx-orb bgfx-orb-a" />
-        <div className="bgfx-orb bgfx-orb-b" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink" />
       </div>
       <WallMotion mode={motion} />

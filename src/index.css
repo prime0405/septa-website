@@ -172,6 +172,25 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     color-scheme: light;
+    /* How loud the moving background layers are. The homepage hero lifts this to 1 (see
+       `BackgroundFX`, which writes `data-hero-wall`); everywhere else the plates, orbs, beam, grid
+       and line art run at two fifths, so the wallpaper keeps its colour and stops performing. */
+    --bgfx-k: 0.4;
+  }
+
+  /* The hero field is dark and reaches both edges of the screen, so the classic scrollbar gutter has
+     to agree with it: that gutter paints the root background, and a white one beside a dark field
+     reads as a page that stops short of the edge. */
+  html[data-hero-wall="1"] {
+    --bgfx-k: 1;
+    scrollbar-color: #1c4453 var(--color-brand-pearl);
+  }
+  html[data-hero-wall="1"]::-webkit-scrollbar-track {
+    background: var(--color-brand-pearl);
+  }
+  html[data-hero-wall="1"]::-webkit-scrollbar-thumb {
+    background: #1c4453;
+    border-color: var(--color-brand-pearl);
   }
 
   body {
@@ -179,7 +198,7 @@
     background-color: var(--color-ink);
     color: var(--color-fg);
     font-family: var(--font-sans);
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -343,6 +362,16 @@
   }
 }
 
+/* The smallest type on the site is the mono label family, and at 16px root it lands between 10.9 and
+   11.5px on a phone. One step up on the root lifts every rem in the page by 6% — those labels over
+   12px, body copy at 17px — without a per-component override. The overflow sweep at 320, 360 and 390
+   is what says the wider type still fits. */
+@media (max-width: 430px) {
+  html {
+    font-size: 17px;
+  }
+}
+
 .section {
   padding-block: clamp(3.5rem, 8vw, 7rem);
 }
@@ -448,15 +477,74 @@
 
 /* The partner row is the same machine with more space between the items, because a logo needs
    breathing room a text pill does not. The gap and the trailing padding stay equal: the loop works
-   by shifting exactly one group, so any difference between them shows as a jump at the seam.
-   `brightness(0)` flattens every mark to a silhouette regardless of the colours it ships with,
-   which is the only way to put a white logo, a navy logo and a black logo on one field. */
+   by shifting exactly one group, so any difference between them shows as a jump at the seam. */
 .marquee-logos .marquee-group {
-  gap: 2.75rem;
-  padding-right: 2.75rem;
+  gap: 2.25rem;
+  padding-right: 2.25rem;
 }
-.logo-mono {
-  filter: brightness(0) invert(1);
+/* One partner mark in two states, stacked inside a box that is fixed in both. The slot size is what
+   lets a wide coloured logo fade in over a narrow silhouette without moving the row by a pixel, and
+   `object-contain` is what makes the four different aspect ratios the supplied artwork comes in sit
+   on one baseline. */
+.partner-slot {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 11rem;
+}
+.partner-mono,
+.partner-color {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+/* `brightness(0)` flattens a mark to a silhouette whatever colours it ships with, which is the only
+   way to put a white logo, a navy logo and a black logo on one light field. */
+.partner-mono {
+  filter: brightness(0);
+  opacity: 0.45;
+}
+/* The artwork Septa supplied for the colour state, revealed on hover. */
+.partner-color {
+  opacity: 0;
+  border-radius: 10px;
+}
+.partner-slot:hover .partner-color {
+  opacity: 1;
+}
+.partner-slot:hover .partner-mono {
+  opacity: 0;
+}
+.partner-word {
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--color-muted);
+}
+/* There is no hover on a touch screen, so the colour layer can never be shown there — and the
+   supplied colour artwork is the heaviest thing on the homepage (the two largest files are full
+   resolution for a box that renders at 176x56). `display: none` also keeps a lazy image from being
+   fetched at all, which is the difference between the row costing about 79KB and about 790KB. */
+@media (hover: none) {
+  .partner-color {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .marquee-logos .marquee-group {
+    gap: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  .partner-slot {
+    height: 2.75rem;
+    width: 8.5rem;
+  }
 }
 
 @keyframes marquee {
@@ -797,9 +885,10 @@
     #000 100%
   );
 }
-/* The subject under the visitor's eye, and the one still fading out of it. */
+/* The subject under the visitor's eye, and the one still fading out of it. `--bgfx-k` is the same
+   loudness control the wash uses, so the line art steps back everywhere except the homepage hero. */
 .bgfx-mesh[data-on="1"] {
-  opacity: 0.28;
+  opacity: calc(0.28 * var(--bgfx-k, 1));
 }
 
 /* ---------- the film hero (AI Product Development) ---------- */
@@ -1047,6 +1136,7 @@
   opacity: 0.55;
 }
 .bgfx-grid {
+  opacity: 0.16;
   animation: bgfx-grid 22s linear infinite;
 }
 .bgfx-beam {

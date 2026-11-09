@@ -96,8 +96,10 @@ export function Layout() {
             // The homepage hero is a charcoal field and the header is transparent at the top of it,
             // which only reads as one continuous surface if the field actually reaches y=0. Without
             // the pull-up the header keeps its own 72px of layout height, the hero starts under it,
-            // and the nav sits on a white strip with white links on it.
-            pathname === "/" && "-mt-[72px]",
+            // and the nav sits on a white strip with white links on it. The extra 1px is the
+            // header's bottom rule: its border-box is 73px, so 72 leaves a hair of page white above
+            // the field at every width.
+            pathname === "/" && "-mt-[73px]",
           )}
         >
           <Outlet />

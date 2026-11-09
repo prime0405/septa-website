@@ -282,37 +282,42 @@ export default function Home() {
       ))}
 
       {/* ---------------------------- 5. our partners ---------------------------- */}
-      {/* A solid Pearl field rather than a veiled band: three of the supplied marks are white
-          artwork drawn for a dark site, so no light ground can carry all eight. */}
-      <section
-        data-wall="services"
-        className="on-dark section relative border-y border-brand-teal/25 bg-brand-pearl"
-      >
-        <div className="wrap mx-auto max-w-3xl text-center">
-          <MaskRise>
-            <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04] text-brand-white">
-              Our Partners
-            </h2>
-          </MaskRise>
+      {/* A light band, like every other section. Each mark is a single grey silhouette until the
+          pointer is on it, and then the supplied colour artwork fades in over the same box — both
+          states are absolutely placed inside a fixed slot, so revealing a wide logo never reflows
+          the row. The marquee already stops while the pointer is anywhere on it, so the mark being
+          looked at is a still one. */}
+      <Section wall="services" tone="raised" bleed className="section border-y border-line-soft">
+        <div className="wrap">
+          <div className="mx-auto max-w-3xl text-center">
+            <MaskRise>
+              <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">Our Partners</h2>
+            </MaskRise>
+          </div>
         </div>
 
-        <div className="marquee marquee-logos mt-12">
+        <div className="marquee marquee-logos mt-10 sm:mt-12">
           <div className="marquee-inner">
             {[0, 1].map((copy) => (
               <div key={copy} className="marquee-group" aria-hidden={copy === 1 || undefined}>
                 {partners.map((p) => (
-                  <span key={p.name} className="flex h-9 shrink-0 items-center">
+                  <span key={p.name} className="partner-slot">
                     {p.logo ? (
-                      <img
-                        src={p.logo}
-                        alt={p.name}
-                        decoding="async"
-                        className="logo-mono h-9 w-auto opacity-70 transition-opacity duration-300 hover:opacity-100"
-                      />
+                      <>
+                        <img src={p.logo} alt={p.name} decoding="async" className="partner-mono" />
+                        {p.color ? (
+                          <img
+                            src={p.color}
+                            alt=""
+                            aria-hidden
+                            decoding="async"
+                            loading="lazy"
+                            className="partner-color"
+                          />
+                        ) : null}
+                      </>
                     ) : (
-                      <span className="text-[1.02rem] tracking-tight whitespace-nowrap text-brand-white/75">
-                        {p.name}
-                      </span>
+                      <span className="partner-word">{p.name}</span>
                     )}
                   </span>
                 ))}
@@ -320,7 +325,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
       <Section wall="use-case" tone="raised" className="section border-y border-line-soft">

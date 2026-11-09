@@ -322,17 +322,23 @@ export const contactServiceOptions = [...contactServices];
 /**
  * Named by Septa. `logo` is the official SVG asset Septa supplied, served from this origin
  * under public/partners. Chinat Group has no asset, so it renders as its name instead.
+ * `color` is the coloured artwork Septa supplied under public/partners/color, revealed when the
+ * pointer is on the mark; it is absent only where no coloured file was supplied.
  * Nothing is claimed about the scope of each relationship.
  */
-export type Partner = { name: string; logo?: string };
+export type Partner = { name: string; logo?: string; color?: string };
 
 export const partners: Partner[] = [
-  { name: "Enyata", logo: "/partners/enyata.svg" },
+  { name: "Enyata", logo: "/partners/enyata.svg", color: "/partners/color/enyata.png" },
   { name: "Chinat Group" },
-  { name: "Halogen Group", logo: "/partners/halogen-group.svg" },
-  { name: "MTN", logo: "/partners/mtn.svg" },
-  { name: "Preppod", logo: "/partners/preppod.svg" },
-  { name: "Atos", logo: "/partners/atos.svg" },
-  { name: "Blusalt", logo: "/partners/blusalt.svg" },
-  { name: "Toviri UK", logo: "/partners/toviri-uk.svg" },
+  {
+    name: "Halogen Group",
+    logo: "/partners/halogen-group.svg",
+    color: "/partners/color/halogen-group.jpg",
+  },
+  { name: "MTN", logo: "/partners/mtn.svg", color: "/partners/color/mtn.webp" },
+  { name: "Preppod", logo: "/partners/preppod.svg", color: "/partners/color/preppod.svg" },
+  { name: "Atos", logo: "/partners/atos.svg", color: "/partners/color/atos.png" },
+  { name: "Blusalt", logo: "/partners/blusalt.svg", color: "/partners/color/blusalt.png" },
+  { name: "Toviri UK", logo: "/partners/toviri-uk.svg", color: "/partners/color/toviri-uk.svg" },
 ];
