@@ -5,7 +5,6 @@ import { ArrowUp } from "lucide-react";
 import { Footer } from "./Footer";
 import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
-import { BackgroundFX } from "../BackgroundFX";
 import { CursorHalo } from "../ui/CursorHalo";
 import { cn } from "../../lib/cn";
 import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
@@ -77,15 +76,6 @@ export function Layout() {
     if (pathname !== "/") endIntro();
   }, [pathname]);
 
-  // The wallpaper is mounted below on the homepage alone, but it is not the only thing that moves:
-  // page headers and artwork cards each carry a drifting plate of their own. This flag is what the
-  // stylesheet reads to hold those still everywhere else, so one route owns all the motion.
-  useEffect(() => {
-    const root = document.documentElement;
-    if (pathname === "/") root.dataset.home = "1";
-    else delete root.dataset.home;
-  }, [pathname]);
-
   // Stable so the curtain's timing effect is never restarted while the panels are on screen.
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
@@ -96,10 +86,10 @@ export function Layout() {
   return (
     <>
       <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
-        {/* The wallpaper is the homepage's, and only the homepage's. Every other route renders on the
-            plain white page ground, so nothing is mounted to animate behind it — which also means no
-            plate, film, grid, beam, orb or mesh bytes are fetched on those pages at all. */}
-        {pathname === "/" ? <BackgroundFX /> : null}
+        {/* Nothing is mounted behind this page. Septa asked for the motion to stop belonging to the
+            site: the wallpaper layer is out of the tree on every route, so no plate, film, grid,
+            beam, orb or mesh byte is fetched anywhere, and the only animation left is the one the
+            homepage hero carries inside its own section. */}
         <Nav />
         <main
           id="main"

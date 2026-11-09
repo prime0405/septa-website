@@ -7,8 +7,11 @@ import { useActiveWall } from "../lib/useActiveWall";
 import { WallMotion } from "./visuals/WallMotion";
 
 /**
- * The moving backdrop, mounted on the homepage alone (`Layout` is what decides that). Two layers
- * answer to different rules.
+ * The moving backdrop. PARKED — nothing mounts it. Septa asked for the site to be white and still
+ * everywhere except the homepage hero, and the hero paints its own opaque field, so `Layout` no
+ * longer renders this and no route does either. It sits unbuilt in the tree (Vite never bundles an
+ * unreferenced module) as the reference for how the wash was assembled; restoring it is a mount,
+ * not a rewrite.
  *
  * `bgfx-wash` is colour: a drifting plate, two soft orbs, a beam that crosses every so often, and a
  * slow grid. It sits behind everything and is masked so that most of it lands in the gutters beside
@@ -61,11 +64,11 @@ export function BackgroundFX() {
     };
   }, [reduce]);
 
-  // Two things are answered from the wall that is currently lit, because this is the one place that
-  // knows it. `--bgfx-k` is how loud the moving layers are: only the homepage hero keeps them at
-  // full strength, and every other section runs them at the reduced value set on `html`. The
-  // attribute also picks the scrollbar gutter colour — the classic Windows gutter paints the root
-  // background, so a dark hero with a white gutter reads as a page that stops short of the screen.
+  // Two things are answered from the wall that is currently lit. `--bgfx-k` is how loud the moving
+  // layers are: only the homepage hero keeps them at full strength, and every other section runs
+  // them at the reduced value set on `html`. The attribute also picks the scrollbar gutter colour —
+  // the classic Windows gutter paints the root background, so a dark hero with a white gutter reads
+  // as a page that stops short of the screen. With this component parked, `Home` owns the flag.
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.heroWall = theme === "home" ? "1" : "0";
@@ -83,7 +86,7 @@ export function BackgroundFX() {
         className="bgfx bgfx-wash pointer-events-none fixed inset-0 z-0 overflow-hidden"
       >
         {/* The per-page gradient sheets. They paint first, so the plate, grid, beam and orbs sit on
-            top of them and the whole wash still runs under the same mirror mask. */}
+            top of them. */}
         <div className="bgfx-sheet bgfx-sheet-a" />
         <div className="bgfx-sheet bgfx-sheet-b" />
         <div

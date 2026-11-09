@@ -297,10 +297,15 @@ a Black Pearl disc with white and Tradewind type on it.
 
 The six `public/img/plate-*.jpg` files are generated abstract brand art, not stock photography and
 not documentation: there is no client, product or team imagery for this site yet. Four are mapped
-from a case or post slug by `src/lib/plates.ts`; `plate-hero.jpg` fronts the page heroes and
-`plate-aurora.jpg` is the page-wide wash. They are encoded
+from a case or post slug by `src/lib/plates.ts` and `plate-hero.jpg` fronts the foot of every page
+header; `plate-aurora.jpg` was the page-wide wash and is now only referenced by the parked
+`BackgroundFX`. They are encoded
 from their PNG sources by `scripts/encode-plates.ps1`, which resizes, flattens onto white and writes
 JPEG at a fixed quality (28–87KB each). Replace them with real photography as soon as it exists.
+The three photographs Septa supplied for the homepage offering blocks live in
+`public/img/section/` and are re-encoded WebP (79/65/79KB against 3.07MB of PNG); each is framed
+4:3 beside its own copy in a zig-zag, and the AI plate crops to `object-right` because its subject
+sits on the right of the frame.
 
 **Motion.** `src/components/IntroCurtain.tsx` covers the first paint of a session with two Black
 Pearl panels and "Welcome to Septa", holds ~1.15s, then parts them over 0.9s. Clicking or pressing
@@ -348,17 +353,23 @@ child. The class is added only when the loop is eligible, so a touch device or a
 brighter tint on a white card
 pulls `text-mint` under AA; with it spliced into the stack nothing either harness measured came below
 4.76:1, which clears AA for small text.
-Behind all of it the page never stands still — on the homepage. `BackgroundFX`
-(`src/components/BackgroundFX.tsx`) renders a fixed colour wash there — a panned plate, or a generated
-film where a theme supplies one, plus a creeping grid, a beam that crosses the viewport every 15s and
-two drifting
-orbs — at `z-0`, and the live line art in a separate layer at `z-20`, above the section bands.
-Every other route mounts none of it: `Layout` renders the component only when the path is `/`, so the
-rest of the site sits on the plain white page ground and fetches no plate, film, grid, beam, orb or
-mesh byte at all. The two slow plate drifts that page headers and artwork cards carry
-(`.plate-drift`) are the only motion left outside the homepage, so `Layout` also writes
-`html[data-home]` and the stylesheet holds them still wherever that flag is absent — the same picture,
-never moving.
+Behind all of it the page is still — everywhere except the homepage hero. Septa asked for a white
+ground with no moving backdrop, so `Layout` mounts no wallpaper layer on any route: `BackgroundFX`
+(`src/components/BackgroundFX.tsx`), `WallMotion` and `useActiveWall` are unreferenced modules that
+Vite never puts in the bundle, and no plate, film, grid, beam, orb or mesh byte is fetched anywhere.
+The one background that moves is the homepage hero field, which paints its own opaque gradient and
+carries its own grid, aurora orbs, spiral canvas and floating labels inside `.hero-field`
+(`src/pages/Home.tsx`, `src/index.css`). The two slow plate drifts that page headers and artwork
+cards carry (`.plate-drift`) are keyed to that section alone — outside it the stylesheet resolves the
+animation to `none`, so every other page is the same picture never moving. Verified in the browser at
+1440×900: zero `.bgfx` and zero `.bgfx-mesh` nodes on the homepage and on every inner route, the only
+running drift is the hero's, `body` computes to `rgb(255, 255, 255)` everywhere below the hero, and
+no route requests a video.
+
+The paragraphs on the wash, the mesh and their masks are the record of that layer while it ran. They
+are kept because most of the contrast figures quoted through the rest of this section were measured
+against it, and because bringing it back is a mount in `Layout` rather than a rewrite.
+
 The line art is two canvases, not one, and only the one under the eye is lit: see the handover below.
 The canvas runs one of five subjects, chosen by what the page — or, on a long page, the section under
 the visitor's eye — is about (`src/lib/bgThemes.ts`): a wireframe globe ringed by breathing pulses and
@@ -400,20 +411,21 @@ of contrast, not layering. Measured against a `source-over`
 composite of everything that can coincide, a full-strength wash under the text column puts the
 smallest label tokens under AA.
 
-The answer is two masks that are mirror images of one another, both keyed to the same
-`50% ± 600px / ± 760px` geometry. `.bgfx-wash` keeps the wash at full strength outside the reading
-column and 30% of it inside. `.band::before` is how every section tone is painted now, a
-`z-index: -1` pseudo-element rather than a background class, which lets it hold the veil at 76%
-white across the column and open it to 30% in the gutters; `main` is `relative z-10`, so the veil
-still lands above the wash and below the copy. What the pairing buys is amplitude exactly where
-nothing writes: the gutter composite moves from about `#fafafa` to `#accfcf`, while every pixel
-behind type is arithmetically the value that was already audited. It holds because `.wrap` is
-1220px wide with 2rem of padding, so the last glyph sits 578px from centre and the veil only starts
-ramping at 600px, and because cards, chips and panels are opaque fills. The stop positions are
-wrapped in `max(0px, …)` / `min(100%, …)`: on a viewport narrow enough to make `50% - 760px`
-negative, a bare negative stop resolves inconsistently and can drop the ramp across the middle of
-the screen, where the text is. With the clamps the gutters simply disappear and the page keeps the
-column treatment.
+The answer was two masks that are mirror images of one another, both keyed to the same
+`50% ± 600px / ± 760px` geometry. `.bgfx-wash` kept the wash at full strength outside the reading
+column and 30% of it inside. `.band::before` — a `z-index: -1` pseudo-element rather than a background
+class, which is still how every section tone is painted — held the veil at 76% white across the column
+and opened it to 30% in the gutters, and `main` is `relative z-10`, so the veil landed above the wash
+and below the copy. What the pairing bought was amplitude exactly where nothing writes: the gutter
+composite moves from about `#fafafa` to `#accfcf`, while every pixel behind type is arithmetically the
+value that was already audited. It held because `.wrap` is 1220px wide with 2rem of padding, so the
+last glyph sits 578px from centre and the veil only starts ramping at 600px, and because cards, chips
+and panels are opaque fills. The stop positions were wrapped in `max(0px, …)` / `min(100%, …)`: on a
+viewport narrow enough to make `50% - 760px` negative, a bare negative stop resolves inconsistently
+and can drop the ramp across the middle of the screen, where the text is. With no wash behind it there
+is nothing for the gutters to open onto, so that horizontal mask is gone from `.band::before` and the
+veil is a flat 76% across the whole band; the pseudo-element stays, because it is still the thing that
+paints the tone.
 Both heroes carry the same veil (`band` on `PageHero` and on the homepage hero, which is why those
 two sections set it explicitly instead of going through `Section tone`): their copy used to sit on
 the raw wash, and the pair that failed because of it was the active nav link, `text-mint` at 14.4px
@@ -421,16 +433,17 @@ over a header that is still transparent at the top of a page. Against a composit
 its darkest, an orb and beam at their peaks and a mesh node on the glyph it measured 4.38:1; under
 the same worst case the veil takes it to 4.85:1.
 
-Loudness is a second, separate answer from *which* wall is lit, and `BackgroundFX` is the only place
-that knows both, so it publishes them. It writes `html[data-hero-wall]` and the page sets one custom
-property behind it: `--bgfx-k` is 0.4 by default and 1 while the homepage hero is the lit section. The
-moving layers are grouped so that a single `opacity: var(--bgfx-k)` reaches the plate, the grid, the
-beam and both orbs at once — they animate their own opacity in their own keyframes, so a per-element
-rule would have meant rewriting every stop — and the mesh multiplies its own 0.28 budget by the same
-number. The result is that the hero keeps the field at full strength and every other section runs the
-same art at 40%, which is also why the scrollbar gutter is only re-coloured under
-`html[data-hero-wall="1"]`: the classic Windows gutter paints the root background, so a dark hero with
-a white gutter reads as a page that stops short of the screen edge.
+Loudness was a second, separate answer from *which* wall is lit, and `BackgroundFX` was the only place
+that knew both, so it published them on `html[data-hero-wall]`: `--bgfx-k` is 0.4 by default and 1 while
+the homepage hero is the lit section. The moving layers are grouped so that a single
+`opacity: var(--bgfx-k)` reaches the plate, the grid, the beam and both orbs at once — they animate
+their own opacity in their own keyframes, so a per-element rule would have meant rewriting every stop —
+and the mesh multiplies its own 0.28 budget by the same number. The var now only waits for a restored
+layer; the flag is still live, because it also picks the scrollbar gutter colour — the classic Windows
+gutter paints the root background, so a dark hero with a white gutter reads as a page that stops short
+of the screen edge. With `BackgroundFX` parked, `Home` writes it from an `IntersectionObserver` on the
+hero field, so the gutter is dark for exactly as long as the hero straddles the middle of the viewport
+and white from the first band after it.
 
 The mesh is the one layer allowed to cross type, so it is budgeted once at the layer rather than per
 stroke — and the shape of that budget is what lets the art be bold. The ceiling is the *opaque
@@ -501,19 +514,22 @@ plates contain real ink, `PageHero`'s band and the homepage hero layer sit at 55
 behind an 82% white veil, and no small text is left on top of an artwork panel: the case-study
 category and client descriptor moved into the card's text column, and the featured post's sample
 labels sit on a solid caption bar.
-One page swaps its plate for a film: Septa supplied `public/video/ai-product-development.mp4`, which
-`PageHero` runs behind the AI Product Development header when the service data carries a `heroVideo`.
-That clip is not a watercolour. Sampled as ASCII luminance maps, its mean never leaves the range
-0.048–0.114, but individual cells reach 234–255 and the bright clusters drift straight through the
-middle of the frame, so a flat scrim either erases the film or lets a particle pass behind an 11px
-label and break AA. `.film-veil` is therefore the section-band mask again — 82% across the reading
-column, 34% in the gutters — with a wider ramp (1100px rather than 760px, because a bright field
-makes a narrow edge read as a box). A pure-white particle under the full veil leaves
-`rgb(55, 73, 79)`, and against that ground the header's type painted directly on the film is
-re-measured with the new wallpaper running, over a sweep of the page rather than one static frame:
-title 9.18, lead 7.56, the 11.2px eyebrow 8.78 (the worst pixel, i.e. the brightest, since this is
-white text). The breadcrumb, the chip labels and the aside copy are outside that set because each
-sits on its own tinted ground rather than on the raw veil, so they test the tint and not the scrim.
+One page used to swap its plate for a film: Septa supplied `public/video/ai-product-development.mp4`
+and `PageHero` ran it behind the AI Product Development header while the service data carried a
+`heroVideo`. That wiring is out — a moving film behind an inner page is precisely the background
+animation Septa asked to have removed, and its Pearl field is precisely the non-white ground — so the
+AI header now renders the same white band as every other interior page. `heroVideo`, `FilmBackdrop`,
+`.film-veil`, the `.on-dark` type rules and the `film` pill tone are deleted, and the clip stays in
+`public/video/` as supplied material that nothing requests. What was learned from the clip is worth
+keeping: it is not a watercolour. Sampled as ASCII luminance maps its mean never leaves 0.048–0.114,
+but individual cells reach 234–255 and the bright clusters drift straight through the middle of the
+frame, so a flat scrim either erases the film or lets a particle pass behind an 11px label and break
+AA. The veil that stood there was therefore the section-band mask again — 82% across the reading
+column, 34% in the gutters, with a wider ramp (1100px rather than 760px, because a bright field makes
+a narrow edge read as a box) — and a pure-white particle under it left `rgb(55, 73, 79)`, against
+which the swept harness gave title 9.18, lead 7.56 and 8.78 for the 11.2px eyebrow (the worst pixel,
+i.e. the brightest, since that type was white). The breadcrumb, the chip labels and the aside copy
+were outside that set because each sat on its own tinted ground rather than on the raw veil.
 Three traps in the probe are worth naming, because each produces a confident wrong number. It hides one
 element at a time and samples the box it vacated, so it can only be pointed at whole text runs:
 widening it to every inner `span` returns a meaningless 1.16 for the animated eyebrow, because hiding
@@ -529,20 +545,16 @@ the gradient, with the wallpaper nowhere in the box. The number is real and AA i
 take `--color-mint-bright`, the darker step of the pair `.eyebrow` already uses for the same reason, and
 the same step went to the clause labels on the legal pages and the process numbers on a use case. Those
 two labels measure 5.40 at 1440×900 and 5.42 at 390×844.
-That ground also settles the colour question: the deepest Tradewind on it is 3.44, which is fine
-for a rule and not for a label, so on the film all type is Pearl White and the brand accent stays in
-the graphics
-(the eyebrow rule, the chip tint, the primary button, the aside border). Playback is driven by an
-`IntersectionObserver` rather than the `autoplay` attribute, so a header that has been scrolled past
-stops decoding; `prefers-reduced-motion` never attaches the observer and the first frame stays on
-screen; the section paints Black Pearl under the clip, so the failure mode is a plain dark header
-rather than a broken one. Verified in the built bundle: the element reaches `readyState` 4 at
-1280×720, and because there is no `autoplay` attribute the first frame it advances to can only have
-come from the observer's `play()`, which resolves without an autoplay rejection. What is *not*
-verified is a continuous run: the browser used for these checks keeps its tab hidden, and Chrome
-suspends media in a hidden document after ~70ms regardless of who asked for it, so the loop itself
-needs a real window. Every interior page keeps its white band — the workflow page's hero still
-measures `::before` opacity 0.76 with the plate at 0.55 and no `<video>` in the DOM.
+That ground also settled a colour rule that still applies wherever a Pearl field appears, which is now
+only the homepage hero: the deepest Tradewind measured over a particle that has passed through the full
+veil lands at 3.44, fine for a rule and not for a label, so on a dark field all type is Pearl White and
+the brand accent stays in the graphics (the eyebrow rule, the chip tint, the primary button, the aside
+border). Film playback was driven by an `IntersectionObserver` rather than the `autoplay` attribute, so
+a header that had been scrolled past stopped decoding, and `prefers-reduced-motion` never attached the
+observer at all. What is *not* verified anywhere in this file is a continuous loop run in a real
+window: the browser used for these checks keeps its tab hidden, and Chrome suspends media in a hidden
+document after ~70ms regardless of who asked for it. Every interior page keeps its white band — the AI
+page's hero now measures `::before` opacity 0.76 with the plate at 0.55 and no `<video>` in the DOM.
 `AutoRollList` (`src/components/ui/AutoRollList.tsx`, timing in `src/lib/useRollCycle.ts`) advances
 itself through a list, one item at a time, and stops dead under the pointer. The clock is the
 progress fill's own `animationend` rather than a parallel `setTimeout`, so pausing the animation

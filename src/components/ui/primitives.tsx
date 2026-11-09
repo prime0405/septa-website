@@ -249,7 +249,7 @@ export function Pill({
   className,
 }: {
   children: ReactNode;
-  tone?: "line" | "mint" | "muted" | "amber" | "film";
+  tone?: "line" | "mint" | "muted" | "amber";
   className?: string;
 }) {
   const tones = {
@@ -257,9 +257,6 @@ export function Pill({
     mint: "border-mint/40 bg-mint/10 text-mint",
     muted: "border-line-soft bg-transparent text-faint",
     amber: "border-amber/40 bg-amber/10 text-amber",
-    // For a chip that sits on the film header: the tint and the border are Tradewind, but the
-    // label has to be Pearl White because no accent survives a white particle behind it.
-    film: "border-brand-teal/35 bg-brand-teal/15 text-brand-white",
   } as const;
   return (
     <span

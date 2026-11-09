@@ -35,8 +35,6 @@ export type ServiceContent = {
   whoWeServe?: Capability[];
   extra?: { heading: string; paragraphs: string[] };
   cta?: { headline: string; copy: string; label: string; to: string };
-  /** Film that runs behind this page's hero header, supplied by Septa. */
-  heroVideo?: string;
   /** Sections expected on this page for which the document gives no copy. */
   pending?: string[];
 };
@@ -222,7 +220,6 @@ export const services: ServiceContent[] = [
       label: "Grow my business with AI",
       to: "/request",
     },
-    heroVideo: "/video/ai-product-development.mp4",
   },
   {
     slug: "workflow-automation",

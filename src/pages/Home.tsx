@@ -112,6 +112,30 @@ export default function Home() {
   const reduce = useReducedMotion();
   const wide = useWideHero();
   const pinned = !reduce;
+
+  // The hero is the only dark surface on the site, and the classic Windows scrollbar paints its gutter
+  // from the root background — so the field reaches both edges only while it owns the middle of the
+  // screen, and the gutter goes back to white with the page underneath it. `BackgroundFX` used to
+  // publish this flag from whichever wallpaper was lit; the wallpaper is gone, so the field answers
+  // for itself, and does so under reduced motion too, where the hook it used always answered null.
+  const fieldRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field) return;
+    const root = document.documentElement;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        root.dataset.heroWall = entry?.isIntersecting ? "1" : "0";
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    observer.observe(field);
+    return () => {
+      observer.disconnect();
+      delete root.dataset.heroWall;
+    };
+  }, []);
+
   const { scrollYProgress: heroScroll } = useScroll({
     target: stageRef,
     offset: ["start start", "end start"],
@@ -157,6 +181,7 @@ export default function Home() {
         }
       >
         <section
+          ref={fieldRef}
           data-wall="home"
           className={
             pinned

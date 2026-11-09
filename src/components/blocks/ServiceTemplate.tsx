@@ -25,25 +25,18 @@ export function ServiceTemplate({
   return (
     <>
       <PageHero
-        video={page.heroVideo}
         crumbs={crumbs}
         eyebrow={page.name}
         title={page.heroTitle}
         lead={page.intro}
         meta={
           <>
-            <Pill tone={page.heroVideo ? "film" : "mint"}>
+            <Pill tone="mint">
               <ServiceIcon icon={page.icon} className="size-3.5" strokeWidth={2} />
               {page.name}
             </Pill>
-            <Pill tone={page.heroVideo ? "film" : "line"}>
-              {page.coreServices.length} core services
-            </Pill>
-            {page.process ? (
-              <Pill tone={page.heroVideo ? "film" : "line"}>
-                {page.process.length}-step process
-              </Pill>
-            ) : null}
+            <Pill tone="line">{page.coreServices.length} core services</Pill>
+            {page.process ? <Pill tone="line">{page.process.length}-step process</Pill> : null}
           </>
         }
         actions={

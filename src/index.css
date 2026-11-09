@@ -172,15 +172,16 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     color-scheme: light;
-    /* How loud the moving background layers are. The homepage hero lifts this to 1 (see
-       `BackgroundFX`, which writes `data-hero-wall`); everywhere else the plates, orbs, beam, grid
-       and line art run at two fifths, so the wallpaper keeps its colour and stops performing. */
+    /* How loud the moving background layers are. Nothing mounts them any more — the wallpaper layer
+       is parked and the only motion left on the site is inside the homepage hero — so this holds the
+       value the parked sheets were budgeted against if they are ever asked back. */
     --bgfx-k: 0.4;
   }
 
   /* The hero field is dark and reaches both edges of the screen, so the classic scrollbar gutter has
      to agree with it: that gutter paints the root background, and a white one beside a dark field
-     reads as a page that stops short of the edge. */
+     reads as a page that stops short of the edge. `Home` writes the flag while the field owns the
+     middle of the viewport. */
   html[data-hero-wall="1"] {
     --bgfx-k: 1;
     scrollbar-color: #1c4453 var(--color-brand-pearl);
@@ -820,12 +821,12 @@
 }
 
 /* Section bands are the other half of the same contract. Painted as a `::before` on a negative
-   z-index so it sits under the section's copy but over the wash, and masked to the inverse
-   profile of the wash: 76% of the band colour across the reading column and 30% in the gutters,
-   which is what lets the moving backdrop reach the eye at all. The column value came down from 82%
-   when the wallpaper was asked to carry more presence, and the contrast harness re-measured every
-   run of copy on the page against the new ground. Text only ever sits inside `.wrap` (1220px) or on
-   an opaque `.card`, never in the outer 30% that this rule opens up. */
+   z-index so it sits under the section's copy but over anything behind the page, at 76% of the band
+   colour — the value the contrast harness measured every run of copy against. It used to carry a
+   horizontal mask as well, 76% across the reading column and 30% in the gutters, whose only purpose
+   was to let the moving wallpaper reach the eye beside the text. The wallpaper is gone, so the mask
+   went with it: a 76% veil next to a 30% one of the same colour is a seven-level edge across an
+   otherwise flat page. */
 .band {
   --band: var(--color-ink);
 }
@@ -843,23 +844,6 @@
   background: var(--band);
   opacity: 0.76;
   pointer-events: none;
-  mask-image: linear-gradient(
-    to right,
-    rgb(0 0 0 / 0.366) 0,
-    rgb(0 0 0 / 0.366) max(0px, calc(50% - 760px)),
-    #000 max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
-    rgb(0 0 0 / 0.366) min(100%, calc(50% + 760px)),
-    rgb(0 0 0 / 0.366) 100%
-  );
-}
-
-/* The mirror mask exists to let the wallpaper reach the gutters. On the routes that have no
-   wallpaper there is nothing left to let through, and a 76% veil beside a 30% one of the same
-   colour is a seven-level edge across an otherwise flat page — so off the homepage the band is one
-   even fill. Only the gutters change: every run of copy sits inside `.wrap`, which was always at the
-   full 76%, so the audited grounds are the same numbers they were before. */
-html:not([data-home]) .band::before {
-  mask-image: none;
 }
 
 /* The mesh is the one thing allowed to cross the text, so it is capped by the whole-layer
@@ -898,50 +882,6 @@ html:not([data-home]) .band::before {
    loudness control the wash uses, so the line art steps back everywhere except the homepage hero. */
 .bgfx-mesh[data-on="1"] {
   opacity: calc(0.28 * var(--bgfx-k, 1));
-}
-
-/* ---------- the film hero (AI Product Development) ---------- */
-
-/* Septa supplied a 12s clip for the AI page header. Sampled as ASCII luminance maps it is a dark
-   field with drifting clusters of near-white particles: mean relative luminance never exceeds
-   0.114, but individual cells reach 234-255 and they pass straight through the middle of the
-   frame, so a flat scrim has to pick a side — light enough and a particle behind a glyph puts the
-   copy under AA, heavy enough and the clip stops being a film. The veil therefore keeps the
-   reading-column geometry of `.band::before` and changes only the values: 82% across the column
-   (0.82 x pure white leaves rgb(55,73,79), the ground every hero pair is measured against in the
-   README) and 0.82 x 0.415 = 34% in the open gutters, where the `.wrap` proof says nothing but
-   the film lives. The ramp is wider than the section bands' — 1100px instead of 760 — because a
-   bright field makes the 160px edge read as a box. The section also paints Black Pearl under the
-   clip, which is what makes the worst case a plain dark header rather than a broken one if the
-   video never decodes. */
-.film-veil {
-  background: var(--color-brand-pearl);
-  opacity: 0.82;
-  pointer-events: none;
-  mask-image: linear-gradient(
-    to right,
-    rgb(0 0 0 / 0.415) 0,
-    rgb(0 0 0 / 0.415) max(0px, calc(50% - 1100px)),
-    #000 max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
-    rgb(0 0 0 / 0.415) min(100%, calc(50% + 1100px)),
-    rgb(0 0 0 / 0.415) 100%
-  );
-}
-
-/* Nothing that small survives a coloured accent on this ground: the deepest Tradewind measured over
-   a particle that has passed through the full veil lands at 3.44:1, which is fine for a rule and
-   not fine for an 11px label. So on any Pearl field all type is Pearl White and the accent stays in
-   the graphics — the eyebrow rule, the chip tints, the primary button. The selectors are scoped
-   because `.eyebrow` and `.prose-body` are unlayered rules, which outrank a Tailwind utility
-   however it is ordered. */
-.on-dark .eyebrow {
-  color: rgb(255 255 255 / 0.86);
-}
-.on-dark .eyebrow::before {
-  background: color-mix(in oklab, var(--color-brand-teal) 65%, transparent);
-}
-.on-dark .prose-body {
-  color: rgb(255 255 255 / 0.88);
 }
 
 /* ---------- the per-page gradient themes ---------- */
@@ -1238,12 +1178,21 @@ html:not([data-home]) .band::before {
   mask-image: linear-gradient(to top, #000 12%, transparent 92%);
 }
 
-/* Plates are oversized by their callers, so this drift never exposes an edge. */
+/* Plates are oversized by their callers, so this drift never exposes an edge.
+
+   Septa asked for the motion to belong to the first hero alone, so the drift is not a property of
+   the plate class any more — it is a property of where the plate sits. Page headers, artwork cards
+   and everything below the homepage fold keep the same picture and never move; only a plate inside
+   `.hero-field` is still animated. */
 .plate-drift,
 .plate-drift-slow {
+  animation: none;
+}
+.hero-field .plate-drift,
+.hero-field .plate-drift-slow {
   animation: plate-drift 26s ease-in-out infinite alternate;
 }
-.plate-drift-slow {
+.hero-field .plate-drift-slow {
   animation-duration: 44s;
 }
 @keyframes plate-drift {
@@ -1253,14 +1202,6 @@ html:not([data-home]) .band::before {
   100% {
     transform: translate3d(1.6%, -1.2%, 0) scale(1.08);
   }
-}
-
-/* Septa asked for the motion to belong to the homepage alone. Off that route the plates keep the
-   picture they were cropped from and lose the drift, so a page header or an artwork card is a still
-   while you read it. `Layout` writes `data-home` on the root for exactly this rule. */
-html:not([data-home]) .plate-drift,
-html:not([data-home]) .plate-drift-slow {
-  animation: none;
 }
 
 /* ---------- the pointer ---------- */
