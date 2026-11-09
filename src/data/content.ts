@@ -24,6 +24,10 @@ export type LandingBlock = {
   subheading: string;
   cta: string;
   to: string;
+  /** Septa-supplied artwork for this offering, named after the section it belongs to. */
+  image: string;
+  /** What the artwork shows, for the text that describes it when the picture cannot. */
+  alt: string;
 };
 
 export const landingBlocks: LandingBlock[] = [
@@ -35,6 +39,8 @@ export const landingBlocks: LandingBlock[] = [
       "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering that solve user problems and support your business growth.",
     cta: "Explore AI Product Development",
     to: "/services/ai-product-development",
+    image: "/img/section/ai-product-development.webp",
+    alt: "A wireframe brain lit above a circular base, ringed by code, analytics, cloud and AI chips",
   },
   {
     key: "traditional",
@@ -44,6 +50,8 @@ export const landingBlocks: LandingBlock[] = [
       "We turn ideas into intelligent products that solve real problems, delight users, and drive growth, powered by smart strategy, and thoughtful design.",
     cta: "Build with us",
     to: "/case-studies",
+    image: "/img/section/traditional-product-development.webp",
+    alt: "An open laptop showing source code, surrounded by floating screens, a component tree and a phone",
   },
   {
     key: "talent",
@@ -53,6 +61,8 @@ export const landingBlocks: LandingBlock[] = [
       "Connecting you with top tech talents to fuel innovation and accelerate growth.",
     cta: "Hire Top Tech Talents Now",
     to: "/services/talent-solution",
+    image: "/img/section/talent-solution.webp",
+    alt: "A group of lit figures around a central person, beneath a dotted world map and hiring icons",
   },
 ];
 

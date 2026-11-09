@@ -9,6 +9,7 @@ import { CtaSection } from "../components/blocks/CtaSection";
 import { Button } from "../components/ui/Button";
 import {
   Card,
+  Eyebrow,
   MaskRise,
   Reveal,
   Section,
@@ -26,6 +27,7 @@ import {
   testimonialTitle,
 } from "../data/content";
 import { site } from "../lib/site";
+import { cn } from "../lib/cn";
 import { paths } from "../lib/paths";
 import type { BgTheme } from "../lib/bgThemes";
 import { usePageMeta } from "../lib/usePageMeta";
@@ -261,6 +263,15 @@ export default function Home() {
       </div>
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
+      {/* Septa's artwork for each offering, named after the section it belongs to, sits beside the
+          words instead of under them. The picture changes side on every block, so the three read as
+          one argument being built rather than three copies of the same layout, and the text column
+          is left-aligned because a column of prose next to a picture has no centre to share.
+
+          All three frames are the same 4:3 box so the blocks line up with each other, which the
+          supplied files do not: two are square and one is wide. `object-cover` fills the box from
+          the centre, and the wide plate is the one exception — its subject sits right of the middle,
+          so it is anchored to the right edge and the crop falls on the empty haze at its left. */}
       {landingBlocks.map((block, i) => (
         <Section
           key={block.key}
@@ -268,16 +279,38 @@ export default function Home() {
           tone={i % 2 ? "surface" : "raised"}
           className="section border-y border-line-soft"
         >
-          <SectionHero
-            eyebrow={block.label}
-            title={block.headline}
-            lead={block.subheading}
-            action={
-              <Button to={block.to} size="lg" magnetic>
-                {block.cta}
-              </Button>
-            }
-          />
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="max-w-xl">
+              <Eyebrow className="mb-4">{block.label}</Eyebrow>
+              <MaskRise>
+                <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">{block.headline}</h2>
+              </MaskRise>
+              <p className="prose-body mt-5 text-[1.02rem]">{block.subheading}</p>
+              <div className="mt-7">
+                <Button to={block.to} size="lg" magnetic>
+                  {block.cta}
+                </Button>
+              </div>
+            </div>
+
+            <Reveal
+              delay={0.08}
+              className={cn("min-w-0", i % 2 ? "lg:order-first" : "lg:order-last")}
+            >
+              <figure className="overflow-hidden rounded-card border border-line shadow-soft">
+                <img
+                  src={block.image}
+                  alt={block.alt}
+                  decoding="async"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className={cn(
+                    "aspect-[4/3] w-full object-cover",
+                    block.key === "ai" ? "object-right" : "object-center",
+                  )}
+                />
+              </figure>
+            </Reveal>
+          </div>
         </Section>
       ))}
 

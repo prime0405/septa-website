@@ -7,7 +7,8 @@ import { useActiveWall } from "../lib/useActiveWall";
 import { WallMotion } from "./visuals/WallMotion";
 
 /**
- * The site-wide moving backdrop, in two layers that answer to different rules.
+ * The moving backdrop, mounted on the homepage alone (`Layout` is what decides that). Two layers
+ * answer to different rules.
  *
  * `bgfx-wash` is colour: a drifting plate, two soft orbs, a beam that crosses every so often, and a
  * slow grid. It sits behind everything and is masked so that most of it lands in the gutters beside

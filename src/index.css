@@ -853,6 +853,15 @@
   );
 }
 
+/* The mirror mask exists to let the wallpaper reach the gutters. On the routes that have no
+   wallpaper there is nothing left to let through, and a 76% veil beside a 30% one of the same
+   colour is a seven-level edge across an otherwise flat page — so off the homepage the band is one
+   even fill. Only the gutters change: every run of copy sits inside `.wrap`, which was always at the
+   full 76%, so the audited grounds are the same numbers they were before. */
+html:not([data-home]) .band::before {
+  mask-image: none;
+}
+
 /* The mesh is the one thing allowed to cross the text, so it is capped by the whole-layer
    opacity rather than per-stroke alpha: strokes are drawn opaque inside the canvas, which means
    two crossing lines cannot add up to a darker pixel than a single one. The layer runs at 28% and
@@ -1244,6 +1253,14 @@
   100% {
     transform: translate3d(1.6%, -1.2%, 0) scale(1.08);
   }
+}
+
+/* Septa asked for the motion to belong to the homepage alone. Off that route the plates keep the
+   picture they were cropped from and lose the drift, so a page header or an artwork card is a still
+   while you read it. `Layout` writes `data-home` on the root for exactly this rule. */
+html:not([data-home]) .plate-drift,
+html:not([data-home]) .plate-drift-slow {
+  animation: none;
 }
 
 /* ---------- the pointer ---------- */

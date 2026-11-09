@@ -77,6 +77,15 @@ export function Layout() {
     if (pathname !== "/") endIntro();
   }, [pathname]);
 
+  // The wallpaper is mounted below on the homepage alone, but it is not the only thing that moves:
+  // page headers and artwork cards each carry a drifting plate of their own. This flag is what the
+  // stylesheet reads to hold those still everywhere else, so one route owns all the motion.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (pathname === "/") root.dataset.home = "1";
+    else delete root.dataset.home;
+  }, [pathname]);
+
   // Stable so the curtain's timing effect is never restarted while the panels are on screen.
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
@@ -87,7 +96,10 @@ export function Layout() {
   return (
     <>
       <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
-        <BackgroundFX />
+        {/* The wallpaper is the homepage's, and only the homepage's. Every other route renders on the
+            plain white page ground, so nothing is mounted to animate behind it — which also means no
+            plate, film, grid, beam, orb or mesh bytes are fetched on those pages at all. */}
+        {pathname === "/" ? <BackgroundFX /> : null}
         <Nav />
         <main
           id="main"

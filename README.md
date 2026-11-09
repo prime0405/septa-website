@@ -348,10 +348,17 @@ child. The class is added only when the loop is eligible, so a touch device or a
 brighter tint on a white card
 pulls `text-mint` under AA; with it spliced into the stack nothing either harness measured came below
 4.76:1, which clears AA for small text.
-Behind all of it the page never stands still. `BackgroundFX` (`src/components/BackgroundFX.tsx`)
-renders a fixed colour wash on every route — a panned plate, or a generated film where a
-theme supplies one, plus a creeping grid, a beam that crosses the viewport every 15s and two drifting
+Behind all of it the page never stands still — on the homepage. `BackgroundFX`
+(`src/components/BackgroundFX.tsx`) renders a fixed colour wash there — a panned plate, or a generated
+film where a theme supplies one, plus a creeping grid, a beam that crosses the viewport every 15s and
+two drifting
 orbs — at `z-0`, and the live line art in a separate layer at `z-20`, above the section bands.
+Every other route mounts none of it: `Layout` renders the component only when the path is `/`, so the
+rest of the site sits on the plain white page ground and fetches no plate, film, grid, beam, orb or
+mesh byte at all. The two slow plate drifts that page headers and artwork cards carry
+(`.plate-drift`) are the only motion left outside the homepage, so `Layout` also writes
+`html[data-home]` and the stylesheet holds them still wherever that flag is absent — the same picture,
+never moving.
 The line art is two canvases, not one, and only the one under the eye is lit: see the handover below.
 The canvas runs one of five subjects, chosen by what the page — or, on a long page, the section under
 the visitor's eye — is about (`src/lib/bgThemes.ts`): a wireframe globe ringed by breathing pulses and
@@ -603,10 +610,19 @@ at 5.13 on the homepage and 5.21 on About and the panel rows do not move.
 All of it is gated on `useReducedMotion()`, the reading progress bar disappears, and
 smooth scrolling becomes instant.
 
-The homepage runs in the order Septa set out in the revamp brief, and every headline on it is a
+The homepage runs in the order Septa set out in the revamp brief, and most of its headlines are a
 centred band header (`SectionHero` in `src/components/ui/primitives.tsx`: eyebrow, one-size-up
 `MaskRise` title, lead, actions underneath) with that section's content below it, rather than the
-older left-aligned heading with a button beside it. The sequence is hero, Company information,
+older left-aligned heading with a button beside it. The three offering blocks are the exception:
+each is a two-column split with the words on one side and Septa's artwork for that offering on the
+other, and the picture changes side on every block so the three read as one argument rather than
+three copies of a layout. The files are named after the section they belong to and are held in
+`landingBlocks` (`src/data/content.ts`) as `image` and `alt`. They arrived as 3.07MB of PNGs —
+4000px-wide artwork for a box that renders at 548×411 — so all three were re-encoded to 221KB of
+WebP at their display size, and the talent plate lost a 23px white stripe down its left edge. Each
+sits in one 4:3 frame with `object-cover`, which is what makes two square files and one wide file
+line up with each other; the wide AI plate is the one exception, anchored to the right edge so the
+crop falls on the empty haze at its left instead of on the cloud and AI tiles at its right. The sequence is hero, Company information,
 Who we serve, Services, AI product development, Traditional product development, The Septa
 Advantage, Our approach, Why Septa, Case studies, Talent solutions, Latest writing, Our partners,
 Testimonial, then the closing CTA. Three of the brief's headlines are deliberately not on the site:
