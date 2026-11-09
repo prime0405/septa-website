@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page not found — Septa</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #f6faf9;
+        --fg: #061820;
+        --muted: #3a5a63;
+        --mint: #286f6a;
+        --line: #cfe0de;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem 1.25rem;
+        background: var(--ink);
+        color: var(--fg);
+        font:
+          400 16px/1.65 "Open Sans",
+          ui-sans-serif,
+          system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 34rem;
+      }
+      img {
+        height: 26px;
+        width: auto;
+        margin-bottom: 2.25rem;
+      }
+      p.kicker {
+        margin: 0 0 0.6rem;
+        font:
+          600 11px/1.4 ui-monospace,
+          "SFMono-Regular",
+          Menlo,
+          monospace;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      h1 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(1.9rem, 5vw, 2.6rem);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+      }
+      p.lead {
+        margin: 0 0 1.9rem;
+        color: var(--muted);
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      nav a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.62rem 1.05rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--fg);
+        text-decoration: none;
+        font-size: 0.92rem;
+      }
+      nav a.primary {
+        background: var(--mint);
+        border-color: var(--mint);
+        color: #fff;
+      }
+      nav a:hover {
+        border-color: var(--mint);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/septa-logo.svg" alt="Septa" />
+      <p class="kicker">Error 404</p>
+      <h1>We can&rsquo;t find that page.</h1>
+      <p class="lead">
+        The link may be out of date, or the page may have moved. The routes below are the ones we know
+        about.
+      </p>
+      <nav>
+        <a class="primary" href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/case-studies">Case studies</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </main>
+  </body>
+</html>

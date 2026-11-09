@@ -7,6 +7,7 @@ import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
 import { BackgroundFX } from "../BackgroundFX";
 import { CursorHalo } from "../ui/CursorHalo";
+import { cn } from "../../lib/cn";
 import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
 
 function useScrollReset() {
@@ -88,7 +89,17 @@ export function Layout() {
       <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
         <BackgroundFX />
         <Nav />
-        <main id="main" className="relative z-10 flex-1">
+        <main
+          id="main"
+          className={cn(
+            "relative z-10 flex-1",
+            // The homepage hero is a charcoal field and the header is transparent at the top of it,
+            // which only reads as one continuous surface if the field actually reaches y=0. Without
+            // the pull-up the header keeps its own 72px of layout height, the hero starts under it,
+            // and the nav sits on a white strip with white links on it.
+            pathname === "/" && "-mt-[72px]",
+          )}
+        >
           <Outlet />
         </main>
         <Footer />

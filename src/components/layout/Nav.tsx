@@ -16,6 +16,13 @@ export function Nav() {
   const headerRef = useRef<HTMLElement | null>(null);
   const closeTimer = useRef<number | undefined>(undefined);
 
+  // The homepage hero is a charcoal field, so at the top of that route the transparent header is
+  // sitting on it. `onDark` is exactly the complement of the solid state below — the moment the
+  // header paints its own white ground it has to go back to dark type, and a mega panel opening at
+  // scroll position 8 would otherwise leave white links on a white panel.
+  const solid = scrolled || openGroup !== null || drawer;
+  const onDark = location.pathname === "/" && !solid;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
@@ -72,8 +79,8 @@ export function Nav() {
       <header
         ref={headerRef}
         className={cn(
-          "sticky top-0 z-50 transition-[background,border-color,box-shadow,backdrop-filter] duration-300",
-          scrolled || openGroup || drawer
+          "sticky top-0 z-50 transition-[background,border-color,box-shadow,backdrop-filter,color] duration-300",
+          solid
             ? "border-b border-line bg-ink/92 backdrop-blur-md"
             : "border-b border-transparent bg-transparent",
         )}
@@ -82,7 +89,7 @@ export function Nav() {
           Skip to content
         </a>
         <div className="wrap flex h-[72px] items-center justify-between gap-4 pt-[env(safe-area-inset-top)] lg:grid lg:grid-cols-[auto_1fr_auto]">
-          <BrandLink />
+          <BrandLink className={onDark ? "text-brand-white!" : undefined} />
 
           <nav
             aria-label="Primary"
@@ -99,6 +106,7 @@ export function Nav() {
                   <NavTrigger
                     item={item}
                     open={openGroup === item.label}
+                    onDark={onDark}
                     onToggle={() =>
                       setOpenGroup((g) => (g === item.label ? null : item.label))
                     }
@@ -106,13 +114,18 @@ export function Nav() {
                   <MegaPanel item={item} open={openGroup === item.label} />
                 </div>
               ) : (
-                <DesktopLink key={item.href} item={item} />
+                <DesktopLink key={item.href} item={item} onDark={onDark} />
               ),
             )}
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <Button to={REQUEST_HREF} size="sm" iconEnd={<ArrowRight className="size-4" />}>
+            <Button
+              to={REQUEST_HREF}
+              size="sm"
+              variant={onDark ? "dark-cta" : "primary"}
+              iconEnd={<ArrowRight className="size-4" />}
+            >
               Request a Service
             </Button>
           </div>
@@ -122,7 +135,13 @@ export function Nav() {
             onClick={() => setDrawer((d) => !d)}
             aria-expanded={drawer}
             aria-controls="mobile-drawer"
-            className="flex size-11 items-center justify-center rounded-xl border border-line bg-surface text-fg transition-colors hover:border-mint/45 lg:hidden"
+            className={cn(
+              "flex size-11 items-center justify-center rounded-xl border transition-colors",
+              onDark
+                ? "border-brand-white/25 bg-brand-white/8 text-brand-white hover:border-brand-mint/60"
+                : "border-line bg-surface text-fg hover:border-mint/45",
+              "lg:hidden",
+            )}
           >
             <span className="sr-only">{drawer ? "Close menu" : "Open menu"}</span>
             {drawer ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
@@ -145,7 +164,7 @@ export function Nav() {
 
 /* ------------------------------- desktop ------------------------------- */
 
-function DesktopLink({ item }: { item: NavItem }) {
+function DesktopLink({ item, onDark }: { item: NavItem; onDark: boolean }) {
   return (
     <NavLink
       to={item.href}
@@ -153,7 +172,15 @@ function DesktopLink({ item }: { item: NavItem }) {
       className={({ isActive }) =>
         cn(
           "relative rounded-lg px-3.5 py-2 text-[0.9rem] font-medium transition-colors",
-          isActive ? "text-mint" : "text-muted hover:text-fg",
+          // The active item is chosen by weight of colour, not by an extra class: `cn` is clsx, so a
+          // second text colour would sit alongside the first and the stylesheet order would decide.
+          onDark
+            ? isActive
+              ? "text-brand-white"
+              : "text-brand-white/80 hover:text-brand-white"
+            : isActive
+              ? "text-mint"
+              : "text-muted hover:text-fg",
         )
       }
     >
@@ -163,7 +190,10 @@ function DesktopLink({ item }: { item: NavItem }) {
           {isActive ? (
             <motion.span
               layoutId="nav-active"
-              className="absolute inset-x-3 -bottom-px h-px bg-mint"
+              className={cn(
+                "absolute inset-x-3 -bottom-px h-px",
+                onDark ? "bg-brand-mint" : "bg-mint",
+              )}
               transition={{ type: "spring", stiffness: 400, damping: 32 }}
             />
           ) : null}
@@ -176,10 +206,12 @@ function DesktopLink({ item }: { item: NavItem }) {
 function NavTrigger({
   item,
   open,
+  onDark,
   onToggle,
 }: {
   item: NavItem;
   open: boolean;
+  onDark: boolean;
   onToggle: () => void;
 }) {
   const active = useSectionActive(item.href, "/services");
@@ -192,7 +224,13 @@ function NavTrigger({
       aria-controls={`mega-${item.label.replace(/\W/g, "")}`}
       className={cn(
         "flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[0.9rem] font-medium transition-colors",
-        open || active ? "text-mint" : "text-muted hover:text-fg",
+        onDark
+          ? open || active
+            ? "text-brand-white"
+            : "text-brand-white/80 hover:text-brand-white"
+          : open || active
+            ? "text-mint"
+            : "text-muted hover:text-fg",
       )}
     >
       {item.label}

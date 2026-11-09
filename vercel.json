@@ -5,9 +5,24 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "rewrites": [
-    {
-      "source": "/:path((?!api/).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/case-studies", "destination": "/index.html" },
+    { "source": "/case-studies/:slug", "destination": "/index.html" },
+    { "source": "/services", "destination": "/index.html" },
+    { "source": "/services/:slug", "destination": "/index.html" },
+    { "source": "/careers", "destination": "/index.html" },
+    { "source": "/faq", "destination": "/index.html" },
+    { "source": "/blog", "destination": "/index.html" },
+    { "source": "/blog/:slug", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/request", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/case-study", "destination": "/index.html" },
+    { "source": "/career", "destination": "/index.html" },
+    { "source": "/use-cases", "destination": "/index.html" },
+    { "source": "/product-development", "destination": "/index.html" },
+    { "source": "/product-development/ai", "destination": "/index.html" },
+    { "source": "/product-development/traditional", "destination": "/index.html" }
   ]
 }

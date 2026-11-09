@@ -254,14 +254,28 @@ fin in `Logo.tsx`, which is brand-fixed; the SVG visuals use Tailwind `fill-*` /
 utilities or an inline `style`, because `var()` does not resolve inside an SVG presentation
 attribute.
 
-**Type.** The manual specifies Louis George Café as the primary face and Open Sans as the
-secondary. Both are self-hosted — Louis George Café from `src/assets/fonts/` via four
-`@font-face` blocks (light / regular / bold / italic), Open Sans and JetBrains Mono through
-`@fontsource-variable`. No CDN font requests. `--font-display` is Louis George Café with an Open
-Sans fallback; headings use it, body copy uses Open Sans.
-The bundled licence states the font is free for personal and business use including web graphics,
-but it is not an OFL-style licence and does not name webfont embedding explicitly — worth
-confirming with the designer before this faces a large paid audience.
+**Dark hero.** The homepage hero is the only section that inverts, so its copy was measured against
+the charcoal field that is actually painted behind the glyphs rather than against a token pair. Each
+run of text was made transparent, its own box re-screenshotted, and the ground taken as the 99th
+percentile of the pixels inside the text line boxes — so the mint dot in a label, the nav underline
+and a single specular highlight in the animated field all stay out of the number. At 1440x900:
+headline white 6.0–10.2:1, the six service labels 9.5–14.5:1 inside their pills, nav links
+6.5–13.2:1, the outlined CTA 7.5–10.1:1, and both filled CTAs 10.6:1 (Black Pearl on mint). The one
+accent word, `Forward.`, is 4.6:1 typical and 3.3:1 at the worst frame; at 78px/700 it is large
+text, where the floor is 3.0, so it passes AA and does not pass AAA-large. The subcopy is white at
+88% over the same ground the headline was measured on and is derived at roughly 5.5:1 rather than
+measured directly.
+
+**Type.** The brief asks for one family across the whole site, so Open Sans is now both the text
+face and the display face: `--font-sans` and `--font-display` both resolve to
+`"Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif`, self-hosted through
+`@fontsource-variable` with no CDN request. Weights in use are 400 / 500 / 600 / 700. Louis George
+Café is no longer applied anywhere; its four `@font-face` blocks remain in `src/index.css` and load
+nothing unless a token is pointed back at them. Because Open Sans is a wide, low-contrast grotesque
+and Louis George Café was a high-contrast serif, the heading scale was re-reviewed rather than left
+alone — `h1` and `h2` take weight 700 with tightened tracking (-0.035em and -0.03em) and `h3`
+-0.02em, so the hierarchy reads from weight, measure and spacing instead of from the serif's
+contrast. The licence note below still applies to the bundled files that remain in the repo.
 
 **Logo.** Rebuilt as vector from the supplied artwork rather than traced from a screenshot: two
 fin paths, one Tradewind and one `currentColor`, so a single component recolours itself for any

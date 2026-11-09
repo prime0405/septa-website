@@ -75,8 +75,18 @@
   /* Values that stay dark whatever the page does: the core disc, and type on it. */
   --color-brand-white: #ffffff;
 
+  /* The homepage hero runs on a charcoal field, and #5fdd9d is the accent that lights it. It is a
+     bright value, so it is used for rules, glows, the primary button and one headline word — never
+     for a large body of type and never as the field itself. On Black Pearl it measures 10.6:1, so
+     even the smallest label can carry it; on white it measures 2.4:1, which is why nothing outside
+     the dark hero is allowed to use it as text. */
+  --color-brand-mint: #5fdd9d;
+  --color-charcoal: #0b1b21;
+
   --font-sans: "Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Louis George Cafe", "Open Sans Variable", ui-sans-serif, sans-serif;
+  /* The brief asks for one family across the whole site, so the display stack is Open Sans too.
+     The name stays because twenty-odd components ask for `font-display` by token. */
+  --font-display: "Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
 
   --radius-card: 18px;
@@ -187,6 +197,24 @@
     line-height: 1.08;
     margin: 0;
     text-wrap: balance;
+  }
+
+  /* Open Sans is a wider, lighter-face substitute for the condensed display family this site used
+     to set its headings with, so the two largest levels take the extra weight and the tighter
+     tracking that the same sizes needed before. Applied as a rule rather than per-component
+     classes: every heading on the site already resolves through this block. */
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  h3 {
+    letter-spacing: -0.02em;
   }
 
   p {
@@ -616,6 +644,61 @@
     transparent 1px
   );
   background-size: 26px 26px;
+}
+
+/* The hero's architectural grid, on the dark side of the palette. `grid-bg` strokes in Black Pearl
+   and disappears on a charcoal field, so the reverse pair gets its own rule: white at 9% for the
+   lattice and #5fdd9d at 26% for the wider 224px super-grid, which is what gives the field a sense
+   of scale rather than just texture. */
+.grid-bg-dark {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in oklab, var(--color-brand-mint) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-brand-mint) 26%, transparent) 1px,
+      transparent 1px
+    );
+  background-size:
+    56px 56px,
+    56px 56px,
+    224px 224px,
+    224px 224px;
+}
+
+/* The hero field: charcoal rather than pure black, so the off-white type reads as printed on a
+   surface instead of floating in a hole, with the green light entering from the top edge. The last
+   14% dissolves to the white page, which is what makes the handover to the first offering block
+   read as a transition instead of a cut — and it happens below the lowest row of copy, so no glyph
+   is ever sampled against the ramp while it is still light. */
+.hero-field {
+  background:
+    radial-gradient(110% 70% at 50% -14%, color-mix(in oklab, var(--color-brand-mint) 13%, transparent) 0%, transparent 52%),
+    radial-gradient(80% 60% at 88% 78%, color-mix(in oklab, var(--color-brand-teal) 12%, transparent) 0%, transparent 58%),
+    linear-gradient(
+      180deg,
+      var(--color-brand-pearl) 0%,
+      var(--color-charcoal) 46%,
+      var(--color-charcoal) 90%,
+      var(--color-ink) 100%
+    );
+}
+
+/* The contextual labels around the headline. Each one gets its own period and delay so the group
+   never breathes in lockstep; the travel is 8px, which is small enough to read as floating rather
+   than as an animation running behind the words. */
+.float-chip {
+  animation: chip-float 8s ease-in-out infinite;
+}
+@keyframes chip-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
 }
 
 .mask-fade {

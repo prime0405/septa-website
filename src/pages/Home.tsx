@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useIntroHeld } from "../lib/intro";
@@ -57,87 +57,208 @@ function Rise({ i, held, children }: { i: number; held: boolean; children: React
   );
 }
 
+/*
+ * The contextual labels around the headline. Every one is a service Septa actually sells, taken
+ * from the same list the services page runs; they are decoration in the composition sense only, so
+ * they are `aria-hidden` and pointer-inert — a visitor who wants the real thing uses the nav or the
+ * primary CTA, which both go to the pages these chips name.
+ */
+const heroLabels = [
+  { text: "AI Product Development", at: "top-[16%] left-[4%]", delay: "0s" },
+  { text: "Observability", at: "top-[9%] right-[6%]", delay: "-2.6s" },
+  { text: "Intelligent Automation", at: "top-[56%] left-[1%]", delay: "-4.1s" },
+  { text: "Digital Transformation", at: "top-[54%] right-[1%]", delay: "-1.3s" },
+  { text: "Software Engineering", at: "bottom-[13%] left-[7%]", delay: "-5.4s" },
+  { text: "Product Innovation", at: "bottom-[9%] right-[8%]", delay: "-3.2s" },
+];
+
+/** Below this width the labels are dropped and the pinned stretch is shortened — see the note above. */
+function useWideHero() {
+  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return wide;
+}
+
+/*
+ * The pinned stage. The wrapper is one viewport plus 58vh (26vh below `lg`) tall and the hero sticks
+ * to the top of
+ * it, so the hero holds for that distance of scrolling and then releases: the offering block below
+ * arrives against the hero's own white dissolve, with no overlap at any frame, because the
+ * wrapper's bottom edge and the hero's bottom edge are the same line the whole time the hero is
+ * free to move. Without the pin the effect is unwatchable — a 900px-tall hero scrolls its own
+ * headline off the top of the screen long before the shrink reaches 40%.
+ *
+ * `RELEASE` is the fraction of that scroll range the pin occupies — 58/158 on desktop, 26/126 below
+ * the `lg` breakpoint. The phone and tablet pin is deliberately short: the brief asks for a
+ * shrinking hero at every size and for mobile not to be made to fight its way through a long pinned
+ * stretch, so the composition gets a quarter-screen of visible tightening and then hands over.
+ */
+const RELEASE = { wide: 58 / 158, narrow: 26 / 126 };
+
 const headlineWords = hero.headline.split(" ");
 
 export default function Home() {
   usePageMeta({ title: site.name, description: hero.subheadline });
   const held = useIntroHeld();
-  const heroRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const wide = useWideHero();
+  const pinned = !reduce;
   const { scrollYProgress: heroScroll } = useScroll({
-    target: heroRef,
+    target: stageRef,
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 70]);
-  const plateY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 46]);
   const auroraY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 130]);
-  const copyY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : -26]);
+
+  /*
+   * The shrinking itself. Everything is driven by `heroScroll`, which is the stage's real position
+   * in the viewport, so the composition is a function of the scrollbar and nothing else: scrolling
+   * down shrinks it, scrolling back up re-inflates it, and a fast flick in either direction lands on
+   * the exact frame the position implies because there is no timer to fall behind. Measured at the
+   * endpoints, the headline block sits at 1.0000 and returns to 1.0000, and only `scale` and
+   * `translate` are touched — paint-only properties, so nothing reflows and the stage keeps the
+   * height it was given at load.
+   *
+   * The groups move independently on purpose. The copy tightens the most because it is the thing
+   * that has to stop dominating; the labels collapse and fade first because a compact headline with
+   * six satellites around it reads as clutter; the field and the light drift on the existing
+   * parallax and only widen, which is what gives the composition depth behind a shrinking
+   * foreground. The nav is not in this subtree and holds its size throughout.
+   */
+  const end = wide ? RELEASE.wide : RELEASE.narrow;
+  const copyScale = useTransform(heroScroll, [0, end], [1, reduce ? 1 : wide ? 0.78 : 0.88]);
+  const copyY = useTransform(heroScroll, [0, end], [0, reduce ? 0 : wide ? -18 : -10]);
+  const copyFade = useTransform(heroScroll, [end * 0.82, end], [1, reduce ? 1 : 0.62]);
+  const labelScale = useTransform(heroScroll, [0, end * 0.8], [1, reduce ? 1 : 0.55]);
+  const labelFade = useTransform(heroScroll, [end * 0.08, end * 0.62], [1, 0]);
+  const fieldScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : 1.1]);
+  const fieldFade = useTransform(heroScroll, [0.4, 1], [1, 0.5]);
 
   return (
     <>
       {/* ------------------------------- 1. hero ------------------------------- */}
-      <section
-        ref={heroRef}
-        data-wall="home"
-        className="band relative overflow-hidden pt-6 pb-16 sm:pt-10 lg:pb-24"
+      <div
+        ref={stageRef}
+        className={
+          reduce
+            ? "relative"
+            : wide
+              ? "relative h-[calc(100svh+58vh)]"
+              : "relative h-[calc(100svh+26vh)]"
+        }
       >
-        <motion.div
-          aria-hidden
-          style={{ y: plateY }}
-          className="pointer-events-none absolute inset-x-[-4%] top-[4%] h-[460px]"
+        <section
+          data-wall="home"
+          className={
+            pinned
+              ? "hero-field sticky top-0 flex h-[100svh] items-center overflow-hidden"
+              : "hero-field relative flex h-[100svh] items-center overflow-hidden"
+          }
         >
-          <img
-            src="/img/plate-hero.jpg"
-            alt=""
-            decoding="async"
-            className="plate-drift-slow size-full object-cover opacity-[0.55] mask-fade"
-          />
-          <div className="absolute inset-0 bg-ink/82" />
-        </motion.div>
-        <motion.div aria-hidden style={{ y: gridY }} className="pointer-events-none absolute inset-0">
-          <div className="grid-bg absolute inset-0 opacity-35 mask-fade" />
-        </motion.div>
-        <motion.div aria-hidden style={{ y: auroraY }} className="pointer-events-none absolute inset-0">
-          <div className="animate-aurora absolute top-[-22%] left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-mint/[0.08] blur-[120px]" />
-          <div className="animate-aurora-slow absolute top-[18%] left-[8%] hidden h-[380px] w-[380px] rounded-full bg-mint/[0.07] blur-[110px] lg:block" />
-          <div className="animate-aurora absolute top-[6%] right-[6%] hidden h-[320px] w-[420px] rounded-full bg-mint/[0.06] blur-[110px] lg:block" />
-        </motion.div>
+          {/* The supplied abstract plate, held at a fraction of its own brightness so it reads as
+              depth in the field rather than as a picture behind the words. */}
+          <motion.div
+            aria-hidden
+            style={{ y: gridY, scale: fieldScale, opacity: fieldFade }}
+            className="pointer-events-none absolute inset-[-6%]"
+          >
+            <img
+              src="/img/plate-hero.jpg"
+              alt=""
+              decoding="async"
+              className="plate-drift-slow size-full object-cover opacity-[0.13] mask-fade"
+            />
+            {/* The plate is a light image and the field is meant to read as charcoal, so it is held
+                at 13% and then veiled by Pearl rather than setting the tone of the hero. */}
+            <div className="absolute inset-0 bg-brand-pearl/55" />
+            <div className="grid-bg-dark absolute inset-0 opacity-[0.6] mask-fade" />
+          </motion.div>
+          <motion.div
+            aria-hidden
+            style={{ y: auroraY, scale: fieldScale }}
+            className="pointer-events-none absolute inset-0"
+          >
+            <div className="animate-aurora absolute top-[-26%] left-1/2 h-[620px] w-[980px] -translate-x-1/2 rounded-full bg-brand-mint/20 blur-[130px]" />
+            <div className="animate-aurora-slow absolute top-[22%] left-[6%] hidden h-[420px] w-[420px] rounded-full bg-brand-mint/12 blur-[120px] lg:block" />
+            <div className="animate-aurora absolute top-[8%] right-[4%] hidden h-[360px] w-[460px] rounded-full bg-brand-teal/16 blur-[120px] lg:block" />
+          </motion.div>
 
-        {/* The spiral runs over the plate and under the copy. It dims itself to 10% inside the
-            measured box of the headline block, so no glyph ever sits on a stroke stronger than the
-            site-wide mesh's worst pixel, while the gutters and corners get the line at full run. */}
-        <HeroSpiral copyRef={copyRef} className="pointer-events-none absolute inset-0 z-0 size-full" />
+          {/* The spiral runs over the plate and under the copy. It dims itself to 10% inside the
+              measured box of the headline block, so no glyph ever sits on a stroke stronger than the
+              site-wide mesh's worst pixel, while the gutters and corners get the line at full run.
+              The box is re-measured every frame, which is what lets the headline shrink underneath it. */}
+          <HeroSpiral copyRef={copyRef} className="pointer-events-none absolute inset-0 z-0 size-full" />
 
-        <motion.div ref={copyRef} style={{ y: copyY }} className="wrap relative">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] sm:leading-[0.96]">
-              {headlineWords.map((word, i) => (
-                <span key={`${word}-${i}`}>
-                  <Rise i={i} held={held}>
-                    {word}
-                  </Rise>{" "}
-                </span>
-              ))}
-            </h1>
+          {/* The contextual labels. One absolutely-positioned layer so the shrink pulls the whole
+              group toward the centre as a unit, the way the reference's satellites collapse. */}
+          <motion.div
+            aria-hidden
+            style={{ scale: labelScale, opacity: labelFade, transformOrigin: "50% 42%" }}
+            className="pointer-events-none absolute inset-0 z-[1] hidden lg:block"
+          >
+            {heroLabels.map((label) => (
+              <span
+                key={label.text}
+                className={`float-chip absolute ${label.at} flex items-center gap-2 rounded-full border border-brand-mint/30 bg-brand-pearl/60 px-3.5 py-1.5 text-[0.72rem] font-semibold tracking-[0.12em] text-brand-white/90 uppercase backdrop-blur-sm`}
+                style={{ animationDelay: label.delay }}
+              >
+                <span className="size-1.5 shrink-0 rounded-full bg-brand-mint" />
+                {label.text}
+              </span>
+            ))}
+          </motion.div>
 
-            <Reveal delay={0.12}>
-              <p className="prose-body mx-auto mt-6 max-w-2xl text-[1.06rem]">{hero.subheadline}</p>
-            </Reveal>
+          <motion.div
+            ref={copyRef}
+            style={{ y: copyY, scale: copyScale, opacity: copyFade, transformOrigin: "50% 38%" }}
+            className="wrap relative z-[2]"
+          >
+            <div className="mx-auto max-w-4xl text-center">
+              <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] text-brand-white sm:leading-[0.98]">
+                {headlineWords.map((word, i) => (
+                  <span key={`${word}-${i}`}>
+                    <Rise i={i} held={held}>
+                      {/* One word carries the accent, and only one: the brief asks for green used for
+                          emphasis rather than a green hero, and #5fdd9d over 4.9rem of type would
+                          turn the headline into the lighting effect. */}
+                      {word === "Forward." ? (
+                        <span className="text-brand-mint">{word}</span>
+                      ) : (
+                        word
+                      )}
+                    </Rise>{" "}
+                    {word === "Moves" ? <br className="hidden sm:block" /> : null}
+                  </span>
+                ))}
+              </h1>
 
-            <Reveal delay={0.18}>
-              <div className="mt-9 flex flex-wrap justify-center gap-3">
-                <Button to={paths.services()} size="lg" magnetic>
-                  {hero.ctaPrimary}
-                </Button>
-                <Button to={paths.contact()} size="lg" variant="outline-mint" magnetic>
-                  {hero.ctaSecondary}
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-        </motion.div>
-      </section>
+              <Reveal delay={0.12}>
+                <p className="mx-auto mt-6 max-w-2xl text-[1.06rem] leading-[1.7] text-brand-white/88">
+                  {hero.subheadline}
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.18}>
+                <div className="mt-9 flex flex-wrap justify-center gap-3">
+                  <Button to={paths.services()} size="lg" variant="dark-cta" magnetic>
+                    {hero.ctaPrimary}
+                  </Button>
+                  <Button to={paths.contact()} size="lg" variant="outline-light" magnetic>
+                    {hero.ctaSecondary}
+                  </Button>
+                </div>
+              </Reveal>
+            </div>
+          </motion.div>
+        </section>
+      </div>
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
       {landingBlocks.map((block, i) => (
