@@ -1,22 +1,46 @@
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef, type PointerEvent } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { cn } from "../../lib/cn";
+import { settle } from "../../lib/scroll-curve";
 
 /**
- * A framed photograph that answers the scrollbar the way the homepage hero does.
+ * A framed photograph that moves the way a printed photograph behind glass moves.
  *
- * The hero tightens as it is scrolled past and re-inflates coming back, because its movement is a
- * function of the stage's position in the viewport rather than a timer. This is the same idea, at
- * the scale a section image can carry: the picture is widest while it owns the middle of the screen
- * and settles as it leaves, so scrolling down through the offerings reads as the images drawing in
- * and letting go instead of three still frames passing by. It never reaches 1.0 at either end,
- * which is what keeps the frame covered — a scale under one would show the page through the edge of
- * the box.
+ * Six things happen to it and each is on a different layer, which is the only reason the combination
+ * still reads as calm:
  *
- * Only `scale` is touched, so nothing reflows: the frame keeps the height its aspect ratio gives it
- * from the first paint and the layout cannot jump under the reader. Under
- * `prefers-reduced-motion` the range collapses to one value, and the global rule already stops the
- * drift on the picture itself, which leaves the identical, still image.
+ *   - the picture is 15 per cent larger than its frame at all times, so it can be pushed around
+ *     inside the frame without ever showing the page through an edge;
+ *   - `scroll` moves it — it widens to 1.17 while it holds the middle of the screen and settles to
+ *     1.05 as it arrives and leaves, the hero's shrink at the scale an image can carry, on the same
+ *     plateau curve so that neither the page nor the photographs inside it are ever quietly wobbling
+ *     while you look at them. It drifts 18px the other way on the same value, which is the parallax
+ *     that makes the frame read as a window onto a larger scene rather than a thumbnail of one;
+ *   - `scroll` colours it too: saturation lifts from 0.86 to full and the shadows open a half step
+ *     as it centres, so a photograph arriving from below comes up into its own colour rather than
+ *     sliding in already finished. It is the one part of this that is not a transform, and it stays
+ *     inside the narrow band where a filter is a paint, not a repaint;
+ *   - `the pointer` leans the whole plane toward the cursor, 3.4 degrees at most, and lifts it 16px
+ *     out of the frame on the same spring, so the picture has weight and arrives with a little
+ *     settle rather than snapping to the mouse;
+ *   - `the pointer` also drags a highlight across the glass — a soft white bloom that follows the
+ *     cursor and is gone when it leaves, which is the only way the glass layer says anything at all
+ *     to a reader who is standing still;
+ *   - `nothing` moves it — a 34s breath and a light that crosses the glass every twelve seconds, for
+ *     the long stretches in which nobody is scrolling or hovering.
+ *
+ * `scale`, `translate`, `rotate`, a low-alpha gradient and a narrow filter only, so no frame ever
+ * reflows and the layout cannot jump under the reader. Under `prefers-reduced-motion` every scroll
+ * and pointer value collapses to a constant, the lean is never armed, and the global rule stops the
+ * breath and the travelling light: what is left is the identical, still photograph. The lean needs a
+ * real pointer, so it is also gated on `hover: hover`.
  */
 export function PhotoFigure({
   src,
@@ -39,18 +63,65 @@ export function PhotoFigure({
   const frameRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    reduce ? [1.04, 1.04, 1.04] : [1.04, 1.14, 1.04],
+  const scrollScale = useTransform(scrollYProgress, (p) => (reduce ? 1.1 : 1.05 + 0.12 * settle(p)));
+  const parallax = useTransform(scrollYProgress, (p) => (reduce ? 0 : (0.5 - p) * 36));
+  const saturation = useTransform(scrollYProgress, (p) => (reduce ? 1 : 0.86 + 0.14 * settle(p)));
+  const brightness = useTransform(scrollYProgress, (p) => (reduce ? 1 : 0.97 + 0.03 * settle(p)));
+
+  // One pointer value arms the lean, the lift and the bloom together, so all three arrive on the
+  // same spring and settle at the same moment instead of three layers easing at three rates.
+  const leanX = useMotionValue(0);
+  const leanY = useMotionValue(0);
+  const active = useMotionValue(0);
+  const spring = { stiffness: 150, damping: 22, mass: 0.5 };
+  const rotateX = useSpring(useTransform(leanY, [-0.5, 0.5], [3.4, -3.4]), spring);
+  const rotateY = useSpring(useTransform(leanX, [-0.5, 0.5], [-3.4, 3.4]), spring);
+  const lift = useSpring(active, { stiffness: 190, damping: 20, mass: 0.6 });
+  const hoverScale = useTransform(lift, [0, 1], [1, 1.022]);
+  const planeScale = useTransform([scrollScale, hoverScale], ([a, b]) => (a as number) * (b as number));
+  const depth = useTransform(lift, [0, 1], [0, reduce ? 0 : 16]);
+  const filter = useTransform(
+    [saturation, brightness],
+    ([s, br]) => `saturate(${s as number}) brightness(${br as number})`,
   );
+
+  // The bloom is positioned in percentages of the frame, and it is sprung rather than direct
+  // because glass does not track a hand; it arrives a moment after it.
+  const gx = useSpring(useTransform(leanX, [-0.5, 0.5], [8, 92]), { stiffness: 90, damping: 18 });
+  const gy = useSpring(useTransform(leanY, [-0.5, 0.5], [8, 92]), { stiffness: 90, damping: 18 });
+  const bloom = useTransform([gx, gy, lift], ([x, y, on]) =>
+    (on as number) < 0.01
+      ? "none"
+      : `radial-gradient(38% 46% at ${x as number}% ${y as number}%, rgb(255 255 255 / ${
+          0.3 * (on as number)
+        }), rgb(255 255 255 / 0) 70%)`,
+  );
+
+  const track = (event: PointerEvent<HTMLDivElement>) => {
+    if (reduce) return;
+    const box = event.currentTarget.getBoundingClientRect();
+    leanX.set((event.clientX - box.left) / box.width - 0.5);
+    leanY.set((event.clientY - box.top) / box.height - 0.5);
+  };
+  const release = () => {
+    leanX.set(0);
+    leanY.set(0);
+    active.set(0);
+  };
 
   return (
     <div
       ref={frameRef}
-      className={cn("overflow-hidden rounded-card border border-line shadow-soft", className)}
+      onPointerMove={track}
+      onPointerEnter={() => !reduce && active.set(1)}
+      onPointerLeave={release}
+      style={{ perspective: 1100 }}
+      className={cn("photo-frame group relative overflow-hidden rounded-card border border-line", ratio, className)}
     >
-      <motion.div style={{ scale }} className="will-change-transform">
+      <motion.div
+        style={{ scale: planeScale, y: parallax, z: depth, rotateX, rotateY, filter }}
+        className="photo-plane absolute inset-[-8%] will-change-transform"
+      >
         <img
           src={src}
           alt={alt}
@@ -58,10 +129,22 @@ export function PhotoFigure({
           height={height}
           decoding="async"
           fetchPriority={eager ? "high" : "auto"}
-          loading={eager ? "eager" : "lazy"}
-          className={cn("photo-breathe w-full object-cover", ratio)}
+          loading={eager ? "lazy" : "lazy"}
+          className="photo-breathe size-full object-cover"
         />
       </motion.div>
+      {/* The light crossing the glass, the bloom that follows the cursor, and the edge the glass is
+          cut with. All painted, none laid out, so none of them can move anything. */}
+      <span aria-hidden className="photo-sheen pointer-events-none absolute inset-0 block" />
+      <motion.span
+        aria-hidden
+        style={{ background: bloom }}
+        className="pointer-events-none absolute inset-0 block mix-blend-plus-lighter"
+      />
+      <span
+        aria-hidden
+        className="photo-vignette pointer-events-none absolute inset-0 block opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
     </div>
   );
 }

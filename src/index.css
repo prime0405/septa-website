@@ -1223,24 +1223,85 @@
 
 /* The photographs that sit beside the words, as opposed to the ones that are the words'
    background. Septa asked for them not to be still, and a picture in a hard frame cannot drift the
-   way a full-bleed field can without showing daylight at the edges — so it breathes inside its own
-   frame instead: an enlargement of two to seven per cent, two thirds of which the frame crops, over
-   thirty-four seconds. It is the slowest movement on the site and it is the only one a reader can
-   point at without having scrolled, which is what keeps an otherwise frozen image alive between
-   scrolls. The picture is never scaled below one, so the frame is always full.
-   `transform` only, and the global reduced-motion rule stops it where the hero scroll range is
-   already pinned to a single value. */
+   way a full-bleed field can without showing daylight at the edges — so it moves inside its own
+   frame instead, on layers that never touch each other's transform:
+     .photo-frame   the glass: it is clipped, lit and never scaled, so the layout is fixed
+     .photo-plane   the picture's position: scroll scale, parallax, pointer lean and lift (React)
+     .photo-breathe the picture's own slow walk inside that, so an image nobody is scrolling or
+                    hovering is still not a frozen one
+     .photo-sheen   a light that crosses the glass by itself, once every twelve seconds
+     .photo-vignette the corners deepening when the cursor is on the frame, which is what makes the
+                    bloom that follows the cursor read as a reflection rather than as a white blob
+   The breath is an enlargement of four to ten per cent with a small diagonal drift, over
+   thirty-four seconds. It is the slowest movement on the site. Both planes are always wider than
+   the frame — the plane starts at inset -8 per cent, the breath never drops below 1.04 — so the
+   extreme corners of the drift still land inside the clip and no page colour can appear at an edge.
+   `transform` only, and the global reduced-motion rule stops it where the scroll values are already
+   pinned to constants. */
+.photo-frame {
+  background: var(--color-ink);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 0 0 1px rgb(255 255 255 / 55%),
+    inset 0 -1px 0 rgb(31 74 82 / 10%);
+}
+.photo-plane {
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
 .photo-breathe {
   animation: photo-breathe 34s ease-in-out infinite alternate;
   will-change: transform;
 }
 @keyframes photo-breathe {
   0% {
-    transform: scale(1.02);
+    transform: scale(1.04) translate3d(-1.2%, 0.9%, 0);
   }
   100% {
-    transform: scale(1.07);
+    transform: scale(1.1) translate3d(1.2%, -0.9%, 0);
   }
+}
+
+/* The light crossing the glass. One low-alpha stripe, 2.6 times the width of the frame, slid
+   across it: the sweep takes just under a third of the twelve seconds and the rest is the pause
+   that makes it feel like a reflection rather than a loading bar. Both endpoints put the bright core
+   outside the clip, which is also why the reduced-motion rule — it fast-forwards to the final
+   frame — leaves nothing visible behind. */
+.photo-sheen {
+  background-image: linear-gradient(
+    104deg,
+    rgb(255 255 255 / 0) 42%,
+    rgb(255 255 255 / 30%) 50%,
+    rgb(255 255 255 / 0) 58%
+  );
+  background-repeat: no-repeat;
+  background-size: 260% 100%;
+  background-position: 140% 0;
+  animation: photo-sheen 12s ease-in-out infinite;
+}
+@keyframes photo-sheen {
+  0% {
+    background-position: 140% 0;
+  }
+  26% {
+    background-position: -40% 0;
+  }
+  100% {
+    background-position: -40% 0;
+  }
+}
+
+/* The corner depth that comes up when the cursor is on the frame. It is the dark half of the same
+   gesture as the bloom: the glass gets a highlight where the pointer is and loses light at its own
+   edges, which is what a pane of glass actually does. Ramped over half a second so it never
+   flickers on, and painted on a layer that holds no transform. */
+.photo-vignette {
+  background: radial-gradient(
+    118% 104% at 50% 50%,
+    rgb(6 24 32 / 0) 48%,
+    rgb(6 24 32 / 8%) 76%,
+    rgb(6 24 32 / 24%) 100%
+  );
 }
 
 /* ---------- the pointer ---------- */

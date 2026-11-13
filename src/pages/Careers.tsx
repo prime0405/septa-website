@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Briefcase, Users } from "lucide-react";
 import { PageHero } from "../components/blocks/PageHero";
+import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { CareerForm } from "../components/forms/CareerForm";
 import { IntegrationNotice } from "../components/blocks/LaunchNote";
 import { LaunchNoteInline } from "../components/blocks/LaunchNote";
@@ -56,17 +57,14 @@ export default function Careers() {
             width the same frame is taller than the viewport and becomes the page, not the point.
             A general scene, not a claim about a Septa team. */}
         <Reveal className="mb-12 block">
-          <figure className="mx-auto max-w-4xl overflow-hidden rounded-card border border-line shadow-soft">
-            <img
-              src="/img/work/hiring-desk.webp"
-              alt="Two colleagues side by side at a shared office desk, looking at a laptop screen together"
-              width={800}
-              height={600}
-              loading="lazy"
-              decoding="async"
-              className="photo-breathe aspect-[16/9] w-full object-cover"
-            />
-          </figure>
+          <PhotoFigure
+            src="/img/work/hiring-desk.webp"
+            alt="Two colleagues side by side at a shared office desk, looking at a laptop screen together"
+            ratio="aspect-[16/9]"
+            width={800}
+            height={600}
+            className="mx-auto max-w-4xl"
+          />
         </Reveal>
         <div className="grid gap-4 md:grid-cols-2">
           {careers.culture.map((c, i) => (

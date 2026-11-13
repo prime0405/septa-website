@@ -2,10 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { cn } from "../../lib/cn";
-import { Button } from "../ui/Button";
 import { Eyebrow, MaskRise } from "../ui/primitives";
-import { Logo } from "../layout/Logo";
-import { paths } from "../../lib/paths";
 import type { BgTheme } from "../../lib/bgThemes";
 
 export type Crumb = { label: string; to?: string };
@@ -93,61 +90,6 @@ export function PageHero({
             {actions ? <div className="mt-7 flex flex-wrap gap-3">{actions}</div> : null}
           </div>
           {aside}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-export function CtaBand({
-  wall,
-  title = "Let’s build what’s next, together!",
-  lead = "Whether you need an AI-powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
-  primaryLabel = "Start a request",
-  secondary,
-}: {
-  /** The wallpaper the band runs behind. */
-  wall?: BgTheme;
-  title?: string;
-  lead?: string;
-  primaryLabel?: string;
-  secondary?: { label: string; to: string };
-}) {
-  return (
-    <section data-wall={wall} className="wrap section">
-      <div className="relative overflow-hidden rounded-card border border-line bg-surface px-6 py-10 sm:px-10 sm:py-12">
-        <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-50" />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-32 left-1/3 size-72 rounded-full bg-mint/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-6 -bottom-10 hidden size-52 text-fg opacity-[0.06] sm:block"
-        >
-          <Logo className="size-full" />
-        </div>
-        <div className="relative max-w-2xl">
-          <Eyebrow className="mb-4">Start here</Eyebrow>
-          <MaskRise>
-            <h2 className="text-[clamp(1.6rem,3.4vw,2.4rem)]">{title}</h2>
-          </MaskRise>
-          <p className="prose-body mt-4">{lead}</p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Button to={paths.request()} size="lg" magnetic>
-              {primaryLabel}
-            </Button>
-            {secondary ? (
-              <Button to={secondary.to} size="lg" variant="secondary" magnetic>
-                {secondary.label}
-              </Button>
-            ) : (
-              <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
-                Contact us
-              </Button>
-            )}
-          </div>
         </div>
       </div>
     </section>

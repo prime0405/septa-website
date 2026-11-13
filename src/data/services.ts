@@ -36,6 +36,10 @@ export type ServiceContent = {
   whoWeServeHeading?: string;
   whoWeServe?: Capability[];
   extra?: { heading: string; paragraphs: string[] };
+  /** The page's own ask. `label` and `to` drive the button at the top of the page; the document
+   *  also supplies a headline and a line of copy for a closing panel, which is kept here as the
+   *  source wording but no longer rendered — the footer's banner is now the one close on every
+   *  page, and a second panel above it said the same thing. */
   cta?: { headline: string; copy: string; label: string; to: string };
   /** Sections expected on this page for which the document gives no copy. */
   pending?: string[];

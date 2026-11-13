@@ -367,17 +367,53 @@ The one background that moves is the homepage hero field, which paints its own o
 carries its own grid, aurora orbs, spiral canvas and floating labels inside `.hero-field`
 (`src/pages/Home.tsx`, `src/index.css`). The two slow plate drifts that page headers and artwork
 cards carry (`.plate-drift`) are keyed to that section alone — outside it the stylesheet resolves the
-animation to `none`, so no backdrop anywhere else moves.
+animation to `none`, so no backdrop anywhere else moves. Verified at 1440×900: zero `.bgfx` and zero
+`.bgfx-mesh` nodes on the homepage and on every inner route, `body` computes to `rgb(255, 255, 255)`
+everywhere below the hero, and no route requests a video.
 The photographs are the exception Septa asked for afterwards, and they are pictures rather than
-backdrops: every framed image breathes (`.photo-breathe`, a 34s scale between 1.02 and 1.07 cropped by
-its own frame), the three homepage offering frames also answer the scrollbar the way the hero does
-(`PhotoFigure` widens the picture to 1.14 at the middle of its pass and lets it settle back to 1.04,
-`scale` only, so the layout never moves), and a case or post cover takes 5.5% under the pointer
-(`.photo-cover`, disarmed where there is no hover to leave). Verified in the browser at 1440×900: zero
-`.bgfx` and zero `.bgfx-mesh` nodes on the homepage and on every inner route, the only running
-background drift is the hero's, the offering frames measure 1.049 / 1.098 / 1.137 at three points of
-one scroll pass, `body` computes to `rgb(255, 255, 255)` everywhere below the hero, and no route
-requests a video.
+backdrops. `PhotoFigure` (`src/components/blocks/PhotoFigure.tsx`) is six layers that never share a
+transform: a clipped `.photo-frame` that is never scaled, so no layout can move; a `.photo-plane` set
+8% outside the frame on every side, which carries the scroll curve, the parallax, the pointer lean and
+the lift; the `img` itself, which breathes (`.photo-breathe`, a 34s scale from 1.04 to 1.10 with a
+small diagonal drift) so an image nobody is scrolling or hovering is still not a frozen one; a
+`.photo-sheen` stripe — one low-alpha gradient 2.6 times the frame's width — that crosses the glass
+every twelve seconds and spends the rest of the cycle off the clip; a radial bloom that follows the
+cursor (`mix-blend-plus-lighter`, 38% × 46% of the frame, white at 0.3 alpha); and a `.photo-vignette`
+that deepens the corners over the same half second the cursor is on the frame, which is what makes the
+bloom read as a reflection rather than as a white blob. The scroll curve is the plateau described
+below, shared with the sections through `settle` (`src/lib/scroll-curve.ts`) so a section and the
+photograph inside it breathe on one schedule: the plane widens from 1.05 at the edges of its pass to
+1.17 while it holds the middle of the screen and drifts 18px the other way on the same value. Colour
+rides the same curve — `saturate` 0.86 → 1 and `brightness` 0.97 → 1 — so a photograph arriving from
+below comes up into its own colour instead of sliding in already finished. Under the pointer the plane
+leans up to 3.4° and lifts 16px out of its frame on one spring (`stiffness` 150, `damping` 22), which
+arrives with a little weight instead of snapping to the mouse, and it is gated on `hover: hover`. Case
+and post covers keep their own, simpler answer to the pointer (`.photo-cover`, 5.5%, disarmed where
+there is no hover to leave).
+`SectionStage` (`src/components/blocks/SectionStage.tsx`) wraps the content of all seven sections
+after the hero — the three offerings, the partners heading, the advantage, the service overview and the
+testimonial — and scales it 0.955 → 1.00, fades it 0.82 → 1.00 and drifts it ±12px on the same curve.
+The curve is a plateau, not a peak, and that is the whole of the difference between this and the
+half-sine it replaces: a sine is at its maximum for one instant, so a section was technically full size
+only at the exact middle of its pass and visibly under size for all of the reading either side of it.
+`settle` holds 1.0 from 38% to 62% of the pass and only moves at the ends, with smoothstep ramps
+because a plateau has two corners and a corner in a curve you can watch is a hitch. The drift is signed
+by which end of the pass you are on, so a section rises into place as it arrives and leaves the same
+few pixels ahead of it going out. Two things keep it clean: the band underneath is not scaled, only
+what sits on it, so the page's structure stays put while its contents breathe; and the element being
+measured for scroll progress is a plain wrapper, not the transformed one, because a bounding rect
+includes its own transform and scaling the measured box would feed the curve back into itself. The
+partner marquee is deliberately outside a stage: it runs edge to edge and scaling it would pull both
+ends in off the screen. Verified in the browser at 1440×900: one stage swept through its pass measures
+0.955 / 0.955 / 0.955 / 0.955 / 0.9677 / 0.9971 / 0.9976 / 1.0000 / 0.9985 against the formula, with
+the translate and the opacity matching to three decimals; the plane at rest measures 1.17,
+`saturate(1) brightness(1)`, a `none` bloom and overcovers its frame on all four sides (-121 / -80 /
+-104 / -88px) so no page colour can appear at an edge; with the cursor in it the same plane measures
+`m11` 1.1954, `m43` 16, perspective terms `m13` 0.028 and `m23` 0.028 and a bloom centred at 31.5%
+36.6%; sampled as pixels, the point under the cursor lifts +17 luma, the far corner drops -5, and a
+point outside both does not move. With `--force-prefers-reduced-motion` the stages compute to `none` at
+opacity 1, the plane holds a constant 1.1 with `m43` 0 and `saturate(1) brightness(1)`, hovering it
+changes nothing, and `document.getAnimations()` reports zero running.
 
 The paragraphs on the wash, the mesh and their masks are the record of that layer while it ran. They
 are kept because most of the contrast figures quoted through the rest of this section were measured
@@ -650,7 +686,7 @@ line up with each other; the wide AI plate is the one exception, anchored to the
 crop falls on the empty haze at its left instead of on the cloud and AI tiles at its right. The sequence is hero, Company information,
 Who we serve, Services, AI product development, Traditional product development, The Septa
 Advantage, Our approach, Why Septa, Case studies, Talent solutions, Latest writing, Our partners,
-Testimonial, then the closing CTA. Three of the brief's headlines are deliberately not on the site:
+Testimonial, and then the footer's one closing banner. Three of the brief's headlines are deliberately not on the site:
 Success Metrics (KPIs), Competitor & Inspiration References and Timeline describe the redesign
 project, not the business, and publishing them would put Septa's internal brief and its competitor
 list on the public page. The two lists the brief does contribute and the site did not have, the four
@@ -658,6 +694,37 @@ target audiences and the three primary markets, are in `src/data/content.ts` as 
 `markets` and are printed in Septa's own wording. Because the sections were re-sequenced, the band
 tones (`ink`, `raised`, `surface`) were re-walked so no two neighbours match; that alternation is
 the only thing separating one hero from the next on a long page.
+
+**The ask is said once, in the footer.** Septa noticed that the homepage's "Let's Build What's Next,
+Together!" banner and the footer's "Next step" band were the same invitation in two places, and asked
+for one. The banner's copy (`ctaBanner`, `src/data/content.ts`) is now rendered by `Footer` at the top
+of the footer, so it closes every page rather than sitting mid-page on a few of them, and every
+page-level closing panel was removed with it: `CtaSection` (homepage, About, the five service pages,
+the case studies) and `CtaBand` (Blog, BlogPost) are both gone from the tree. The copy those panels
+used is kept unrendered in `about.cta` and in each service's `cta.headline` / `cta.copy`, since those
+lines are Septa's own wording from the brief and not the site's to delete. Nothing functional went
+with the panels: the service pages and the case studies still carry their pre-filled "Request a
+Service" button in the page header — which is where `cta.label` and `cta.to` are still read — and the
+links the two bands offered as their second button (About Septa, Read more writing) are in the header
+navigation, the footer navigation and, on a post, the related-articles block directly above.
+The footer is now three tiers — the banner, then everything else in one two-column block, then the
+legal strip. Septa's second complaint about that block was that it ran too long with empty page beside
+it, and the cause was structural: the brand column carried the description and the contact details on
+top of nothing else while three navigation lists stood beside it, so the row was as tall as the brand
+column and as wide as four equal tracks, and the networks and the newsletter sat in a tier of their own
+under a hairline nothing above them needed. The networks moved under the brand and the newsletter under
+the links, which fills both holes with the content that was already there. Measured at 1440×900 the two
+columns come out at 545px and 545px, the block is 641px tall against the 950px the two tiers it
+replaced ran to, and the footer as a whole is 977px. Each network is one cell — its mark, then its
+handles under it, because Septa has two accounts on three of the four and a row of bare icons would put
+two identical marks side by side with nothing to tell them apart; two cells across is as wide as that
+column ever gets, and every handle is measured at `scrollWidth === clientWidth`, so none is ever cut.
+The three unconfigured contact details are the same `Unconfigured` message, icon and tooltip, with the
+dashed box taken off them (`border-0 bg-transparent px-0 py-0`), because three dashed boxes stacked in
+a row was the loudest thing on the page. Verified on all seventeen routes at 1440×900 and 390×844:
+exactly one closing headline per page, zero horizontal overflow, no clipped handle, and no route with a
+second ask above the footer — the one `data-wall="engage"` section a probe still finds, on Careers, is
+the application form, which is a form rather than an invitation.
 
 ## Hosting
 

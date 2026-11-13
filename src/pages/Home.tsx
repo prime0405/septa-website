@@ -5,8 +5,8 @@ import { useIntroHeld } from "../lib/intro";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
 import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
-import { CtaSection } from "../components/blocks/CtaSection";
 import { PhotoFigure } from "../components/blocks/PhotoFigure";
+import { SectionStage } from "../components/blocks/SectionStage";
 import { Button } from "../components/ui/Button";
 import {
   Card,
@@ -18,7 +18,6 @@ import {
 } from "../components/ui/primitives";
 import {
   advantageIntro,
-  ctaBanner,
   hero,
   landingBlocks,
   partners,
@@ -304,27 +303,29 @@ export default function Home() {
           tone={i % 2 ? "surface" : "raised"}
           className="section border-y border-line-soft"
         >
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-            <div className="max-w-xl">
-              <Eyebrow className="mb-4">{block.label}</Eyebrow>
-              <MaskRise>
-                <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">{block.headline}</h2>
-              </MaskRise>
-              <p className="prose-body mt-5 text-[1.02rem]">{block.subheading}</p>
-              <div className="mt-7">
-                <Button to={block.to} size="lg" magnetic>
-                  {block.cta}
-                </Button>
+          <SectionStage>
+            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+              <div className="max-w-xl">
+                <Eyebrow className="mb-4">{block.label}</Eyebrow>
+                <MaskRise>
+                  <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">{block.headline}</h2>
+                </MaskRise>
+                <p className="prose-body mt-5 text-[1.02rem]">{block.subheading}</p>
+                <div className="mt-7">
+                  <Button to={block.to} size="lg" magnetic>
+                    {block.cta}
+                  </Button>
+                </div>
               </div>
-            </div>
 
-            <Reveal
-              delay={0.08}
-              className={cn("min-w-0", i % 2 ? "lg:order-first" : "lg:order-last")}
-            >
-              <PhotoFigure src={block.image} alt={block.alt} eager={i === 0} />
-            </Reveal>
-          </div>
+              <Reveal
+                delay={0.08}
+                className={cn("min-w-0", i % 2 ? "lg:order-first" : "lg:order-last")}
+              >
+                <PhotoFigure src={block.image} alt={block.alt} eager={i === 0} />
+              </Reveal>
+            </div>
+          </SectionStage>
         </Section>
       ))}
 
@@ -333,14 +334,18 @@ export default function Home() {
           pointer is on it, and then the supplied colour artwork fades in over the same box — both
           states are absolutely placed inside a fixed slot, so revealing a wide logo never reflows
           the row. The marquee already stops while the pointer is anywhere on it, so the mark being
-          looked at is a still one. */}
+          looked at is a still one. The headline gets the section shrink; the strip itself does not,
+          because it runs edge to edge and scaling it would pull both ends in off the screen and show
+          the band through the gap it left. */}
       <Section wall="services" tone="raised" bleed className="section border-y border-line-soft">
         <div className="wrap">
-          <div className="mx-auto max-w-3xl text-center">
-            <MaskRise>
-              <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">Our Partners</h2>
-            </MaskRise>
-          </div>
+          <SectionStage>
+            <div className="mx-auto max-w-3xl text-center">
+              <MaskRise>
+                <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">Our Partners</h2>
+              </MaskRise>
+            </div>
+          </SectionStage>
         </div>
 
         <div className="marquee marquee-logos mt-10 sm:mt-12">
@@ -376,53 +381,50 @@ export default function Home() {
 
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
       <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
-        <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
-        <Reveal delay={0.1}>
-          <AdvantageReel />
-        </Reveal>
+        <SectionStage>
+          <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
+          <Reveal delay={0.1}>
+            <AdvantageReel />
+          </Reveal>
+        </SectionStage>
       </Section>
 
       {/* --------------------------- 7. service overview --------------------------- */}
       <Section wall="service-automation" className="section">
-        <SectionHero
-          eyebrow="Service overview"
-          title={serviceOverview}
-          lead={servicesIntro}
-          className="mb-12"
-        />
-        <div className="grid gap-4 md:grid-cols-2">
-          {serviceListings.map((s, i) => (
-            <Reveal key={s.slug} delay={i * 0.05} className={i === 0 ? "md:col-span-2" : ""}>
-              <Card tilt className="card-hover flex h-full flex-col p-6 sm:p-7">
-                <h3 className="text-[1.2rem]">{s.name}</h3>
-                <p className="prose-body mt-3 flex-1 text-[0.94rem]">{s.detail}</p>
-                <div className="mt-6">
-                  <Button to={paths.service(s.slug)} size="sm" variant="secondary">
-                    {s.cta}
-                  </Button>
-                </div>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
+        <SectionStage>
+          <SectionHero
+            eyebrow="Service overview"
+            title={serviceOverview}
+            lead={servicesIntro}
+            className="mb-12"
+          />
+          <div className="grid gap-4 md:grid-cols-2">
+            {serviceListings.map((s, i) => (
+              <Reveal key={s.slug} delay={i * 0.05} className={i === 0 ? "md:col-span-2" : ""}>
+                <Card tilt className="card-hover flex h-full flex-col p-6 sm:p-7">
+                  <h3 className="text-[1.2rem]">{s.name}</h3>
+                  <p className="prose-body mt-3 flex-1 text-[0.94rem]">{s.detail}</p>
+                  <div className="mt-6">
+                    <Button to={paths.service(s.slug)} size="sm" variant="secondary">
+                      {s.cta}
+                    </Button>
+                  </div>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        </SectionStage>
       </Section>
 
       {/* ----------------------------- 8. testimonial ----------------------------- */}
       <Section wall="blog" tone="raised" className="section border-y border-line-soft">
-        <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
-        <Reveal delay={0.1}>
-          <TestimonialOrbit />
-        </Reveal>
+        <SectionStage>
+          <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
+          <Reveal delay={0.1}>
+            <TestimonialOrbit />
+          </Reveal>
+        </SectionStage>
       </Section>
-
-      {/* -------------------------- 9. call-to-action banner -------------------------- */}
-      <CtaSection
-        wall="engage"
-        headline={ctaBanner.headline}
-        copy={ctaBanner.subheadline}
-        label={ctaBanner.cta}
-        to={paths.contact()}
-      />
     </>
   );
 }

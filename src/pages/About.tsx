@@ -1,6 +1,6 @@
 import { Award, HeartHandshake, Lightbulb } from "lucide-react";
-import { CtaSection } from "../components/blocks/CtaSection";
 import { PageHero } from "../components/blocks/PageHero";
+import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import {
   Card,
@@ -46,17 +46,13 @@ export default function About() {
                 about how the work happens, so it gets the picture of a room where work like that
                 happens — a general scene, not a claim about a Septa project. */}
             <Reveal delay={0.1}>
-              <figure className="overflow-hidden rounded-card border border-line shadow-soft">
-                <img
-                  src="/img/work/delivery-meeting.webp"
-                  alt="Three colleagues around a meeting table looking at a laptop screen, one pointing at it while another writes in a notebook"
-                  width={800}
-                  height={600}
-                  loading="lazy"
-                  decoding="async"
-                  className="photo-breathe aspect-[16/10] w-full object-cover"
-                />
-              </figure>
+              <PhotoFigure
+                src="/img/work/delivery-meeting.webp"
+                alt="Three colleagues around a meeting table looking at a laptop screen, one pointing at it while another writes in a notebook"
+                ratio="aspect-[16/10]"
+                width={800}
+                height={600}
+              />
             </Reveal>
           </div>
         </div>
@@ -146,15 +142,6 @@ export default function About() {
           <TestimonialOrbit />
         </Reveal>
       </Section>
-
-      {/* ------------------------------ call to action ------------------------------ */}
-      <CtaSection
-        wall="engage"
-        headline={about.cta.headline}
-        copy={about.cta.copy}
-        label={about.cta.button}
-        to={paths.contact()}
-      />
     </>
   );
 }

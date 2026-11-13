@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useReducedMotion } from "motion/react";
 import { ArrowRight, CalendarDays, Clock, PenLine } from "lucide-react";
-import { CtaBand } from "../components/blocks/PageHero";
 import { DevNote } from "../components/blocks/LaunchNote";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
@@ -374,13 +373,6 @@ export default function BlogPost() {
           </div>
         </Section>
       ) : null}
-
-      <CtaBand
-        wall="engage"
-        title="Put this into practice"
-        lead="Describe what you are dealing with and we will tell you whether the thinking here transfers to your context."
-        secondary={{ label: "Read more writing", to: paths.blog() }}
-      />
     </>
   );
 }

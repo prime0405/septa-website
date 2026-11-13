@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { CtaSection } from "../components/blocks/CtaSection";
 import { PageHero } from "../components/blocks/PageHero";
 import {
   Card,
@@ -170,14 +169,6 @@ export default function UseCaseDetail() {
           ))}
         </div>
       </Section>
-
-      <CtaSection
-        wall="engage"
-        headline={study.title}
-        copy={study.overview}
-        label="Start building"
-        to={paths.request(study.client)}
-      />
     </>
   );
 }

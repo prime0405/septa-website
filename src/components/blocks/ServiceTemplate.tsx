@@ -12,7 +12,7 @@ import {
 } from "../ui/primitives";
 import { PageHero } from "./PageHero";
 import type { Crumb } from "./PageHero";
-import { CtaSection } from "./CtaSection";
+import { PhotoFigure } from "./PhotoFigure";
 import { ServiceIcon } from "./ServiceIcon";
 import { LaunchNoteInline } from "./LaunchNote";
 
@@ -64,17 +64,7 @@ export function ServiceTemplate({
           />
           {page.image ? (
             <Reveal delay={0.06} className="min-w-0">
-              <figure className="overflow-hidden rounded-card border border-line shadow-soft">
-                <img
-                  src={page.image.src}
-                  alt={page.image.alt}
-                  width={900}
-                  height={675}
-                  loading="lazy"
-                  decoding="async"
-                  className="photo-breathe aspect-[4/3] w-full object-cover"
-                />
-              </figure>
+              <PhotoFigure src={page.image.src} alt={page.image.alt} />
             </Reveal>
           ) : null}
         </div>
@@ -206,15 +196,6 @@ export function ServiceTemplate({
         </Section>
       ) : null}
 
-      {page.cta ? (
-        <CtaSection
-          wall="engage"
-          headline={page.cta.headline}
-          copy={page.cta.copy}
-          label={page.cta.label}
-          to={page.cta.to}
-        />
-      ) : null}
     </>
   );
 }

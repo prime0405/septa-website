@@ -193,6 +193,8 @@ export const testimonialTitle = "What Our Clients Say";
 
 /* ------------------------------------ call to action ------------------------------------ */
 
+/** The one closing ask. It is rendered by the footer, so it sits at the end of every page rather
+ *  than being repeated as a panel in the middle of a few of them. */
 export const ctaBanner = {
   headline: "Let’s Build What’s Next, Together!",
   subheadline:
@@ -244,6 +246,8 @@ export const about = {
     { letter: "B", word: "Bold" },
     { letter: "E", word: "Excellence" },
   ],
+  // Kept as Septa's own wording, and no longer rendered: the closing ask on every page is now the
+  // one banner in the footer, so this panel would have said the same thing twice in a row.
   cta: {
     headline: "Ready to Build with AI?",
     copy: "Whether you are scaling with AI across your enterprise or just starting your journey, Septa is your partner for intelligent solutions that work.",

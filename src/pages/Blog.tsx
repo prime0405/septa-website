@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Search, SearchX } from "lucide-react";
-import { CtaBand, PageHero } from "../components/blocks/PageHero";
+import { PageHero } from "../components/blocks/PageHero";
 import { DevNote } from "../components/blocks/LaunchNote";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
@@ -308,13 +308,6 @@ export default function Blog() {
           </div>
         </div>
       </Section>
-
-      <CtaBand
-        wall="engage"
-        title="Reading about it is not the same as doing it"
-        lead="If one of these articles describes your situation, send the details and we will say what applies to you."
-        secondary={{ label: "About Septa", to: paths.about() }}
-      />
     </>
   );
 }
