@@ -64,7 +64,7 @@ export function ServiceTemplate({
           />
           {page.image ? (
             <Reveal delay={0.06} className="min-w-0">
-              <PhotoFigure src={page.image.src} alt={page.image.alt} />
+              <PhotoFigure src={page.image.src} alt={page.image.alt} edge="right" />
             </Reveal>
           ) : null}
         </div>

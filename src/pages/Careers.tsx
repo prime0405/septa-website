@@ -58,11 +58,11 @@ export default function Careers() {
             A general scene, not a claim about a Septa team. */}
         <Reveal className="mb-12 block">
           <PhotoFigure
-            src="/img/work/hiring-desk.webp"
-            alt="Two colleagues side by side at a shared office desk, looking at a laptop screen together"
-            ratio="aspect-[16/9]"
-            width={800}
-            height={600}
+            src="/img/work/hiring-review.webp"
+            alt="A laptop open on a code editor beside a tablet showing a candidate profile as an avatar and a shortlist of skill bars, two pairs of hands at the table, one writing a note"
+            ratio="aspect-[3/2]"
+            width={1200}
+            height={800}
             className="mx-auto max-w-4xl"
           />
         </Reveal>

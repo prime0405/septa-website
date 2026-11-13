@@ -7,9 +7,11 @@ import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { SectionStage } from "../components/blocks/SectionStage";
+import { StackSheet } from "../components/blocks/StackSheet";
+import { ServiceGrid } from "../components/blocks/ServiceGrid";
+import { CtaArrival } from "../components/blocks/CtaArrival";
 import { Button } from "../components/ui/Button";
 import {
-  Card,
   Eyebrow,
   MaskRise,
   Reveal,
@@ -21,7 +23,6 @@ import {
   hero,
   landingBlocks,
   partners,
-  serviceListings,
   serviceOverview,
   servicesIntro,
   testimonialTitle,
@@ -189,23 +190,25 @@ export default function Home() {
               : "hero-field relative flex h-[100svh] items-center overflow-hidden"
           }
         >
-          {/* The office photograph, held at a fraction of its own brightness so it reads as depth in
-              the field rather than as a picture behind the words. */}
+          {/* The engineering floor, held low so it reads as depth in the field rather than as a
+              picture behind the words. */}
           <motion.div
             aria-hidden
             style={{ y: gridY, scale: fieldScale, opacity: fieldFade }}
             className="pointer-events-none absolute inset-[-6%]"
           >
             <img
-              src="/img/work/office-wide.webp"
+              src="/img/work/engineering-floor.webp"
               alt=""
               decoding="async"
               fetchPriority="high"
-              className="plate-drift-slow size-full object-cover opacity-[0.13] mask-fade"
+              className="plate-drift-slow size-full object-cover opacity-[0.34] mask-fade"
             />
-            {/* The photo is a daylight image and the field is meant to read as charcoal, so it is
-                held at 13% and then veiled by Pearl rather than setting the tone of the hero. */}
-            <div className="absolute inset-0 bg-brand-pearl/55" />
+            {/* The photograph is a night-lit hall, so the field no longer needs Pearl to pull a
+                daylight image down to charcoal — it needs a scrim that keeps the charcoal and lets
+                the rack lights stay dots rather than becoming the subject. 58% of the field's own
+                colour over 34% of a mostly-black image is the pass the contrast harness measured. */}
+            <div className="absolute inset-0 bg-charcoal/58" />
             <div className="grid-bg-dark absolute inset-0 opacity-[0.6] mask-fade" />
           </motion.div>
           <motion.div
@@ -275,12 +278,16 @@ export default function Home() {
 
               <Reveal delay={0.18}>
                 <div className="mt-9 flex flex-wrap justify-center gap-3">
-                  <Button to={paths.services()} size="lg" variant="dark-cta" magnetic>
-                    {hero.ctaPrimary}
-                  </Button>
-                  <Button to={paths.contact()} size="lg" variant="outline-light" magnetic>
-                    {hero.ctaSecondary}
-                  </Button>
+                  <CtaArrival waiting={held}>
+                    <Button to={paths.services()} size="lg" variant="dark-cta" magnetic>
+                      {hero.ctaPrimary}
+                    </Button>
+                  </CtaArrival>
+                  <CtaArrival waiting={held}>
+                    <Button to={paths.contact()} size="lg" variant="outline-light" magnetic>
+                      {hero.ctaSecondary}
+                    </Button>
+                  </CtaArrival>
                 </div>
               </Reveal>
             </div>
@@ -294,39 +301,51 @@ export default function Home() {
           built rather than three copies of the same layout, and the text column is left-aligned
           because a column of prose next to a picture has no centre to share.
 
-          All three frames are the same 4:3 box and all three files are 4:3, so the crop is a
-          pass-through: the picture fills the frame it was asked for and nothing is cut away. */}
+          All three frames are the same 3:2 sheet and all three files are 3:2, so the crop is a
+          pass-through: the picture fills the box it was asked for and nothing is cut away. The sheet
+          is not framed — it steps one grid gap past its column into the gutter on the side away from
+          the words, which is the side it was generated to be read from. */}
       {landingBlocks.map((block, i) => (
-        <Section
-          key={block.key}
-          wall={blockWalls[block.key]}
-          tone={i % 2 ? "surface" : "raised"}
-          className="section border-y border-line-soft"
-        >
-          <SectionStage>
-            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-              <div className="max-w-xl">
-                <Eyebrow className="mb-4">{block.label}</Eyebrow>
-                <MaskRise>
-                  <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">{block.headline}</h2>
-                </MaskRise>
-                <p className="prose-body mt-5 text-[1.02rem]">{block.subheading}</p>
-                <div className="mt-7">
-                  <Button to={block.to} size="lg" magnetic>
-                    {block.cta}
-                  </Button>
+        <StackSheet key={block.key} order={2 + i}>
+          <Section
+            wall={blockWalls[block.key]}
+            tone={i % 2 ? "surface" : "raised"}
+            className="section border-y border-line-soft"
+          >
+            <SectionStage>
+              <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+                <div className="max-w-xl">
+                  <Eyebrow className="mb-4">{block.label}</Eyebrow>
+                  <MaskRise>
+                    <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">
+                      {block.headline}
+                    </h2>
+                  </MaskRise>
+                  <p className="prose-body mt-5 text-[1.02rem]">{block.subheading}</p>
+                  <div className="mt-7">
+                    <CtaArrival>
+                      <Button to={block.to} size="lg" magnetic>
+                        {block.cta}
+                      </Button>
+                    </CtaArrival>
+                  </div>
                 </div>
-              </div>
 
-              <Reveal
-                delay={0.08}
-                className={cn("min-w-0", i % 2 ? "lg:order-first" : "lg:order-last")}
-              >
-                <PhotoFigure src={block.image} alt={block.alt} eager={i === 0} />
-              </Reveal>
-            </div>
-          </SectionStage>
-        </Section>
+                <Reveal
+                  delay={0.08}
+                  className={cn("min-w-0", i % 2 ? "lg:order-first" : "lg:order-last")}
+                >
+                  <PhotoFigure
+                    src={block.image}
+                    alt={block.alt}
+                    eager={i === 0}
+                    edge={i % 2 ? "left" : "right"}
+                  />
+                </Reveal>
+              </div>
+            </SectionStage>
+          </Section>
+        </StackSheet>
       ))}
 
       {/* ---------------------------- 5. our partners ---------------------------- */}
@@ -334,97 +353,100 @@ export default function Home() {
           pointer is on it, and then the supplied colour artwork fades in over the same box — both
           states are absolutely placed inside a fixed slot, so revealing a wide logo never reflows
           the row. The marquee already stops while the pointer is anywhere on it, so the mark being
-          looked at is a still one. The headline gets the section shrink; the strip itself does not,
-          because it runs edge to edge and scaling it would pull both ends in off the screen and show
-          the band through the gap it left. */}
-      <Section wall="services" tone="raised" bleed className="section border-y border-line-soft">
-        <div className="wrap">
-          <SectionStage>
-            <div className="mx-auto max-w-3xl text-center">
-              <MaskRise>
-                <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">Our Partners</h2>
-              </MaskRise>
-            </div>
-          </SectionStage>
-        </div>
+          looked at is a still one.
 
-        <div className="marquee marquee-logos mt-10 sm:mt-12">
-          <div className="marquee-inner">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="marquee-group" aria-hidden={copy === 1 || undefined}>
-                {partners.map((p) => (
-                  <span key={p.name} className="partner-slot">
-                    {p.logo ? (
-                      <>
-                        <img src={p.logo} alt={p.name} decoding="async" className="partner-mono" />
-                        {p.color ? (
-                          <img
-                            src={p.color}
-                            alt=""
-                            aria-hidden
-                            decoding="async"
-                            loading="lazy"
-                            className="partner-color"
-                          />
-                        ) : null}
-                      </>
-                    ) : (
-                      <span className="partner-word">{p.name}</span>
-                    )}
-                  </span>
-                ))}
-              </div>
-            ))}
+          This band is deliberately the shortest on the page: `py-12 sm:py-14` instead of the
+          `.section` rhythm of 56–112px, a heading at two thirds of the other section titles, and
+          seven pixels of air between them instead of forty. A logo strip is a footnote to the page,
+          not a chapter, and it was taking a screen of its own. It also drops out of
+          `SectionStage`: the strip runs edge to edge, so scaling it would pull both ends off the
+          screen and show the band through the gap it left — and a band this short has no reading
+          middle to hold still. */}
+      <StackSheet order={5}>
+        <Section
+          wall="services"
+          tone="raised"
+          bleed
+          className="border-y border-line-soft py-12 sm:py-14"
+        >
+          <div className="wrap">
+            <MaskRise>
+              <h2 className="text-center text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.08]">
+                Our Partners
+              </h2>
+            </MaskRise>
           </div>
-        </div>
-      </Section>
+
+          <div className="marquee marquee-logos mt-6 sm:mt-7">
+            <div className="marquee-inner">
+              {[0, 1].map((copy) => (
+                <div key={copy} className="marquee-group" aria-hidden={copy === 1 || undefined}>
+                  {partners.map((p) => (
+                    <span key={p.name} className="partner-slot">
+                      {p.logo ? (
+                        <>
+                          <img src={p.logo} alt={p.name} decoding="async" className="partner-mono" />
+                          {p.color ? (
+                            <img
+                              src={p.color}
+                              alt=""
+                              aria-hidden
+                              decoding="async"
+                              loading="lazy"
+                              className="partner-color"
+                            />
+                          ) : null}
+                        </>
+                      ) : (
+                        <span className="partner-word">{p.name}</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+      </StackSheet>
 
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
-      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
-        <SectionStage>
-          <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
-          <Reveal delay={0.1}>
-            <AdvantageReel />
-          </Reveal>
-        </SectionStage>
-      </Section>
+      <StackSheet order={6}>
+        <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
+          <SectionStage>
+            <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
+            <Reveal delay={0.1}>
+              <AdvantageReel />
+            </Reveal>
+          </SectionStage>
+        </Section>
+      </StackSheet>
 
       {/* --------------------------- 7. service overview --------------------------- */}
-      <Section wall="service-automation" className="section">
-        <SectionStage>
-          <SectionHero
-            eyebrow="Service overview"
-            title={serviceOverview}
-            lead={servicesIntro}
-            className="mb-12"
-          />
-          <div className="grid gap-4 md:grid-cols-2">
-            {serviceListings.map((s, i) => (
-              <Reveal key={s.slug} delay={i * 0.05} className={i === 0 ? "md:col-span-2" : ""}>
-                <Card tilt className="card-hover flex h-full flex-col p-6 sm:p-7">
-                  <h3 className="text-[1.2rem]">{s.name}</h3>
-                  <p className="prose-body mt-3 flex-1 text-[0.94rem]">{s.detail}</p>
-                  <div className="mt-6">
-                    <Button to={paths.service(s.slug)} size="sm" variant="secondary">
-                      {s.cta}
-                    </Button>
-                  </div>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
-        </SectionStage>
-      </Section>
+      <StackSheet order={7}>
+        <Section wall="service-automation" className="section border-y border-line-soft">
+          <SectionStage>
+            <SectionHero
+              eyebrow="Service overview"
+              title={serviceOverview}
+              lead={servicesIntro}
+              className="mb-12"
+            />
+            <ServiceGrid />
+          </SectionStage>
+        </Section>
+      </StackSheet>
 
       {/* ----------------------------- 8. testimonial ----------------------------- */}
-      <Section wall="blog" tone="raised" className="section border-y border-line-soft">
-        <SectionStage>
-          <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
-          <Reveal delay={0.1}>
-            <TestimonialOrbit />
-          </Reveal>
-        </SectionStage>
-      </Section>
+      <StackSheet order={8}>
+        <Section wall="blog" tone="raised" className="section border-y border-line-soft">
+          <SectionStage>
+            <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
+            <Reveal delay={0.1}>
+              <TestimonialOrbit />
+            </Reveal>
+          </SectionStage>
+        </Section>
+      </StackSheet>
     </>
   );
 }

@@ -7,13 +7,13 @@
 export type Maybe<T> = T | null;
 
 /** The networks Septa publishes on. Each one has its own mark in `SocialMarks`. */
-export type SocialNetwork = "x" | "linkedin" | "instagram" | "facebook";
+export type SocialNetwork = "x" | "linkedin" | "instagram";
 
-export type SocialGroup = {
+export type SocialAccount = {
   network: SocialNetwork;
-  /** Spoken and shown as the accessible name of the group; the mark itself carries no text. */
+  /** Spoken as the accessible name of the link; the mark itself carries no text. */
   name: string;
-  accounts: { label: string; href: string }[];
+  href: string;
 };
 
 export const site = {
@@ -40,42 +40,18 @@ export const site = {
   },
 
   /**
-   * Supplied by Septa as handle names, not URLs. Each href is the platform's standard
-   * profile pattern with that handle dropped in — click-test every one before launch.
-   * Grouped by network because the footer shows one mark per network and lists the two
-   * Septa accounts under it; a flat list would put two identical marks side by side.
+   * Supplied by Septa as handle names, not URLs. Each href is the platform's standard profile
+   * pattern with that handle dropped in — click-test every one before launch.
+   *
+   * These are the Septa Software accounts only. Septa also published two Academy handles, and asked
+   * for those links dropped; the only Facebook page supplied was the Academy's, so this list has
+   * three networks and no Facebook mark until a Septa Software page exists.
    */
   social: [
-    {
-      network: "x",
-      name: "X",
-      accounts: [
-        { label: "@septa_academy", href: "https://x.com/septa_academy" },
-        { label: "@septasoftware", href: "https://x.com/septasoftware" },
-      ],
-    },
-    {
-      network: "linkedin",
-      name: "LinkedIn",
-      accounts: [
-        { label: "Septa Academy", href: "https://www.linkedin.com/company/septa-academy" },
-        { label: "Septa Software", href: "https://www.linkedin.com/company/septasoftware" },
-      ],
-    },
-    {
-      network: "instagram",
-      name: "Instagram",
-      accounts: [
-        { label: "@septa_academy", href: "https://www.instagram.com/septa_academy" },
-        { label: "@septasoftware", href: "https://www.instagram.com/septasoftware" },
-      ],
-    },
-    {
-      network: "facebook",
-      name: "Facebook",
-      accounts: [{ label: "Septa Academy", href: "https://www.facebook.com/septa-academy" }],
-    },
-  ] as SocialGroup[],
+    { network: "x", name: "X", href: "https://x.com/septasoftware" },
+    { network: "linkedin", name: "LinkedIn", href: "https://www.linkedin.com/company/septasoftware" },
+    { network: "instagram", name: "Instagram", href: "https://www.instagram.com/septasoftware" },
+  ] as SocialAccount[],
 
   maps: {
     /** Google Maps / analytics ids stay empty until provided. */

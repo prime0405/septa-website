@@ -39,8 +39,8 @@ export const landingBlocks: LandingBlock[] = [
       "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering that solve user problems and support your business growth.",
     cta: "Explore AI Product Development",
     to: "/services/ai-product-development",
-    image: "/img/work/ai-development.webp",
-    alt: "A developer at a daylight office desk, working across a laptop on a stand and a monitor showing a product dashboard",
+    image: "/img/work/ai-model-build.webp",
+    alt: "Two monitors in an engineering room, one showing a model pipeline as a branching node graph and the other a training curve falling above a grid of evaluation panels, with a hand at the keyboard in the foreground",
   },
   {
     key: "traditional",
@@ -50,8 +50,8 @@ export const landingBlocks: LandingBlock[] = [
       "We turn ideas into intelligent products that solve real problems, delight users, and drive growth, powered by smart strategy, and thoughtful design.",
     cta: "Build with us",
     to: "/case-studies",
-    image: "/img/work/product-planning.webp",
-    alt: "Two colleagues at a whiteboard covered in screen sketches and arrows, one drawing a layout while the other listens",
+    image: "/img/work/product-delivery.webp",
+    alt: "Two colleagues standing at a wall of printed screen flows and coloured notes, one pointing at a step, while a monitor beside them shows a build pipeline with four stages checked and the fifth running",
   },
   {
     key: "talent",
@@ -61,8 +61,8 @@ export const landingBlocks: LandingBlock[] = [
       "Connecting you with top tech talents to fuel innovation and accelerate growth.",
     cta: "Hire Top Tech Talents Now",
     to: "/services/talent-solution",
-    image: "/img/work/talent-conversation.webp",
-    alt: "Two people in conversation across a small round table, each with a laptop open in front of them",
+    image: "/img/work/talent-matching.webp",
+    alt: "A monitor showing a grid of candidate profiles as abstract avatars with skill bars, two of them joined by a curve, beside a laptop running a video interview",
   },
 ];
 

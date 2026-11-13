@@ -1,24 +1,18 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { footerColumns } from "../../lib/nav";
 import { paths } from "../../lib/paths";
 import { site } from "../../lib/site";
+import { showLaunchNotes } from "../../lib/launchNotes";
 import { ctaBanner } from "../../data/content";
 import { Button } from "../ui/Button";
-import { MaskRise, Unconfigured } from "../ui/primitives";
-import { NewsletterForm } from "../forms/NewsletterForm";
+import { MaskRise } from "../ui/primitives";
 import { Wordmark } from "./Logo";
 import { SocialMark } from "./SocialMarks";
 
 export function Footer() {
-  const { email, phone, addressLines } = site.contact;
-  // Three unconfigured details stacked as three dashed boxes is the loudest thing in the footer, and
-  // the footer is not where a missing address should shout. The same message, the same icon and the
-  // same tooltip, without the box around each one.
-  const quiet = "border-0 bg-transparent px-0 py-0";
-
   return (
-    <footer className="relative mt-auto border-t border-line bg-ink-raised">
+    <footer className="stack-sheet relative mt-auto border-t border-line bg-ink-raised">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
       {/* The one closing ask. This used to live twice — as a band on the homepage and again as the
@@ -59,91 +53,71 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Septa, the site map, the networks and the newsletter, in two columns that end at nearly the
-          same line. This used to be three full-width tiers stacked on top of each other: the brand
-          column ran far longer than the four navigations beside it, so a strip of empty page opened
-          up on the right, and the networks and the newsletter sat in a tier of their own under a
-          hairline that nothing above them needed. Putting the networks under the brand and the
-          newsletter under the links fills both holes with the same content, and the footer loses a
-          hairline and about two hundred pixels. */}
+      {/* Septa and the site map, in two columns that end at nearly the same line. The tier used to
+          carry three things under the wordmark — an email, a phone and an address, each in its own
+          dashed "not configured" box, then the four networks with their handle strings spelled out,
+          then a newsletter under the links. Septa asked for all of that except the contact itself to
+          go: a phone number and an office address are not what a reader of a services site is
+          looking for in a footer, and the newsletter is a promise the company has not made yet. The
+          address is not replaced by a line of text either; the mark is the link, so the row is three
+          glyphs and an envelope rather than a directory. What is left ends at the same height as the
+          four navigations beside it, which is the reason this tier no longer needs a hairline of its
+          own. */}
       <div className="wrap relative grid gap-x-12 gap-y-11 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)]">
         <div className="min-w-0">
           <Wordmark />
           <p className="mt-4 max-w-sm text-[0.88rem] leading-relaxed text-muted">
             {site.description}
           </p>
-          <ul className="mt-5 space-y-2 text-[0.86rem]">
-            <li className="flex items-center gap-2.5 text-muted">
-              <Mail className="size-4 shrink-0 text-faint" aria-hidden />
-              {email ? (
-                <a href={`mailto:${email}`} className="hover:text-mint">
-                  {email}
-                </a>
-              ) : (
-                <Unconfigured what="company email" className={quiet} />
-              )}
-            </li>
-            <li className="flex items-center gap-2.5 text-muted">
-              <Phone className="size-4 shrink-0 text-faint" aria-hidden />
-              {phone ? (
-                <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} className="hover:text-mint">
-                  {phone}
-                </a>
-              ) : (
-                <Unconfigured what="phone number" className={quiet} />
-              )}
-            </li>
-            <li className="flex items-start gap-2.5 text-muted">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-faint" aria-hidden />
-              {addressLines?.length ? (
-                <address className="not-italic">
-                  {addressLines.map((l) => (
-                    <span key={l} className="block">
-                      {l}
-                    </span>
-                  ))}
-                </address>
-              ) : (
-                <Unconfigured what="office address" className={quiet} />
-              )}
-            </li>
-          </ul>
 
-          {site.social.length > 0 ? (
-            <div className="mt-9">
-              <p className="eyebrow mb-3.5 text-faint">Follow Septa</p>
-              {/* One cell per network: the mark says which platform without spelling its name out,
-                  and the handles under it are the links. Septa has two accounts on three of the four
-                  networks, so the handles stack rather than sit in a row — a row would either
-                  truncate a handle or put two identical marks next to each other with nothing to
-                  tell them apart. Two cells across is as wide as this column ever gets. */}
-              <ul className="grid gap-2.5 sm:grid-cols-2">
-                {site.social.map((group) => (
-                  <li
-                    key={group.network}
-                    className="group flex items-center gap-2.5 rounded-card border border-line bg-ink/70 px-3 py-2.5 transition-colors hover:border-mint/40 hover:bg-ink"
-                  >
-                    <span
-                      aria-hidden
-                      className="grid size-8 shrink-0 place-items-center rounded-pill border border-line bg-surface-raised text-muted transition-colors group-hover:border-mint/45 group-hover:bg-ink group-hover:text-mint"
+          {/* One row of marks: the envelope is the email, and each network glyph is that platform's
+              profile. The links are inside the logos, so nothing on this row is a handle typed out in
+              full — which is what let the three of them sit on one line instead of a two-column list
+              of strings. A mark only becomes an anchor when there is somewhere for it to go: the
+              email is still unconfigured in src/lib/site.ts, so its glyph stays a labelled, inert
+              chip with the same tooltip the old box carried, rather than a button that looks pressed
+              and does nothing. */}
+          {site.social.length > 0 || site.contact.email ? (
+            <div className="mt-8">
+              {/* "Reach", not "Follow": the envelope in this row is a contact route, not a network,
+                  and a label that named only the three glyphs would leave it unexplained. */}
+              <p className="eyebrow mb-3.5 text-faint">Reach Septa</p>
+              <ul className="flex flex-wrap items-center gap-2.5">
+                <li>
+                  {site.contact.email ? (
+                    <a
+                      href={`mailto:${site.contact.email}`}
+                      aria-label={`Email Septa at ${site.contact.email}`}
+                      className="mark-chip"
                     >
-                      <SocialMark network={group.network} className="size-4" />
+                      <Mail className="size-[1.05rem]" aria-hidden />
+                    </a>
+                  ) : (
+                    <span
+                      aria-label="The company email address is not configured yet"
+                      title={
+                        showLaunchNotes
+                          ? "Add the real company email in src/lib/site.ts"
+                          : "The real company email is not supplied yet"
+                      }
+                      className="mark-chip mark-chip-inert"
+                      role="img"
+                    >
+                      <Mail className="size-[1.05rem]" aria-hidden />
                     </span>
-                    <ul className="min-w-0 space-y-0.5">
-                      {group.accounts.map((account) => (
-                        <li key={account.href}>
-                          <a
-                            href={account.href}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                            aria-label={`${group.name}: ${account.label}`}
-                            className="inline-flex min-h-8 items-center text-[0.8rem] text-muted underline-offset-4 transition-colors hover:text-mint hover:underline"
-                          >
-                            {account.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                  )}
+                </li>
+                {site.social.map((account) => (
+                  <li key={account.network}>
+                    <a
+                      href={account.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={`Septa on ${account.name}`}
+                      className="mark-chip"
+                    >
+                      <SocialMark network={account.network} className="size-[1.05rem]" />
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -172,16 +146,6 @@ export function Footer() {
                 </ul>
               </nav>
             ))}
-          </div>
-
-          <div className="mt-10 border-t border-line-soft pt-8">
-            <p className="eyebrow mb-2 text-faint">Newsletter</p>
-            <p className="mb-3 max-w-md text-[0.84rem] leading-relaxed text-muted">
-              Occasional notes on what we built and what it taught us. No cadence is promised yet.
-            </p>
-            <div className="max-w-md">
-              <NewsletterForm />
-            </div>
           </div>
         </div>
       </div>

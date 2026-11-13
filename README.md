@@ -1,9 +1,10 @@
 # Septa — company website
 
 A complete, multi-route marketing site for Septa with its own submission backend: contact
-enquiries, five-step service requests, career applications and footer newsletter sign-ups are
-validated in the browser, validated again on the server, written to the database and (once SMTP
-is configured) emailed.
+enquiries, five-step service requests and career applications are validated in the browser,
+validated again on the server, written to the database and (once SMTP
+is configured) emailed. The backend also still serves a newsletter endpoint, but Septa took the
+sign-up form out of the footer, so nothing on the site posts to it.
 It is live on Vercel as one project: static frontend plus the API as a Node serverless function
 on Postgres, with CV uploads stored as private Vercel Blob objects.
 
@@ -69,9 +70,10 @@ route with its own `<title>`, description and breadcrumb — no scroll-jacking. 
 from the same service and track data as the pages it links to, so it cannot drift from them.
 
 **Forms.** Contact, the 5-step Request wizard (draft saved to `localStorage`, per-step
-validation, review screen, server-confirmed receipt with a reference id), the Careers application
-(optional CV upload) and the footer Newsletter sign-up. Server re-validates everything with the
-same Zod schemas the browser uses.
+validation, review screen, server-confirmed receipt with a reference id) and the Careers application
+(optional CV upload). Server re-validates everything with the
+same Zod schemas the browser uses. `/api/newsletter` is still implemented, tested and reachable, but
+has no form in the interface since Septa cut the footer sign-up.
 
 **Verified on 2026-10-24:** `tsc -b` clean, `vite build` clean, `npm run smoke` **22/22 against
 the local API on SQLite**, **22/22 against the deployed Vercel function on Postgres**, all routes
@@ -371,8 +373,19 @@ animation to `none`, so no backdrop anywhere else moves. Verified at 1440×900: 
 `.bgfx-mesh` nodes on the homepage and on every inner route, `body` computes to `rgb(255, 255, 255)`
 everywhere below the hero, and no route requests a video.
 The photographs are the exception Septa asked for afterwards, and they are pictures rather than
-backdrops. `PhotoFigure` (`src/components/blocks/PhotoFigure.tsx`) is six layers that never share a
-transform: a clipped `.photo-frame` that is never scaled, so no layout can move; a `.photo-plane` set
+backdrops. They are also not containers: Septa's complaint was that every one of them sat "in a box",
+so `PhotoFigure` draws a sheet rather than a framed print. `.photo-sheet` (`src/index.css`) carries
+`margin-inline` of exactly the negative of `.wrap`'s own padding-inline below 1024px, which puts the
+picture flush against both edges of the phone screen; from 1024px the margin is dropped and only the
+side named by `edge` is released, by one gutter (`-3.5rem`, the `lg:gap-14` the two-column blocks use),
+so the sheet leaves its column and stops at the page margin instead of running under nothing. `edge`
+also decides which corner is cut — `polygon(4rem 0, 100% 0, 100% 100%, 0 100%)` when the picture leaves
+to the right, the mirror of it when it leaves to the left — so the edge that faces the words is a
+diagonal and the edge that faces the page margin is square. A cut corner is the only ornament here, and
+it is there to end the picture on a decision instead of on a border; the plane inside is set 8% outside
+the clip on every side, so no page colour can appear along the diagonal however far the picture leans.
+`PhotoFigure` (`src/components/blocks/PhotoFigure.tsx`) is six layers that never share a
+transform: a clipped `.photo-cut` that is never scaled, so no layout can move; a `.photo-plane` set
 8% outside the frame on every side, which carries the scroll curve, the parallax, the pointer lean and
 the lift; the `img` itself, which breathes (`.photo-breathe`, a 34s scale from 1.04 to 1.10 with a
 small diagonal drift) so an image nobody is scrolling or hovering is still not a frozen one; a
@@ -390,8 +403,44 @@ leans up to 3.4° and lifts 16px out of its frame on one spring (`stiffness` 150
 arrives with a little weight instead of snapping to the mouse, and it is gated on `hover: hover`. Case
 and post covers keep their own, simpler answer to the pointer (`.photo-cover`, 5.5%, disarmed where
 there is no hover to leave).
-`SectionStage` (`src/components/blocks/SectionStage.tsx`) wraps the content of all seven sections
-after the hero — the three offerings, the partners heading, the advantage, the service overview and the
+
+**The sections stack.** Septa asked for the opposite of a cross-fade: "when you swipe to the next page
+or section, it's like the new page is coming on top of the old page you're on". `StackSheet`
+(`src/components/blocks/StackSheet.tsx`) wraps every homepage band after the hero and gives it two
+things — a `z-index` from its `order` in the sequence, and a `translateY` on the same scroll progress
+the band is measured on, `(p - 0.5) * 12vh`. A sheet therefore arrives 6vh late and leaves 6vh early,
+so the incoming band rides up over the one being read instead of replacing it. Twelve vh is the whole
+budget and it is not arbitrary: 6vh of a 900px viewport is 54px, and the smallest vertical padding any
+band carries is the 56px `.section` resolves to at its tightest, so the sheet that is covering you can
+never reach far enough to hide copy you are reading. `.stack-sheet` adds one shadow along the leading
+edge — `0 -1.25rem 2.25rem -1.5rem` at 26% of the ink — because two opaque bands meeting without a
+seam read as one band, not as one passing over the other.
+
+Two consequences had to be dealt with. `.band::before` used to paint the section's tone at 0.76, which
+let the wallpaper show through; a translucent sheet laid over a moving page is not a sheet, it is a
+veil, so the plate is now opaque and the tone it carries is the only thing between one band and the
+next. That is a contrast change and it was re-read: the three tones are `#ffffff`, `#eef4f4` and
+`#f6faf9`, the body text is `rgb(6, 24, 32)`, and the darkest of the three pairings is body text on
+`#eef4f4` at 15.4:1 — the plate going solid only ever removes a lighter layer from underneath, so it
+cannot make a pairing worse. The second consequence is the homepage hero, which is `position: sticky`
+inside a `100svh + 58vh` track and so already moves relative to the page; putting it in a sheet as well
+would move it twice, so the hero stays outside the stack and the first `StackSheet` carries `order={2}`.
+
+`CtaArrival` (`src/components/blocks/CtaArrival.tsx`) is the third ask in the same sentence — CTAs that
+enlarge and bolden as they enter the screen and then return. It wraps each hero and offering button and
+each service-overview CTA, and on `useInView` (without `once`, so it replays when the band comes back)
+runs one keyframe set: `scale` 1 → 1.07 → 1 and `textShadow` 0 → 0.65px → 0, over 1.05s with the peak at
+34% so the arrival is a swell rather than a bounce. The bolden is a shadow and not a `font-weight`,
+because the display face ships as two static TTFs and animating weight would swap the file mid-pulse;
+both keyframes carry four identical shadow layers so the property interpolates instead of snapping. It
+is held (`waiting`) while the welcome curtain is still up, so the pulse is spent on a page the visitor
+can actually see, and under reduced motion the component renders a plain span. Verified at 1440×900 by
+sampling the computed style through the pass: `matrix(1 …)` → 1.027 → 1.051 → 1.066 → **1.069** → 1.064
+→ 1.053 → 1.037 → 1.021 → `none`, with the shadow blur tracking it at 0 → 0.26 → 0.47 → 0.62 → **0.65**
+→ 0.60 → 0.49 → 0.34 → 0.18 → 0px.
+
+`SectionStage` (`src/components/blocks/SectionStage.tsx`) wraps the content of all six sections
+after the hero — the three offerings, the advantage, the service overview and the
 testimonial — and scales it 0.955 → 1.00, fades it 0.82 → 1.00 and drifts it ±12px on the same curve.
 The curve is a plateau, not a peak, and that is the whole of the difference between this and the
 half-sine it replaces: a sine is at its maximum for one instant, so a section was technically full size
@@ -603,7 +652,10 @@ a header that had been scrolled past stopped decoding, and `prefers-reduced-moti
 observer at all. What is *not* verified anywhere in this file is a continuous loop run in a real
 window: the browser used for these checks keeps its tab hidden, and Chrome suspends media in a hidden
 document after ~70ms regardless of who asked for it. Every interior page keeps its white band — the AI
-page's hero now measures `::before` opacity 0.76 with the plate at 0.55 and no `<video>` in the DOM.
+page's hero measures `::before` opacity 1 with the plate at 0.55 and no `<video>` in the DOM; the band
+plate went solid when the homepage sections started stacking, and `getComputedStyle` on a `.band` at
+1440×900 now resolves it to `rgb(255, 255, 255)` on `surface`, `rgb(238, 244, 244)` on `raised` and
+`rgb(246, 250, 249)` on the third tone, with no alpha on any of them.
 `AutoRollList` (`src/components/ui/AutoRollList.tsx`, timing in `src/lib/useRollCycle.ts`) advances
 itself through a list, one item at a time, and stops dead under the pointer. The clock is the
 progress fill's own `animationend` rather than a parallel `setTimeout`, so pausing the animation
@@ -614,6 +666,17 @@ text) rather than opacity, because dimming the inactive rows to 60% had put thei
 2.4:1. Used on the homepage capability lists and, with `autoRoll`, on the delivery process strip.
 Under reduced motion the fill is not rendered at all: a 0.001ms animation would fire `animationend`
 continuously, and the list degrades to a plain static list.
+The homepage service overview runs the same clock over its cards, which is what Septa asked for when
+they said the hover should be "automatic — you don't have to hover above it for it to be activated".
+`ServiceGrid` (`src/components/blocks/ServiceGrid.tsx`) holds one index at a time and lights that card
+with the treatment the pointer used to give it: a mint border, the glow, and 3px of lift. The lift goes
+through `--lift` rather than a `transform`, because the pointer tilt writes the same property and the
+two have to compose instead of fight — a card can be lit by the cycle and leaned by the cursor at the
+same time. `useRollCycle` is the reason the grid lives in its own file: the hook belongs to the block,
+not to the page. Each card's CTA is ringed by `.cta-line`, a mint-weighted hairline that tightens to
+full `--color-mint` on the lit card, so the automatic state points at the action as well as the panel.
+The cycle freezes on hover, on focus and when the block is off screen, and under reduced motion it
+freezes permanently, which leaves every card in its resting state with the line still drawn.
 The homepage hero also has depth: `useScroll` on the hero section drives three layers at different
 rates as it leaves the viewport (grid 70px, aurora 130px, copy −26px, the last one against the
 first two). Section headings rise out of a mask (`MaskRise` in `src/components/ui/primitives.tsx`
@@ -624,7 +687,13 @@ and the homepage technology strip scrolls as a marquee: two identical groups ins
 tech reads the list once. It pauses on hover and, under `prefers-reduced-motion`, the animation is
 dropped, the duplicate is removed and the strip becomes a plain horizontal scroller instead of
 hiding content behind a mask.
-The partner row is the same machine, now on a light band like every other section. Each mark sits in
+The partner row is the same machine, now on a light band like every other section, and now much
+shorter: Septa asked for the section to be reduced, and it was taking a screen of its own. It runs
+`py-12 sm:py-14` instead of the 56–112px `.section` rhythm, its heading is `clamp(1.5rem,3vw,2.1rem)`
+against the two-thirds of the other section titles, and there are seven pixels of air between the two
+instead of forty. A logo strip is a footnote to the page, not a chapter. It also sits outside
+`SectionStage` — the strip runs edge to edge, so scaling it would pull both ends off the screen — but
+inside `StackSheet` like every other band. Each mark sits in
 a fixed `.partner-slot` holding two absolutely placed images: the supplied artwork flattened to a
 grey silhouette, and the colour artwork Septa provided for the same client under
 `public/partners/color/` (each file was scanned for `script`, event attributes and external
@@ -711,20 +780,31 @@ The footer is now three tiers — the banner, then everything else in one two-co
 legal strip. Septa's second complaint about that block was that it ran too long with empty page beside
 it, and the cause was structural: the brand column carried the description and the contact details on
 top of nothing else while three navigation lists stood beside it, so the row was as tall as the brand
-column and as wide as four equal tracks, and the networks and the newsletter sat in a tier of their own
-under a hairline nothing above them needed. The networks moved under the brand and the newsletter under
-the links, which fills both holes with the content that was already there. Measured at 1440×900 the two
-columns come out at 545px and 545px, the block is 641px tall against the 950px the two tiers it
-replaced ran to, and the footer as a whole is 977px. Each network is one cell — its mark, then its
-handles under it, because Septa has two accounts on three of the four and a row of bare icons would put
-two identical marks side by side with nothing to tell them apart; two cells across is as wide as that
-column ever gets, and every handle is measured at `scrollWidth === clientWidth`, so none is ever cut.
-The three unconfigured contact details are the same `Unconfigured` message, icon and tooltip, with the
-dashed box taken off them (`border-0 bg-transparent px-0 py-0`), because three dashed boxes stacked in
-a row was the loudest thing on the page. Verified on all seventeen routes at 1440×900 and 390×844:
-exactly one closing headline per page, zero horizontal overflow, no clipped handle, and no route with a
-second ask above the footer — the one `data-wall="engage"` section a probe still finds, on Careers, is
-the application form, which is a form rather than an invitation.
+column and as wide as four equal tracks. The networks moved under the brand, which fills the hole with
+the content that was already there.
+Septa then cut the block down further, and the four removals are worth recording because two of them
+took something with them. The newsletter is gone from the interface: `NewsletterForm` is deleted and
+`src/components/forms/` no longer has it. The server side was deliberately left in place — `/api/newsletter`,
+its schema, its store stream and its smoke tests all still exist — because the endpoint is not the part
+Septa objected to, and re-adding a form to a live endpoint is a component, not a migration. The phone
+number and the address lines are gone from the footer entirely; they remain in `site.contact` because
+the Contact page still renders them and still shows the `Unconfigured` chip for each.
+What is left of the contact row is marks, not words. Each network is one `.mark-chip` — a 2.5rem circle
+whose `<a>` carries the profile URL, so the logo *is* the link — and the email is the same shape with a
+`mailto:` href, which is why the typed handle list, the two Septa Academy accounts and the three dashed
+"not configured" boxes went with it. `site.social` is now a flat `SocialAccount[]` rather than the
+`SocialGroup[]` it was, because the grouping existed only to hang two handles under one mark; with the
+handles gone there is nothing to group. That is also the reason Facebook left the site: Septa's only
+Facebook page is the Academy's, and an Academy mark would have been an Academy link wearing a different
+icon. The array is typed as `"x" | "linkedin" | "instagram"` and `SocialMarks` has no `facebook` path,
+so adding the network back is a type change, a path and a URL, in that order.
+`.mark-chip` is `rgb(6 24 32 / 6%)` on the `#eef4f4` plate, which puts the mark itself at roughly 15:1;
+the hover swaps to solid mint, and the focus ring is the same rule the rest of the site uses. When the
+email is unconfigured the chip cannot be a link, so it is an inert `role="img"` span with a dashed
+border, no fill and an `aria-label` that says so — a dead envelope that looks live is exactly the kind
+of control the brief forbids. Verified at 1440×900 and 390×844: four chips (mail, X, LinkedIn,
+Instagram), zero `<form>` elements in the footer, zero phone or address nodes, and the closing headline
+appearing once per page.
 
 ## Hosting
 

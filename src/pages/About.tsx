@@ -47,11 +47,11 @@ export default function About() {
                 happens — a general scene, not a claim about a Septa project. */}
             <Reveal delay={0.1}>
               <PhotoFigure
-                src="/img/work/delivery-meeting.webp"
-                alt="Three colleagues around a meeting table looking at a laptop screen, one pointing at it while another writes in a notebook"
-                ratio="aspect-[16/10]"
-                width={800}
-                height={600}
+                src="/img/work/product-delivery.webp"
+                alt="Two colleagues standing at a wall of printed screen flows and coloured notes, one pointing at a step, while a monitor beside them shows a build pipeline with four stages checked and the fifth running"
+                ratio="aspect-[3/2]"
+                width={1200}
+                height={800}
               />
             </Reveal>
           </div>

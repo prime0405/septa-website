@@ -38,15 +38,12 @@ export function Section({
   wall?: BgTheme;
   as?: "section" | "div";
 }) {
-  // Every tone is a 76% veil rather than a solid fill, so the drifting wash behind the page keeps
-  // moving underneath the bands instead of the site going flat white between them. 76% is the point
-  // at which the measured worst case (the darkest region of the plate, a mesh node landing on a
-  // tinted chip, and the wallpaper's own heaviest ink underneath) still leaves the smallest label
-  // tokens on the site at 4.5:1.
-  // The veil is painted by `.band::before` in src/index.css, not by a background class, because it
-  // needs a horizontal mask: 76% across the reading column and 30% in the gutters, which is the
-  // mirror image of the wash's mask. That is what lets the backdrop reach the eye without a single
-  // pixel behind the copy changing.
+  // Each tone is a solid plate of one of three near-white colours. They used to be painted at 76%
+  // opacity so the drifting wallpaper behind the page kept moving underneath the bands; the
+  // wallpaper was retired, and the stacked sections on the homepage need a band that hides the band
+  // it is arriving over, which a translucent plate cannot do. The veil is painted by
+  // `.band::before` in src/index.css rather than by a background class so that it still sits under
+  // the section's own copy and above anything behind the page.
   const tones = {
     ink: "band",
     raised: "band band-raised",
@@ -195,6 +192,9 @@ export function Card({
   className,
   interactive,
   tilt,
+  lit,
+  onPointerEnter,
+  onFocus,
   as: Tag = "div",
 }: {
   children: ReactNode;
@@ -206,6 +206,15 @@ export function Card({
    * handler that writes the angles refuses to run in either case.
    */
   tilt?: boolean;
+  /**
+   * Holds the card in the state a cursor would put it in, without a cursor. Used by the grids whose
+   * attention moves on a timer rather than on hover; the lift still rides `--lift`, so the tilt and
+   * the lit state share one transform instead of fighting for it.
+   */
+  lit?: boolean;
+  /** Lets the walk hand the light over to whichever card a pointer actually landed on. */
+  onPointerEnter?: (event: React.PointerEvent<HTMLElement>) => void;
+  onFocus?: (event: React.FocusEvent<HTMLElement>) => void;
   as?: "div" | "article" | "li";
 }) {
   const track = usePointerTrack<HTMLElement>("tilt", 7);
@@ -217,7 +226,10 @@ export function Card({
         tilt && "tilt group relative isolate",
         className,
       )}
+      data-lit={lit ? "true" : undefined}
       {...(tilt ? track : {})}
+      onPointerEnter={onPointerEnter}
+      onFocus={onFocus}
     >
       {tilt ? <PointerGlow /> : null}
       {children}

@@ -53,3 +53,7 @@ node_modules
 # Raw image-generator output that scripts/encode-plates.ps1 encodes from; the shipped art
 # is the JPEG in public/img, so the multi-megabyte PNG sources stay out of history
 /vibe_images
+
+# Scratch harness for browser verification and image encoding: a throwaway Chrome profile and a
+# one-line page. Nothing here is part of the site.
+/probe

@@ -56,8 +56,8 @@ export const services: ServiceContent[] = [
     intro:
       "We use AI-assisted product development to turn ideas into market-ready digital products within 4–6 weeks. Whether you’re building a mobile app, developing an enterprise solution, or enhancing an existing product with intelligent features, we combine artificial intelligence, product strategy, and engineering to accelerate development and bring your vision to life.",
     image: {
-      src: "/img/work/ai-development.webp",
-      alt: "A developer at a daylight office desk, working across a laptop on a stand and a monitor showing a product dashboard",
+      src: "/img/work/ai-model-build.webp",
+      alt: "Two monitors in an engineering room, one showing a model pipeline as a branching node graph and the other a training curve falling above a grid of evaluation panels, with a hand at the keyboard in the foreground",
     },
     coreServicesHeading: "Core Services",
     coreServicesLead:
@@ -241,8 +241,8 @@ export const services: ServiceContent[] = [
     intro:
       "Manual processes slow you down. Septa designs automation that cuts costs, saves time, and reduces errors, without disrupting your current operations.",
     image: {
-      src: "/img/work/product-planning.webp",
-      alt: "Two colleagues at a whiteboard covered in screen sketches and arrows, one drawing a layout while the other listens",
+      src: "/img/work/automation-flows.webp",
+      alt: "An ultrawide screen showing an automation canvas — a trigger, a branch and a timer node joined into a running path — above an untouched keyboard",
     },
     coreServicesHeading: "Core Services",
     coreServices: [
@@ -298,8 +298,8 @@ export const services: ServiceContent[] = [
     intro:
       "At Septa, we help businesses modernize the way they operate and grow. Outdated systems are replaced with powerful digital solutions that increase efficiency, cut costs, and elevate customer experiences.",
     image: {
-      src: "/img/work/delivery-meeting.webp",
-      alt: "A small team around a meeting table with a screen in front of them, mid-discussion with notebooks open",
+      src: "/img/work/transformation-floor.webp",
+      alt: "An operations counter with an ageing green-screen terminal and stacks of paper forms on one side, and a tablet showing a clean dashboard on the other, a worker's hands setting one form down",
     },
     coreServicesHeading: "Core Services",
     coreServices: [
@@ -364,8 +364,8 @@ export const services: ServiceContent[] = [
     intro:
       "Downtime and performance issues cost money and trust. We provide real-time visibility into your systems so you can detect, respond, and fix problems before they impact customers.",
     image: {
-      src: "/img/work/support-monitoring.webp",
-      alt: "A person at a monitoring desk facing two screens of charts and status panels in a dim office",
+      src: "/img/work/observability-noc.webp",
+      alt: "Three screens in a dim room: a latency graph with one spike marked, a grid of service health tiles with two of them amber, and a log stream with a single row highlighted",
     },
     coreServicesHeading: "Core Services",
     coreServices: [
@@ -464,8 +464,8 @@ export const services: ServiceContent[] = [
     intro:
       "At Septa Talent Solutions, we take the hassle out of hiring, payroll, and employee benefits management, allowing businesses and organizations to focus on what truly matters: growth and innovation. We specialize in providing highly skilled professionals across various industries while managing everything from payroll processing, tax compliance, pension, HMO, and other employee benefits. Whether you’re a startup, SME, or large enterprise, we ensure seamless workforce management so you can scale without stress.",
     image: {
-      src: "/img/work/talent-conversation.webp",
-      alt: "Two people in conversation across a small round table, each with a laptop open in front of them",
+      src: "/img/work/talent-matching.webp",
+      alt: "A monitor showing a grid of candidate profiles as abstract avatars with skill bars, two of them joined by a curve, beside a laptop running a video interview",
     },
     coreServicesHeading: "Why Choose Us?",
     coreServices: [

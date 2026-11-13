@@ -468,6 +468,31 @@
   }
 }
 
+/* The lit state, for a card whose attention arrives on a timer rather than from a cursor. It is the
+   same three properties .card-hover:hover already changes, and it deliberately sets --lift instead of
+   a transform: on a tilted card the transform belongs to `.tilt`, which reads the lean angles off the
+   pointer, and replacing it here would flatten the lean every time the walk arrived. Declared after
+   both hover rules so it outranks them at equal weight, which is what lets a pointer and the timer
+   hold the same card in the same state without either of them losing. */
+.card-hover[data-lit="true"] {
+  --lift: -3px;
+  border-color: color-mix(in oklab, var(--color-mint) 55%, var(--color-line));
+  box-shadow: var(--shadow-glow);
+}
+
+/* The line around a service card's call to action. The `secondary` button arrives with a hairline in
+   --color-line, which is the card grid's own edge colour and therefore almost invisible against the
+   card it sits on; on this section the CTA is the only way into five whole pages, so it gets the
+   outline the variant already has, pulled up into the brand's own green and held at a ratio that
+   stays readable over the raised plate. When the card is lit the line closes to full mint, which is
+   how the walk tells you which button it is currently standing in front of. */
+.cta-line {
+  border-color: color-mix(in oklab, var(--color-mint) 42%, var(--color-line));
+}
+[data-lit="true"] .cta-line {
+  border-color: var(--color-mint);
+}
+
 /* The technology strip: two identical groups side by side, shifted by exactly one group
    per cycle, so the loop has no seam. Hover pauses it, because the point of the row is to
    be read, and the edge mask fades the pills out instead of chopping them at the border. */
@@ -733,6 +758,45 @@
   );
 }
 
+/* A footer contact, drawn rather than written: the mark is the link, so the row carries no handle
+   strings and no address block. Forty pixels across is the smallest box a finger accepts without the
+   site needing a mobile-only enlargement, and the circle keeps the glyph legible at that size where
+   a rounded square of the same width makes the X's diagonals disappear into the corners.
+   The resting ink is the footer's own foreground at 6 per cent over its plate, which is 15:1 against
+   the plate — well past the 3:1 a non-text control needs — and reads as a mark rather than as a
+   button waiting to be pressed. Hover takes the mint, because the rest of the site's interactive ink
+   is mint and this row would otherwise be the only thing on the page that does not say so. */
+.mark-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-line);
+  background: rgb(6 24 32 / 6%);
+  color: var(--color-fg);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.mark-chip:hover,
+.mark-chip:focus-visible {
+  border-color: color-mix(in oklab, var(--color-mint) 60%, var(--color-line));
+  background: var(--color-mint);
+  color: var(--color-fg);
+}
+/* The state a mark is in when there is nowhere for it to go. It keeps the shape of the row so an
+   unconfigured email does not shift the networks sideways, and it keeps the dashed edge and the
+   tooltip so nothing about it looks pressable. */
+.mark-chip-inert {
+  border-style: dashed;
+  border-color: var(--color-line);
+  background: transparent;
+  color: var(--color-faint);
+}
+
 .grid-bg {
   background-image:
     linear-gradient(to right, color-mix(in oklab, var(--color-brand-pearl) 12%, transparent) 1px, transparent 1px),
@@ -838,12 +902,15 @@
 }
 
 /* Section bands are the other half of the same contract. Painted as a `::before` on a negative
-   z-index so it sits under the section's copy but over anything behind the page, at 76% of the band
-   colour — the value the contrast harness measured every run of copy against. It used to carry a
-   horizontal mask as well, 76% across the reading column and 30% in the gutters, whose only purpose
-   was to let the moving wallpaper reach the eye beside the text. The wallpaper is gone, so the mask
-   went with it: a 76% veil next to a 30% one of the same colour is a seven-level edge across an
-   otherwise flat page. */
+   z-index so it sits under the section's copy but over anything behind the page. It used to run at
+   76% of the band colour and carry a horizontal mask, 76% across the reading column and 30% in the
+   gutters, whose only purpose was to let the moving wallpaper reach the eye beside the text. The
+   wallpaper is gone, so the mask went with it: a 76% veil next to a 30% one of the same colour is a
+   seven-level edge across an otherwise flat page. The alpha went with it for a second reason — the
+   stacked sections in StackSheet need a sheet that hides the section it is covering, and a 76% veil
+   shows the previous band through it as a ghost of copy you have already left. The three colours are
+   all within eight levels of white, so a solid plate is barely a different pixel behind the text;
+   the contrast harness re-read every run of copy after the change rather than assuming it. */
 .band {
   --band: var(--color-ink);
 }
@@ -859,8 +926,17 @@
   z-index: -1;
   inset: 0;
   background: var(--band);
-  opacity: 0.76;
   pointer-events: none;
+}
+
+/* The leading edge of a stacked sheet. StackSheet slides each band up over the one before it, and a
+   sheet with no edge reads as a repaint rather than as something physical; this is the only part of
+   the stack that is drawn, and it is drawn above the band rather than around it, because the seam a
+   reader needs to see is the one the new sheet is covering. The spread is negative on both sides so
+   the shadow cannot appear along the band's own bottom edge, where it would darken the sheet that has
+   not arrived yet. */
+.stack-sheet {
+  box-shadow: 0 -1.25rem 2.25rem -1.5rem rgb(6 24 32 / 26%);
 }
 
 /* The mesh is the one thing allowed to cross the text, so it is capped by the whole-layer
@@ -1224,26 +1300,68 @@
 /* The photographs that sit beside the words, as opposed to the ones that are the words'
    background. Septa asked for them not to be still, and a picture in a hard frame cannot drift the
    way a full-bleed field can without showing daylight at the edges — so it moves inside its own
-   frame instead, on layers that never touch each other's transform:
-     .photo-frame   the glass: it is clipped, lit and never scaled, so the layout is fixed
+   clip instead, on layers that never touch each other's transform:
+     .photo-sheet   the placement: full-bleed on a phone, out of its column on a desk. Never scaled.
+     .photo-cut     the edge: a clip-path, no border, no plate, and the perspective the lean reads
      .photo-plane   the picture's position: scroll scale, parallax, pointer lean and lift (React)
      .photo-breathe the picture's own slow walk inside that, so an image nobody is scrolling or
                     hovering is still not a frozen one
      .photo-sheen   a light that crosses the glass by itself, once every twelve seconds
      .photo-vignette the corners deepening when the cursor is on the frame, which is what makes the
                     bloom that follows the cursor read as a reflection rather than as a white blob
+   The sheet has no frame to sit in, so the only thing that says where the picture ends is its own
+   cut. `.wrap`'s own horizontal padding is exactly the negative margin below, which is why the
+   bleed reaches the screen edge and no further: past it, a picture would be clipped by the viewport
+   itself and the cut would read as a bug. On a desk `edge` names the side the sheet leaves its
+   column by — it steps one grid gap (3.5rem) into the gutter, and the side it left, the side facing
+   the words, is cut on a 96px diagonal so the two columns meet on an angle instead of a channel.
+   `data-edge="none"` is for a picture standing in the middle of prose, where there is no facing
+   side: it keeps one chamfer at the bottom corner, which is enough to stop it being a rectangle.
+   clip-path is on the sheet, not the plane, so the movement happens inside the cut and never past
+   it, and a browser without the property simply shows the full picture.
+
    The breath is an enlargement of four to ten per cent with a small diagonal drift, over
    thirty-four seconds. It is the slowest movement on the site. Both planes are always wider than
    the frame — the plane starts at inset -8 per cent, the breath never drops below 1.04 — so the
    extreme corners of the drift still land inside the clip and no page colour can appear at an edge.
    `transform` only, and the global reduced-motion rule stops it where the scroll values are already
    pinned to constants. */
-.photo-frame {
+.photo-sheet {
+  margin-inline: -1.25rem;
+}
+@media (min-width: 640px) {
+  .photo-sheet {
+    margin-inline: -2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .photo-sheet {
+    margin-inline: 0;
+  }
+  .photo-sheet[data-edge="right"] {
+    margin-right: -3.5rem;
+  }
+  .photo-sheet[data-edge="left"] {
+    margin-left: -3.5rem;
+  }
+}
+.photo-cut {
   background: var(--color-ink);
-  box-shadow:
-    var(--shadow-soft),
-    inset 0 0 0 1px rgb(255 255 255 / 55%),
-    inset 0 -1px 0 rgb(31 74 82 / 10%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2.5rem), calc(100% - 2.5rem) 100%, 0 100%);
+}
+@media (min-width: 1024px) {
+  .photo-cut {
+    clip-path: none;
+  }
+  .photo-sheet[data-edge="right"] .photo-cut {
+    clip-path: polygon(4rem 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .photo-sheet[data-edge="left"] .photo-cut {
+    clip-path: polygon(0 0, 100% 0, calc(100% - 4rem) 100%, 0 100%);
+  }
+  .photo-sheet[data-edge="none"] .photo-cut {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2.5rem), calc(100% - 2.5rem) 100%, 0 100%);
+  }
 }
 .photo-plane {
   transform-origin: 50% 50%;

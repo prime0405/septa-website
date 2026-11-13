@@ -30,9 +30,9 @@ export function PageHero({
   wall?: BgTheme;
 }) {
   return (
-    // `band` puts the same 76% veil under this header as the sections below it carry. Its own
-    // decorative layers are positioned children, so they still paint on top of the veil. Nothing
-    // here moves any more: the contour plate drifts only inside the homepage hero field.
+    // `band` puts the same solid plate under this header as the sections below it carry, so the
+    // interior pages read as one surface and the footer's sheet can arrive over the last of them.
+    // Nothing here moves any more: the contour plate drifts only inside the homepage hero field.
     <section
       data-wall={wall}
       className={cn("relative overflow-hidden band border-b border-line-soft", className)}
@@ -42,20 +42,21 @@ export function PageHero({
         aria-hidden
         className="pointer-events-none absolute -top-24 -right-24 size-[420px] rounded-full bg-mint/[0.07] blur-[90px]"
       />
-      {/* The office photograph runs along the foot of every interior page header, fading into the
+      {/* The engineering floor runs along the foot of every interior page header, fading into the
           body so the band reads as depth rather than a pasted-in picture. */}
       <div
         aria-hidden
         className="plate-fade pointer-events-none absolute inset-x-0 bottom-0 h-40 overflow-hidden sm:h-48"
       >
-        {/* The photo is a daylight image with genuinely bright windows in it, so the strip under
-            the breadcrumb and the action row is a tint rather than a picture: 55% photo behind its
-            own 82% white overlay, which sits on top of the band veil and is the stricter of the two. */}
+        {/* The photograph is a night-lit data hall, so it is dark where the daylight office shot it
+            replaces was bright. The same 82% white veil over it lands on a mid grey rather than the
+            near-white the breadcrumb and the action row are measured against, so the picture is held
+            at 34% and the veil stays: the strip reads as a room, not as a smudge. */}
         <img
-          src="/img/work/office-wide.webp"
+          src="/img/work/engineering-floor.webp"
           alt=""
           decoding="async"
-          className="absolute inset-[-10%] size-[120%] object-cover object-bottom opacity-[0.55]"
+          className="absolute inset-[-10%] size-[120%] object-cover object-bottom opacity-[0.34]"
         />
         <div className="absolute inset-0 bg-ink/82" />
       </div>
