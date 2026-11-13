@@ -6,6 +6,7 @@ import { AdvantageReel } from "../components/visuals/AdvantageReel";
 import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import { CtaSection } from "../components/blocks/CtaSection";
+import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { Button } from "../components/ui/Button";
 import {
   Card,
@@ -189,21 +190,22 @@ export default function Home() {
               : "hero-field relative flex h-[100svh] items-center overflow-hidden"
           }
         >
-          {/* The supplied abstract plate, held at a fraction of its own brightness so it reads as
-              depth in the field rather than as a picture behind the words. */}
+          {/* The office photograph, held at a fraction of its own brightness so it reads as depth in
+              the field rather than as a picture behind the words. */}
           <motion.div
             aria-hidden
             style={{ y: gridY, scale: fieldScale, opacity: fieldFade }}
             className="pointer-events-none absolute inset-[-6%]"
           >
             <img
-              src="/img/plate-hero.jpg"
+              src="/img/work/office-wide.webp"
               alt=""
               decoding="async"
+              fetchPriority="high"
               className="plate-drift-slow size-full object-cover opacity-[0.13] mask-fade"
             />
-            {/* The plate is a light image and the field is meant to read as charcoal, so it is held
-                at 13% and then veiled by Pearl rather than setting the tone of the hero. */}
+            {/* The photo is a daylight image and the field is meant to read as charcoal, so it is
+                held at 13% and then veiled by Pearl rather than setting the tone of the hero. */}
             <div className="absolute inset-0 bg-brand-pearl/55" />
             <div className="grid-bg-dark absolute inset-0 opacity-[0.6] mask-fade" />
           </motion.div>
@@ -288,15 +290,13 @@ export default function Home() {
       </div>
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
-      {/* Septa's artwork for each offering, named after the section it belongs to, sits beside the
-          words instead of under them. The picture changes side on every block, so the three read as
-          one argument being built rather than three copies of the same layout, and the text column
-          is left-aligned because a column of prose next to a picture has no centre to share.
+      {/* A workplace photograph matched to each offering sits beside the words instead of under
+          them. The picture changes side on every block, so the three read as one argument being
+          built rather than three copies of the same layout, and the text column is left-aligned
+          because a column of prose next to a picture has no centre to share.
 
-          All three frames are the same 4:3 box so the blocks line up with each other, which the
-          supplied files do not: two are square and one is wide. `object-cover` fills the box from
-          the centre, and the wide plate is the one exception — its subject sits right of the middle,
-          so it is anchored to the right edge and the crop falls on the empty haze at its left. */}
+          All three frames are the same 4:3 box and all three files are 4:3, so the crop is a
+          pass-through: the picture fills the frame it was asked for and nothing is cut away. */}
       {landingBlocks.map((block, i) => (
         <Section
           key={block.key}
@@ -322,18 +322,7 @@ export default function Home() {
               delay={0.08}
               className={cn("min-w-0", i % 2 ? "lg:order-first" : "lg:order-last")}
             >
-              <figure className="overflow-hidden rounded-card border border-line shadow-soft">
-                <img
-                  src={block.image}
-                  alt={block.alt}
-                  decoding="async"
-                  loading={i === 0 ? "eager" : "lazy"}
-                  className={cn(
-                    "aspect-[4/3] w-full object-cover",
-                    block.key === "ai" ? "object-right" : "object-center",
-                  )}
-                />
-              </figure>
+              <PhotoFigure src={block.image} alt={block.alt} eager={i === 0} />
             </Reveal>
           </div>
         </Section>

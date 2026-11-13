@@ -50,7 +50,24 @@ export default function Careers() {
 
       {/* ---------------------------- our culture ---------------------------- */}
       <Section wall="blog" tone="raised" className="section border-y border-line-soft">
-        <SectionHero title="Our Culture" lead={careers.cultureLead} className="mb-12" />
+        <SectionHero title="Our Culture" lead={careers.cultureLead} className="mb-10" />
+        {/* Culture is the one heading on this page that cannot be shown as a list of benefits, so
+            it gets a room with people in it. Held to the width of the prose column: at full section
+            width the same frame is taller than the viewport and becomes the page, not the point.
+            A general scene, not a claim about a Septa team. */}
+        <Reveal className="mb-12 block">
+          <figure className="mx-auto max-w-4xl overflow-hidden rounded-card border border-line shadow-soft">
+            <img
+              src="/img/work/hiring-desk.webp"
+              alt="Two colleagues side by side at a shared office desk, looking at a laptop screen together"
+              width={800}
+              height={600}
+              loading="lazy"
+              decoding="async"
+              className="photo-breathe aspect-[16/9] w-full object-cover"
+            />
+          </figure>
+        </Reveal>
         <div className="grid gap-4 md:grid-cols-2">
           {careers.culture.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.05} className="h-full">

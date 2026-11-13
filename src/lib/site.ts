@@ -6,6 +6,16 @@
 
 export type Maybe<T> = T | null;
 
+/** The networks Septa publishes on. Each one has its own mark in `SocialMarks`. */
+export type SocialNetwork = "x" | "linkedin" | "instagram" | "facebook";
+
+export type SocialGroup = {
+  network: SocialNetwork;
+  /** Spoken and shown as the accessible name of the group; the mark itself carries no text. */
+  name: string;
+  accounts: { label: string; href: string }[];
+};
+
 export const site = {
   name: "Septa",
   /** Supplied by Septa in the revamp brief; the legal pages print it, the UI prints `name`. */
@@ -32,16 +42,40 @@ export const site = {
   /**
    * Supplied by Septa as handle names, not URLs. Each href is the platform's standard
    * profile pattern with that handle dropped in — click-test every one before launch.
+   * Grouped by network because the footer shows one mark per network and lists the two
+   * Septa accounts under it; a flat list would put two identical marks side by side.
    */
   social: [
-    { label: "X: @septa_academy", href: "https://x.com/septa_academy" },
-    { label: "X: @septasoftware", href: "https://x.com/septasoftware" },
-    { label: "LinkedIn: Septa Academy", href: "https://www.linkedin.com/company/septa-academy" },
-    { label: "LinkedIn: Septa Software", href: "https://www.linkedin.com/company/septasoftware" },
-    { label: "Instagram: @septa_academy", href: "https://www.instagram.com/septa_academy" },
-    { label: "Instagram: @septasoftware", href: "https://www.instagram.com/septasoftware" },
-    { label: "Facebook: Septa Academy", href: "https://www.facebook.com/septa-academy" },
-  ] as { label: string; href: string }[],
+    {
+      network: "x",
+      name: "X",
+      accounts: [
+        { label: "@septa_academy", href: "https://x.com/septa_academy" },
+        { label: "@septasoftware", href: "https://x.com/septasoftware" },
+      ],
+    },
+    {
+      network: "linkedin",
+      name: "LinkedIn",
+      accounts: [
+        { label: "Septa Academy", href: "https://www.linkedin.com/company/septa-academy" },
+        { label: "Septa Software", href: "https://www.linkedin.com/company/septasoftware" },
+      ],
+    },
+    {
+      network: "instagram",
+      name: "Instagram",
+      accounts: [
+        { label: "@septa_academy", href: "https://www.instagram.com/septa_academy" },
+        { label: "@septasoftware", href: "https://www.instagram.com/septasoftware" },
+      ],
+    },
+    {
+      network: "facebook",
+      name: "Facebook",
+      accounts: [{ label: "Septa Academy", href: "https://www.facebook.com/septa-academy" }],
+    },
+  ] as SocialGroup[],
 
   maps: {
     /** Google Maps / analytics ids stay empty until provided. */

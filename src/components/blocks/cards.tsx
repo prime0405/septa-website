@@ -4,7 +4,7 @@ import type { UseCase } from "../../data/useCases";
 import type { Post } from "../../data/posts";
 import type { ServiceContent } from "../../data/services";
 import { cn, formatDate, readingTime } from "../../lib/cn";
-import { plateFor } from "../../lib/plates";
+import { photoFor } from "../../lib/photos";
 import { usePointerTrack } from "../../lib/pointerGlow";
 import { paths } from "../../lib/paths";
 import { Button } from "../ui/Button";
@@ -77,7 +77,8 @@ export function CaseCard({ study, featured }: { study: UseCase; featured?: boole
       )}
     >
       <PointerGlow radius={320} />
-      {/* Art only: the plate has real ink in it, so nothing this small is allowed to sit on top. */}
+      {/* Art only, so nothing sits on top of it: the photo is shown as itself, at full strength,
+          behind a border the card already carries. */}
       <div
         aria-hidden
         className={cn(
@@ -86,14 +87,12 @@ export function CaseCard({ study, featured }: { study: UseCase; featured?: boole
         )}
       >
         <img
-          src={plateFor(study.slug)}
+          src={photoFor(study.slug)}
           alt=""
           loading="lazy"
           decoding="async"
-          className="plate-drift absolute inset-[-8%] size-[116%] object-cover"
+          className="photo-cover absolute inset-0 size-full object-cover"
         />
-        <div className="absolute inset-0 bg-ink/45" />
-        <div className="dot-bg absolute inset-0 opacity-25" />
       </div>
 
       <div className="flex flex-1 flex-col p-6">
@@ -171,17 +170,14 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
         <div className="flex flex-col">{inner}</div>
         <div aria-hidden className="relative min-h-40 overflow-hidden rounded-card border border-line bg-ink-raised">
           <img
-            src={plateFor(post.slug)}
+            src={photoFor(post.slug)}
             alt=""
             loading="lazy"
             decoding="async"
-            className="plate-drift-slow absolute inset-[-8%] size-[116%] object-cover"
+            className="photo-cover absolute inset-0 size-full object-cover"
           />
-          <div className="absolute inset-0 bg-ink/60" />
-          <div className="grid-bg absolute inset-0 opacity-70" />
-          <div className="glow-mint absolute inset-0 opacity-60" />
-          {/* The caption sits on a solid bar, not on the wash: the plates carry real ink, and a
-              0.62rem label cannot afford to guess which part of the image it landed on. */}
+          {/* The caption sits on a solid bar, not on the picture: a photograph has bright pixels in
+              it and a 0.62rem label cannot afford to guess which part of it it landed on. */}
           <div className="absolute inset-x-4 bottom-4 space-y-1.5 rounded-card bg-ink px-3 py-2.5">
             {["reading time", "sample editorial content", "placeholder author"].map((l, i) => (
               <div key={l} className="flex items-center gap-2">

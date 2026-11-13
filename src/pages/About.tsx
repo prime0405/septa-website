@@ -42,6 +42,22 @@ export default function About() {
                 <p className="prose-body text-[1.02rem]">{paragraph}</p>
               </Reveal>
             ))}
+            {/* The story is the one place on this page a reader is being asked to believe something
+                about how the work happens, so it gets the picture of a room where work like that
+                happens — a general scene, not a claim about a Septa project. */}
+            <Reveal delay={0.1}>
+              <figure className="overflow-hidden rounded-card border border-line shadow-soft">
+                <img
+                  src="/img/work/delivery-meeting.webp"
+                  alt="Three colleagues around a meeting table looking at a laptop screen, one pointing at it while another writes in a notebook"
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                  className="photo-breathe aspect-[16/10] w-full object-cover"
+                />
+              </figure>
+            </Reveal>
           </div>
         </div>
       </Section>

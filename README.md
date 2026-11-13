@@ -295,17 +295,23 @@ element that deliberately stays dark on a white page is the delivery-core disc i
 `HeroDiagram.tsx`, which uses `--color-brand-pearl` and `--color-brand-pearl-raised` so it reads as
 a Black Pearl disc with white and Tradewind type on it.
 
-The six `public/img/plate-*.jpg` files are generated abstract brand art, not stock photography and
-not documentation: there is no client, product or team imagery for this site yet. Four are mapped
-from a case or post slug by `src/lib/plates.ts` and `plate-hero.jpg` fronts the foot of every page
-header; `plate-aurora.jpg` was the page-wide wash and is now only referenced by the parked
-`BackgroundFX`. They are encoded
-from their PNG sources by `scripts/encode-plates.ps1`, which resizes, flattens onto white and writes
-JPEG at a fixed quality (28–87KB each). Replace them with real photography as soon as it exists.
-The three photographs Septa supplied for the homepage offering blocks live in
-`public/img/section/` and are re-encoded WebP (79/65/79KB against 3.07MB of PNG); each is framed
-4:3 beside its own copy in a zig-zag, and the AI plate crops to `object-right` because its subject
-sits on the right of the frame.
+The pictures the site shows are in `public/img/work/`: eight day-to-day workplace photographs,
+generated as generic scenes (an office desk, a whiteboard, two people talking across a table) rather
+than as documentation. They are not Septa staff, Septa premises or Septa client work, and the alt
+text says what is in the frame instead of implying that it is. Each is 4:3 or 16:10, WebP-encoded in
+a headless browser at 16–95KB (against ~9MB of PNG sources), and mapped to a slot deliberately:
+`office-wide` fronts the homepage hero field and the page-header band, the three offering blocks take
+`ai-development` / `product-planning` / `talent-conversation` from `landingBlocks`, the five service
+pages carry their own in `services.ts`, `delivery-meeting` sits in the About story, `hiring-desk` in
+Careers culture, and `delivery-meeting` / `support-monitoring` / `mobile-in-use` / `hiring-desk`
+rotate across case-study and post covers by slug in `src/lib/photos.ts`. Replace them with real
+photography as soon as it exists.
+
+The six `public/img/plate-*.jpg` files are older generated abstract brand art and are only referenced
+by `src/lib/bgThemes.ts`, which the parked `BackgroundFX` reads; nothing on a live page fetches them.
+The three photographs Septa supplied for the offering blocks (`public/img/section/`) are likewise no
+longer referenced — they were replaced by the set above. Both groups are kept on disk rather than
+deleted, so the decision is still reversible.
 
 **Motion.** `src/components/IntroCurtain.tsx` covers the first paint of a session with two Black
 Pearl panels and "Welcome to Septa", holds ~1.15s, then parts them over 0.9s. Clicking or pressing
@@ -361,10 +367,17 @@ The one background that moves is the homepage hero field, which paints its own o
 carries its own grid, aurora orbs, spiral canvas and floating labels inside `.hero-field`
 (`src/pages/Home.tsx`, `src/index.css`). The two slow plate drifts that page headers and artwork
 cards carry (`.plate-drift`) are keyed to that section alone — outside it the stylesheet resolves the
-animation to `none`, so every other page is the same picture never moving. Verified in the browser at
-1440×900: zero `.bgfx` and zero `.bgfx-mesh` nodes on the homepage and on every inner route, the only
-running drift is the hero's, `body` computes to `rgb(255, 255, 255)` everywhere below the hero, and
-no route requests a video.
+animation to `none`, so no backdrop anywhere else moves.
+The photographs are the exception Septa asked for afterwards, and they are pictures rather than
+backdrops: every framed image breathes (`.photo-breathe`, a 34s scale between 1.02 and 1.07 cropped by
+its own frame), the three homepage offering frames also answer the scrollbar the way the hero does
+(`PhotoFigure` widens the picture to 1.14 at the middle of its pass and lets it settle back to 1.04,
+`scale` only, so the layout never moves), and a case or post cover takes 5.5% under the pointer
+(`.photo-cover`, disarmed where there is no hover to leave). Verified in the browser at 1440×900: zero
+`.bgfx` and zero `.bgfx-mesh` nodes on the homepage and on every inner route, the only running
+background drift is the hero's, the offering frames measure 1.049 / 1.098 / 1.137 at three points of
+one scroll pass, `body` computes to `rgb(255, 255, 255)` everywhere below the hero, and no route
+requests a video.
 
 The paragraphs on the wash, the mesh and their masks are the record of that layer while it ran. They
 are kept because most of the contrast figures quoted through the rest of this section were measured
@@ -507,13 +520,13 @@ rather than the window (a detached surface can report 0×0 and later become a re
 firing a resize, and a 1×1 canvas stays empty for the rest of the visit), stops on
 `visibilitychange`, and never starts under `prefers-reduced-motion` — where the DOM confirms no canvas
 element exists at all rather than an idle one.
-Abstract art stands in for photography that does not exist yet: `src/lib/plates.ts` maps a slug to
-one of five generated plates, used on case-study covers, the featured post panel, the page-hero band
-and the homepage hero. They are decorative brand art, not documentation, and say so. Because the
-plates contain real ink, `PageHero`'s band and the homepage hero layer sit at 55% image opacity
-behind an 82% white veil, and no small text is left on top of an artwork panel: the case-study
-category and client descriptor moved into the card's text column, and the featured post's sample
-labels sit on a solid caption bar.
+The artwork panels are photographs now, not abstract plates: `src/lib/photos.ts` maps a case-study or
+post slug to one of four workplace scenes, and the larger placements name their file directly (see
+the imagery note above). They are generic scenes, not documentation, and the alt text says so.
+Because a photograph has bright pixels in it, `PageHero`'s band sits at 55% image opacity behind an
+82% white veil, the homepage hero field holds `office-wide` at 13% under a Pearl wash, and no small
+text is left on top of an artwork panel: the case-study category and client descriptor moved into the
+card's text column, and the featured post's sample labels sit on a solid caption bar.
 One page used to swap its plate for a film: Septa supplied `public/video/ai-product-development.mp4`
 and `PageHero` ran it behind the AI Product Development header while the service data carried a
 `heroVideo`. That wiring is out — a moving film behind an inner page is precisely the background

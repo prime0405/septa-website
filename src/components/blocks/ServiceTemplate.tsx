@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import type { ServiceContent } from "../../data/services";
+import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
 import {
   Card,
@@ -49,15 +50,35 @@ export function ServiceTemplate({
       />
 
       {/* ------------------------------ core services ------------------------------ */}
-      {/* A capability grid is a lattice: discrete tiles, one lit sweep across them. */}
+      {/* A capability grid is a lattice: discrete tiles, one lit sweep across them. The service's
+          workplace photograph leads the section, tied to the heading rather than dropped under it:
+          at full column width the same frame becomes a 650px band that swallows the page, and the
+          point of the picture is to say what the list below it is for. */}
       <Section wall="use-case" className="section">
-        <SectionHeading
-          eyebrow={page.name}
-          title={page.coreServicesHeading}
-          lead={page.coreServicesLead}
-          className="mb-10"
-        />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={cn("grid items-center gap-8", page.image && "lg:grid-cols-[1fr_1.1fr] lg:gap-14")}>
+          <SectionHeading
+            eyebrow={page.name}
+            title={page.coreServicesHeading}
+            lead={page.coreServicesLead}
+            className={page.image ? "lg:sticky lg:top-28 lg:self-start" : ""}
+          />
+          {page.image ? (
+            <Reveal delay={0.06} className="min-w-0">
+              <figure className="overflow-hidden rounded-card border border-line shadow-soft">
+                <img
+                  src={page.image.src}
+                  alt={page.image.alt}
+                  width={900}
+                  height={675}
+                  loading="lazy"
+                  decoding="async"
+                  className="photo-breathe aspect-[4/3] w-full object-cover"
+                />
+              </figure>
+            </Reveal>
+          ) : null}
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {page.coreServices.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.04}>
               <Card tilt className="card-hover h-full p-6">

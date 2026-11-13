@@ -23,6 +23,8 @@ export type ServiceContent = {
   navBlurb: string;
   heroTitle: string;
   intro: string;
+  /** Workplace artwork shown above the first body section, matched to what this service is. */
+  image?: { src: string; alt: string };
   coreServicesHeading: string;
   coreServicesLead?: string;
   coreServices: Capability[];
@@ -49,6 +51,10 @@ export const services: ServiceContent[] = [
     heroTitle: "Web, Mobile & AI Product Development",
     intro:
       "We use AI-assisted product development to turn ideas into market-ready digital products within 4–6 weeks. Whether you’re building a mobile app, developing an enterprise solution, or enhancing an existing product with intelligent features, we combine artificial intelligence, product strategy, and engineering to accelerate development and bring your vision to life.",
+    image: {
+      src: "/img/work/ai-development.webp",
+      alt: "A developer at a daylight office desk, working across a laptop on a stand and a monitor showing a product dashboard",
+    },
     coreServicesHeading: "Core Services",
     coreServicesLead:
       "We use AI to accelerate product development, helping you turn your ideas into market-ready digital products within 4–6 weeks. From concept to launch, we combine AI-assisted development, product strategy, and engineering to build products that solve real problems and meet your business needs.",
@@ -230,6 +236,10 @@ export const services: ServiceContent[] = [
     heroTitle: "Workflow & Process Automation",
     intro:
       "Manual processes slow you down. Septa designs automation that cuts costs, saves time, and reduces errors, without disrupting your current operations.",
+    image: {
+      src: "/img/work/product-planning.webp",
+      alt: "Two colleagues at a whiteboard covered in screen sketches and arrows, one drawing a layout while the other listens",
+    },
     coreServicesHeading: "Core Services",
     coreServices: [
       {
@@ -283,6 +293,10 @@ export const services: ServiceContent[] = [
     heroTitle: "Transform How Your Business Works and Grows",
     intro:
       "At Septa, we help businesses modernize the way they operate and grow. Outdated systems are replaced with powerful digital solutions that increase efficiency, cut costs, and elevate customer experiences.",
+    image: {
+      src: "/img/work/delivery-meeting.webp",
+      alt: "A small team around a meeting table with a screen in front of them, mid-discussion with notebooks open",
+    },
     coreServicesHeading: "Core Services",
     coreServices: [
       {
@@ -345,6 +359,10 @@ export const services: ServiceContent[] = [
     heroTitle: "Fix Issues Before They Impact Customers.",
     intro:
       "Downtime and performance issues cost money and trust. We provide real-time visibility into your systems so you can detect, respond, and fix problems before they impact customers.",
+    image: {
+      src: "/img/work/support-monitoring.webp",
+      alt: "A person at a monitoring desk facing two screens of charts and status panels in a dim office",
+    },
     coreServicesHeading: "Core Services",
     coreServices: [
       {
@@ -441,6 +459,10 @@ export const services: ServiceContent[] = [
     heroTitle: "Septa Talent Solution",
     intro:
       "At Septa Talent Solutions, we take the hassle out of hiring, payroll, and employee benefits management, allowing businesses and organizations to focus on what truly matters: growth and innovation. We specialize in providing highly skilled professionals across various industries while managing everything from payroll processing, tax compliance, pension, HMO, and other employee benefits. Whether you’re a startup, SME, or large enterprise, we ensure seamless workforce management so you can scale without stress.",
+    image: {
+      src: "/img/work/talent-conversation.webp",
+      alt: "Two people in conversation across a small round table, each with a laptop open in front of them",
+    },
     coreServicesHeading: "Why Choose Us?",
     coreServices: [
       {

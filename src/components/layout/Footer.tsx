@@ -7,6 +7,7 @@ import { Button } from "../ui/Button";
 import { Unconfigured } from "../ui/primitives";
 import { NewsletterForm } from "../forms/NewsletterForm";
 import { Wordmark } from "./Logo";
+import { SocialMark } from "./SocialMarks";
 
 export function Footer() {
   const { email, phone, addressLines } = site.contact;
@@ -82,21 +83,47 @@ export function Footer() {
             </li>
           </ul>
 
+          {/* The networks Septa publishes on, each on its own line: the mark at the left says which
+              platform without spelling it out, and the handles beside it are the links. Septa has
+              two accounts on three of the four, so a row of bare icons would put two identical marks
+              side by side with nothing to tell them apart — here the accounts are stacked under the
+              mark, one anchor each, and every accessible name still carries the platform. The
+              handles are stacked rather than run on one line because this column is 258px wide at
+              desktop and two of them do not fit side by side. */}
           {site.social.length > 0 ? (
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {site.social.map((s) => (
-                <li key={s.href}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="rounded-pill border border-line px-3 py-1.5 text-[0.78rem] text-muted transition-colors hover:border-mint/45 hover:text-mint"
+            <div className="mt-6">
+              <p className="eyebrow mb-3 text-faint">Follow Septa</p>
+              <ul className="divide-y divide-line-soft overflow-hidden rounded-card border border-line bg-surface-raised/70">
+                {site.social.map((group) => (
+                  <li
+                    key={group.network}
+                    className="group flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-ink-raised"
                   >
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+                    <span
+                      aria-hidden
+                      className="grid size-9 shrink-0 place-items-center rounded-pill border border-line bg-ink text-muted transition-colors group-hover:border-mint/45 group-hover:text-mint"
+                    >
+                      <SocialMark network={group.network} className="size-[1.05rem]" />
+                    </span>
+                    <ul className="min-w-0 space-y-0.5">
+                      {group.accounts.map((account) => (
+                        <li key={account.href}>
+                          <a
+                            href={account.href}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            aria-label={`${group.name}: ${account.label}`}
+                            className="inline-flex min-h-8 items-center text-[0.82rem] text-muted underline-offset-4 transition-colors hover:text-mint hover:underline"
+                          >
+                            {account.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : null}
 
           <div className="mt-8 border-t border-line-soft pt-6">
