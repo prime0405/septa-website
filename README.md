@@ -124,7 +124,8 @@ themselves templates until a date, entity and jurisdiction exist.
 4. **Partner logos** — colour artwork for seven of the eight marquee partners is on file and is what
    the row reveals on hover (`public/partners/color/`); the same seven are flattened to grey
    silhouettes for the resting state. Chinat Group has no asset at all, so its entry shows the name in
-   type, and EHCC appears only through the testimonial panel. The eight partner names came from the
+   type, and EHCC has no asset either, so it is set in type in the testimonial ring and carries no mark
+   in the panel. The eight partner names came from the
    brief, and nothing is claimed about the scope of any relationship, so approval is still needed
    before any further artwork or wording goes in.
 5. **Real content** — replace the 5 sample case studies, 6 sample articles and any company facts.
@@ -404,27 +405,43 @@ arrives with a little weight instead of snapping to the mouse, and it is gated o
 and post covers keep their own, simpler answer to the pointer (`.photo-cover`, 5.5%, disarmed where
 there is no hover to leave).
 
-**The sections stack.** Septa asked for the opposite of a cross-fade: "when you swipe to the next page
-or section, it's like the new page is coming on top of the old page you're on". `StackSheet`
-(`src/components/blocks/StackSheet.tsx`) wraps every homepage band after the hero and gives it two
-things — a `z-index` from its `order` in the sequence, and a `translateY` on the same scroll progress
-the band is measured on, `(p - 0.5) * 12vh`. A sheet therefore arrives 6vh late and leaves 6vh early,
-so the incoming band rides up over the one being read instead of replacing it. Twelve vh is the whole
-budget and it is not arbitrary: 6vh of a 900px viewport is 54px, and the smallest vertical padding any
-band carries is the 56px `.section` resolves to at its tightest, so the sheet that is covering you can
-never reach far enough to hide copy you are reading. `.stack-sheet` adds one shadow along the leading
-edge — `0 -1.25rem 2.25rem -1.5rem` at 26% of the ink — because two opaque bands meeting without a
-seam read as one band, not as one passing over the other.
+**The sections stack.** Septa asked for the opposite of a cross-fade: "when I scroll, it should seem
+like the new page is sliding up and covering up the old page". The first attempt lagged each band
+±6vh on its scroll progress, which reads as parallax, not as covering — Septa rejected it, and the
+lag is gone. `StackSheet` (`src/components/blocks/StackSheet.tsx`) now gives every homepage band after
+the hero two things: a `z-index` from its `order` in the sequence, and `position: sticky` with
+`top: calc(100svh - var(--sheet-h))`. That pins the sheet's **bottom** edge to the bottom of the
+viewport, so a band scrolls normally until you have read all of it and only then holds still while
+the next one rides up over it. `--sheet-h` is the sheet's own `offsetHeight`, written by a
+`ResizeObserver` in a layout effect, because the pin has to be arithmetic on a height CSS cannot
+otherwise name. Sticky adds no page height, so the document is exactly as long as it was.
 
-Two consequences had to be dealt with. `.band::before` used to paint the section's tone at 0.76, which
-let the wallpaper show through; a translucent sheet laid over a moving page is not a sheet, it is a
-veil, so the plate is now opaque and the tone it carries is the only thing between one band and the
-next. That is a contrast change and it was re-read: the three tones are `#ffffff`, `#eef4f4` and
-`#f6faf9`, the body text is `rgb(6, 24, 32)`, and the darkest of the three pairings is body text on
-`#eef4f4` at 15.4:1 — the plate going solid only ever removes a lighter layer from underneath, so it
-cannot make a pairing worse. The second consequence is the homepage hero, which is `position: sticky`
-inside a `100svh + 58vh` track and so already moves relative to the page; putting it in a sheet as well
-would move it twice, so the hero stays outside the stack and the first `StackSheet` carries `order={2}`.
+Three details make it hold together. The containing block is `<main>`, not a per-sheet wrapper — a
+wrapper the height of its own sheet gives sticky zero travel. `100svh` rather than `dvh` or `vh` pins
+with the last line above the fold even with mobile chrome showing; when the chrome retracts, the strip
+it uncovers is already filled by the arriving sheet, so it is never a gap. And the hero is the floor
+under the whole stack: `position: sticky; top: 0; z-index: 1`, with a plain spacer sibling carrying the
+runway the hero's own scroll progress is measured on (the old `100svh + 58vh` track is gone, because a
+measured element must not be the one being transformed). `.stack-sheet` adds one shadow along the
+leading edge — `0 -1.25rem 2.25rem -1.5rem` at 30% of the ink — because two opaque bands meeting
+without a seam read as one band, not as one passing over the other. The footer carries `z-20` so it
+covers the last sheet in turn.
+
+`.band::before` used to paint the section's tone at 0.76, which let the wallpaper show through; a
+translucent sheet laid over a moving page is not a sheet, it is a veil, so the plate is opaque and the
+tone it carries is the only thing between one band and the next. That is a contrast change and it was
+re-read: the three tones are `#ffffff`, `#eef4f4` and `#f6faf9`, the body text is `rgb(6, 24, 32)`, and
+the darkest of the three pairings is body text on `#eef4f4` at 15.4:1 — the plate going solid only ever
+removes a lighter layer from underneath, so it cannot make a pairing worse.
+
+Verified by driving a real headless Chrome down the page and asking `document.elementFromPoint` who
+owns each slice of the viewport. At 1440×748 every sheet pins at exactly `vh − h` (sheet 0: `top: 55px`,
+height 693), the ownership column shows the incoming sheet taking the lower viewport while the pinned
+one holds the top, all sheets release together as the footer arrives, and the hero measures `[0, 748]`
+at every stop. Repeated at 390×844 (viewport 692): sheets taller than the phone — the advantage band is
+1872px — carry a negative pin and scroll normally until their bottom reaches 692, then hold; the
+capture mid-handover shows the pinned band's last card at the top and the next band's white plate
+arriving underneath it. No console errors at either width.
 
 `CtaArrival` (`src/components/blocks/CtaArrival.tsx`) is the third ask in the same sentence — CTAs that
 enlarge and bolden as they enter the screen and then return. It wraps each hero and offering button and
@@ -667,16 +684,44 @@ text) rather than opacity, because dimming the inactive rows to 60% had put thei
 Under reduced motion the fill is not rendered at all: a 0.001ms animation would fire `animationend`
 continuously, and the list degrades to a plain static list.
 The homepage service overview runs the same clock over its cards, which is what Septa asked for when
-they said the hover should be "automatic — you don't have to hover above it for it to be activated".
+they said the hover should be "automatic — you don't have to hover above it for it to be activated",
+and then that "the press 3d animations should also be automated".
 `ServiceGrid` (`src/components/blocks/ServiceGrid.tsx`) holds one index at a time and lights that card
-with the treatment the pointer used to give it: a mint border, the glow, and 3px of lift. The lift goes
-through `--lift` rather than a `transform`, because the pointer tilt writes the same property and the
-two have to compose instead of fight — a card can be lit by the cycle and leaned by the cursor at the
-same time. `useRollCycle` is the reason the grid lives in its own file: the hook belongs to the block,
-not to the page. Each card's CTA is ringed by `.cta-line`, a mint-weighted hairline that tightens to
-full `--color-mint` on the lit card, so the automatic state points at the action as well as the panel.
+with the treatment the pointer used to give it: a mint border, the glow, 3px of lift, and now a press
+in 3D. The lift goes through `--lift` and the press through its own `--press-rx` / `--press-ry` /
+`--press-z`, all summed in one `transform`, because the pointer tilt writes `--rx` / `--ry` and the two
+have to compose instead of fight. They must be *separate* variables: a CSS animation outranks an inline
+style in the cascade, so an automated press written to the same property the cursor writes would
+simply overwrite it. `@property` registrations (`<angle>` and `<length>`) are what let the keyframes
+interpolate at all. `card-press` runs over one interval — out to −26px at 22%, back through −12px and
+−20px, home at 100% — and `:hover` cancels it, so a cursor arriving mid-press takes the card over.
+`useRollCycle` is the reason the grid lives in its own file: the hook belongs to the block, not to the
+page.
+
+The line is on the button, not the card. Septa: "the lines shouldn't show on those buttons, it should
+be on the mini buttons, like the 'work with us' button (it should go around it)". The rail that used to
+run across the top of each card is deleted; `.cta-ring` is now an arc travelling around the lit card's
+pill CTA, and it is the clock — one lap is one interval and its `animationend` is what advances the
+walk, so the arc is an honest statement of how long is left on this card. It is a `conic-gradient`
+rotated by an `@property`-registered `--cta-sweep`, masked to a 2px border with two mask layers
+(`content-box` and border-box, `mask-composite: exclude`) inside a `border-radius: 9999px` box, so it
+follows the pill exactly at any label length with no JS measurement. It sits at `inset: -1px` so the
+band straddles the button's own hairline rather than drawing a second ring inside it, and the arc is a
+comet — a long faint tail rising to a hard deep-teal head — because that is what makes the direction of
+travel legible on a shape this small. The resting `.cta-line` border is a 42% mint mix and the lit one
+only 48%: the first pass held the lit border at 72% and the arc had nothing to stand out against, so
+the base was dropped until the moving line is the brightest thing on the button.
 The cycle freezes on hover, on focus and when the block is off screen, and under reduced motion it
-freezes permanently, which leaves every card in its resting state with the line still drawn.
+freezes permanently and draws no ring at all, leaving every card in its resting state.
+
+Verified by driving a real headless Chrome and sampling on the wall clock: the light walked
+AI Product Development → Talent Solutions → Workflow Automation → Observability & Monitoring →
+Digital Transformation → back to the first, twice, with seven `cta-sweep` `animationend` events and the
+lit card's `--press-z` reaching −25px between them. Scrolled away from the grid, the same probe reads
+`animation-play-state: paused`, `--cta-sweep: 0deg` and no advancement over 192 seconds — the off-screen
+freeze is real, not just declared. The section header came down at the same time: Septa said it was too
+large, so `SectionHero` gained a `size="md"` step (`clamp(1.5rem,2.9vw,2.15rem)`, leading 1.16) and the
+service overview uses it, measuring 34.4px against the 49.6px it had.
 The homepage hero also has depth: `useScroll` on the hero section drives three layers at different
 rates as it leaves the viewport (grid 70px, aurora 130px, copy −26px, the last one against the
 first two). Section headings rise out of a mask (`MaskRise` in `src/components/ui/primitives.tsx`
@@ -714,24 +759,55 @@ ground with the wallpaper running: the lowest live text reading anywhere on the 
 and a silhouette at 45% of full black is well over the 3:1 a graphic needs.
 The client testimonial section is a selector rather than a list — `TestimonialOrbit`
 (`src/components/visuals/TestimonialOrbit.tsx`). The four clients sit on a dashed orbit that crawls
-(`.orbit-path`, 26s) with a dot running the same circle (`useActiveWall`-independent, 22s), the centre
-of the ring holds the initial of whoever is selected, and the quote panel to the right is one card
-holding all four quotes in the same grid cell. There are no photographs in the source material and no
-individual authors, so the selection system is built out of type: the client's initial in a disc, the
-client's name under it, the work label and the supplied mark in the panel, and a link to that client's
-case study. Selecting is a click, never a hover — a pointer crossing the ring on its way to the nav
-must not rewrite the quote out from under the reader, and the measured hover state changes only the
-border and text colours. The four panels share one cell so the section is as tall as the longest quote
-and changing selection cannot resize the page underneath (measured 446px at 1440, 368px at 768, 550px
-at 390, identical for all four). Which panel is showing is a cross-dissolve on the children
-(`.tpanel[data-on]`, staggered 70ms and 140ms), and the inactive three are `inert` and `aria-hidden`
-rather than unmounted, so the panel is never empty and never tabbable twice. It is a `tablist`: one
-`role="tab"` per client with a roving `tabIndex`, arrows and Home/End move selection and focus
-together, the active ring is a shared-element `layoutId` slide, and below `lg` the same DOM becomes a
-snap strip with the panel underneath it and 44px step controls. Measured at all three widths: click,
-keyboard, prev/next and wrap all change the quote, hover never does, `document.scrollWidth` equals the
-viewport, and every run of copy in the section clears AA against the ground actually behind it. The
-section straddles the two harnesses above: the client caption on the ring stands on the mesh and is
+(`.orbit-path`, 26s), the centre of the ring holds the mark of whoever is selected, and the quote panel
+to the right is one card holding all four quotes in the same grid cell.
+
+The dot is the clock, which is the change Septa asked for: "the dot that moves round in a circle should
+also switch the current testimonial being viewed (when it gets to each logo, the testimonial should
+change to that company or individual's testimonial)". It used to run its own 22s CSS lap as scenery
+while the quote changed only on click, so the two things in the ring were telling different stories.
+`.orbit-runner` and its keyframes are deleted; the angle is now a `useMotionValue` advanced one frame
+at a time in `useAnimationFrame`, and the selected client is *derived* from it. The nodes sit at 315°,
+45°, 225° and 135° clockwise from twelve, so the order the dot reaches them is `[1, 3, 2, 0]` and one
+24s lap gives each client six seconds. The angle is kept inside one turn — rotation is periodic, so
+wrapping is visually free and keeps the shortest-arc arithmetic honest after any number of laps. A
+click, an arrow key or a step button does not stop the dot, it steers it: the quote changes immediately
+and the dot travels the shorter arc to that node at 0.4°/ms, so the ring never shows one client
+selected while the dot stands somewhere else. The per-frame delta is clamped to 64ms so a backgrounded
+tab handing back seconds cannot jump half a lap. Hover, keyboard focus, scrolling the ring off screen
+and reduced motion all freeze the lap through `useAutoPause` — the pause half of `useRollCycle`,
+extracted so the grid and the ring share one set of conditions while keeping their own clocks. Below
+`lg` there is no dot, so the angle simply stands at whichever client is selected.
+
+The letters are gone too: "replace the letters in the testimonial circle animation with the logos of
+the company (all except EHCC should be present in the partners folder)". Three of the four clients have
+supplied artwork and show it, in the node and in the centre disc; EHCC has none and is set in type
+rather than given an invented mark. `.orbit-mark` is a `brightness(0)` silhouette at 40% until its node
+is the active one, the same treatment the partner strip uses and for the same reason — four coloured
+logos in a ring is four competing focal points. Every mark is given a **definite** box with
+`object-contain`, not `w-auto` with a max: `preppod.svg` ships a `viewBox` and no `width`/`height`, so
+inside the centre disc's shrink-to-fit absolute span it measured 0×0 and the disc rendered empty. With
+a `h-10 w-[4.6rem]` box all three resolve to 74×40 and centre identically.
+
+There are no photographs in the source material and no individual authors, so the rest of the selection
+system is built out of type: the client's name under its node, the work label and the supplied mark in
+the panel, and a link to that client's case study. Selecting by hand is a click, never a hover — a
+pointer crossing the ring on its way to the nav must not rewrite the quote out from under the reader,
+and the measured hover state changes only the border and text colours. The four panels share one cell
+so the section is as tall as the longest quote and changing selection cannot resize the page underneath
+(measured 446px at 1440, 368px at 768, 550px at 390, identical for all four). Which panel is showing is a
+cross-dissolve on the children (`.tpanel[data-on]`, staggered 70ms and 140ms), and the inactive three are
+`inert` and `aria-hidden` rather than unmounted, so the panel is never empty and never tabbable twice.
+It is a `tablist`: one `role="tab"` per client with a roving `tabIndex`, arrows and Home/End move
+selection and focus together, the active ring is a shared-element `layoutId` slide, and below `lg` the
+same DOM becomes a snap strip with the panel underneath it and 44px step controls. Measured at all
+three widths: click, keyboard, prev/next and wrap all change the quote, hover never does,
+`document.scrollWidth` equals the viewport, and every run of copy in the section clears AA against the
+ground actually behind it. The dot-to-quote coupling was verified by sampling the runner's computed
+rotation against `aria-selected` and the visible `tabpanel` across three full laps in a real headless
+Chrome: Halogen holds 315°→45°, EHCC 45°→135°, Toviri 135°→225°, Preppod 225°→315°, then it wraps, with
+the centre disc and the node silhouettes following every switch and no console errors.
+The section straddles the two harnesses above: the client caption on the ring stands on the mesh and is
 measured with it, at 5.36:1 on the homepage and 5.24 on About at 1440×900 and 4.76 and 5.20 at
 390×844, while the panel paints its own card and is measured with the composited check — 7.07:1 for the
 quote, 17.22 for the client name, 5.71 for the `01 / 04` readout, the same on both pages. With reduced

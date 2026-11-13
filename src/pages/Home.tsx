@@ -88,20 +88,23 @@ function useWideHero() {
 }
 
 /*
- * The pinned stage. The wrapper is one viewport plus 58vh (26vh below `lg`) tall and the hero sticks
- * to the top of
- * it, so the hero holds for that distance of scrolling and then releases: the offering block below
- * arrives against the hero's own white dissolve, with no overlap at any frame, because the
- * wrapper's bottom edge and the hero's bottom edge are the same line the whole time the hero is
- * free to move. Without the pin the effect is unwatchable — a 900px-tall hero scrolls its own
- * headline off the top of the screen long before the shrink reaches 40%.
+ * The pinned stage. The hero sticks to the top of `<main>` — the same containing block every
+ * `StackSheet` uses — and a spacer the height of the runway sits after it, so the hero holds at the
+ * top of the screen for the whole page while the sheets arrive over it.
  *
- * `RELEASE` is the fraction of that scroll range the pin occupies — 58/158 on desktop, 26/126 below
- * the `lg` breakpoint. The phone and tablet pin is deliberately short: the brief asks for a
- * shrinking hero at every size and for mobile not to be made to fight its way through a long pinned
- * stretch, so the composition gets a quarter-screen of visible tightening and then hands over.
+ * The wrapper this used to sit in was one viewport plus the runway, which made the hero release at
+ * exactly the scroll position the next section entered the screen: the two edges met and passed, and
+ * the first transition on the page was the one place nothing covered anything. Against `<main>` the
+ * hero never releases, so the first offering block slides up over a hero that has finished shrinking
+ * — and because the hero is a viewport tall and pinned at zero, it is also the floor under the whole
+ * stack. There is no scroll position at which the page can show through a seam between two sheets.
+ *
+ * `RELEASE` is no longer a fraction of a wrapper: the spacer is the runway outright, 58vh on desktop
+ * and 26vh below `lg`, and the shrink is measured against it. The phone and tablet runway is
+ * deliberately short — the brief asks for a shrinking hero at every size and for mobile not to be
+ * made to fight its way through a long pinned stretch, so the composition gets a quarter-screen of
+ * visible tightening and then hands over.
  */
-const RELEASE = { wide: 58 / 158, narrow: 26 / 126 };
 
 const headlineWords = hero.headline.split(" ");
 
@@ -137,15 +140,19 @@ export default function Home() {
     };
   }, []);
 
+  // The spacer is the runway, so its own pass is the shrink: `start end` is the moment its top edge
+  // reaches the bottom of the screen, which with a viewport-tall hero above it is scroll zero, and
+  // `end end` is one runway later. Measuring the spacer rather than the hero is what keeps this
+  // exact — the hero is pinned, so its own rect stops moving and would report a frozen progress.
   const { scrollYProgress: heroScroll } = useScroll({
     target: stageRef,
-    offset: ["start start", "end start"],
+    offset: ["start end", "end end"],
   });
   const gridY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 70]);
   const auroraY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 130]);
 
   /*
-   * The shrinking itself. Everything is driven by `heroScroll`, which is the stage's real position
+   * The shrinking itself. Everything is driven by `heroScroll`, which is the runway's real position
    * in the viewport, so the composition is a function of the scrollbar and nothing else: scrolling
    * down shrinks it, scrolling back up re-inflates it, and a fast flick in either direction lands on
    * the exact frame the position implies because there is no timer to fall behind. Measured at the
@@ -159,37 +166,26 @@ export default function Home() {
    * parallax and only widen, which is what gives the composition depth behind a shrinking
    * foreground. The nav is not in this subtree and holds its size throughout.
    */
-  const end = wide ? RELEASE.wide : RELEASE.narrow;
-  const copyScale = useTransform(heroScroll, [0, end], [1, reduce ? 1 : wide ? 0.78 : 0.88]);
-  const copyY = useTransform(heroScroll, [0, end], [0, reduce ? 0 : wide ? -18 : -10]);
-  const copyFade = useTransform(heroScroll, [end * 0.82, end], [1, reduce ? 1 : 0.62]);
-  const labelScale = useTransform(heroScroll, [0, end * 0.8], [1, reduce ? 1 : 0.55]);
-  const labelFade = useTransform(heroScroll, [end * 0.08, end * 0.62], [1, 0]);
+  const copyScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : wide ? 0.78 : 0.88]);
+  const copyY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : wide ? -18 : -10]);
+  const copyFade = useTransform(heroScroll, [0.82, 1], [1, reduce ? 1 : 0.62]);
+  const labelScale = useTransform(heroScroll, [0, 0.8], [1, reduce ? 1 : 0.55]);
+  const labelFade = useTransform(heroScroll, [0.08, 0.62], [1, 0]);
   const fieldScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : 1.1]);
   const fieldFade = useTransform(heroScroll, [0.4, 1], [1, 0.5]);
 
   return (
     <>
       {/* ------------------------------- 1. hero ------------------------------- */}
-      <div
-        ref={stageRef}
+      <section
+        ref={fieldRef}
+        data-wall="home"
         className={
-          reduce
-            ? "relative"
-            : wide
-              ? "relative h-[calc(100svh+58vh)]"
-              : "relative h-[calc(100svh+26vh)]"
+          pinned
+            ? "hero-field sticky top-0 z-[1] flex h-[100svh] items-center overflow-hidden"
+            : "hero-field relative flex h-[100svh] items-center overflow-hidden"
         }
       >
-        <section
-          ref={fieldRef}
-          data-wall="home"
-          className={
-            pinned
-              ? "hero-field sticky top-0 flex h-[100svh] items-center overflow-hidden"
-              : "hero-field relative flex h-[100svh] items-center overflow-hidden"
-          }
-        >
           {/* The engineering floor, held low so it reads as depth in the field rather than as a
               picture behind the words. */}
           <motion.div
@@ -293,7 +289,16 @@ export default function Home() {
             </div>
           </motion.div>
         </section>
-      </div>
+
+      {/* The runway. It carries no content: it is the scroll distance the hero shrinks across, and
+          it is the element measured for that shrink, because a pinned hero's own rect does not move.
+          Under reduced motion the hero is not pinned and nothing shrinks, so it collapses to a
+          hairline — a zero-height target would make the progress a division by zero. */}
+      <div
+        ref={stageRef}
+        aria-hidden
+        className={reduce ? "h-px" : wide ? "h-[58vh]" : "h-[26vh]"}
+      />
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
       {/* A workplace photograph matched to each offering sits beside the words instead of under
@@ -429,6 +434,7 @@ export default function Home() {
               eyebrow="Service overview"
               title={serviceOverview}
               lead={servicesIntro}
+              size="md"
               className="mb-12"
             />
             <ServiceGrid />

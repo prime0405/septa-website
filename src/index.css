@@ -447,7 +447,13 @@
 
 /* Cards that lean toward the cursor. `transform` is restated inside :hover so this
    rule is not outranked by .card-hover:hover above, and the existing lift rides in
-   through --lift instead of replacing the rotation. */
+   through --lift instead of replacing the rotation.
+
+   Two sets of angles are summed rather than one being chosen. `--rx`/`--ry` belong to the pointer,
+   which writes them as inline styles; `--press-*` belong to the automatic press below, which is a
+   CSS animation. Keeping them in separate variables is what lets both drive the same card: an
+   animation outranks an inline style in the cascade, so a shared variable would mean the timer
+   overwrote the cursor every time it arrived, and the card would stop answering the pointer. */
 .tilt {
   transition:
     transform 0.18s ease-out,
@@ -456,7 +462,8 @@
 }
 .tilt,
 .tilt:hover {
-  transform: perspective(780px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+  transform: perspective(780px) rotateX(calc(var(--rx, 0deg) + var(--press-rx, 0deg)))
+    rotateY(calc(var(--ry, 0deg) + var(--press-ry, 0deg))) translateZ(var(--press-z, 0px))
     translateY(var(--lift, 0px));
 }
 .tilt:hover {
@@ -480,17 +487,137 @@
   box-shadow: var(--shadow-glow);
 }
 
+/* The press, on the same clock as the light. Septa asked for the 3D lean to happen without a cursor,
+   so the lit card tips away, pushes back into the page and returns — one press per interval, ending
+   flat so the handover to the next card is a release rather than a jump. Registered as angles and a
+   length so they interpolate: unregistered custom properties would step between keyframes, which on
+   a rotation is a visible tick. The pointer takes over on hover by removing the animation entirely,
+   which drops these back to their initial zero and leaves the cursor's own angles alone. */
+@property --press-rx {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --press-ry {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --press-z {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+.card-hover[data-lit="true"] {
+  animation: card-press var(--roll-interval, 3600ms) cubic-bezier(0.33, 0, 0.2, 1) forwards;
+}
+.card-hover[data-lit="true"]:hover {
+  animation: none;
+}
+[data-roll-paused="true"] .card-hover {
+  animation-play-state: paused;
+}
+@keyframes card-press {
+  0% {
+    --press-rx: 0deg;
+    --press-ry: 0deg;
+    --press-z: 0px;
+  }
+  22% {
+    --press-rx: 4.2deg;
+    --press-ry: -5.4deg;
+    --press-z: -26px;
+  }
+  52% {
+    --press-rx: 1.6deg;
+    --press-ry: 4.6deg;
+    --press-z: -12px;
+  }
+  78% {
+    --press-rx: -2.4deg;
+    --press-ry: 1.8deg;
+    --press-z: -20px;
+  }
+  100% {
+    --press-rx: 0deg;
+    --press-ry: 0deg;
+    --press-z: 0px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-hover[data-lit="true"] {
+    animation: none;
+  }
+}
+
 /* The line around a service card's call to action. The `secondary` button arrives with a hairline in
    --color-line, which is the card grid's own edge colour and therefore almost invisible against the
    card it sits on; on this section the CTA is the only way into five whole pages, so it gets the
    outline the variant already has, pulled up into the brand's own green and held at a ratio that
-   stays readable over the raised plate. When the card is lit the line closes to full mint, which is
-   how the walk tells you which button it is currently standing in front of. */
+   stays readable over the raised plate. The lit card's border is deliberately only a shade above the
+   resting one: the travelling arc below has to be the brightest thing on the button, and a base border
+   already near full mint left it nothing to stand out against. */
 .cta-line {
   border-color: color-mix(in oklab, var(--color-mint) 42%, var(--color-line));
 }
 [data-lit="true"] .cta-line {
-  border-color: var(--color-mint);
+  border-color: color-mix(in oklab, var(--color-mint) 48%, var(--color-line));
+}
+
+/* The running line, and the clock. This used to be a rail across the top of the card, which put the
+   motion on the wrong object: Septa asked for it around the mini button instead. A conic gradient
+   with one bright arc is masked down to a 2px ring — two mask layers, the inner one clipped to the
+   content box and composited out of the outer one, leaves only the padding — so the arc follows the
+   pill's own radius exactly, at any label length, with nothing measured in JavaScript. It sits at
+   `inset: -1px` so the band straddles the button's own hairline instead of drawing a second ring
+   inside it, and the arc is a comet: a long faint tail rising to a hard deep-teal head, which is what
+   makes the direction of travel legible on a shape this small.
+
+   One lap is one interval and the lap is not infinite: `animationend` is what advances the walk, so
+   the line around the button is an honest statement of how long is left on this card, and pausing it
+   pauses the section. */
+@property --cta-sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0turn;
+}
+.cta-ring {
+  position: absolute;
+  inset: -1px;
+  padding: 2px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--cta-sweep),
+    transparent 0turn,
+    transparent 0.42turn,
+    color-mix(in oklab, var(--color-mint) 30%, transparent) 0.66turn,
+    color-mix(in oklab, var(--color-mint) 72%, transparent) 0.86turn,
+    var(--color-mint-bright) 0.985turn,
+    transparent 1turn
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: cta-sweep var(--roll-interval, 3600ms) linear forwards;
+}
+[data-roll-paused="true"] .cta-ring {
+  animation-play-state: paused;
+}
+@keyframes cta-sweep {
+  to {
+    --cta-sweep: 1turn;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-ring {
+    animation: none;
+  }
 }
 
 /* The technology strip: two identical groups side by side, shifted by exactly one group
@@ -678,19 +805,27 @@
   }
 }
 
-/* The runner sits inset by exactly the path radius, so the dot pinned to its top edge travels the
-   same circle the nodes are fixed on. */
-.orbit-runner {
-  animation: orbit-run 22s linear infinite;
+/* The runner used to be a CSS animation on this class, lap after lap, telling a different story from
+   the quote beside it. The dot is now positioned from the same angle the selection is derived from
+   (see TestimonialOrbit), so there is no keyframe here to fall out of step with. */
+
+/* A client mark in the ring. `brightness(0)` flattens whatever colours the supplied artwork ships
+   with into one silhouette, which is the only way a yellow crest, a navy wordmark and a black one
+   sit together on a light disc; the active node gets its own colours back. Same treatment as the
+   partner strip, and for the same reason — four coloured logos at once is four focal points. */
+.orbit-mark {
+  filter: brightness(0);
+  opacity: 0.4;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
 }
-@keyframes orbit-run {
-  to {
-    transform: rotate(360deg);
-  }
+.orbit-mark[data-on="true"] {
+  filter: none;
+  opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .orbit-path,
-  .orbit-runner {
+  .orbit-path {
     animation: none;
   }
 }
@@ -929,14 +1064,23 @@
   pointer-events: none;
 }
 
-/* The leading edge of a stacked sheet. StackSheet slides each band up over the one before it, and a
-   sheet with no edge reads as a repaint rather than as something physical; this is the only part of
-   the stack that is drawn, and it is drawn above the band rather than around it, because the seam a
-   reader needs to see is the one the new sheet is covering. The spread is negative on both sides so
-   the shadow cannot appear along the band's own bottom edge, where it would darken the sheet that has
-   not arrived yet. */
+/* The leading edge of a stacked sheet. A sheet with no edge reads as a repaint rather than as
+   something physical; this is the only part of the stack that is drawn, and it is drawn above the
+   band rather than around it, because the seam a reader needs to see is the one the new sheet is
+   covering. The spread is negative on both sides so the shadow cannot appear along the band's own
+   bottom edge, where it would darken the sheet that has not arrived yet. */
 .stack-sheet {
-  box-shadow: 0 -1.25rem 2.25rem -1.5rem rgb(6 24 32 / 26%);
+  position: relative;
+  box-shadow: 0 -1.25rem 2.25rem -1.5rem rgb(6 24 32 / 30%);
+}
+
+/* The pin. `--sheet-h` is the sheet's own measured height, written by StackSheet, so this reads as
+   "hold my bottom edge at the bottom of the screen" — the sheet scrolls until it has been fully read
+   and stops there, and the next sheet travels up over it. Before the first measurement lands the
+   fallback pins it at the top, which is one frame at load and never a frame anyone scrolls in. */
+.stack-sticky {
+  position: sticky;
+  top: calc(100svh - var(--sheet-h, 100svh));
 }
 
 /* The mesh is the one thing allowed to cross the text, so it is capped by the whole-layer

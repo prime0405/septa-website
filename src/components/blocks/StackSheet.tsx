@@ -1,64 +1,67 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import type { ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useReducedMotion } from "motion/react";
+import { cn } from "../../lib/cn";
 
 /*
- * Stacked sections: the next band arrives by sliding up over the one you were reading.
+ * Stacked sections: the band you are reading holds still, and the next one slides up over it.
  *
- * The scroll already puts each section under the previous one, but it does it at exactly the speed of
- * the scrollbar, so nothing ever appears to travel over anything — the two edges simply pass. This
- * adds the missing relative motion. Every sheet is displaced along the same straight line across its
- * own pass: `+6vh` when it is still below you, `0` while it holds the screen, `-6vh` as it leaves. So
- * a section arriving is pulled up into the section above it, and the section above is held down into
- * the one arriving, and because the later sheet is painted on top and is opaque, what you watch is the
- * new band cover the old one rather than two bands going past each other.
+ * The version this replaces displaced every band by a few pixels against the scrollbar. That reads
+ * as parallax — two edges drifting past each other — because nothing ever stops moving. A cover needs
+ * something to be covered: the outgoing band has to stop, and the incoming one has to keep going.
  *
- * Six per cent of the viewport, in each direction, is the whole budget, and the number is not a
- * taste call. `.section` reserves `clamp(3.5rem, 8vw, 7rem)` of vertical padding — 56px at its tightest
- * — and 6vh of a 900px screen is 54px. Displacement can therefore never exceed the padding that keeps
- * copy off the band edge, which means a sheet can cover the strip of the previous sheet you have
- * already scrolled past, but it cannot reach a line you are still reading. Push the amplitude to
- * 20vh, which is what the trend demos use, and the last sentence of every section gets eaten by the
- * next one on a phone.
+ * So each sheet is `position: sticky` with its top set to `100svh - its own height`. Read that as a
+ * bottom edge pinned to the bottom of the screen. A sheet scrolls normally until its last line has
+ * reached the bottom of the viewport — which is to say, until it has been fully read — and only then
+ * does it stick. Everything after it keeps scrolling, and because later sheets carry a higher
+ * z-index and an opaque plate, what you watch is the next band travel up over the one that stopped.
+ * Nothing is displaced, nothing lags, and the scroll distance is the page's own: sticky does not add
+ * height, so the scrollbar is exactly as long as it was.
  *
- * The band has to be solid for this to read at all: at 76% the veil let the sheet underneath show
- * through as a ghost of the section you had left, which is the opposite of stacking. `src/index.css`
- * paints these bands at full strength now that nothing animates behind them.
+ * This is why the height is measured rather than assumed. The sheets run from a 250px logo strip to a
+ * 1150px service grid, and a single `top: 0` would pin every one of them at its first line and hide
+ * the rest of it. `--sheet-h` is written by a ResizeObserver on the sheet itself, so the pin point is
+ * correct at every width, after fonts load, and when a quote or a photograph changes the band's
+ * height. Nothing about the measurement feeds back into the size: `top` moves a sticky box, it does
+ * not resize one.
  *
- * Two details do most of the work of making it look like physical sheets rather than a repaint: the
- * leading edge casts a shadow down onto the band it is covering (`.stack-sheet`), and the border that
- * every band already carries becomes the visible top edge of the card. Only `transform` is animated.
+ * The containing block is `<main>`, not a per-sheet wrapper — a wrapper cut to the sheet's own height
+ * would leave the sticky box no room to travel and it would never stick at all. Sharing one
+ * containing block also means every sheet releases together, in the last viewport of the stack,
+ * which is exactly when the footer arrives to take over.
  *
- * The measured element and the moved element are different divs on purpose, for the same reason
- * `SectionStage` splits them: `useScroll` reads a bounding rect, a bounding rect includes the
- * element's own transform, and if the sheet were measuring itself the displacement would feed its own
- * input — a section would settle at some fixed point away from where the curve says it should be. The
- * outer div carries the stacking order and is never transformed.
+ * The hero is pinned against the same containing block and sits at the bottom of the stack, so it is
+ * the floor under every sheet: there is no frame, at any scroll position, where the page shows
+ * through a seam. `100svh` rather than `100dvh` or `100vh` is deliberate — it is the smallest mobile
+ * viewport, so a sheet always pins with its last line above the fold even with the browser chrome
+ * showing, and when the chrome retracts the extra strip at the bottom is already filled by the next
+ * sheet arriving, never by a gap.
  *
- * The hero is deliberately not a sheet. It is already pinned (`position: sticky` in a taller
- * wrapper), which is a stronger version of the same idea, and wrapping a sticky element in a
- * transformed ancestor would make its stuck position drift by the displacement — the headline would
- * slide out from under the nav instead of shrinking.
- *
- * Under `prefers-reduced-motion` the displacement is a constant zero and the stacking order is left
- * exactly as it is: the page becomes the plain sequence of bands it was before, with no overlap and
- * no travel between them.
+ * Under `prefers-reduced-motion` the class is not applied at all. The sheets stay in normal flow, in
+ * the same order, as the plain sequence of bands this was before.
  */
-
-/** Twice the half-amplitude, in vh: the total distance a sheet travels relative to the scroll. */
-const TRAVEL = 12;
 
 export function StackSheet({ order, children }: { order: number; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, (p) => (reduce ? 0 : `${(p - 0.5) * TRAVEL}vh`));
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => el.style.setProperty("--sheet-h", `${el.offsetHeight}px`);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   return (
-    <div ref={ref} className="relative" style={{ zIndex: order }}>
-      <motion.div style={{ y }} className="stack-sheet will-change-transform">
-        {children}
-      </motion.div>
+    <div
+      ref={ref}
+      className={cn("stack-sheet", !reduce && "stack-sticky")}
+      style={{ zIndex: order }}
+    >
+      {children}
     </div>
   );
 }

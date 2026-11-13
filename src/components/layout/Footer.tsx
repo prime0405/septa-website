@@ -12,7 +12,7 @@ import { SocialMark } from "./SocialMarks";
 
 export function Footer() {
   return (
-    <footer className="stack-sheet relative mt-auto border-t border-line bg-ink-raised">
+    <footer className="stack-sheet relative z-20 mt-auto border-t border-line bg-ink-raised">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
       {/* The one closing ask. This used to live twice — as a band on the homepage and again as the

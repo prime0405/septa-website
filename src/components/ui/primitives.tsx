@@ -156,18 +156,29 @@ export function SectionHero({
   lead,
   action,
   className,
+  size = "lg",
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
   lead?: ReactNode;
   action?: ReactNode;
   className?: string;
+  /** `md` is for a title that is a sentence rather than a name — see the service overview. */
+  size?: "lg" | "md";
 }) {
   return (
     <div className={cn("mx-auto max-w-3xl text-center", className)}>
       {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
       <MaskRise>
-        <h2 className="text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]">{title}</h2>
+        <h2
+          className={
+            size === "md"
+              ? "text-[clamp(1.5rem,2.9vw,2.15rem)] leading-[1.16]"
+              : "text-[clamp(2rem,4.6vw,3.1rem)] leading-[1.04]"
+          }
+        >
+          {title}
+        </h2>
       </MaskRise>
       {lead ? <p className="prose-body mx-auto mt-5 max-w-2xl text-[1.02rem]">{lead}</p> : null}
       {action ? <div className="mt-7 flex flex-wrap justify-center gap-3">{action}</div> : null}

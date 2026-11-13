@@ -1,9 +1,17 @@
-import { useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
+import { motion, useAnimationFrame, useMotionValue } from "motion/react";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { testimonials } from "../../data/content";
 import { paths } from "../../lib/paths";
 import { cn } from "../../lib/cn";
+import { useAutoPause } from "../../lib/useRollCycle";
 import { ArrowLink, Pill } from "../ui/primitives";
 
 /* The nodes sit on a circle, so the dashed path is drawn through them rather than under them. At 29%
@@ -19,35 +27,99 @@ const SLOTS = [
   { x: `${OUT}%`, y: `${OUT}%` },
 ];
 
-/** The initial the badge carries: the first letter of the client name already on the use-case record. */
-const letterOf = (org: string) => org.trim().charAt(0).toUpperCase();
+/** Where each node sits on the dot's own clock face: degrees clockwise from twelve. */
+const NODE_ANGLE = [315, 45, 225, 135];
+/** The same four indices in the order the dot reaches them, starting from the first one it passes. */
+const ORDER = [1, 3, 2, 0];
+/** One full lap. A quarter of it — six seconds — is how long each client holds the quote. */
+const LAP = 24_000;
+/** Degrees per millisecond when the dot is travelling to a node someone chose by hand. */
+const SEEK = 0.4;
+
+/** Below `lg` the ring is a swipe strip with no dot on it, so there is nothing to run the clock. */
+function useOrbitLayout() {
+  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return wide;
+}
 
 /**
- * The client testimonial section: a ring of selectable clients on the left and one long quote on the
- * right, in the shape of the reference Septa supplied.
+ * The client testimonial section: a ring of clients on the left and one long quote on the right.
  *
- * There are no photographs to put in the ring and no individual names in the source material, so the
- * selection system is built out of type instead: the client's initial in a disc, the client's name
- * under it, and the ring itself drawn as the dashed orbit those discs sit on. The centre holds the
- * initial of whoever is selected, which is what makes the active choice readable from across the room
- * without a highlight colour doing all the work.
+ * The dot is the clock. It used to run its own 22-second lap as scenery while the quote changed only
+ * when someone clicked, which meant the two things in the ring were telling different stories. Now
+ * the angle is the single source of truth: the dot's position is advanced one frame at a time, the
+ * client it has most recently passed is derived from that angle, and the quote follows. When the dot
+ * reaches a logo, that logo's testimonial is the one on screen — exactly, and not on a timer that
+ * happens to be about the same length.
  *
- * Selecting is a click, never a hover — a pointer crossing the ring on its way to the nav would
- * otherwise rewrite the quote out from under the reader. Keyboard follows the tab pattern: arrows move
- * the selection and the focus together, Home and End jump to the ends, and only the selected node is
- * in the tab order.
+ * Choosing by hand does not stop the dot, it steers it. A click, an arrow key or a step button sets
+ * the quote immediately and sends the dot round the shorter arc to the node that was chosen, so the
+ * ring never shows one client selected while the dot is standing somewhere else. From there it
+ * carries on. Hover, keyboard focus, scrolling the ring off screen and reduced motion all freeze the
+ * lap (`useAutoPause`, shared with the service grid), because a quote that rewrites itself under
+ * someone who is reading it is worse than no animation at all.
+ *
+ * Three of the four clients have supplied artwork and show it; EHCC has none, so it is set in type
+ * rather than given an invented mark. The marks are silhouettes until their node is the active one,
+ * which is the same treatment the partner strip uses and for the same reason: four coloured logos in
+ * a ring is four competing focal points.
  *
  * The four quotes share one grid cell, so the section is as tall as the longest one and changing
  * selection never resizes the page underneath the reader. See `.tpanel` in `src/index.css`.
  */
 export function TestimonialOrbit() {
-  const reduce = useReducedMotion();
+  const { reduce, frozen, ref, hoverProps } = useAutoPause();
+  const wide = useOrbitLayout();
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const angle = useMotionValue(NODE_ANGLE[0]);
+  const seek = useRef<number | null>(null);
+  const still = reduce || !wide;
+
+  // With no lap to run, the dot simply stands at whichever client is selected.
+  useEffect(() => {
+    if (!still) return;
+    seek.current = null;
+    angle.set(NODE_ANGLE[active]);
+  }, [still, active, angle]);
+
+  useAnimationFrame((_, delta) => {
+    // A backgrounded tab hands back a delta of seconds; without the clamp the dot would jump half a
+    // lap on the first frame after coming back, taking the quote with it.
+    const d = Math.min(delta, 64);
+    const target = seek.current;
+    if (target !== null) {
+      const current = angle.get();
+      const arc = (((target - current) % 360) + 540) % 360 - 180;
+      const reach = d * SEEK;
+      if (Math.abs(arc) <= reach) {
+        angle.set(target);
+        seek.current = null;
+      } else {
+        angle.set((current + Math.sign(arc) * reach + 360) % 360);
+      }
+      return;
+    }
+    if (frozen || still) return;
+    // Kept inside one turn: rotation is periodic, so wrapping costs nothing visually and keeps the
+    // shortest-arc arithmetic above honest after any number of laps.
+    const next = (angle.get() + (d / LAP) * 360) % 360;
+    angle.set(next);
+    const reached = ORDER[Math.floor(((((next - 45) % 360) + 360) % 360) / 90)];
+    if (reached !== active) setActive(reached);
+  });
 
   const select = (index: number, moveFocus = false) => {
     const next = (index + testimonials.length) % testimonials.length;
     setActive(next);
+    if (still) angle.set(NODE_ANGLE[next]);
+    else seek.current = NODE_ANGLE[next];
     if (moveFocus) tabs.current[next]?.focus();
   };
 
@@ -71,11 +143,13 @@ export function TestimonialOrbit() {
     <div className="lg:grid lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:items-center lg:gap-14 xl:gap-20">
       {/* ------------------------------ the selector ------------------------------ */}
       <div
+        ref={ref}
         role="tablist"
         aria-label="Client testimonials"
         aria-orientation="horizontal"
         onKeyDown={onKeyDown}
         className="orbit lg:my-6"
+        {...hoverProps}
       >
         {/* The track, the ring's own focal point and the dot that runs the line are scenery; the nodes
             are the only things in the accessibility tree. */}
@@ -98,9 +172,13 @@ export function TestimonialOrbit() {
             className="orbit-path"
           />
         </svg>
-        <div aria-hidden className="orbit-runner pointer-events-none absolute inset-[9%] hidden lg:block">
-          <span className="absolute left-1/2 top-0 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-teal/70" />
-        </div>
+        <motion.div
+          aria-hidden
+          style={{ rotate: angle }}
+          className="pointer-events-none absolute inset-[9%] hidden lg:block"
+        >
+          <span className="absolute left-1/2 top-0 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mint shadow-[0_0_0_5px_rgb(40_111_106/0.14)]" />
+        </motion.div>
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 hidden size-[6.5rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-mint/25 bg-surface-raised shadow-soft lg:grid"
@@ -109,11 +187,23 @@ export function TestimonialOrbit() {
             <span
               key={t.org}
               className={cn(
-                "absolute font-display text-[2.15rem] leading-none transition-opacity duration-300",
-                i === active ? "text-mint opacity-100" : "text-faint opacity-0",
+                "absolute inset-0 grid place-items-center transition-opacity duration-300",
+                i === active ? "opacity-100" : "opacity-0",
               )}
             >
-              {letterOf(t.org)}
+              {t.logo ? (
+                <img
+                  src={t.logo}
+                  alt=""
+                  decoding="async"
+                  data-on="true"
+                  className="orbit-mark h-10 w-[4.6rem] object-contain"
+                />
+              ) : (
+                <span className="font-display text-[1.5rem] leading-none tracking-[0.02em] text-mint">
+                  {t.org}
+                </span>
+              )}
             </span>
           ))}
         </div>
@@ -156,14 +246,25 @@ export function TestimonialOrbit() {
                       : "border-line bg-ink-raised group-hover:border-brand-teal/70",
                   )}
                 />
-                <span
-                  className={cn(
-                    "relative font-display text-[1.3rem] leading-none transition-colors duration-300 lg:text-[1.5rem]",
-                    on ? "text-mint" : "text-faint group-hover:text-muted",
-                  )}
-                >
-                  {letterOf(t.org)}
-                </span>
+                {t.logo ? (
+                  <img
+                    src={t.logo}
+                    alt=""
+                    decoding="async"
+                    data-on={on ? "true" : "false"}
+                    className="orbit-mark relative max-h-6 w-auto max-w-[74%] object-contain lg:max-h-7"
+                  />
+                ) : (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "relative font-display text-[0.82rem] leading-none tracking-[0.04em] transition-colors duration-300",
+                      on ? "text-mint" : "text-faint group-hover:text-muted",
+                    )}
+                  >
+                    {t.org}
+                  </span>
+                )}
               </span>
               <span
                 className={cn(
