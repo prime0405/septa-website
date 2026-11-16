@@ -179,9 +179,12 @@ export function TestimonialOrbit() {
         >
           <span className="absolute left-1/2 top-0 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mint shadow-[0_0_0_5px_rgb(40_111_106/0.14)]" />
         </motion.div>
+        {/* The lit plates are navy because the partner lockups are knockout artwork — Preppod's
+            wordmark is white and Halogen's is gold — so on a white plate the mark loses half of
+            itself the moment it becomes active, which is the one state it must be legible in. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 hidden size-[6.5rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-mint/25 bg-surface-raised shadow-soft lg:grid"
+          className="pointer-events-none absolute left-1/2 top-1/2 hidden size-[6.5rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-brand-pearl-raised bg-brand-pearl shadow-soft lg:grid"
         >
           {testimonials.map((t, i) => (
             <span
@@ -200,7 +203,7 @@ export function TestimonialOrbit() {
                   className="orbit-mark h-10 w-[4.6rem] object-contain"
                 />
               ) : (
-                <span className="font-display text-[1.5rem] leading-none tracking-[0.02em] text-mint">
+                <span className="font-display text-[1.5rem] leading-none tracking-[0.02em] text-brand-mint">
                   {t.org}
                 </span>
               )}
@@ -242,7 +245,7 @@ export function TestimonialOrbit() {
                   className={cn(
                     "absolute inset-0 rounded-full border transition-colors duration-300",
                     on
-                      ? "border-mint/45 bg-surface-raised"
+                      ? "border-brand-pearl-raised bg-brand-pearl"
                       : "border-line bg-ink-raised group-hover:border-brand-teal/70",
                   )}
                 />
@@ -259,7 +262,7 @@ export function TestimonialOrbit() {
                     aria-hidden
                     className={cn(
                       "relative font-display text-[0.82rem] leading-none tracking-[0.04em] transition-colors duration-300",
-                      on ? "text-mint" : "text-faint group-hover:text-muted",
+                      on ? "text-brand-mint" : "text-faint group-hover:text-muted",
                     )}
                   >
                     {t.org}

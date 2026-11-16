@@ -458,7 +458,8 @@ sampling the computed style through the pass: `matrix(1 …)` → 1.027 → 1.05
 
 `SectionStage` (`src/components/blocks/SectionStage.tsx`) wraps the content of all six sections
 after the hero — the three offerings, the advantage, the service overview and the
-testimonial — and scales it 0.955 → 1.00, fades it 0.82 → 1.00 and drifts it ±12px on the same curve.
+testimonial — and the footer, and scales it 0.955 → 1.00, fades it 0.82 → 1.00 and drifts it ±12px on
+the same curve.
 The curve is a plateau, not a peak, and that is the whole of the difference between this and the
 half-sine it replaces: a sine is at its maximum for one instant, so a section was technically full size
 only at the exact middle of its pass and visibly under size for all of the reading either side of it.
@@ -480,6 +481,24 @@ the translate and the opacity matching to three decimals; the plane at rest meas
 point outside both does not move. With `--force-prefers-reduced-motion` the stages compute to `none` at
 opacity 1, the plane holds a constant 1.1 with `m43` 0 and `saturate(1) brightness(1)`, hovering it
 changes nothing, and `document.getAnimations()` reports zero running.
+
+**The footer arrives, but never leaves.** It was the one band on the homepage with no stage on it, so
+it came up flat while everything above it settled into place. Wrapping it in the same stage would have
+been wrong, though, and the reason is arithmetic rather than taste: measured against `end start` the
+travel is `h + vh`, so an element that ends the document tops out at `h / (h + vh)` — 0.485 on a
+1440×900 desktop, which is inside the plateau, but 0.689 on a 390×844 phone, which is past it. The page
+would have come to rest with its own footer shrunk and dimmed, permanently, on exactly the viewport
+where the footer is tallest. `last` measures against `end end` instead: the travel is `h`, progress is
+exactly 1 at the bottom of the page whatever the two heights are, and halving it before `settle` keeps
+only the rising ramp. The footer therefore grows into place as it covers the last sheet and is at full
+size and strength from 76% of its pass onward. Its plate, top hairline and grid stay outside the stage,
+which is the same division every other section makes. Verified in the browser at 1440×900, at 390×844
+and on `/about`: scale climbs 0.955 → 0.9562 → 0.9622 → 0.9714 → 0.9817 → 0.9912 → 0.9979 → 1 and
+holds, opacity 0.82 → 1 on the same samples, translate +12px → 0, and at the bottom of the page the
+transform computes to `none` at opacity 1. All twenty footer links hit-test to themselves at the scroll
+position that centres each one, `scrollWidth` equals `innerWidth` at both sizes, and the console is
+clean. The legal row carries `pb-20 xl:pb-5` because below `xl` the wrap runs to the viewport edge and
+the last line would otherwise rest under the back-to-top button; above it the centred wrap clears it.
 
 The paragraphs on the wash, the mesh and their masks are the record of that layer while it ran. They
 are kept because most of the contrast figures quoted through the rest of this section were measured
@@ -787,7 +806,21 @@ is the active one, the same treatment the partner strip uses and for the same re
 logos in a ring is four competing focal points. Every mark is given a **definite** box with
 `object-contain`, not `w-auto` with a max: `preppod.svg` ships a `viewBox` and no `width`/`height`, so
 inside the centre disc's shrink-to-fit absolute span it measured 0×0 and the disc rendered empty. With
-a `h-10 w-[4.6rem]` box all three resolve to 74×40 and centre identically.
+a `h-10 w-[4.6rem]` box all three resolve to 74×40 and centre identically. The same missing dimensions
+had emptied the panel's credit chip, which used `max-h-6 w-auto` and measured 0×0 for Preppod while the
+other two rendered; rather than patch a third box, the asset itself now carries `width="971"
+height="268"` (both the mono and the colour copy), so every `w-auto` use of it resolves — the chip
+measures 87×24 inside a 115×44 plate.
+
+The lit plates are Pearl, not white. All three supplied lockups are knockout artwork — Preppod's
+wordmark is `#fff`, Halogen's mark is gold — so on a white plate the active mark lost the half of itself
+that carries the name, and the one state a logo must be legible in was the one state it disappeared.
+The centre disc and the active node now sit on `bg-brand-pearl`, the same ground the credit chip already
+used, and EHCC's typed fallback moves to `text-brand-mint` to keep its contrast on the darker plate.
+Inactive nodes are unchanged: `brightness(0)` already turned the white lettering black, which is why the
+bug only ever showed on the selected client. Re-measured with the fix: Halogen 24×24, Preppod 87×24 and
+Toviri 69×24 in the chip, the full Preppod lockup visible in the disc, the node and the chip, and no
+console errors through a full lap.
 
 There are no photographs in the source material and no individual authors, so the rest of the selection
 system is built out of type: the client's name under its node, the work label and the supplied mark in

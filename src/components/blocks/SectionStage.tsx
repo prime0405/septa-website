@@ -32,9 +32,18 @@ import { settle } from "../../lib/scroll-curve";
  * Only the content moves, never the band underneath it: the section's veil and its hairline border
  * stay put, so the page's structure is still while what is on it breathes. That is the same division
  * the hero makes between its white dissolve and its headline.
+ *
+ * `last` is the closing band — the footer — and it gets the arrival half of the gesture only. A
+ * section that ends the document never leaves, so the departing half of the curve is not just
+ * unreachable, it is wrong: measured against `end start` the footer's progress tops out at
+ * `h / (h + vh)`, which on a phone is past the plateau, so the page would come to rest with its own
+ * footer shrunk and dimmed. Measuring against `end end` instead makes progress exactly 1 at the
+ * bottom of the page whatever the two heights are, and halving it before the curve keeps only the
+ * rising ramp. The footer therefore grows into place as it covers the last sheet and is at full
+ * size and strength by the time three quarters of it is on screen — and stays there.
  */
 
-export function SectionStage({ children }: { children: ReactNode }) {
+export function SectionStage({ children, last = false }: { children: ReactNode; last?: boolean }) {
   // The measured box and the transformed box are different elements on purpose. `useScroll` reads
   // the target's bounding rect, and a bounding rect includes an element's own transform — so if the
   // div being scaled were also the div being measured, shrinking the section would move its edges,
@@ -43,11 +52,15 @@ export function SectionStage({ children }: { children: ReactNode }) {
   // plain outer wrapper — whose layout no transform can touch — keeps the curve exact.
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, (p) => (reduce ? 1 : 0.955 + 0.045 * settle(p)));
-  const opacity = useTransform(scrollYProgress, (p) => (reduce ? 1 : 0.82 + 0.18 * settle(p)));
-  const drift = useTransform(scrollYProgress, (p) =>
-    reduce ? 0 : (p < 0.5 ? 1 : -1) * (1 - settle(p)) * 12,
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: last ? ["start end", "end end"] : ["start end", "end start"],
+  });
+  const pass = useTransform(scrollYProgress, (p) => (last ? p * 0.5 : p));
+  const scale = useTransform(pass, (p) => (reduce ? 1 : 0.955 + 0.045 * settle(p)));
+  const opacity = useTransform(pass, (p) => (reduce ? 1 : 0.82 + 0.18 * settle(p)));
+  const drift = useTransform(pass, (p) =>
+    reduce ? 0 : (last || p < 0.5 ? 1 : -1) * (1 - settle(p)) * 12,
   );
 
   return (
