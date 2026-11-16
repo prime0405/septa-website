@@ -149,6 +149,11 @@ export const serviceListings = [
  * `src/data/useCases.ts`, and `logo` is the supplied mark for that client where Septa has one on file.
  * EHCC has no supplied artwork, so its entry has no logo and the section shows its name in type
  * rather than inventing one.
+ *
+ * `knockout` records which ground the supplied artwork was drawn for. Halogen's mark is gold and
+ * Preppod's wordmark is white, so both need the Pearl plate; Toviri's lockup is a single dark blue,
+ * so it needs the light one. It is a property of the file, not of the client, and it is the only
+ * reason the lit plate changes colour as the selection moves.
  */
 export const testimonials = [
   {
@@ -159,6 +164,7 @@ export const testimonials = [
     caseSlug: "halogen-group",
     kind: "Website and extranet",
     logo: "/partners/halogen-group.svg",
+    knockout: true,
   },
   {
     quote:
@@ -167,6 +173,7 @@ export const testimonials = [
     org: "EHCC",
     caseSlug: "ehcc-clock-in-app",
     kind: "Web and mobile platform",
+    knockout: false,
   },
   {
     quote:
@@ -176,6 +183,7 @@ export const testimonials = [
     caseSlug: "preppod",
     kind: "Website and LMS",
     logo: "/partners/preppod.svg",
+    knockout: true,
   },
   {
     quote:
@@ -185,6 +193,7 @@ export const testimonials = [
     caseSlug: "toviri",
     kind: "Mobile platform",
     logo: "/partners/toviri-uk.svg",
+    knockout: false,
   },
 ];
 

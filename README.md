@@ -812,15 +812,17 @@ other two rendered; rather than patch a third box, the asset itself now carries 
 height="268"` (both the mono and the colour copy), so every `w-auto` use of it resolves — the chip
 measures 87×24 inside a 115×44 plate.
 
-The lit plates are Pearl, not white. All three supplied lockups are knockout artwork — Preppod's
-wordmark is `#fff`, Halogen's mark is gold — so on a white plate the active mark lost the half of itself
-that carries the name, and the one state a logo must be legible in was the one state it disappeared.
-The centre disc and the active node now sit on `bg-brand-pearl`, the same ground the credit chip already
-used, and EHCC's typed fallback moves to `text-brand-mint` to keep its contrast on the darker plate.
-Inactive nodes are unchanged: `brightness(0)` already turned the white lettering black, which is why the
-bug only ever showed on the selected client. Re-measured with the fix: Halogen 24×24, Preppod 87×24 and
-Toviri 69×24 in the chip, the full Preppod lockup visible in the disc, the node and the chip, and no
-console errors through a full lap.
+The lit plate takes the ground its lockup was drawn for. The supplied artwork is not one consistent
+set: Preppod's wordmark is `#fff`, Halogen's mark is `#FFCC2A` gold, and Toviri's whole lockup is a
+single `#1E3A8A` blue. On a white plate the first two lose the half of themselves that carries the
+name — and the active state was the one state they disappeared in, because `brightness(0)` had been
+turning the white lettering black for the inactive nodes all along. On a Pearl plate Toviri's blue
+falls to roughly 1.9:1. No single ground serves all three, so `knockout` on the testimonial record
+says which ground the file needs and the plate cross-fades with the mark: Pearl for Halogen and
+Preppod, the light `surface-raised` for Toviri and for EHCC's typed fallback. The credit chip follows
+the same rule. Re-measured with the fix: Halogen 24×24, Preppod 87×24 and Toviri 69×24 in the chip, the
+full lockup visible in the disc, the node and the chip for all four selections, and no console errors
+through a full lap.
 
 There are no photographs in the source material and no individual authors, so the rest of the selection
 system is built out of type: the client's name under its node, the work label and the supplied mark in

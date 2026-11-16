@@ -179,12 +179,18 @@ export function TestimonialOrbit() {
         >
           <span className="absolute left-1/2 top-0 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mint shadow-[0_0_0_5px_rgb(40_111_106/0.14)]" />
         </motion.div>
-        {/* The lit plates are navy because the partner lockups are knockout artwork — Preppod's
-            wordmark is white and Halogen's is gold — so on a white plate the mark loses half of
-            itself the moment it becomes active, which is the one state it must be legible in. */}
+        {/* The lit plate takes the ground the selected lockup was drawn for. Halogen's mark is gold
+            and Preppod's wordmark is white, so on a white plate the active mark loses the half of
+            itself that carries the name; Toviri's is a single dark blue and needs the opposite. One
+            fixed ground cannot serve all three, so the plate cross-fades with the mark. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 hidden size-[6.5rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-brand-pearl-raised bg-brand-pearl shadow-soft lg:grid"
+          className={cn(
+            "pointer-events-none absolute left-1/2 top-1/2 hidden size-[6.5rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border shadow-soft transition-colors duration-300 lg:grid",
+            testimonials[active].knockout
+              ? "border-brand-pearl-raised bg-brand-pearl"
+              : "border-mint/25 bg-surface-raised",
+          )}
         >
           {testimonials.map((t, i) => (
             <span
@@ -203,7 +209,7 @@ export function TestimonialOrbit() {
                   className="orbit-mark h-10 w-[4.6rem] object-contain"
                 />
               ) : (
-                <span className="font-display text-[1.5rem] leading-none tracking-[0.02em] text-brand-mint">
+                <span className="font-display text-[1.5rem] leading-none tracking-[0.02em] text-mint">
                   {t.org}
                 </span>
               )}
@@ -245,7 +251,9 @@ export function TestimonialOrbit() {
                   className={cn(
                     "absolute inset-0 rounded-full border transition-colors duration-300",
                     on
-                      ? "border-brand-pearl-raised bg-brand-pearl"
+                      ? t.knockout
+                        ? "border-brand-pearl-raised bg-brand-pearl"
+                        : "border-mint/45 bg-surface-raised"
                       : "border-line bg-ink-raised group-hover:border-brand-teal/70",
                   )}
                 />
@@ -262,7 +270,7 @@ export function TestimonialOrbit() {
                     aria-hidden
                     className={cn(
                       "relative font-display text-[0.82rem] leading-none tracking-[0.04em] transition-colors duration-300",
-                      on ? "text-brand-mint" : "text-faint group-hover:text-muted",
+                      on ? "text-mint" : "text-faint group-hover:text-muted",
                     )}
                   >
                     {t.org}
@@ -305,7 +313,12 @@ export function TestimonialOrbit() {
               </blockquote>
               <div className="mt-6 flex items-center gap-4">
                 {t.logo ? (
-                  <span className="flex h-11 shrink-0 items-center rounded-xl bg-brand-pearl px-3.5">
+                  <span
+                    className={cn(
+                      "flex h-11 shrink-0 items-center rounded-xl px-3.5",
+                      t.knockout ? "bg-brand-pearl" : "border border-line bg-ink-raised",
+                    )}
+                  >
                     <img src={t.logo} alt={t.org} decoding="async" className="max-h-6 w-auto" />
                   </span>
                 ) : null}
