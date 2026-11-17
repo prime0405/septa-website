@@ -13,13 +13,15 @@ import { SocialMark } from "./SocialMarks";
 
 export function Footer() {
   return (
-    <footer className="relative mt-auto border-t border-line bg-ink-raised">
+    <footer className="relative mt-auto bg-surface">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
-      {/* The stack ends at the partners strip, so the footer arrives in ordinary flow like the bands
-          above it — but it still gets the arrival half of the settle gesture (`last`), while the band
-          itself — the plate, the top hairline and the grid — stays put underneath, exactly as the
-          other sections divide it. */}
+      {/* The stack ends before the partners strip, so the footer arrives in ordinary flow like the
+          bands above it — but it still gets the arrival half of the settle gesture (`last`), while
+          the band itself — the plate and the grid — stays put underneath, exactly as the other
+          sections divide it. No top rule: the step from the testimonial's raised plate to this
+          surface plate is the separator, because a drawn line on a moving edge reads as a seam
+          dragging up the screen. */}
       <SectionStage last>
         {/* The one closing ask. This used to live twice — as a band on the homepage and again as the
             "Next step" strip here, both of them saying "tell us what to build" — and Septa asked for

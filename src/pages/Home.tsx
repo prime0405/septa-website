@@ -100,11 +100,12 @@ function useWideHero() {
  * floor under the whole stack. There is no scroll position at which the page can show through a seam
  * between two sheets.
  *
- * The stage ends at the partners strip, and that end is the stack's release: a sticky box cannot
- * leave its containing block, so every pinned sheet lets go together in the viewport where the
- * partners strip has been fully read. Below it the page is ordinary flow again — the advantage, the
- * service overview, the testimonial and the footer scroll past each other the way plain bands do.
- * The cover gesture is the opening chapter of the homepage, not its whole grammar.
+ * The stage ends before the partners strip, and that end is the stack's release: a sticky box cannot
+ * leave its containing block, so every pinned sheet lets go together in the viewport where the last
+ * offering block has been fully read and the partners strip is entering. From the strip down the
+ * page is ordinary flow again — partners, the advantage, the service overview, the testimonial and
+ * the footer scroll past each other the way plain bands do. The cover gesture is the opening
+ * chapter of the homepage, not its whole grammar.
  *
  * `RELEASE` is no longer a fraction of a wrapper: the spacer is the runway outright, 58vh on desktop
  * and 26vh below `lg`, and the shrink is measured against it. The phone and tablet runway is
@@ -183,8 +184,9 @@ export default function Home() {
 
   return (
     <>
-      {/* The stage: hero through partners. Its bottom edge is where every pin releases, so the
-          stacked cover gesture ends with the partners strip and the rest of the page is flow. */}
+      {/* The stage: hero through the third offering block. Its bottom edge is where every pin
+          releases, so the stacked cover gesture ends as the partners strip enters and the rest of
+          the page is flow. */}
       <div className="stack-stage">
       {/* ------------------------------- 1. hero ------------------------------- */}
       <section
@@ -325,7 +327,7 @@ export default function Home() {
           <Section
             wall={blockWalls[block.key]}
             tone={i % 2 ? "surface" : "raised"}
-            className={cn("section border-y border-line-soft", i === 0 && "border-t-0")}
+            className="section"
           >
             <SectionStage>
               <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
@@ -362,14 +364,16 @@ export default function Home() {
           </Section>
         </StackSheet>
       ))}
+      </div>
 
       {/* ---------------------------- 5. our partners ---------------------------- */}
-      {/* A light band, like every other section. One image per partner: the colour lockup, with the
-          colour taken out of it by a filter at rest and put back on hover. Two stacked files could
-          never register — the supplied colour artwork was a different crop on a different canvas —
-          so the reveal used to change the mark's size and shape along with its colour. A filter on
-          one element cannot do that. The marquee already stops while the pointer is anywhere on it,
-          so the mark being looked at is a still one.
+      {/* The first band of the ordinary flow: the stack releases above it, so the strip scrolls in
+          like a plain band instead of covering anything. One image per partner: the colour lockup,
+          with the colour taken out of it by a filter at rest and put back on hover. Two stacked files
+          could never register — the supplied colour artwork was a different crop on a different
+          canvas — so the reveal used to change the mark's size and shape along with its colour. A
+          filter on one element cannot do that. The marquee already stops while the pointer is
+          anywhere on it, so the mark being looked at is a still one.
 
           This band is deliberately the shortest on the page: `py-12 sm:py-14` instead of the
           `.section` rhythm of 56–112px, a heading at two thirds of the other section titles, and
@@ -377,14 +381,18 @@ export default function Home() {
           not a chapter, and it was taking a screen of its own. It also drops out of
           `SectionStage`: the strip runs edge to edge, so scaling it would pull both ends off the
           screen and show the band through the gap it left — and a band this short has no reading
-          middle to hold still. */}
-      <StackSheet order={5}>
-        <Section
-          wall="services"
-          tone="raised"
-          bleed
-          className="border-y border-line-soft py-12 sm:py-14"
-        >
+          middle to hold still.
+
+          No hairline rules anywhere on this page any more. A 1px border on a moving sheet is a line
+          that travels up the screen during every cover, and the eye reads it as a seam dragging
+          rather than as a surface arriving. The bands separate by tone alone — raised, surface,
+          white — which is a step of two or three L* and reads as depth, not as a drawn edge. */}
+      <Section
+        wall="services"
+        tone="surface"
+        bleed
+        className="py-12 sm:py-14"
+      >
           <div className="wrap">
             <MaskRise>
               <h2 className="text-center text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.08]">
@@ -416,14 +424,12 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </Section>
-      </StackSheet>
-      </div>
+      </Section>
 
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
       {/* Below the stage: ordinary flow. These bands keep their arrival settle but no pin and no
-          cover — the stack ended at the partners strip above. */}
-      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
+          cover — the stack ended before the partners strip above. */}
+      <Section wall="use-case" tone="raised" className="section">
         <SectionStage>
           <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
           <Reveal delay={0.1}>
@@ -433,7 +439,7 @@ export default function Home() {
       </Section>
 
       {/* --------------------------- 7. service overview --------------------------- */}
-      <Section wall="service-automation" className="section border-y border-line-soft">
+      <Section wall="service-automation" className="section">
         <SectionStage>
           <SectionHero
             eyebrow="Service overview"
@@ -447,7 +453,7 @@ export default function Home() {
       </Section>
 
       {/* ----------------------------- 8. testimonial ----------------------------- */}
-      <Section wall="blog" tone="raised" className="section border-y border-line-soft">
+      <Section wall="blog" tone="raised" className="section">
         <SectionStage>
           <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
           <Reveal delay={0.1}>
