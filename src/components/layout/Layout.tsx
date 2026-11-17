@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUp } from "lucide-react";
 import { Footer } from "./Footer";
+import { ClosingCta } from "./ClosingCta";
 import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
 import { CursorHalo } from "../ui/CursorHalo";
@@ -106,6 +107,9 @@ export function Layout() {
         >
           <Outlet />
         </main>
+        {/* The closing ask ends the reading flow on every route; the footer below it is wayfinding
+            only, so the bottom of the page stays a directory rather than a second hero. */}
+        <ClosingCta />
         <Footer />
         <BackToTop />
       </div>

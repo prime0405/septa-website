@@ -1,66 +1,27 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { footerColumns } from "../../lib/nav";
 import { paths } from "../../lib/paths";
 import { site } from "../../lib/site";
 import { showLaunchNotes } from "../../lib/launchNotes";
-import { ctaBanner } from "../../data/content";
-import { Button } from "../ui/Button";
-import { MaskRise } from "../ui/primitives";
 import { SectionStage } from "../blocks/SectionStage";
 import { Wordmark } from "./Logo";
 import { SocialMark } from "./SocialMarks";
 
 export function Footer() {
   return (
-    <footer className="relative mt-auto bg-surface">
+    <footer className="relative mt-auto bg-ink-raised">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
-      {/* The stack ends before the partners strip, so the footer arrives in ordinary flow like the
-          bands above it — but it still gets the arrival half of the settle gesture (`last`), while
-          the band itself — the plate and the grid — stays put underneath, exactly as the other
-          sections divide it. No top rule: the step from the testimonial's raised plate to this
-          surface plate is the separator, because a drawn line on a moving edge reads as a seam
+      {/* Wayfinding only. The closing ask lives in `ClosingCta`, the band directly above this one, and
+          the company pitch lives in the hero and the about page — repeating either here made the
+          footer the tallest band at the bottom of the page. What remains is the mark, the reach row,
+          the site map and the legal line, so the footer reads as a directory and ends quickly. The
+          band still gets the arrival half of the settle gesture (`last`), while the plate and the grid
+          stay put underneath. No top rule: the step from the closing band's surface plate to this
+          raised plate is the separator, because a drawn line on a moving edge reads as a seam
           dragging up the screen. */}
       <SectionStage last>
-        {/* The one closing ask. This used to live twice — as a band on the homepage and again as the
-            "Next step" strip here, both of them saying "tell us what to build" — and Septa asked for
-            one. It is the homepage's banner, moved: the footer is where every page ends, so a reader
-            who has decided to get in touch has already scrolled here once and will not have to be
-            handed a second, differently-worded invitation on the next page. */}
-        <div className="wrap relative pt-12 sm:pt-14">
-          <div className="relative overflow-hidden rounded-card border border-mint/25 bg-gradient-to-br from-surface via-surface-raised to-ink-raised px-6 py-7 sm:px-9 sm:py-9">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full bg-mint/12 blur-3xl"
-            />
-            <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-              <div className="min-w-0 max-w-2xl">
-                <p className="eyebrow mb-3 text-faint">Next step</p>
-                <h2 className="text-[clamp(1.45rem,3vw,2.35rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-fg">
-                  <MaskRise>{ctaBanner.headline}</MaskRise>
-                </h2>
-                <p className="mt-3 max-w-xl text-[0.92rem] leading-relaxed text-muted">
-                  {ctaBanner.subheadline}
-                </p>
-              </div>
-              <div className="flex shrink-0 flex-wrap gap-3">
-                <Button
-                  to={paths.request()}
-                  size="lg"
-                  magnetic
-                  iconEnd={<ArrowRight className="size-4" />}
-                >
-                  {ctaBanner.cta}
-                </Button>
-                <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
-                  Ask a question first
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Septa and the site map, in two columns that end at nearly the same line. The tier used to
             carry three things under the wordmark — an email, a phone and an address, each in its own
             dashed "not configured" box, then the four networks with their handle strings spelled out,
@@ -74,9 +35,6 @@ export function Footer() {
         <div className="wrap relative grid gap-x-12 gap-y-11 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)]">
           <div className="min-w-0">
             <Wordmark />
-            <p className="mt-4 max-w-sm text-[0.88rem] leading-relaxed text-muted">
-              {site.description}
-            </p>
 
             {/* One row of marks: the envelope is the email, and each network glyph is that platform's
                 profile. The links are inside the logos, so nothing on this row is a handle typed out in
@@ -86,7 +44,7 @@ export function Footer() {
                 chip with the same tooltip the old box carried, rather than a button that looks pressed
                 and does nothing. */}
             {site.social.length > 0 || site.contact.email ? (
-              <div className="mt-8">
+              <div className="mt-6">
                 {/* "Reach", not "Follow": the envelope in this row is a contact route, not a network,
                     and a label that named only the three glyphs would leave it unexplained. */}
                 <p className="eyebrow mb-3.5 text-faint">Reach Septa</p>
