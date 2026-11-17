@@ -992,22 +992,6 @@
     );
 }
 
-/* The contextual labels around the headline. Each one gets its own period and delay so the group
-   never breathes in lockstep; the travel is 8px, which is small enough to read as floating rather
-   than as an animation running behind the words. */
-.float-chip {
-  animation: chip-float 8s ease-in-out infinite;
-}
-@keyframes chip-float {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -8px, 0);
-  }
-}
-
 .mask-fade {
   mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 35%, transparent 78%);
 }

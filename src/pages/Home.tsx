@@ -60,22 +60,7 @@ function Rise({ i, held, children }: { i: number; held: boolean; children: React
   );
 }
 
-/*
- * The contextual labels around the headline. Every one is a service Septa actually sells, taken
- * from the same list the services page runs; they are decoration in the composition sense only, so
- * they are `aria-hidden` and pointer-inert — a visitor who wants the real thing uses the nav or the
- * primary CTA, which both go to the pages these chips name.
- */
-const heroLabels = [
-  { text: "AI Product Development", at: "top-[16%] left-[4%]", delay: "0s" },
-  { text: "Observability", at: "top-[9%] right-[6%]", delay: "-2.6s" },
-  { text: "Intelligent Automation", at: "top-[56%] left-[1%]", delay: "-4.1s" },
-  { text: "Digital Transformation", at: "top-[54%] right-[1%]", delay: "-1.3s" },
-  { text: "Software Engineering", at: "bottom-[13%] left-[7%]", delay: "-5.4s" },
-  { text: "Product Innovation", at: "bottom-[9%] right-[8%]", delay: "-3.2s" },
-];
-
-/** Below this width the labels are dropped and the pinned stretch is shortened — see the note above. */
+/** Below this width the pinned stretch is shortened — see the note above. */
 function useWideHero() {
   const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
   useEffect(() => {
@@ -169,16 +154,13 @@ export default function Home() {
    * height it was given at load.
    *
    * The groups move independently on purpose. The copy tightens the most because it is the thing
-   * that has to stop dominating; the labels collapse and fade first because a compact headline with
-   * six satellites around it reads as clutter; the field and the light drift on the existing
-   * parallax and only widen, which is what gives the composition depth behind a shrinking
-   * foreground. The nav is not in this subtree and holds its size throughout.
+   * that has to stop dominating; the field and the light drift on the existing parallax and only
+   * widen, which is what gives the composition depth behind a shrinking foreground. The nav is not
+   * in this subtree and holds its size throughout.
    */
   const copyScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : wide ? 0.78 : 0.88]);
   const copyY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : wide ? -18 : -10]);
   const copyFade = useTransform(heroScroll, [0.82, 1], [1, reduce ? 1 : 0.62]);
-  const labelScale = useTransform(heroScroll, [0, 0.8], [1, reduce ? 1 : 0.55]);
-  const labelFade = useTransform(heroScroll, [0.08, 0.62], [1, 0]);
   const fieldScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : 1.1]);
   const fieldFade = useTransform(heroScroll, [0.4, 1], [1, 0.5]);
 
@@ -234,25 +216,6 @@ export default function Home() {
               site-wide mesh's worst pixel, while the gutters and corners get the line at full run.
               The box is re-measured every frame, which is what lets the headline shrink underneath it. */}
           <HeroSpiral copyRef={copyRef} className="pointer-events-none absolute inset-0 z-0 size-full" />
-
-          {/* The contextual labels. One absolutely-positioned layer so the shrink pulls the whole
-              group toward the centre as a unit, the way the reference's satellites collapse. */}
-          <motion.div
-            aria-hidden
-            style={{ scale: labelScale, opacity: labelFade, transformOrigin: "50% 42%" }}
-            className="pointer-events-none absolute inset-0 z-[1] hidden lg:block"
-          >
-            {heroLabels.map((label) => (
-              <span
-                key={label.text}
-                className={`float-chip absolute ${label.at} flex items-center gap-2 rounded-full border border-brand-mint/30 bg-brand-pearl/60 px-3.5 py-1.5 text-[0.72rem] font-semibold tracking-[0.12em] text-brand-white/90 uppercase backdrop-blur-sm`}
-                style={{ animationDelay: label.delay }}
-              >
-                <span className="size-1.5 shrink-0 rounded-full bg-brand-mint" />
-                {label.text}
-              </span>
-            ))}
-          </motion.div>
 
           <motion.div
             ref={copyRef}
