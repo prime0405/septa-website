@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useIntroHeld } from "../lib/intro";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
@@ -88,16 +88,23 @@ function useWideHero() {
 }
 
 /*
- * The pinned stage. The hero sticks to the top of `<main>` — the same containing block every
- * `StackSheet` uses — and a spacer the height of the runway sits after it, so the hero holds at the
- * top of the screen for the whole page while the sheets arrive over it.
+ * The pinned stage. The hero sticks to the top of the stage wrapper — the same containing block
+ * every `StackSheet` on this page uses — and a spacer the height of the runway sits after it, so the
+ * hero holds at the top of the screen while the sheets arrive over it.
  *
  * The wrapper this used to sit in was one viewport plus the runway, which made the hero release at
  * exactly the scroll position the next section entered the screen: the two edges met and passed, and
- * the first transition on the page was the one place nothing covered anything. Against `<main>` the
- * hero never releases, so the first offering block slides up over a hero that has finished shrinking
- * — and because the hero is a viewport tall and pinned at zero, it is also the floor under the whole
- * stack. There is no scroll position at which the page can show through a seam between two sheets.
+ * the first transition on the page was the one place nothing covered anything. Against the whole
+ * stage the hero never releases early, so the first offering block slides up over a hero that has
+ * finished shrinking — and because the hero is a viewport tall and pinned at zero, it is also the
+ * floor under the whole stack. There is no scroll position at which the page can show through a seam
+ * between two sheets.
+ *
+ * The stage ends at the partners strip, and that end is the stack's release: a sticky box cannot
+ * leave its containing block, so every pinned sheet lets go together in the viewport where the
+ * partners strip has been fully read. Below it the page is ordinary flow again — the advantage, the
+ * service overview, the testimonial and the footer scroll past each other the way plain bands do.
+ * The cover gesture is the opening chapter of the homepage, not its whole grammar.
  *
  * `RELEASE` is no longer a fraction of a wrapper: the spacer is the runway outright, 58vh on desktop
  * and 26vh below `lg`, and the shrink is measured against it. The phone and tablet runway is
@@ -176,6 +183,9 @@ export default function Home() {
 
   return (
     <>
+      {/* The stage: hero through partners. Its bottom edge is where every pin releases, so the
+          stacked cover gesture ends with the partners strip and the rest of the page is flow. */}
+      <div className="stack-stage">
       {/* ------------------------------- 1. hero ------------------------------- */}
       <section
         ref={fieldRef}
@@ -315,7 +325,7 @@ export default function Home() {
           <Section
             wall={blockWalls[block.key]}
             tone={i % 2 ? "surface" : "raised"}
-            className="section border-y border-line-soft"
+            className={cn("section border-y border-line-soft", i === 0 && "border-t-0")}
           >
             <SectionStage>
               <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
@@ -354,11 +364,12 @@ export default function Home() {
       ))}
 
       {/* ---------------------------- 5. our partners ---------------------------- */}
-      {/* A light band, like every other section. Each mark is a single grey silhouette until the
-          pointer is on it, and then the supplied colour artwork fades in over the same box — both
-          states are absolutely placed inside a fixed slot, so revealing a wide logo never reflows
-          the row. The marquee already stops while the pointer is anywhere on it, so the mark being
-          looked at is a still one.
+      {/* A light band, like every other section. One image per partner: the colour lockup, with the
+          colour taken out of it by a filter at rest and put back on hover. Two stacked files could
+          never register — the supplied colour artwork was a different crop on a different canvas —
+          so the reveal used to change the mark's size and shape along with its colour. A filter on
+          one element cannot do that. The marquee already stops while the pointer is anywhere on it,
+          so the mark being looked at is a still one.
 
           This band is deliberately the shortest on the page: `py-12 sm:py-14` instead of the
           `.section` rhythm of 56–112px, a heading at two thirds of the other section titles, and
@@ -388,20 +399,14 @@ export default function Home() {
                 <div key={copy} className="marquee-group" aria-hidden={copy === 1 || undefined}>
                   {partners.map((p) => (
                     <span key={p.name} className="partner-slot">
-                      {p.logo ? (
-                        <>
-                          <img src={p.logo} alt={p.name} decoding="async" className="partner-mono" />
-                          {p.color ? (
-                            <img
-                              src={p.color}
-                              alt=""
-                              aria-hidden
-                              decoding="async"
-                              loading="lazy"
-                              className="partner-color"
-                            />
-                          ) : null}
-                        </>
+                      {p.mark ? (
+                        <img
+                          src={p.mark}
+                          alt={p.name}
+                          decoding="async"
+                          className="partner-mark"
+                          style={{ "--mark-h": `${p.height}px` } as CSSProperties}
+                        />
                       ) : (
                         <span className="partner-word">{p.name}</span>
                       )}
@@ -413,46 +418,43 @@ export default function Home() {
           </div>
         </Section>
       </StackSheet>
+      </div>
 
       {/* -------------------------- 6. the Septa advantage -------------------------- */}
-      <StackSheet order={6}>
-        <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
-          <SectionStage>
-            <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
-            <Reveal delay={0.1}>
-              <AdvantageReel />
-            </Reveal>
-          </SectionStage>
-        </Section>
-      </StackSheet>
+      {/* Below the stage: ordinary flow. These bands keep their arrival settle but no pin and no
+          cover — the stack ended at the partners strip above. */}
+      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
+        <SectionStage>
+          <SectionHero title="The Septa Advantage" lead={advantageIntro} className="mb-12" />
+          <Reveal delay={0.1}>
+            <AdvantageReel />
+          </Reveal>
+        </SectionStage>
+      </Section>
 
       {/* --------------------------- 7. service overview --------------------------- */}
-      <StackSheet order={7}>
-        <Section wall="service-automation" className="section border-y border-line-soft">
-          <SectionStage>
-            <SectionHero
-              eyebrow="Service overview"
-              title={serviceOverview}
-              lead={servicesIntro}
-              size="md"
-              className="mb-12"
-            />
-            <ServiceGrid />
-          </SectionStage>
-        </Section>
-      </StackSheet>
+      <Section wall="service-automation" className="section border-y border-line-soft">
+        <SectionStage>
+          <SectionHero
+            eyebrow="Service overview"
+            title={serviceOverview}
+            lead={servicesIntro}
+            size="md"
+            className="mb-12"
+          />
+          <ServiceGrid />
+        </SectionStage>
+      </Section>
 
       {/* ----------------------------- 8. testimonial ----------------------------- */}
-      <StackSheet order={8}>
-        <Section wall="blog" tone="raised" className="section border-y border-line-soft">
-          <SectionStage>
-            <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
-            <Reveal delay={0.1}>
-              <TestimonialOrbit />
-            </Reveal>
-          </SectionStage>
-        </Section>
-      </StackSheet>
+      <Section wall="blog" tone="raised" className="section border-y border-line-soft">
+        <SectionStage>
+          <SectionHero eyebrow="Testimonial" title={testimonialTitle} className="mb-12" />
+          <Reveal delay={0.1}>
+            <TestimonialOrbit />
+          </Reveal>
+        </SectionStage>
+      </Section>
     </>
   );
 }

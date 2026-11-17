@@ -652,10 +652,10 @@
   gap: 2.25rem;
   padding-right: 2.25rem;
 }
-/* One partner mark in two states, stacked inside a box that is fixed in both. The slot size is what
-   lets a wide coloured logo fade in over a narrow silhouette without moving the row by a pixel, and
-   `object-contain` is what makes the four different aspect ratios the supplied artwork comes in sit
-   on one baseline. */
+/* One partner mark, one image. The slot is fixed in both dimensions so the row never reflows, and
+   the mark is sized by height rather than fitted to the slot: the lockups run from a 5.29:1 wordmark
+   to a square badge, and `object-fit: contain` on one box makes the wide ones tiny and the square one
+   enormous. `--mark-h` is each partner's measured optical height. */
 .partner-slot {
   position: relative;
   display: flex;
@@ -665,31 +665,26 @@
   height: 3.5rem;
   width: 11rem;
 }
-.partner-mono,
-.partner-color {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: opacity 0.3s ease;
+.partner-mark {
+  height: calc(var(--mark-h, 2rem) * var(--mark-scale, 1));
+  width: auto;
+  max-width: 100%;
+  /* Taking the colour out rather than flattening to a silhouette. `brightness(0)` turns every pixel
+     black, which fills MTN's yellow oval and swallows the letters inside it, and closes the counter
+     in Preppod's icon. Grayscale plus a darkening curve keeps each mark's internal contrast, so the
+     resting row is seven readable grey marks instead of seven blobs. */
+  filter: grayscale(1) brightness(0.72) contrast(1.25);
+  opacity: 0.55;
+  transition:
+    filter 0.45s ease,
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* `brightness(0)` flattens a mark to a silhouette whatever colours it ships with, which is the only
-   way to put a white logo, a navy logo and a black logo on one light field. */
-.partner-mono {
-  filter: brightness(0);
-  opacity: 0.45;
-}
-/* The artwork Septa supplied for the colour state, revealed on hover. */
-.partner-color {
-  opacity: 0;
-  border-radius: 10px;
-}
-.partner-slot:hover .partner-color {
+.partner-slot:hover .partner-mark,
+.partner-slot:focus-within .partner-mark {
+  filter: grayscale(0) brightness(1) contrast(1);
   opacity: 1;
-}
-.partner-slot:hover .partner-mono {
-  opacity: 0;
+  transform: scale(1.06);
 }
 .partner-word {
   font-size: 1.02rem;
@@ -697,13 +692,13 @@
   white-space: nowrap;
   color: var(--color-muted);
 }
-/* There is no hover on a touch screen, so the colour layer can never be shown there — and the
-   supplied colour artwork is the heaviest thing on the homepage (the two largest files are full
-   resolution for a box that renders at 176x56). `display: none` also keeps a lazy image from being
-   fetched at all, which is the difference between the row costing about 79KB and about 790KB. */
+/* There is no hover on a touch screen, so a filter that only lifts on hover would leave the row
+   permanently grey there. The marks are vectors now — the whole set is about 80KB, where the raster
+   colour artwork it replaces was 700KB — so the colour can simply be left on. */
 @media (hover: none) {
-  .partner-color {
-    display: none;
+  .partner-mark {
+    filter: none;
+    opacity: 0.9;
   }
 }
 @media (max-width: 640px) {
@@ -714,6 +709,7 @@
   .partner-slot {
     height: 2.75rem;
     width: 8.5rem;
+    --mark-scale: 0.78;
   }
 }
 
@@ -977,16 +973,22 @@
    14% dissolves to the white page, which is what makes the handover to the first offering block
    read as a transition instead of a cut — and it happens below the lowest row of copy, so no glyph
    is ever sampled against the ramp while it is still light. */
+/* The field is dark from edge to edge. It used to end `charcoal 90%, ink 100%`, which squeezed a
+   near-black-to-white ramp into the last tenth of the viewport: measured down the left gutter it ran
+   L*8.7 at y=810 to L*46.8 at y=890 and then fell off a cliff, and because both endpoints are almost
+   neutral the middle of it was plain grey — #39464b, #5b6669 — with none of the field's green left in
+   it. That is the band that read as a rendering fault at the bottom of the hero. The green horizon
+   below replaces it: light rising from under the bottom edge, in the field's own hue. */
 .hero-field {
   background:
     radial-gradient(110% 70% at 50% -14%, color-mix(in oklab, var(--color-brand-mint) 13%, transparent) 0%, transparent 52%),
     radial-gradient(80% 60% at 88% 78%, color-mix(in oklab, var(--color-brand-teal) 12%, transparent) 0%, transparent 58%),
+    radial-gradient(120% 44% at 50% 112%, color-mix(in oklab, var(--color-brand-mint) 12%, transparent) 0%, transparent 64%),
     linear-gradient(
       180deg,
       var(--color-brand-pearl) 0%,
       var(--color-charcoal) 46%,
-      var(--color-charcoal) 90%,
-      var(--color-ink) 100%
+      var(--color-charcoal) 100%
     );
 }
 

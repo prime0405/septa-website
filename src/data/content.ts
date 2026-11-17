@@ -343,25 +343,29 @@ export const contactServiceOptions = [...contactServices];
 /* ----------------------------------------- page meta ----------------------------------------- */
 
 /**
- * Named by Septa. `logo` is the official SVG asset Septa supplied, served from this origin
- * under public/partners. Chinat Group has no asset, so it renders as its name instead.
- * `color` is the coloured artwork Septa supplied under public/partners/color, revealed when the
- * pointer is on the mark; it is absent only where no coloured file was supplied.
+ * Named by Septa. Chinat Group has no asset, so it renders as its name instead.
+ *
+ * `mark` is the colour lockup, served from this origin under public/partners/color and derived from
+ * the same vector geometry as the mono file by scripts/partner-marks.mjs. The strip shows one image
+ * per partner and takes the colour out of it with a filter at rest, so the two states are the same
+ * paths in the same box — the reveal is a colour change, not a swap. The supplied raster artwork
+ * could not do that: it came on 4320x3240 canvases that were 87% white margin, one file was the icon
+ * without the wordmark, and one was the mark on a navy plate.
+ *
+ * `height` is the optical size, not the box size. The lockups run from a 5.29:1 wordmark to a square
+ * badge, so fitting them all to one box makes the wide ones tiny and the square one enormous. These
+ * heights are the measured pass where every mark carries about the same weight in the row.
  * Nothing is claimed about the scope of each relationship.
  */
-export type Partner = { name: string; logo?: string; color?: string };
+export type Partner = { name: string; mark?: string; height?: number };
 
 export const partners: Partner[] = [
-  { name: "Enyata", logo: "/partners/enyata.svg", color: "/partners/color/enyata.png" },
+  { name: "Enyata", mark: "/partners/color/enyata.svg", height: 28 },
   { name: "Chinat Group" },
-  {
-    name: "Halogen Group",
-    logo: "/partners/halogen-group.svg",
-    color: "/partners/color/halogen-group.jpg",
-  },
-  { name: "MTN", logo: "/partners/mtn.svg", color: "/partners/color/mtn.webp" },
-  { name: "Preppod", logo: "/partners/preppod.svg", color: "/partners/color/preppod.svg" },
-  { name: "Atos", logo: "/partners/atos.svg", color: "/partners/color/atos.png" },
-  { name: "Blusalt", logo: "/partners/blusalt.svg", color: "/partners/color/blusalt.png" },
-  { name: "Toviri UK", logo: "/partners/toviri-uk.svg", color: "/partners/color/toviri-uk.svg" },
+  { name: "Halogen Group", mark: "/partners/color/halogen-group.svg", height: 54 },
+  { name: "MTN", mark: "/partners/color/mtn.svg", height: 40 },
+  { name: "Preppod", mark: "/partners/color/preppod.svg", height: 32 },
+  { name: "Atos", mark: "/partners/color/atos.svg", height: 34 },
+  { name: "Blusalt", mark: "/partners/color/blusalt.svg", height: 32 },
+  { name: "Toviri UK", mark: "/partners/color/toviri-uk.svg", height: 36 },
 ];

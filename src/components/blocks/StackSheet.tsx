@@ -25,10 +25,13 @@ import { cn } from "../../lib/cn";
  * height. Nothing about the measurement feeds back into the size: `top` moves a sticky box, it does
  * not resize one.
  *
- * The containing block is `<main>`, not a per-sheet wrapper — a wrapper cut to the sheet's own height
- * would leave the sticky box no room to travel and it would never stick at all. Sharing one
- * containing block also means every sheet releases together, in the last viewport of the stack,
- * which is exactly when the footer arrives to take over.
+ * The containing block is the homepage's pinned stage — the wrapper that holds the hero through the
+ * partners strip — not a per-sheet wrapper: a wrapper cut to the sheet's own height would leave the
+ * sticky box no room to travel and it would never stick at all. Sharing one containing block also
+ * means every sheet releases together, in the last viewport of the stage, which is exactly when the
+ * partners strip has been fully read. Below that strip the stack ends: the remaining sections and
+ * the footer are ordinary flow, so the cover gesture is a chapter of the page rather than its whole
+ * grammar.
  *
  * The hero is pinned against the same containing block and sits at the bottom of the stack, so it is
  * the floor under every sheet: there is no frame, at any scroll position, where the page shows

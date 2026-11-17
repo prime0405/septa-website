@@ -13,13 +13,13 @@ import { SocialMark } from "./SocialMarks";
 
 export function Footer() {
   return (
-    <footer className="stack-sheet relative z-20 mt-auto border-t border-line bg-ink-raised">
+    <footer className="relative mt-auto border-t border-line bg-ink-raised">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-[0.25] mask-fade" />
 
-      {/* The footer is the last band of the homepage stack and the only one that had no stage on it,
-          so it arrived flat while every section above it settled into place. It gets the arrival half
-          of the same gesture (`last`), and the band itself — the plate, the top hairline and the grid
-          — stays put underneath, exactly as the other sections divide it. */}
+      {/* The stack ends at the partners strip, so the footer arrives in ordinary flow like the bands
+          above it — but it still gets the arrival half of the settle gesture (`last`), while the band
+          itself — the plate, the top hairline and the grid — stays put underneath, exactly as the
+          other sections divide it. */}
       <SectionStage last>
         {/* The one closing ask. This used to live twice — as a band on the homepage and again as the
             "Next step" strip here, both of them saying "tell us what to build" — and Septa asked for

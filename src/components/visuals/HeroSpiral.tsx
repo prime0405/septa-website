@@ -136,10 +136,11 @@ export function HeroSpiral({
     const loop = (now: number) => {
       frame = requestAnimationFrame(loop);
       if (now - last < 33) return;
-      // The hero is pinned against `<main>` so the stacked sheets can arrive over it, which means it
-      // never leaves the viewport and an IntersectionObserver would call it visible for the whole
-      // page. Past a viewport and a half of scroll every sheet above it has closed over the screen,
-      // so the canvas is behind opaque plates: keep the loop, skip the paint.
+      // The hero is pinned against the homepage stage so the stacked sheets can arrive over it,
+      // which means it never leaves the viewport while the stack holds and an IntersectionObserver
+      // would call it visible for the whole pinned stretch. Past a viewport and a half of scroll
+      // every sheet above it has closed over the screen, so the canvas is behind opaque plates:
+      // keep the loop, skip the paint.
       if (window.scrollY > window.innerHeight * 1.6) return;
       paint(now);
     };
