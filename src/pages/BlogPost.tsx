@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useReducedMotion } from "motion/react";
 import { ArrowRight, CalendarDays, Clock, PenLine } from "lucide-react";
 import { DevNote } from "../components/blocks/LaunchNote";
+import { BlogHeroArt } from "../components/visuals/BlogHeroArt";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
@@ -181,12 +182,8 @@ export default function BlogPost() {
       <Progress slug={post.slug} />
 
       <article>
-        <header className="relative overflow-hidden border-b border-line-soft">
-          <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40 mask-fade" />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-28 -right-20 size-[380px] rounded-full bg-mint/[0.07] blur-[90px]"
-          />
+        <header className="band relative overflow-hidden">
+          <BlogHeroArt quiet />
           <div className="wrap relative py-14 sm:py-16">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex flex-wrap items-center gap-1 font-mono text-[0.72rem] text-faint">
@@ -353,7 +350,7 @@ export default function BlogPost() {
       </article>
 
       {related.length ? (
-        <Section wall="service-automation" tone="raised" className="section border-y border-line-soft">
+        <Section wall="service-automation" tone="raised" className="section">
           <SectionHeading
             eyebrow="Related"
             title="Continue reading"

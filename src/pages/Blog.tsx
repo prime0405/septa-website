@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Search, SearchX } from "lucide-react";
 import { PageHero } from "../components/blocks/PageHero";
+import { BlogHeroArt } from "../components/visuals/BlogHeroArt";
 import { DevNote } from "../components/blocks/LaunchNote";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
@@ -48,6 +49,8 @@ export default function Blog() {
     setParams(merged, { replace: true });
   };
 
+  const sort = params.get("sort") ?? "newest";
+
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return posts.filter((p) => {
@@ -60,8 +63,23 @@ export default function Blog() {
     });
   }, [query, category, tag]);
 
+  const ordered = useMemo(() => {
+    const arr = [...results];
+    if (sort === "longest") arr.sort((a, b) => postText(b).length - postText(a).length);
+    else if (sort === "title") arr.sort((a, b) => a.title.localeCompare(b.title));
+    else arr.sort((a, b) => b.date.localeCompare(a.date));
+    return arr;
+  }, [results, sort]);
+
+  const reads = useMemo(
+    () => posts.map((p) => ({ post: p, mins: readingTime(postText(p)) })),
+    [],
+  );
+  const longest = [...reads].sort((a, b) => b.mins - a.mins).slice(0, 3);
+  const maxMins = Math.max(...reads.map((r) => r.mins));
+
   const featured = category === ALL && !tag && !query ? posts[0] : null;
-  const list = featured ? results.filter((p) => p.slug !== featured.slug) : results;
+  const list = featured ? ordered.filter((p) => p.slug !== featured.slug) : ordered;
 
   return (
     <>
@@ -88,30 +106,43 @@ export default function Blog() {
             </Button>
           </>
         }
+        art={<BlogHeroArt />}
         aside={
           <Reveal>
-            <div className="relative rounded-card border border-line bg-ink-raised/85 p-6">
-              <div aria-hidden className="dot-bg absolute inset-0 opacity-40" />
+            <div className="relative overflow-hidden rounded-card border border-line bg-ink-raised/85 p-6">
+              <div aria-hidden className="rule-bg absolute inset-0 opacity-40" />
               <div className="relative">
-                <p className="eyebrow mb-4">Longest reads</p>
-                <ul className="space-y-3">
-                  {[...posts]
-                    .sort((a, b) => postText(b).length - postText(a).length)
-                    .slice(0, 3)
-                    .map((p) => (
-                      <li key={p.slug} className="flex items-baseline justify-between gap-4">
-                        <Link
-                          to={paths.post(p.slug)}
-                          className="min-w-0 flex-1 truncate text-[0.88rem] text-muted hover:text-mint"
-                        >
-                          {p.title}
-                        </Link>
-                        <span className="font-mono text-[0.72rem] text-faint">
-                          {readingTime(postText(p))}m
+                <p className="eyebrow mb-4">The reading list</p>
+                <ul className="space-y-4">
+                  {longest.map(({ post: p, mins }, i) => (
+                    <li key={p.slug} className="group">
+                      <Link
+                        to={paths.post(p.slug)}
+                        className="group flex items-baseline gap-3 text-[0.88rem] text-muted hover:text-mint"
+                      >
+                        <span className="font-mono text-[0.72rem] text-faint group-hover:text-mint">
+                          {String(i + 1).padStart(2, "0")}
                         </span>
-                      </li>
-                    ))}
+                        <span className="min-w-0 flex-1 truncate">{p.title}</span>
+                        <span className="font-mono text-[0.72rem] text-faint">{mins}m</span>
+                      </Link>
+                      {/* a length meter against the longest piece, so the list reads as a shelf of
+                          spines rather than three identical rows */}
+                      <span
+                        aria-hidden
+                        className="mt-1.5 ml-7 block h-0.5 rounded-full bg-line"
+                      >
+                        <span
+                          className="block h-full rounded-full bg-mint/45 transition-colors group-hover:bg-mint/70"
+                          style={{ width: `${Math.round((mins / maxMins) * 100)}%` }}
+                        />
+                      </span>
+                    </li>
+                  ))}
                 </ul>
+                <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-faint uppercase">
+                  Longest reads, measured against the longest
+                </p>
               </div>
             </div>
           </Reveal>
@@ -134,23 +165,40 @@ export default function Blog() {
         {/* --------------------------- controls --------------------------- */}
         <div className="mb-9 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading as="h2" eyebrow="Library" title="Browse the writing" />
-          <div className="w-full lg:w-80">
-            <label htmlFor="blog-search" className="eyebrow mb-2 block">
-              Search articles
-            </label>
-            <div className="relative">
-              <Search
-                className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-faint"
-                aria-hidden
-              />
-              <input
-                id="blog-search"
-                type="search"
-                value={query}
-                onChange={(e) => update({ q: e.target.value })}
-                placeholder="e.g. evaluation, error budget"
-                className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[1rem] text-fg placeholder:text-faint"
-              />
+          <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-end lg:w-auto">
+            <div className="w-full sm:w-72">
+              <label htmlFor="blog-search" className="eyebrow mb-2 block">
+                Search articles
+              </label>
+              <div className="relative">
+                <Search
+                  className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-faint"
+                  aria-hidden
+                />
+                <input
+                  id="blog-search"
+                  type="search"
+                  value={query}
+                  onChange={(e) => update({ q: e.target.value })}
+                  placeholder="e.g. evaluation, error budget"
+                  className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[1rem] text-fg placeholder:text-faint"
+                />
+              </div>
+            </div>
+            <div className="w-full sm:w-44">
+              <label htmlFor="blog-sort" className="eyebrow mb-2 block">
+                Order
+              </label>
+              <select
+                id="blog-sort"
+                value={sort}
+                onChange={(e) => update({ sort: e.target.value === "newest" ? null : e.target.value })}
+                className="w-full rounded-pill border border-line bg-ink-raised px-4 py-2.5 text-[0.92rem] text-fg"
+              >
+                <option value="newest">Newest first</option>
+                <option value="longest">Longest read</option>
+                <option value="title">Title A to Z</option>
+              </select>
             </div>
           </div>
         </div>
@@ -263,7 +311,7 @@ export default function Blog() {
       </Section>
 
       {/* ------------------------ content model ------------------------ */}
-      <Section wall="service-automation" tone="raised" className="section border-y border-line-soft">
+      <Section wall="service-automation" tone="raised" className="section">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <SectionHeading
             eyebrow="Content model"

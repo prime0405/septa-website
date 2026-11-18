@@ -151,7 +151,7 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
           </span>
         ))}
       </div>
-      <p className="mt-4 flex items-center justify-between gap-3 text-[0.78rem] text-faint">
+      <p className="mt-auto flex items-center justify-between gap-3 pt-4 text-[0.78rem] text-faint">
         <span>{post.author}</span>
         <span>{formatDate(post.date)}</span>
       </p>
@@ -177,14 +177,15 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
             className="photo-cover absolute inset-0 size-full object-cover"
           />
           {/* The caption sits on a solid bar, not on the picture: a photograph has bright pixels in
-              it and a 0.62rem label cannot afford to guess which part of it it landed on. */}
-          <div className="absolute inset-x-4 bottom-4 space-y-1.5 rounded-card bg-ink px-3 py-2.5">
-            {["reading time", "sample editorial content", "placeholder author"].map((l, i) => (
-              <div key={l} className="flex items-center gap-2">
-                <span className={cn("h-1.5 rounded-full bg-mint/30", i === 0 ? "w-24" : i === 1 ? "w-36" : "w-16")} />
-                <span className="font-mono text-[0.62rem] text-faint">{l}</span>
-              </div>
-            ))}
+              it and a 0.62rem label cannot afford to guess which part of it it landed on. It carries
+              the piece's real facts, not skeleton placeholders. */}
+          <div className="absolute inset-x-4 bottom-4 rounded-card bg-ink px-3 py-2.5">
+            <p className="font-mono text-[0.66rem] tracking-[0.12em] text-muted uppercase">
+              {post.category}, {readingTime(postContent(post))} min read
+            </p>
+            <p className="mt-1 font-mono text-[0.66rem] text-faint">
+              {formatDate(post.date)}, {post.author}
+            </p>
           </div>
         </div>
       </Link>
@@ -196,13 +197,30 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
       to={paths.post(post.slug)}
       onPointerMove={track.onPointerMove}
       onPointerLeave={track.onPointerLeave}
-      className={cn(
-        "card card-hover tilt group relative isolate flex flex-col overflow-hidden p-5",
-        variant === "compact" && "p-4",
-      )}
+      className="card card-hover tilt group relative isolate flex flex-col overflow-hidden"
     >
       <PointerGlow />
-      {inner}
+      {variant !== "compact" ? (
+        <div
+          aria-hidden
+          className="relative h-36 shrink-0 overflow-hidden border-b border-line bg-ink-raised"
+        >
+          <img
+            src={photoFor(post.slug)}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="photo-cover absolute inset-0 size-full object-cover"
+          />
+        </div>
+      ) : null}
+      <div className={cn("relative flex flex-1 flex-col p-5", variant === "compact" && "p-4")}>
+        {inner}
+      </div>
+      <span
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-mint/45 transition-transform duration-500 group-hover:scale-x-100"
+      />
     </Link>
   );
 }

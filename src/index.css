@@ -997,6 +997,16 @@
   background-size: 160px 160px;
 }
 
+/* Manuscript rules: the horizontal baseline grid of a writer's page, used by the blog's painted
+   plate and its reading-list card. Paint only, so it never moves or reflows. */
+.rule-bg {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-line) 62%, transparent) 0 1px,
+    transparent 1px 28px
+  );
+}
+
 /* ---------- ambient background (BackgroundFX) ---------- */
 
 /* Strong colour lives in the gutters, not behind the words. The wash is a horizontal mask:
