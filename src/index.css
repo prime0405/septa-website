@@ -869,13 +869,6 @@
   color: var(--color-mint-bright);
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-}
-.eyebrow::before {
-  content: "";
-  width: 22px;
-  height: 1px;
-  background: color-mix(in oklab, var(--color-mint) 60%, transparent);
 }
 
 .hairline {

@@ -516,13 +516,12 @@ function StepHeader({
   const pct = ((step + 1) / STEPS.length) * 100;
   return (
     <div className="border-b border-line bg-ink-raised px-5 py-4 sm:px-7">
-      <ol className="flex items-center gap-1 overflow-x-auto pb-3">
+      <ol className="flex items-center gap-2 overflow-x-auto pb-3">
         {STEPS.map((s, i) => {
           const state = i === step ? "current" : i < step ? "done" : i <= maxVisited ? "visited" : "todo";
           const clickable = i <= maxVisited && !disabled;
           return (
             <li key={s.key} className="flex min-w-0 shrink-0 items-center gap-1">
-              {i > 0 ? <span aria-hidden className="mx-1 h-px w-4 bg-line" /> : null}
               <button
                 type="button"
                 disabled={!clickable}
@@ -619,7 +618,7 @@ function ReviewList({
         <div key={g.step} className="rounded-card border border-line bg-surface">
           <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
             <p className="font-mono text-[0.7rem] tracking-wider text-faint uppercase">
-              Step {g.step + 1} · {STEPS[g.step].label}
+              Step {g.step + 1}: {STEPS[g.step].label}
             </p>
             <button
               type="button"

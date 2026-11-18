@@ -108,8 +108,8 @@ export const requestServices = [
 
 export const budgetRanges = [
   "Under $5,000",
-  "$5,000 – $15,000",
-  "$15,000 – $50,000",
+  "$5,000 to $15,000",
+  "$15,000 to $50,000",
   "$50,000+",
   "Not sure yet",
 ] as const;
@@ -117,8 +117,8 @@ export const budgetRanges = [
 export const timelines = [
   "As soon as possible",
   "Within 1 month",
-  "1 – 3 months",
-  "3 – 6 months",
+  "1 to 3 months",
+  "3 to 6 months",
   "Later / exploring",
 ] as const;
 

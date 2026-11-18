@@ -72,9 +72,9 @@ export const useCases: UseCase[] = [
     tools: [
       {
         items: [
-          "Product Brainstorming (Tools): ClickUp, Slack, Miro – used for ideation, documentation, and team communication",
-          "Task Management Tool: ClickUp – for sprint planning, task tracking, and milestone monitoring",
-          "Design Tool: Figma – for wireframes, high-fidelity UI designs, and interactive prototypes",
+          "Product Brainstorming (Tools): ClickUp, Slack, Miro used for ideation, documentation, and team communication",
+          "Task Management Tool: ClickUp for sprint planning, task tracking, and milestone monitoring",
+          "Design Tool: Figma for wireframes, high-fidelity UI designs, and interactive prototypes",
           "Frontend Stack: HTML5, CSS3, JavaScript, responsive and cross-device interface development",
           "Backend Stack: PHP, MySQL, for content management, extranet functionality, and secure data handling",
           "Security Technology: SSL encryption, firewall protection, secure authentication, to safeguard user data and platform access",
@@ -141,13 +141,13 @@ export const useCases: UseCase[] = [
     tools: [
       {
         items: [
-          "Design Tool: Figma – for UI design, prototyping, and design collaboration",
-          "Frontend Stack: React (Web), React Native (Mobile) – for responsive, cross-platform UI",
-          "Backend Stack: Node.js with Express – for API development and business logic",
+          "Design Tool: Figma for UI design, prototyping, and design collaboration",
+          "Frontend Stack: React (Web), React Native (Mobile) for responsive, cross-platform UI",
+          "Backend Stack: Node.js with Express for API development and business logic",
           "Security Technology: OAuth2/Firebase Authentication, SSL encryption, firewall protection",
-          "Infrastructure: AWS – for scalable hosting and database management (PostgreSQL)",
+          "Infrastructure: AWS for scalable hosting and database management (PostgreSQL)",
           "APIs: REST APIs for communication between frontend and backend.",
-          "Notifications: Firebase Cloud Messaging (FCM), Twilio – for push and SMS notifications",
+          "Notifications: Firebase Cloud Messaging (FCM), Twilio for push and SMS notifications",
         ],
       },
     ],
@@ -211,14 +211,14 @@ export const useCases: UseCase[] = [
     tools: [
       {
         items: [
-          "Product Brainstorming (Tools): ClickUp, Slack, Miro – for planning and communication",
-          "Task Management Tool: ClickUp and Trello – for sprint tracking and milestone monitoring",
-          "Design Tool: Figma – for UI mockups and interactive prototypes",
-          "Frontend Stack: React.js, Next.js, Tailwind CSS – for responsive UI across LMS and website",
-          "Backend Stack: NestJS (Node.js + TypeScript) – for APIs, authentication, and course logic",
+          "Product Brainstorming (Tools): ClickUp, Slack, Miro for planning and communication",
+          "Task Management Tool: ClickUp and Trello for sprint tracking and milestone monitoring",
+          "Design Tool: Figma for UI mockups and interactive prototypes",
+          "Frontend Stack: React.js, Next.js, Tailwind CSS for responsive UI across LMS and website",
+          "Backend Stack: NestJS (Node.js + TypeScript) for APIs, authentication, and course logic",
           "Security Technology: OAuth2, JWT, HTTPS, AES encryption, PCI-DSS compliant payments via Stripe",
-          "Infrastructure: AWS Lambda, AWS RDS (PostgreSQL), AWS S3 – for hosting, database, and storage",
-          "Notifications: Firebase Cloud Messaging (FCM) – for reminders and updates",
+          "Infrastructure: AWS Lambda, AWS RDS (PostgreSQL), AWS S3 for hosting, database, and storage",
+          "Notifications: Firebase Cloud Messaging (FCM) for reminders and updates",
         ],
       },
     ],
@@ -272,12 +272,12 @@ export const useCases: UseCase[] = [
     tools: [
       {
         items: [
-          "Design Tool: Figma – for UI/UX design and prototyping",
-          "Frontend Stack: Vue.js, Nuxt.js – for responsive, fast-loading user interfaces",
-          "Backend Stack: Node.js with Express – for API development and course logic",
-          "Database: PostgreSQL – for structured learner and course data storage",
+          "Design Tool: Figma for UI/UX design and prototyping",
+          "Frontend Stack: Vue.js, Nuxt.js for responsive, fast-loading user interfaces",
+          "Backend Stack: Node.js with Express for API development and course logic",
+          "Database: PostgreSQL for structured learner and course data storage",
           "Authentication & Security: OAuth2, JWT, SSL encryption",
-          "Infrastructure: AWS (EC2, RDS, S3) – for hosting, data storage, and scalability",
+          "Infrastructure: AWS (EC2, RDS, S3) for hosting, data storage, and scalability",
         ],
       },
     ],

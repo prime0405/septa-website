@@ -14,7 +14,7 @@ export function AiDeliveryPanel({ className }: { className?: string }) {
     { t: "  unsupportedClaims: \"== 0\",", c: "text-mint" },
     { t: "  p95LatencyMs: \"<= 900\",", c: "text-mint" },
     { t: "});", c: "text-fg" },
-    { t: "// blocked in CI — a regression here ships to a claims file", c: "text-faint" },
+    { t: "// blocked in CI: a regression here ships to a claims file", c: "text-faint" },
   ];
 
   return (
@@ -57,7 +57,7 @@ export function AiDeliveryPanel({ className }: { className?: string }) {
 /** Layered architecture motif for the traditional product feature block. */
 export function ArchitectureStack({ className }: { className?: string }) {
   const layers = [
-    { label: "Interface", detail: "React · TypeScript · accessible patterns", tone: "mint" },
+    { label: "Interface", detail: "React, TypeScript, accessible patterns", tone: "mint" },
     { label: "Application", detail: "Services, queues, jobs, background workers", tone: "base" },
     { label: "Data", detail: "Schema, constraints, migrations, backups", tone: "base" },
     { label: "Platform", detail: "IaC, environments, pipelines", tone: "base" },

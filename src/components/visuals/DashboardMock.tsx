@@ -142,7 +142,7 @@ export function DashboardMock({ className }: { className?: string }) {
       <div className="rounded-card border border-line bg-surface p-4">
         <div className="mb-2 flex items-center justify-between">
           <p className="font-mono text-[0.72rem] tracking-wider text-muted uppercase">
-            Latency distribution · sample window 30 min
+            Latency distribution, sample window 30 min
           </p>
           <Pill tone="mint">SLO 350 ms</Pill>
         </div>

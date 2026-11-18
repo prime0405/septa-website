@@ -104,7 +104,7 @@ export function WorkflowDiagram({ className }: { className?: string }) {
             fillOpacity={connected ? 0.75 : 1}
             className={connected ? "fill-brand-pearl" : "fill-faint"}
           >
-            {connected ? "rules · retries · alerts" : "waiting"}
+            {connected ? "rules, retries, alerts" : "waiting"}
           </text>
 
           {SILOS.map((s, i) => {

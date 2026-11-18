@@ -36,7 +36,7 @@ export const landingBlocks: LandingBlock[] = [
     label: "AI Product Development",
     headline: "Bring Your Product Ideas to Market Faster with AI-Assisted Development",
     subheading:
-      "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4–6 weeks. From concept to launch, we combine AI, product strategy, and engineering that solve user problems and support your business growth.",
+      "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4 to 6 weeks. From concept to launch, we combine AI, product strategy, and engineering that solve user problems and support your business growth.",
     cta: "Explore AI Product Development",
     to: "/services/ai-product-development",
     image: "/img/work/ai-model-build.webp",
@@ -216,7 +216,7 @@ export const ctaBanner = {
 export const about = {
   whoWeAreTagline: "Septa, Your partner for trusted, future-ready technology.",
   whoWeAre:
-    "At Septa, we are more than a technology partner. We help organizations reimagine how they work, compete, and grow through AI-assisted product development, software engineering, and workflow automation. From turning ideas into market-ready products in 4–6 weeks to streamlining business operations, we deliver technology solutions designed around real business needs.",
+    "At Septa, we are more than a technology partner. We help organizations reimagine how they work, compete, and grow through AI-assisted product development, software engineering, and workflow automation. From turning ideas into market-ready products in 4 to 6 weeks to streamlining business operations, we deliver technology solutions designed around real business needs.",
   story: [
     "At Septa, we are more than a tech company; we are a team of builders, innovators, and problem-solvers committed to shaping the future of work and technology.",
     "Our strength lies in the diversity of what we do: from AI-powered systems and SaaS platforms to talent solutions that connect organizations with the right people, we design and deliver products that create lasting impact.",

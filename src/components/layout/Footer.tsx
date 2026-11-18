@@ -132,7 +132,6 @@ export function Footer() {
             <Link to={paths.terms()} className="inline-flex min-h-7 items-center hover:text-fg">
               Terms of Service
             </Link>
-            <span className="font-mono">AI · Software · Automation · Observability · Talent</span>
           </p>
         </div>
       </SectionStage>

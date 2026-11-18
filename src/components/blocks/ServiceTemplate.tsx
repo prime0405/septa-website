@@ -133,7 +133,7 @@ export function ServiceTemplate({
                       {step.sub.lead ? (
                         <p className="mb-3 text-[0.88rem] text-muted">{step.sub.lead}</p>
                       ) : null}
-                      <MarkerList items={step.sub.items.map((s) => (s.detail ? `${s.title} — ${s.detail}` : s.title))} />
+                      <MarkerList items={step.sub.items.map((s) => (s.detail ? `${s.title}: ${s.detail}` : s.title))} />
                     </div>
                   ) : null}
                 </div>

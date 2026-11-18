@@ -21,7 +21,7 @@ export const openings: Opening[] = [
         heading: "Education & Experience",
         items: [
           "Bachelor’s degree in Business, Marketing, or a related field.",
-          "Proven experience in sales, with 2–3+ years in a managerial or supervisory role.",
+          "Proven experience in sales, with at least 2 years in a managerial or supervisory role.",
         ],
       },
       {
@@ -60,7 +60,7 @@ export const openings: Opening[] = [
         heading: "Education & Experience",
         items: [
           "Bachelor’s degree in Marketing, Communications, Business, or a related field.",
-          "2–3 years of hands-on experience in digital marketing.",
+          "2 to 3 years of hands-on experience in digital marketing.",
           "Proven success in managing digital campaigns and improving online visibility.",
         ],
       },

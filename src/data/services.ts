@@ -54,14 +54,14 @@ export const services: ServiceContent[] = [
       "We build intelligent, user-focused products from idea to market-ready launch. We go beyond development; we design and engineer AI-powered solutions that solve real-world problems, adapt to user needs, and scale with your business.",
     heroTitle: "Web, Mobile & AI Product Development",
     intro:
-      "We use AI-assisted product development to turn ideas into market-ready digital products within 4–6 weeks. Whether you’re building a mobile app, developing an enterprise solution, or enhancing an existing product with intelligent features, we combine artificial intelligence, product strategy, and engineering to accelerate development and bring your vision to life.",
+      "We use AI-assisted product development to turn ideas into market-ready digital products within 4 to 6 weeks. Whether you’re building a mobile app, developing an enterprise solution, or enhancing an existing product with intelligent features, we combine artificial intelligence, product strategy, and engineering to accelerate development and bring your vision to life.",
     image: {
       src: "/img/work/ai-model-build.webp",
       alt: "Two monitors in an engineering room, one showing a model pipeline as a branching node graph and the other a training curve falling above a grid of evaluation panels, with a hand at the keyboard in the foreground",
     },
     coreServicesHeading: "Core Services",
     coreServicesLead:
-      "We use AI to accelerate product development, helping you turn your ideas into market-ready digital products within 4–6 weeks. From concept to launch, we combine AI-assisted development, product strategy, and engineering to build products that solve real problems and meet your business needs.",
+      "We use AI to accelerate product development, helping you turn your ideas into market-ready digital products within 4 to 6 weeks. From concept to launch, we combine AI-assisted development, product strategy, and engineering to build products that solve real problems and meet your business needs.",
     coreServices: [
       {
         title: "UI/UX Design",
@@ -92,9 +92,9 @@ export const services: ServiceContent[] = [
     whyChooseHeading: "Why Choose Septa",
     whyChoose: [
       {
-        title: "MVP in 4–6 Weeks",
+        title: "MVP in 4 to 6 Weeks",
         detail:
-          "We help you quickly launch MVPs within 4-6 weeks, allowing you to validate ideas, test, and gather data and feedback early.",
+          "We help you quickly launch MVPs within 4 to 6 weeks, allowing you to validate ideas, test, and gather data and feedback early.",
       },
       {
         title: "Faster Design & Iteration",
@@ -242,7 +242,7 @@ export const services: ServiceContent[] = [
       "Manual processes slow you down. Septa designs automation that cuts costs, saves time, and reduces errors, without disrupting your current operations.",
     image: {
       src: "/img/work/automation-flows.webp",
-      alt: "An ultrawide screen showing an automation canvas — a trigger, a branch and a timer node joined into a running path — above an untouched keyboard",
+      alt: "An ultrawide screen showing an automation canvas with a trigger, a branch and a timer node joined into a running path, above an untouched keyboard",
     },
     coreServicesHeading: "Core Services",
     coreServices: [
@@ -528,7 +528,7 @@ export const services: ServiceContent[] = [
       {
         title: "Ongoing Management & Support",
         detail:
-          "We don’t stop at placement—we continuously manage payroll, compliance, benefits, and employee welfare, while giving you visibility and reports.",
+          "We don’t stop at placement. We continuously manage payroll, compliance, benefits, and employee welfare, while giving you visibility and reports.",
       },
     ],
     whoWeServeHeading: "Who We Serve",
