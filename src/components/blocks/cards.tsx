@@ -83,7 +83,7 @@ export function CaseCard({ study, featured }: { study: UseCase; featured?: boole
         aria-hidden
         className={cn(
           "relative shrink-0 overflow-hidden border-line bg-ink-raised",
-          featured ? "border-b lg:border-r lg:border-b-0 lg:w-[38%]" : "min-h-24",
+          featured ? "h-48 border-b lg:h-auto lg:w-[38%] lg:border-r lg:border-b-0" : "min-h-24",
         )}
       >
         <img
@@ -118,6 +118,10 @@ export function CaseCard({ study, featured }: { study: UseCase; featured?: boole
           <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </div>
       </div>
+      <span
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-mint/45 transition-transform duration-500 group-hover:scale-x-100"
+      />
     </Link>
   );
 }

@@ -1,10 +1,12 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { PageHero } from "../components/blocks/PageHero";
+import { ContactHeroArt } from "../components/visuals/ContactHeroArt";
 import { ContactForm } from "../components/forms/ContactForm";
 import { IntegrationNotice, LaunchNoteInline } from "../components/blocks/LaunchNote";
 import {
   Callout,
   Card,
+  MarkerList,
   Reveal,
   Section,
   SectionHeading,
@@ -29,8 +31,8 @@ function ContactRow({
   keyName: string;
 }) {
   return (
-    <li className="flex items-start gap-4 rounded-card border border-line bg-surface-raised px-5 py-4">
-      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-mint/25 bg-mint/[0.07] text-mint">
+    <li className="group flex items-start gap-4 rounded-card border border-line bg-surface-raised px-5 py-4 transition-colors hover:border-mint/35 hover:bg-surface">
+      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-mint/25 bg-mint/[0.07] text-mint transition-colors group-hover:border-mint/50">
         {icon}
       </span>
       <span className="min-w-0 flex-1">
@@ -55,6 +57,28 @@ function ContactRow({
   );
 }
 
+const firstMessage = (
+  <Reveal>
+    <div className="relative overflow-hidden rounded-card border border-line bg-ink-raised/85 p-6">
+      <div aria-hidden className="dot-bg absolute inset-0 opacity-30" />
+      <div className="relative">
+        <p className="eyebrow mb-4">A good first message</p>
+        <MarkerList
+          items={[
+            { label: "The problem", detail: "What you are trying to get done, in plain words." },
+            { label: "The current workaround", detail: "How it is handled today, even if it is spreadsheets." },
+            { label: "The constraint", detail: "Budget range, timeline, or a system it has to fit into." },
+            { label: "The deadline", detail: "When you need it live, if one exists." },
+          ]}
+        />
+        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-faint uppercase">
+          Four things that make a first reply useful
+        </p>
+      </div>
+    </div>
+  </Reveal>
+);
+
 export default function Contact() {
   usePageMeta({ title: "Contact Us", description: contactCopy.headline });
 
@@ -65,6 +89,8 @@ export default function Contact() {
         eyebrow="Contact Us"
         title={contactCopy.headline}
         lead={contactCopy.lead}
+        art={<ContactHeroArt />}
+        aside={firstMessage}
         meta={
           site.contact.responseTime ? (
             <span className="inline-flex items-center gap-2 text-[0.85rem] text-muted">
