@@ -246,7 +246,7 @@ export const about = {
   vision: "To enhance and simplify human interaction with technology.",
   mission:
     "Our mission is to put people at the heart of technology, creating intelligent solutions that simplify work, inspire growth, and unlock opportunities. By combining expertise, innovation, and AI, we partner with our clients to shape solutions that make everyday life and business better.",
-  valuesHeading: "OUR VALUES- SCRIBE",
+  valuesHeading: "Our Values: SCRIBE",
   values: [
     { letter: "S", word: "Simplicity" },
     { letter: "C", word: "Customer collaboration" },

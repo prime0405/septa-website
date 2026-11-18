@@ -989,6 +989,14 @@
   mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 35%, transparent 78%);
 }
 
+/* A fixed speckle, not a moving one: one 160px tile of desaturated fractal noise, repeated. Plates
+   that want paper take it under 8% so it reads as tooth in the paint rather than as texture over
+   the type. */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
 /* ---------- ambient background (BackgroundFX) ---------- */
 
 /* Strong colour lives in the gutters, not behind the words. The wash is a horizontal mask:
