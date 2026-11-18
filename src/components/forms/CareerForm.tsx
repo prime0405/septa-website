@@ -41,6 +41,13 @@ export function CareerForm({
   preselectRole?: string;
 }) {
   const form = useForm(careerSchema, { ...emptyValues(source), role: preselectRole ?? "" });
+  // useForm seeds values once at mount; an Apply click arrives later, so carry it in during render
+  // instead of remounting the form and discarding whatever the candidate already typed.
+  const [appliedPreselect, setAppliedPreselect] = useState(preselectRole);
+  if (preselectRole && preselectRole !== appliedPreselect) {
+    setAppliedPreselect(preselectRole);
+    form.patch({ role: preselectRole });
+  }
   const [phase, setPhase] = useState<Phase>("form");
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
