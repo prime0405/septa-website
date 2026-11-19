@@ -1668,3 +1668,15 @@ html[data-immersive="1"] .bgfx-wash {
 html[data-immersive="1"] .band::before {
   background: color-mix(in srgb, var(--band) 82%, transparent);
 }
+
+
+/* Service pages: softer, more tactile surfaces with enough depth to keep long layouts composed. */
+.photo-soft-frame .photo-cut {
+  clip-path: none !important;
+  border-radius: 1.8rem;
+}
+@media (min-width: 640px) {
+  .photo-soft-frame .photo-cut {
+    border-radius: 2rem;
+  }
+}
