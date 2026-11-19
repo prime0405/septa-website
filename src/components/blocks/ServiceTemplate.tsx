@@ -158,7 +158,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
           <div className="mt-7 rounded-2xl border border-brand-teal/20 border-l-4 border-l-brand-teal bg-surface/90 p-5 sm:p-6">
             {step.sub.heading ? <p className="eyebrow mb-3">{step.sub.heading}</p> : null}
             {step.sub.lead ? <p className="mb-4 text-sm text-muted">{step.sub.lead}</p> : null}
-            <div className={cn("grid gap-4 sm:grid-cols-2", page.whyChoose.length === 3 && "xl:grid-cols-3")} >
+            <div className="grid gap-4 sm:grid-cols-2">
               {step.sub.items.map((sub) => <div key={sub.title} className="flex gap-3">
                 <Check className="mt-1 size-4 shrink-0 text-mint" aria-hidden />
                 <div><p className="text-sm font-semibold text-fg">{sub.title}</p>{sub.detail ? <p className="mt-1 text-sm leading-6 text-muted">{sub.detail}</p> : null}</div>
@@ -272,7 +272,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
             {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
               <article className="group relative h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-line-soft bg-white/90 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/40 hover:bg-white hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
                 <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-mono text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
