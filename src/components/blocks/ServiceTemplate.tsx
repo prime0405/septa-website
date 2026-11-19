@@ -217,26 +217,41 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             </div>
 
             <motion.div className="relative mx-auto w-full max-w-xl lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
-              <motion.div className="absolute -inset-5 border border-brand-teal/20" animate={{ opacity: [.35,.8,.35], scale: [1,1.015,1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
-              <div className="relative bg-[#0d2934]/95 p-6 shadow-[0_30px_100px_-45px_rgba(0,0,0,.9)] backdrop-blur-md sm:p-8">
-                <div className="flex items-center justify-between border-b border-white/10 pb-5">
-                  <span className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-brand-teal">SEPTA / SERVICE MAP</span>
-                  <span className="size-2 rounded-full bg-brand-teal shadow-[0_0_16px_rgba(109,177,174,.8)]" />
+              <motion.div className="absolute -inset-5 border border-brand-teal/35" animate={{ opacity: [.35,.85,.35], scale: [1,1.018,1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
+              <div className="relative isolate overflow-hidden bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)]">
+                <PhotoFigure
+                  src={page.image?.src ?? "/img/work/product-in-use.webp"}
+                  alt={page.image?.alt ?? `Septa ${page.name} in practice`}
+                  edge="none"
+                  ratio="aspect-[4/5] sm:aspect-[5/4]"
+                  className="w-full"
+                  eager
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-pearl via-brand-pearl/25 to-brand-pearl/5" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl/45 via-transparent to-transparent" />
+                <div className="absolute left-5 top-5 flex items-center gap-3 border border-white/30 bg-brand-pearl/75 px-4 py-3 text-white backdrop-blur-md sm:left-7 sm:top-7">
+                  <span className="relative flex size-2.5">
+                    <motion.span className="absolute inline-flex size-full rounded-full bg-brand-teal" animate={{ scale: [1, 2.4], opacity: [0.8, 0] }} transition={{ duration: 1.8, repeat: Infinity }} />
+                    <span className="relative inline-flex size-2.5 rounded-full bg-brand-teal" />
+                  </span>
+                  <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em]">SEPTA / IN PRACTICE</span>
                 </div>
-                <div className="py-8">
-                  <p className="font-mono text-xs text-white/40">WHAT WE BRING TO THE TABLE</p>
-                  <p className="mt-3 max-w-sm text-3xl font-semibold leading-tight text-white sm:text-4xl">{page.name}<span className="text-brand-teal">.</span></p>
-                </div>
-                <div className="space-y-0">
-                  {page.coreServices.slice(0, 4).map((item, index) => <div key={item.title} className="flex items-center gap-4 border-t border-white/10 py-4">
-                    <span className="font-mono text-xs text-brand-teal/80">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="flex-1 text-sm text-white/80">{item.title}</span>
-                    <ArrowUpRight className="size-4 text-white/35" aria-hidden />
-                  </div>)}
-                </div>
-                <div className="mt-4 flex items-center justify-between bg-brand-teal px-4 py-3 text-brand-pearl">
-                  <span className="text-xs font-bold uppercase tracking-wider">Built around your goals</span>
-                  <Sparkles className="size-4" aria-hidden />
+                <motion.div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-brand-teal shadow-[0_0_18px_5px_rgba(109,177,174,.38)]"
+                  animate={{ y: ["0%", "65vh"] }} transition={{ duration: 7, repeat: Infinity, ease: "linear" }} />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-7">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-brand-teal">What this enables</span>
+                    <span className="font-mono text-xs text-white/55">{String(page.coreServices.length).padStart(2, "0")} capabilities</span>
+                  </div>
+                  <p className="max-w-lg text-2xl font-semibold leading-tight sm:text-3xl">{page.name}<span className="text-brand-teal">.</span></p>
+                  <div className="mt-5 grid gap-2 border-t border-white/25 pt-4 sm:grid-cols-2">
+                    {page.coreServices.slice(0, 2).map((item, index) => (
+                      <div key={item.title} className="flex items-start gap-3 text-sm text-white/85">
+                        <span className="font-mono text-xs text-brand-teal">{String(index + 1).padStart(2, "0")}</span>
+                        <span>{item.title}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -246,9 +261,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </section>
 
       <Section wall="use-case" tone="surface" className="section">
-        <div className={cn("grid items-center gap-10", page.image && "lg:grid-cols-[.85fr_1.15fr] lg:gap-16")}>
+        <div className="max-w-3xl">
           <SectionHeading eyebrow="What we do" title={page.coreServicesHeading} lead={page.coreServicesLead} />
-          {page.image ? <Reveal delay={0.06} className="min-w-0"><PhotoFigure src={page.image.src} alt={page.image.alt} edge="right" /></Reveal> : null}
         </div>
         <CapabilityExplorer page={page} />
       </Section>
