@@ -105,7 +105,7 @@ export default function Request() {
               </Callout>
             ) : null}
             <RequestWizard preselected={preselected} />
-          </div>
+          </motion.div>
 
           <motion.aside className="space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
             <motion.figure className="group relative isolate aspect-[16/10] overflow-hidden bg-brand-pearl shadow-[0_24px_70px_-35px_rgba(6,24,32,.5)]"
@@ -180,7 +180,7 @@ export default function Request() {
                 missing right now.
               </p>
             </Callout>
-          </aside>
+          </motion.aside>
         </div>
       </Section>
 
