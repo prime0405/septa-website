@@ -1671,6 +1671,9 @@ html[data-immersive="1"] .band::before {
 
 
 /* Service pages: softer, more tactile surfaces with enough depth to keep long layouts composed. */
+.photo-soft-frame {
+  margin-inline: 0 !important;
+}
 .photo-soft-frame .photo-cut {
   clip-path: none !important;
   border-radius: 1.8rem;
