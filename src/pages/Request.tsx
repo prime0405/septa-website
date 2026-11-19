@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ShieldCheck, Sparkles } from "lucide-react";
 import { PageHero } from "../components/blocks/PageHero";
 import { RequestWizard } from "../components/forms/RequestWizard";
@@ -33,6 +34,7 @@ export default function Request() {
       "Tell Septa what you need: AI product development, traditional software, workflow automation, digital transformation, observability or technical talent.",
   });
 
+  const reduce = useReducedMotion();
   const [params] = useSearchParams();
   const raw = params.get("service");
   const preselected = raw && (requestServices as readonly string[]).includes(raw) ? raw : undefined;
@@ -83,8 +85,8 @@ export default function Request() {
       />
 
       <Section wall="answers" className="section">
-        <div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
-          <div className="min-w-0">
+        <div className="relative z-10 grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
+          <motion.div className="min-w-0" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .55 }}>
             {preselected ? (
               <Callout kind="info" title="Service preselected" className="mb-6">
                 <p>
@@ -97,7 +99,7 @@ export default function Request() {
             <RequestWizard preselected={preselected} />
           </div>
 
-          <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
+          <motion.aside className="space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
             <IntegrationNotice />
 
             <Card className="p-6">
