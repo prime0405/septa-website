@@ -158,7 +158,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
           <div className="mt-7 rounded-2xl border border-brand-teal/20 border-l-4 border-l-brand-teal bg-surface/90 p-5 sm:p-6">
             {step.sub.heading ? <p className="eyebrow mb-3">{step.sub.heading}</p> : null}
             {step.sub.lead ? <p className="mb-4 text-sm text-muted">{step.sub.lead}</p> : null}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className={cn("grid gap-4 sm:grid-cols-2", page.whyChoose.length === 3 && "xl:grid-cols-3")} >
               {step.sub.items.map((sub) => <div key={sub.title} className="flex gap-3">
                 <Check className="mt-1 size-4 shrink-0 text-mint" aria-hidden />
                 <div><p className="text-sm font-semibold text-fg">{sub.title}</p>{sub.detail ? <p className="mt-1 text-sm leading-6 text-muted">{sub.detail}</p> : null}</div>
@@ -310,9 +310,22 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </Section> : null}
 
       {page.extra ? <Section wall="blog" tone="raised" className="section">
-        <SectionHeading eyebrow={page.name} title={page.extra.heading} className="mb-8" />
-        <div className="max-w-3xl space-y-4">{page.extra.paragraphs.map((paragraph, index) =>
-          <Reveal key={paragraph.slice(0, 24)} delay={index * 0.05}><p className="prose-body text-[0.98rem]">{paragraph}</p></Reveal>)}</div>
+        <div className="relative isolate overflow-hidden rounded-[2rem] border border-brand-teal/20 bg-gradient-to-br from-[#12343b] via-brand-pearl to-[#091f27] p-7 text-white shadow-[0_30px_80px_-55px_rgba(6,24,32,.75)] sm:rounded-[2.5rem] sm:p-12">
+          <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-[28rem] rounded-full border border-brand-teal/20" />
+          <div aria-hidden className="pointer-events-none absolute -right-12 -top-16 size-[20rem] rounded-full bg-brand-teal/10 blur-[80px]" />
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
+            <div>
+              <p className="font-mono text-[0.68rem] uppercase tracking-[0.22em] text-brand-teal">{page.name}</p>
+              <h2 className="mt-5 max-w-sm text-[clamp(1.8rem,3.2vw,2.7rem)] font-semibold leading-[1.08] tracking-tight text-white">{page.extra.heading}</h2>
+            </div>
+            <div className="space-y-5 border-l border-brand-teal/30 pl-6 sm:pl-8">
+              {page.extra.paragraphs.map((paragraph, index) =>
+                <Reveal key={paragraph.slice(0, 24)} delay={index * 0.05}>
+                  <p className="max-w-3xl text-[1.02rem] leading-8 text-white/75">{paragraph}</p>
+                </Reveal>) }
+            </div>
+          </div>
+        </div>
       </Section> : null}
 
     </>
