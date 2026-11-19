@@ -50,23 +50,19 @@ function ServiceMotionField({ slug }: { slug: string }) {
         animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
       <motion.div className="absolute -right-12 top-[-12rem] size-[30rem] rounded-full border border-dashed border-brand-teal/25"
         animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 72, repeat: Infinity, ease: "linear" }} />
-      <motion.div className="absolute right-[9%] top-[16%] size-72 rounded-full bg-brand-teal/15 blur-[90px]"
-        animate={reduce ? undefined : { x: [0, -55, 20, 0], y: [0, 45, -20, 0], scale: [1, 1.22, .92, 1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} />
-      <motion.div className="absolute -bottom-40 left-[18%] size-96 rounded-full bg-brand-teal/10 blur-[100px]"
-        animate={reduce ? undefined : { x: [0, 80, -30, 0], y: [0, -40, 20, 0] }}
-        transition={{ duration: 23, repeat: Infinity, ease: "easeInOut" }} />
+      <div className="absolute right-[9%] top-[16%] size-72 rounded-full bg-brand-teal/15 blur-[90px]" />
+      <div className="absolute -bottom-40 left-[18%] size-96 rounded-full bg-brand-teal/10 blur-[100px]" />
       <svg className="absolute right-0 top-0 h-full w-[58%] opacity-40" viewBox="0 0 760 620" fill="none">
         <motion.path d={trace.primary} stroke="#6DB1AE" strokeWidth="1"
-          strokeDasharray="7 11" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }}
-          transition={{ duration: 5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }} />
+          strokeDasharray="7 11" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+          transition={{ duration: reduce ? 0 : 1.8, ease: "easeOut" }} />
         <motion.path d={trace.secondary} stroke="#6DB1AE" strokeWidth="1"
-          strokeDasharray="3 9" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }}
-          transition={{ duration: 6, delay: 1, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }} />
+          strokeDasharray="3 9" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+          transition={{ duration: reduce ? 0 : 2.2, delay: .2, ease: "easeOut" }} />
         {[{x:570,y:90},{x:470,y:190},{x:330,y:190},{x:230,y:290},{x:600,y:410},{x:500,y:310},{x:390,y:310},{x:290,y:410}].map((p,i) =>
           <motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#6DB1AE"
-            animate={reduce ? undefined : { opacity: [.25, 1, .25], r: [3, 5, 3] }}
-            transition={{ duration: 2.8, delay: i * .22, repeat: Infinity }} />
+            initial={{ opacity: .65 }} animate={{ opacity: 1 }}
+            transition={{ duration: reduce ? 0 : .45, delay: i * .06 }} />
         )}
       </svg>
       <div className="absolute bottom-8 right-8 hidden gap-2 md:flex">
