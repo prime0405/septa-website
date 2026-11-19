@@ -54,12 +54,12 @@ export default function Request() {
             <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)", backgroundSize: "54px 54px" }} />
             <motion.div className="absolute -right-24 -top-56 size-[48rem] rounded-full border border-brand-teal/20" animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
             <motion.div className="absolute -right-4 -top-36 size-[34rem] rounded-full border border-dashed border-brand-teal/25" animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 68, repeat: Infinity, ease: "linear" }} />
-            <motion.div className="absolute right-[12%] top-[12%] size-[28rem] rounded-full bg-brand-teal/15 blur-[110px]" animate={reduce ? undefined : { x: [0, -45, 20, 0], y: [0, 38, -18, 0], scale: [1, 1.16, .94, 1] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
-            <motion.div className="absolute -bottom-40 left-[8%] size-[30rem] rounded-full bg-brand-teal/10 blur-[110px]" animate={reduce ? undefined : { x: [0, 65, -20, 0], y: [0, -28, 18, 0] }} transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }} />
+            <div className="absolute right-[12%] top-[12%] size-[28rem] rounded-full bg-brand-teal/15 blur-[110px]" />
+            <div className="absolute -bottom-40 left-[8%] size-[30rem] rounded-full bg-brand-teal/10 blur-[110px]" />
             <svg className="absolute right-0 top-0 h-full w-[62%] opacity-50" viewBox="0 0 760 600" fill="none">
-              <motion.path d="M760 110H610L510 210H390L270 330H140L40 430H0" stroke="#6DB1AE" strokeWidth="1.2" strokeDasharray="7 10" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }} transition={{ duration: 7, repeat: Infinity, repeatDelay: 2 }} />
-              <motion.path d="M760 430H650L560 340H440L340 440H220L120 540H0" stroke="#6DB1AE" strokeWidth="1" strokeDasharray="3 11" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }} transition={{ duration: 8, delay: 1, repeat: Infinity, repeatDelay: 2 }} />
-              {[{x:610,y:110},{x:510,y:210},{x:390,y:210},{x:270,y:330},{x:560,y:340},{x:440,y:340},{x:340,y:440},{x:220,y:440}].map((p,i)=><motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#8AC2BF" animate={reduce ? undefined : { opacity:[.2,1,.2], r:[3,5,3] }} transition={{ duration:2.8, delay:i*.2, repeat:Infinity }} />)}
+              <motion.path d="M760 110H610L510 210H390L270 330H140L40 430H0" stroke="#6DB1AE" strokeWidth="1.2" strokeDasharray="7 10" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 2.4, ease: "easeOut" }} />
+              <motion.path d="M760 430H650L560 340H440L340 440H220L120 540H0" stroke="#6DB1AE" strokeWidth="1" strokeDasharray="3 11" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 2.8, delay: .2, ease: "easeOut" }} />
+              {[{x:610,y:110},{x:510,y:210},{x:390,y:210},{x:270,y:330},{x:560,y:340},{x:440,y:340},{x:340,y:440},{x:220,y:440}].map((p,i)=><motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#8AC2BF" initial={{ opacity: .65 }} animate={{ opacity: 1 }} transition={{ duration: reduce ? 0 : .45, delay: i * .06 }} />)}
             </svg>
             <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#061820] to-transparent" />
           </div>
@@ -91,7 +91,7 @@ export default function Request() {
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
           <motion.div className="absolute -right-24 top-12 size-[28rem] rounded-full border border-mint/20" animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} />
           <motion.div className="absolute -right-12 top-24 size-[22rem] rounded-full border border-dashed border-mint/20" animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 65, repeat: Infinity, ease: "linear" }} />
-          <motion.div className="absolute -left-28 bottom-0 size-80 rounded-full bg-mint/10 blur-[90px]" animate={reduce ? undefined : { x: [0, 65, 0], y: [0, -35, 0], scale: [1, 1.2, 1] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} />
+          <div className="absolute -left-28 bottom-0 size-80 rounded-full bg-mint/10 blur-[90px]" />
           <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "radial-gradient(circle, var(--color-mint) 1px, transparent 1px)", backgroundSize: "26px 26px" }} />
         </div>
         <div className="relative z-10 grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
