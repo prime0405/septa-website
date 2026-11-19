@@ -64,13 +64,6 @@ export default function Request() {
             <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#061820] to-transparent" />
           </div>
         }
-        meta={
-          <div className="flex flex-wrap gap-2">
-            <Pill tone="mint"><ShieldCheck className="size-3.5" /> Validated as you go</Pill>
-            <Pill tone="line">Draft saved on this device</Pill>
-            <Pill tone="line">Review before sending</Pill>
-          </div>
-        }
         actions={
           <Button to={paths.contact()} variant="secondary" iconStart={<ArrowLeft className="size-4" />}>
             Have a question first? Contact us
