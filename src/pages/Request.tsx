@@ -112,7 +112,13 @@ export default function Request() {
                 </p>
               </Callout>
             ) : null}
-            <RequestWizard preselected={preselected} />
+            <div className="request-wizard-frame">
+              <div className="mb-4 flex items-center justify-between gap-3 px-1">
+                <span className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-mint">01 / Project intake</span>
+                <span className="font-mono text-[0.68rem] text-faint">SECURE ENQUIRY</span>
+              </div>
+              <RequestWizard preselected={preselected} />
+            </div>
           </motion.div>
 
           <motion.aside className="space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
