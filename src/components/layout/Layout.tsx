@@ -81,6 +81,14 @@ export function Layout() {
   // Stable so the curtain's timing effect is never restarted while the panels are on screen.
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const immersive = pathname.startsWith("/services/") || pathname === "/request";
+    if (immersive) root.dataset.immersive = "1";
+    else delete root.dataset.immersive;
+    return () => delete root.dataset.immersive;
+  }, [pathname]);
+
   // `held` is what stops a curtain that was interrupted by navigation from replaying
   // when the visitor comes back to the homepage in the same session. The page wrapper is
   // inert while it runs so nothing behind the panels can take focus; the curtain itself
