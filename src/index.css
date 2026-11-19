@@ -1862,3 +1862,20 @@ html[data-immersive="1"] header .septa-wordmark {
   .request-console [data-form-anchor] textarea,
   .request-console [data-form-anchor] select { transition: none; }
 }
+
+/* Immersive service/request pages: keep the layered atmosphere, but avoid continuous
+   large-area repainting from moving gradients, blurred beams and scrolling grids. */
+html[data-immersive="1"] .bgfx-sheet-a,
+html[data-immersive="1"] .bgfx-sheet-b,
+html[data-immersive="1"] .bgfx-plate,
+html[data-immersive="1"] .bgfx-grid,
+html[data-immersive="1"] .bgfx-beam,
+html[data-immersive="1"] .bgfx-orb {
+  animation: none !important;
+}
+html[data-immersive="1"] .bgfx-sheet-a { transform: translate3d(-2%, -1%, 0) scale(1.08); }
+html[data-immersive="1"] .bgfx-sheet-b { transform: translate3d(2%, 1%, 0) scale(1.06); }
+html[data-immersive="1"] .bgfx-beam { display: none; }
+html[data-immersive="1"] .bgfx-orb-a { transform: translate3d(8%, 5%, 0); opacity: .52; }
+html[data-immersive="1"] .bgfx-orb-b { transform: translate3d(-6%, -4%, 0); opacity: .4; }
+
