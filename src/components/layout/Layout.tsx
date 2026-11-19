@@ -7,6 +7,7 @@ import { ClosingCta } from "./ClosingCta";
 import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
 import { CursorHalo } from "../ui/CursorHalo";
+import { BackgroundFX } from "../BackgroundFX";
 import { cn } from "../../lib/cn";
 import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
 
