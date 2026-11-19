@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
 import type { ServiceContent } from "../../data/services";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
