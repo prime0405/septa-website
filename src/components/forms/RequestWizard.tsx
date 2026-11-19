@@ -193,10 +193,14 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
   const isReview = step === STEPS.length - 1;
 
   return (
-    <div ref={topRef} className="card overflow-hidden">
+    <div ref={topRef} className="card request-console overflow-hidden">
+      <div className="request-console-topline">
+        <span className="request-console-kicker"><span className="request-console-live" /> SEPTA / INTAKE CONSOLE</span>
+        <span className="request-console-encrypted">PRIVATE PROJECT ENQUIRY</span>
+      </div>
       <StepHeader step={step} maxVisited={maxVisited} onJump={jumpTo} disabled={phase === "sending"} />
 
-      <div className="p-5 sm:p-7">
+      <div className="request-console-body p-5 sm:p-8">
         {restored && step === 0 ? (
           <Callout kind="info" className="mb-5" title="Draft restored">
             We found your unfinished request from an earlier visit on this device.{" "}
@@ -456,7 +460,7 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
           </p>
         ) : null}
 
-        <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
+        <div className="request-console-actions mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
           <Button
             variant="ghost"
             size="md"
@@ -488,7 +492,7 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
           </div>
         </div>
 
-        <p className="mt-3 text-[0.78rem] text-faint">
+        <p className="request-console-footnote mt-3 text-[0.78rem] text-faint">
           Your answers are saved on this device as a draft until you send the request (stored under{" "}
           <code className="font-mono">{DRAFT_KEY}</code>).{" "}
           <Link to={paths.privacy()} className="text-mint underline underline-offset-4">
@@ -515,7 +519,7 @@ function StepHeader({
 }) {
   const pct = ((step + 1) / STEPS.length) * 100;
   return (
-    <div className="border-b border-line bg-ink-raised px-5 py-4 sm:px-7">
+    <div className="request-console-steps border-b border-line bg-ink-raised px-5 py-5 sm:px-7">
       <ol className="flex items-center gap-2 overflow-x-auto pb-3">
         {STEPS.map((s, i) => {
           const state = i === step ? "current" : i < step ? "done" : i <= maxVisited ? "visited" : "todo";
@@ -580,9 +584,9 @@ function StepShell({
   children: React.ReactNode;
 }) {
   return (
-    <div data-form-anchor tabIndex={-1} className="focus:outline-none">
-      <h2 className="text-[1.35rem]">{title}</h2>
-      <p className="prose-body mt-2 max-w-2xl text-[0.9rem]">{hint}</p>
+    <div data-form-anchor tabIndex={-1} className="request-step-content focus:outline-none">
+      <div className="request-step-heading"><span className="request-step-index">0{index + 1} / 05</span><h2 className="text-[1.55rem] sm:text-[1.8rem]">{title}</h2></div>
+      <p className="prose-body mt-2 max-w-2xl text-[0.92rem]">{hint}</p>
       <div className="mt-6">{children}</div>
       <p className="sr-only">Step {index + 1}.</p>
     </div>
