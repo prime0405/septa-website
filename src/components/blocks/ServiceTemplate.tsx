@@ -20,6 +20,29 @@ function ServiceMotionField({ slug }: { slug: string }) {
     "talent-solution": ["PEOPLE", "SKILLS", "MATCH", "GROWTH"],
   };
   const labels = motifs[slug] ?? ["DISCOVER", "DESIGN", "BUILD", "DELIVER"];
+  const traces: Record<string, { primary: string; secondary: string }> = {
+    "ai-product-development": {
+      primary: "M760 90H570L470 190H330L230 290H0",
+      secondary: "M760 410H600L500 310H390L290 410H130",
+    },
+    "workflow-automation": {
+      primary: "M760 160H610V260H470V180H330V300H190V420H0",
+      secondary: "M610 260H690V390H520V470H350",
+    },
+    "digital-transformation": {
+      primary: "M760 100H650V190H540V280H420V370H280V460H120V540H0",
+      secondary: "M760 500H650V410H540V320H420V230H280V140H120V70H0",
+    },
+    "observability-monitoring": {
+      primary: "M760 300H650L620 300L590 210L555 390L520 150L485 440L450 260H0",
+      secondary: "M760 500H620L580 450H500L460 500H380L340 450H0",
+    },
+    "talent-solution": {
+      primary: "M760 90H610L500 200H380L260 320H0",
+      secondary: "M760 500H620L500 390H380L260 270H120",
+    },
+  };
+  const trace = traces[slug] ?? traces["ai-product-development"];
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
@@ -34,10 +57,10 @@ function ServiceMotionField({ slug }: { slug: string }) {
         animate={reduce ? undefined : { x: [0, 80, -30, 0], y: [0, -40, 20, 0] }}
         transition={{ duration: 23, repeat: Infinity, ease: "easeInOut" }} />
       <svg className="absolute right-0 top-0 h-full w-[58%] opacity-40" viewBox="0 0 760 620" fill="none">
-        <motion.path d="M760 90H570L470 190H330L230 290H0" stroke="#6DB1AE" strokeWidth="1"
+        <motion.path d={trace.primary} stroke="#6DB1AE" strokeWidth="1"
           strokeDasharray="7 11" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }}
           transition={{ duration: 5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }} />
-        <motion.path d="M760 410H600L500 310H390L290 410H130" stroke="#6DB1AE" strokeWidth="1"
+        <motion.path d={trace.secondary} stroke="#6DB1AE" strokeWidth="1"
           strokeDasharray="3 9" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }}
           transition={{ duration: 6, delay: 1, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }} />
         {[{x:570,y:90},{x:470,y:190},{x:330,y:190},{x:230,y:290},{x:600,y:410},{x:500,y:310},{x:390,y:310},{x:290,y:410}].map((p,i) =>
