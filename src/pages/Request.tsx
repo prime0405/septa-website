@@ -43,48 +43,56 @@ export default function Request() {
     <>
       <motion.div initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduce ? 0 : .65, ease: [.22, 1, .36, 1] }}>
       <PageHero
+        className="request-hero min-h-[570px] border-b border-brand-teal/20"
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Request a Service" }]}
-        eyebrow="Start a project"
-        title="Request a Service"
-        lead="Five short steps, and you can go back and edit anything before sending. If you get partway, your answers stay in this browser so a refresh does not lose them."
+        eyebrow={<span className="inline-flex items-center gap-2"><span className="size-2 animate-pulse rounded-full bg-brand-teal shadow-[0_0_14px_rgba(109,177,174,.9)]" /> SEPTA / PROJECT INTAKE</span>}
+        title={<span className="block max-w-4xl text-white">Let's build something <span className="text-brand-teal">that moves you forward.</span></span>}
+        lead="Tell us what you are trying to change, build or improve. We'll use the details to understand the challenge and identify the right people and approach."
+        wall="engage"
+        art={
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden bg-[#061820]">
+            <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)", backgroundSize: "54px 54px" }} />
+            <motion.div className="absolute -right-24 -top-56 size-[48rem] rounded-full border border-brand-teal/20" animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
+            <motion.div className="absolute -right-4 -top-36 size-[34rem] rounded-full border border-dashed border-brand-teal/25" animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 68, repeat: Infinity, ease: "linear" }} />
+            <motion.div className="absolute right-[12%] top-[12%] size-[28rem] rounded-full bg-brand-teal/15 blur-[110px]" animate={reduce ? undefined : { x: [0, -45, 20, 0], y: [0, 38, -18, 0], scale: [1, 1.16, .94, 1] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
+            <motion.div className="absolute -bottom-40 left-[8%] size-[30rem] rounded-full bg-brand-teal/10 blur-[110px]" animate={reduce ? undefined : { x: [0, 65, -20, 0], y: [0, -28, 18, 0] }} transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }} />
+            <svg className="absolute right-0 top-0 h-full w-[62%] opacity-50" viewBox="0 0 760 600" fill="none">
+              <motion.path d="M760 110H610L510 210H390L270 330H140L40 430H0" stroke="#6DB1AE" strokeWidth="1.2" strokeDasharray="7 10" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }} transition={{ duration: 7, repeat: Infinity, repeatDelay: 2 }} />
+              <motion.path d="M760 430H650L560 340H440L340 440H220L120 540H0" stroke="#6DB1AE" strokeWidth="1" strokeDasharray="3 11" initial={{ pathLength: 0 }} animate={reduce ? { pathLength: 1 } : { pathLength: [0, 1] }} transition={{ duration: 8, delay: 1, repeat: Infinity, repeatDelay: 2 }} />
+              {[{x:610,y:110},{x:510,y:210},{x:390,y:210},{x:270,y:330},{x:560,y:340},{x:440,y:340},{x:340,y:440},{x:220,y:440}].map((p,i)=><motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#8AC2BF" animate={reduce ? undefined : { opacity:[.2,1,.2], r:[3,5,3] }} transition={{ duration:2.8, delay:i*.2, repeat:Infinity }} />)}
+            </svg>
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#061820] to-transparent" />
+          </div>
+        }
         meta={
-          <>
-            <Pill tone="mint">
-              <ShieldCheck className="size-3.5" /> Validated on the way in
-            </Pill>
-            <Pill tone="line">Saves a local draft</Pill>
-            <Pill tone="line">Nothing sent until you review</Pill>
-          </>
+          <div className="flex flex-wrap gap-2">
+            <Pill tone="mint"><ShieldCheck className="size-3.5" /> Validated as you go</Pill>
+            <Pill tone="line">Draft saved on this device</Pill>
+            <Pill tone="line">Review before sending</Pill>
+          </div>
         }
         actions={
           <Button to={paths.contact()} variant="secondary" iconStart={<ArrowLeft className="size-4" />}>
-            Have a question first? Use the contact form
+            Have a question first? Contact us
           </Button>
         }
         aside={
-          <Reveal>
-            <Card className="p-6">
-              <p className="eyebrow mb-4">What happens in each step</p>
-              <ol className="space-y-3.5">
-                {steps.map((s, i) => (
-                  <li key={s.label} className="flex gap-3.5">
-                    <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-lg border border-mint/30 bg-mint/[0.07] font-mono text-[0.68rem] text-mint">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span>
-                      <span className="block text-[0.92rem] text-fg">{s.label}</span>
-                      <span className="mt-0.5 block text-[0.83rem] leading-relaxed text-muted">
-                        {s.detail}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </Card>
-          </Reveal>
+          <div className="request-hero-panel relative overflow-hidden rounded-[1.8rem] p-5 sm:p-7">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-brand-teal">Intake sequence</p>
+              <span className="font-mono text-xs text-white/45">05 STEPS</span>
+            </div>
+            <ol className="space-y-2.5">
+              {steps.map((s, i) => (
+                <li key={s.label} className="request-hero-step flex items-start gap-3 rounded-xl p-3">
+                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg border border-brand-teal/35 font-mono text-[0.68rem] text-brand-teal">{String(i + 1).padStart(2, "0")}</span>
+                  <span><span className="block text-sm font-semibold text-white">{s.label}</span><span className="mt-1 block text-xs leading-relaxed text-white/55">{s.detail}</span></span>
+                </li>
+              ))}
+            </ol>
+          </div>
         }
-      />
-      </motion.div>
+      />      </motion.div>
 
       <Section wall="answers" className="section relative isolate overflow-hidden">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
