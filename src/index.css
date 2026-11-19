@@ -1734,3 +1734,18 @@ html[data-immersive="1"] header .septa-wordmark {
 @media (prefers-reduced-motion: reduce) {
   .request-hero * { animation-duration: 0.01ms !important; }
 }
+
+
+.request-wizard-frame > .card {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-brand-teal) 36%, var(--color-line));
+  border-radius: 1.75rem;
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.98), rgb(246 250 249 / 0.94));
+  box-shadow: 0 34px 90px -48px rgb(6 24 32 / 0.42), 0 0 0 1px rgb(255 255 255 / 0.75) inset;
+}
+.request-wizard-frame > .card > div:first-child {
+  background: linear-gradient(105deg, #061820, #10313e 62%, #16434b);
+}
+.request-wizard-frame .request-step-glow {
+  box-shadow: 0 0 22px rgb(109 177 174 / 0.2);
+}
