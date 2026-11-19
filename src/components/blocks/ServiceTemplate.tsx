@@ -317,18 +317,52 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
         <ProcessJourney page={page} />
       </Section> : null}
 
-      {page.whoWeServe ? <Section wall="services" className="section border-y border-line-soft">
-        <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
-          <SectionHeading eyebrow="Who we work with" title={page.whoWeServeHeading ?? "Who We Serve"} />
-          <div className="grid gap-3 sm:grid-cols-2">
-            {page.whoWeServe.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-              <Card className="relative h-full overflow-hidden rounded-[1.65rem] border border-white/10 bg-gradient-to-br from-[#102f37] to-brand-pearl p-6 text-white shadow-[0_20px_45px_-34px_rgba(6,24,32,.75)] transition-transform duration-300 hover:-translate-y-1">
-                <span className="font-mono text-xs text-brand-teal">{String(index + 1).padStart(2, "0")}</span>
-                <h3 className="mt-6 text-lg text-white">{item.title}</h3>
-                {item.detail ? <p className="mt-3 text-sm leading-7 text-white/60">{item.detail}</p> : null}
-              </Card>
-            </Reveal>)}
-          </div>
+      {page.slug === "talent-solution" && page.whoWeServe ? <Section wall="services" tone="surface" className="section border-y border-line-soft">
+        <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+          <SectionHeading
+            eyebrow="Who we work with"
+            title={page.whoWeServeHeading ?? "Who We Serve"}
+            lead="Flexible talent and workforce support for organisations at every stage of growth."
+            className="max-w-2xl"
+          />
+          <p className="max-w-sm text-sm leading-7 text-muted lg:pb-2">
+            From a growing team making its first hires to an established organisation managing a wider workforce.
+          </p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          {page.whoWeServe.map((item, index) => {
+            const audienceImages = [
+              "/img/work/product-in-use.webp",
+              "/img/work/hiring-review.webp",
+              "/img/work/engineering-floor.webp",
+              "/img/work/transformation-floor.webp",
+            ];
+            return <Reveal key={item.title} delay={index * 0.06}>
+              <article className="group relative isolate min-h-[350px] overflow-hidden rounded-[1.8rem] border border-brand-pearl/10 bg-brand-pearl shadow-[0_22px_55px_-32px_rgba(6,24,32,.45)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_65px_-32px_rgba(6,24,32,.55)]">
+                <img
+                  src={audienceImages[index] ?? "/img/work/talent-matching.webp"}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820] via-[#061820]/55 to-[#061820]/5" />
+                <div aria-hidden className="absolute inset-0 ring-1 ring-inset ring-white/15" />
+                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
+                  <span className="rounded-full border border-white/25 bg-[#061820]/35 px-3 py-1.5 font-mono text-[0.65rem] tracking-[0.16em] text-white/90 backdrop-blur-md">
+                    0{index + 1} / 04
+                  </span>
+                  <ArrowUpRight className="size-5 text-white/75 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden />
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                  <h3 className="text-xl font-semibold tracking-tight text-white">{item.title}</h3>
+                  {item.detail ? <p className="mt-2 text-sm leading-6 text-white/80">{item.detail}</p> : null}
+                  <div className="mt-5 h-px w-full bg-white/25">
+                    <div className="h-px w-0 bg-brand-teal transition-all duration-500 group-hover:w-full" />
+                  </div>
+                </div>
+              </article>
+            </Reveal>;
+          })}
         </div>
       </Section> : null}
 
