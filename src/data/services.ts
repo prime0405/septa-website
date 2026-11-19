@@ -41,7 +41,7 @@ export type ServiceContent = {
    *  source wording but no longer rendered — the footer's banner is now the one close on every
    *  page, and a second panel above it said the same thing. */
   cta?: { headline: string; copy: string; label: string; to: string };
-  /** Sections expected on this page for which the document gives no copy. */
+  /** Sections expected on this page for which the source document gives no copy; not rendered. */
   pending?: string[];
 };
 
