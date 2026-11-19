@@ -345,7 +345,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               {page.extra.paragraphs.map((paragraph, index) =>
                 <Reveal key={paragraph.slice(0, 24)} delay={index * 0.05}>
                   <p className="max-w-3xl text-[1.02rem] leading-8 text-white/75">{paragraph}</p>
-                </Reveal>) }
+                </Reveal>)}
             </div>
           </div>
         </div>
