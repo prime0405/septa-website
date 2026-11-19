@@ -1749,3 +1749,116 @@ html[data-immersive="1"] header .septa-wordmark {
 .request-wizard-frame .request-step-glow {
   box-shadow: 0 0 22px rgb(109 177 174 / 0.2);
 }
+
+
+/* Request intake console: the form is the primary experience, not a generic card. */
+.request-console {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgb(109 177 174 / 0.42);
+  border-radius: 1.9rem;
+  background:
+    radial-gradient(ellipse at 92% 2%, rgb(109 177 174 / 0.12), transparent 34%),
+    linear-gradient(145deg, #ffffff 0%, #f7fbfa 58%, #f0f7f6 100%);
+  box-shadow: 0 42px 110px -54px rgb(6 24 32 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.9) inset;
+}
+.request-console::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: .34;
+  background-image: radial-gradient(rgb(20 74 78 / .22) .7px, transparent .7px);
+  background-size: 19px 19px;
+  mask-image: linear-gradient(135deg, #000, transparent 52%);
+}
+.request-console-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .85rem 1.35rem;
+  color: rgb(255 255 255 / .62);
+  background: #061820;
+  border-bottom: 1px solid rgb(109 177 174 / .22);
+  font: 600 .62rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .16em;
+}
+.request-console-kicker { display: inline-flex; align-items: center; gap: .6rem; color: #a5d2cf; }
+.request-console-live {
+  width: .48rem; height: .48rem; border-radius: 50%;
+  background: #6db1ae; box-shadow: 0 0 12px rgb(109 177 174 / .9);
+  animation: request-live-pulse 2.4s ease-in-out infinite;
+}
+.request-console-encrypted { color: rgb(255 255 255 / .42); }
+@keyframes request-live-pulse { 50% { opacity: .42; box-shadow: 0 0 3px rgb(109 177 174 / .4); } }
+.request-console-steps {
+  background:
+    linear-gradient(110deg, rgb(6 24 32 / .99), rgb(12 43 52 / .98) 65%, rgb(17 61 66 / .96));
+  border-color: rgb(109 177 174 / .2);
+}
+.request-console-steps ol { scrollbar-width: thin; scrollbar-color: rgb(109 177 174 / .45) transparent; }
+.request-console-steps ol button { min-height: 2.45rem; }
+.request-console-body { position: relative; }
+.request-step-content { position: relative; }
+.request-step-heading {
+  position: relative;
+  padding-left: 1rem;
+  border-left: 3px solid #6db1ae;
+}
+.request-step-index {
+  display: block;
+  margin-bottom: .55rem;
+  color: #438b88;
+  font: 700 .62rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .2em;
+}
+.request-step-heading h2 { color: #102b33; letter-spacing: -.035em; line-height: 1.15; }
+.request-console .request-console-actions {
+  border-color: rgb(16 67 72 / .14);
+}
+.request-console .request-console-actions > div > span {
+  color: #438b88;
+}
+.request-console .request-console-footnote {
+  border-top: 1px solid rgb(16 67 72 / .08);
+  padding-top: .85rem;
+}
+.request-console [data-form-anchor] input,
+.request-console [data-form-anchor] textarea,
+.request-console [data-form-anchor] select {
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.request-console [data-form-anchor] input:focus,
+.request-console [data-form-anchor] textarea:focus,
+.request-console [data-form-anchor] select:focus {
+  border-color: #438b88;
+  box-shadow: 0 0 0 3px rgb(109 177 174 / .16);
+}
+.request-console [data-form-anchor] label { color: #19363d; }
+.request-console [data-form-anchor] [role="radiogroup"] > label,
+.request-console [data-form-anchor] [role="radiogroup"] > button {
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.request-console [data-form-anchor] [role="radiogroup"] > label:hover,
+.request-console [data-form-anchor] [role="radiogroup"] > button:hover {
+  transform: translateY(-2px);
+  border-color: rgb(67 139 136 / .55);
+  box-shadow: 0 12px 28px -22px rgb(6 24 32 / .6);
+}
+.request-console .rounded-card {
+  border-color: rgb(16 67 72 / .14);
+}
+@media (max-width: 639px) {
+  .request-console-topline { padding-inline: 1rem; font-size: .55rem; letter-spacing: .1em; }
+  .request-console-encrypted { display: none; }
+  .request-console-body { padding: 1.15rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .request-console-live { animation: none; }
+  .request-console [data-form-anchor] input,
+  .request-console [data-form-anchor] textarea,
+  .request-console [data-form-anchor] select { transition: none; }
+}
