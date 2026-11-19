@@ -1,201 +1,258 @@
-import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass, Sparkles } from "lucide-react";
 import type { ServiceContent } from "../../data/services";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
-import {
-  Card,
-  MarkerList,
-  Reveal,
-  Section,
-  SectionHeading,
-  Pill,
-} from "../ui/primitives";
-import { PageHero } from "./PageHero";
-import type { Crumb } from "./PageHero";
+import { Card, Reveal, Section, SectionHeading, Pill } from "../ui/primitives";
 import { PhotoFigure } from "./PhotoFigure";
 import { ServiceIcon } from "./ServiceIcon";
 import { LaunchNoteInline } from "./LaunchNote";
 
-export function ServiceTemplate({
-  page,
-  crumbs,
-}: {
-  page: ServiceContent;
-  crumbs: Crumb[];
-}) {
-  return (
-    <>
-      <PageHero
-        crumbs={crumbs}
-        eyebrow={page.name}
-        title={page.heroTitle}
-        lead={page.intro}
-        meta={
-          <>
-            <Pill tone="mint">
-              <ServiceIcon icon={page.icon} className="size-3.5" strokeWidth={2} />
-              {page.name}
-            </Pill>
-            <Pill tone="line">{page.coreServices.length} core services</Pill>
-            {page.process ? <Pill tone="line">{page.process.length}-step process</Pill> : null}
-          </>
-        }
-        actions={
-          page.cta ? (
-            <Button to={page.cta.to} size="lg" magnetic>
-              {page.cta.label}
-            </Button>
-          ) : null
-        }
-      />
+function CapabilityExplorer({ page }: { page: ServiceContent }) {
+  const [active, setActive] = useState(0);
+  useEffect(() => setActive(0), [page.slug]);
+  const item = page.coreServices[active];
+  if (!item) return null;
 
-      {/* ------------------------------ core services ------------------------------ */}
-      {/* A capability grid is a lattice: discrete tiles, one lit sweep across them. The service's
-          workplace photograph leads the section, tied to the heading rather than dropped under it:
-          at full column width the same frame becomes a 650px band that swallows the page, and the
-          point of the picture is to say what the list below it is for. */}
-      <Section wall="use-case" className="section">
-        <div className={cn("grid items-center gap-8", page.image && "lg:grid-cols-[1fr_1.1fr] lg:gap-14")}>
-          <SectionHeading
-            eyebrow={page.name}
-            title={page.coreServicesHeading}
-            lead={page.coreServicesLead}
-            className={page.image ? "lg:sticky lg:top-28 lg:self-start" : ""}
-          />
-          {page.image ? (
-            <Reveal delay={0.06} className="min-w-0">
-              <PhotoFigure src={page.image.src} alt={page.image.alt} edge="right" />
-            </Reveal>
-          ) : null}
+  return (
+    <div className="mt-12 grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:gap-7">
+      <div className="flex flex-col gap-2" role="tablist" aria-label={page.coreServicesHeading}>
+        {page.coreServices.map((capability, index) => (
+          <button key={capability.title} type="button" role="tab" aria-selected={active === index}
+            onClick={() => setActive(index)}
+            className={cn("group flex min-h-[82px] items-center gap-4 border-b px-4 py-4 text-left transition-all duration-300",
+              active === index ? "border-brand-teal bg-brand-pearl text-white shadow-[0_12px_32px_-20px_rgba(6,24,32,.65)]" : "border-line-soft bg-white/70 text-brand-pearl hover:bg-white")}>
+            <span className={cn("font-mono text-xs tracking-widest", active === index ? "text-brand-teal" : "text-muted")}>{String(index + 1).padStart(2, "0")}</span>
+            <span className="min-w-0 flex-1 text-[0.96rem] font-semibold">{capability.title}</span>
+            <ArrowUpRight className={cn("size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5", active === index ? "text-brand-teal" : "text-muted")} aria-hidden />
+          </button>
+        ))}
+      </div>
+
+      <div className="relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-brand-pearl p-7 text-white sm:p-10 lg:min-h-[430px]" aria-live="polite">
+        <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-80 rounded-full border border-brand-teal/20" />
+        <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-52 rounded-full border border-brand-teal/20" />
+        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-1/2 w-2/3 bg-gradient-to-tl from-brand-teal/20 to-transparent" />
+        <div className="relative">
+          <div className="flex items-center justify-between gap-4">
+            <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-brand-teal">Capability / {String(active + 1).padStart(2, "0")}</span>
+            <span className="font-mono text-xs text-white/45">{String(active + 1).padStart(2, "0")} <span className="text-white/25">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
+          </div>
+          <h3 className="mt-12 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] text-white">{item.title}</h3>
+          {item.detail ? <p className="mt-5 max-w-xl text-[0.98rem] leading-8 text-white/70">{item.detail}</p> : null}
         </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {page.coreServices.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.04}>
-              <Card tilt className="card-hover h-full p-6">
-                <h3 className="text-[1.05rem]">{item.title}</h3>
-                {item.detail ? (
-                  <p className="mt-2.5 text-[0.88rem] leading-relaxed text-muted">{item.detail}</p>
-                ) : null}
-              </Card>
-            </Reveal>
+        <div className="relative mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-5">
+          <span className="text-xs text-white/50">Select another capability to explore</span>
+          <button type="button" onClick={() => setActive((value) => (value + 1) % page.coreServices.length)}
+            className="inline-flex min-h-11 items-center gap-2 bg-brand-teal px-5 text-sm font-semibold text-brand-pearl transition-colors hover:bg-white">
+            Next capability <ArrowRight className="size-4" aria-hidden />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProcessJourney({ page }: { page: ServiceContent }) {
+  const steps = page.process ?? [];
+  const [active, setActive] = useState(0);
+  useEffect(() => setActive(0), [page.slug]);
+  const step = steps[active];
+  if (!step) return null;
+
+  return (
+    <div className="mt-12 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
+      <div>
+        <div className="mb-8 flex items-center justify-between gap-3">
+          <Pill tone="mint"><Compass className="size-3.5" aria-hidden /> Your journey</Pill>
+          <span className="font-mono text-xs text-muted">{String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}</span>
+        </div>
+        <div className="relative space-y-2">
+          <div aria-hidden className="absolute bottom-7 left-[19px] top-7 w-px bg-brand-teal/30" />
+          {steps.map((item, index) => (
+            <button key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)}
+              className={cn("relative flex w-full items-center gap-4 px-3 py-4 text-left transition-all duration-300",
+                active === index ? "bg-brand-pearl text-white" : "text-brand-pearl hover:bg-white")}>
+              <span className={cn("relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border font-mono text-xs",
+                index < active ? "border-brand-teal bg-brand-teal text-brand-pearl" : active === index ? "border-brand-teal bg-brand-teal text-brand-pearl" : "border-line bg-white text-muted")}>
+                {index < active ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className={cn("block text-sm font-semibold", active === index ? "text-white" : "text-brand-pearl")}>{item.title}</span>
+                <span className={cn("mt-1 block text-xs", active === index ? "text-white/50" : "text-muted")}>{active === index ? "Currently viewing" : "Explore this stage"}</span>
+              </span>
+              <ChevronRight className={cn("size-4", active === index ? "text-brand-teal" : "text-muted")} aria-hidden />
+            </button>
           ))}
         </div>
+      </div>
+
+      <div className="relative flex min-h-[390px] flex-col overflow-hidden bg-white p-7 shadow-[0_24px_70px_-50px_rgba(6,24,32,.45)] sm:p-10">
+        <div className="flex items-center justify-between gap-4 border-b border-line-soft pb-5">
+          <span className="font-mono text-xs uppercase tracking-[0.18em] text-mint">Stage {String(active + 1).padStart(2, "0")}</span>
+          <span className="font-mono text-xs text-muted">{Math.round(((active + 1) / steps.length) * 100)}% complete</span>
+        </div>
+        <div className="mt-6 h-1 w-full bg-ink-raised" role="progressbar" aria-label="Process exploration progress" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={active + 1}>
+          <div className="h-full bg-brand-teal transition-[width] duration-500" style={{ width: `${((active + 1) / steps.length) * 100}%` }} />
+        </div>
+        <h3 className="mt-9 max-w-xl text-[clamp(1.65rem,3vw,2.5rem)] leading-tight">{step.title}</h3>
+        {step.detail ? <p className="prose-body mt-4 max-w-2xl text-[0.98rem]">{step.detail}</p> : null}
+        {step.sub ? (
+          <div className="mt-7 border-l-2 border-brand-teal bg-surface p-5 sm:p-6">
+            {step.sub.heading ? <p className="eyebrow mb-3">{step.sub.heading}</p> : null}
+            {step.sub.lead ? <p className="mb-4 text-sm text-muted">{step.sub.lead}</p> : null}
+            <div className="grid gap-4 sm:grid-cols-2">
+              {step.sub.items.map((sub) => <div key={sub.title} className="flex gap-3">
+                <Check className="mt-1 size-4 shrink-0 text-mint" aria-hidden />
+                <div><p className="text-sm font-semibold text-fg">{sub.title}</p>{sub.detail ? <p className="mt-1 text-sm leading-6 text-muted">{sub.detail}</p> : null}</div>
+              </div>)}
+            </div>
+          </div>
+        ) : null}
+        <div className="mt-auto flex flex-wrap justify-between gap-3 pt-9">
+          <button type="button" disabled={active === 0} onClick={() => setActive((value) => Math.max(0, value - 1))}
+            className="min-h-11 border border-line px-5 text-sm font-medium text-fg transition-colors hover:border-mint disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
+          <button type="button" onClick={() => setActive((value) => (value + 1) % steps.length)}
+            className="inline-flex min-h-11 items-center gap-2 bg-brand-pearl px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-teal hover:text-brand-pearl">
+            {active === steps.length - 1 ? "Start again" : "Next stage"} <ArrowRight className="size-4" aria-hidden />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs: { label: string; to?: string }[] }) {
+  return (
+    <>
+      <section className="relative isolate overflow-hidden bg-brand-pearl text-white">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.13]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.35) 1px, transparent 1px)", backgroundSize: "54px 54px" }} />
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 size-[620px] rounded-full border border-brand-teal/20" />
+        <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 size-[380px] rounded-full border border-brand-teal/20" />
+        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-teal/20 via-transparent to-transparent" />
+        <div className="wrap relative py-16 sm:py-24 lg:py-28">
+          {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-12">
+            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-white/45">
+              {crumbs.map((crumb, index) => <li key={crumb.label} className="flex items-center gap-2">
+                {index > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
+                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-brand-teal">{crumb.label}</Link> : <span className="text-brand-teal">{crumb.label}</span>}
+              </li>)}
+            </ol>
+          </nav> : null}
+          <div className="grid items-end gap-12 lg:grid-cols-[1.1fr_.9fr] lg:gap-16">
+            <div className="max-w-3xl">
+              <div className="mb-7 inline-flex items-center gap-3">
+                <span className="flex size-11 items-center justify-center border border-brand-teal/50 bg-brand-teal/10 text-brand-teal"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-teal">{page.name}</span>
+              </div>
+              <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
+              <p className="mt-7 max-w-2xl text-[1.02rem] leading-8 text-white/65 sm:text-lg">{page.intro}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                {page.cta ? <Button to={page.cta.to} size="lg" magnetic>{page.cta.label}</Button> : null}
+                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/25 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-teal hover:text-brand-teal">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
+              </div>
+              <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-white/15 pt-6">
+                <span className="font-mono text-xs text-white/55"><strong className="mr-2 text-brand-teal">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
+                {page.process ? <span className="font-mono text-xs text-white/55"><strong className="mr-2 text-brand-teal">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-xl lg:pb-2">
+              <div className="absolute -inset-5 border border-brand-teal/20" />
+              <div className="relative bg-[#0d2934] p-6 sm:p-8">
+                <div className="flex items-center justify-between border-b border-white/10 pb-5">
+                  <span className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-brand-teal">SEPTA / SERVICE MAP</span>
+                  <span className="size-2 rounded-full bg-brand-teal shadow-[0_0_16px_rgba(109,177,174,.8)]" />
+                </div>
+                <div className="py-8">
+                  <p className="font-mono text-xs text-white/40">WHAT WE BRING TO THE TABLE</p>
+                  <p className="mt-3 max-w-sm text-3xl font-semibold leading-tight text-white sm:text-4xl">{page.name}<span className="text-brand-teal">.</span></p>
+                </div>
+                <div className="space-y-0">
+                  {page.coreServices.slice(0, 4).map((item, index) => <div key={item.title} className="flex items-center gap-4 border-t border-white/10 py-4">
+                    <span className="font-mono text-xs text-brand-teal/80">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="flex-1 text-sm text-white/80">{item.title}</span>
+                    <ArrowUpRight className="size-4 text-white/35" aria-hidden />
+                  </div>)}
+                </div>
+                <div className="mt-4 flex items-center justify-between bg-brand-teal px-4 py-3 text-brand-pearl">
+                  <span className="text-xs font-bold uppercase tracking-wider">Built around your goals</span>
+                  <Sparkles className="size-4" aria-hidden />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div aria-hidden className="h-1 w-full bg-gradient-to-r from-transparent via-brand-teal to-transparent" />
+      </section>
+
+      <Section wall="use-case" tone="surface" className="section">
+        <div className={cn("grid items-center gap-10", page.image && "lg:grid-cols-[.85fr_1.15fr] lg:gap-16")}>
+          <SectionHeading eyebrow="What we do" title={page.coreServicesHeading} lead={page.coreServicesLead} />
+          {page.image ? <Reveal delay={0.06} className="min-w-0"><PhotoFigure src={page.image.src} alt={page.image.alt} edge="right" /></Reveal> : null}
+        </div>
+        <CapabilityExplorer page={page} />
       </Section>
 
-      {/* ------------------------------ why choose us ------------------------------ */}
       <Section wall="about" tone="raised" className="section border-y border-line-soft">
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <SectionHeading eyebrow={page.name} title={page.whyChooseHeading} className="lg:sticky lg:top-28 lg:self-start" />
-          <div className="grid gap-4 sm:grid-cols-2">
-            {page.whyChoose.map((b, i) => (
-              <Reveal key={b.title} delay={i * 0.04}>
-                <div className="relative overflow-hidden rounded-card border border-line bg-surface-raised p-5">
-                  <div
-                    aria-hidden
-                    className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-mint/70 to-transparent"
-                  />
-                  <h3 className="text-[1rem]">{b.title}</h3>
-                  {b.detail ? (
-                    <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">{b.detail}</p>
-                  ) : null}
+        <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
+            <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
+          </div>
+          <div className="grid gap-px bg-line-soft sm:grid-cols-2">
+            {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
+              <article className="group relative h-full min-h-48 bg-white p-6 transition-colors duration-300 hover:bg-[#f1f8f7] sm:p-7">
+                <span className="font-mono text-xs tracking-widest text-mint/70">{String(index + 1).padStart(2, "0")}</span>
+                <div className="mt-8 flex items-start justify-between gap-3">
+                  <h3 className="max-w-xs text-xl">{item.title}</h3>
+                  <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
                 </div>
-              </Reveal>
-            ))}
+                {item.detail ? <p className="mt-3 max-w-md text-sm leading-7 text-muted">{item.detail}</p> : null}
+              </article>
+            </Reveal>)}
           </div>
         </div>
       </Section>
 
-      {/* --------------------------------- process --------------------------------- */}
-      {page.process ? (
-        <Section wall="service-automation" className="section">
-          <SectionHeading
-            eyebrow={page.name}
-            title={page.processHeading ?? "Our Process"}
-            lead={page.processLead}
-            className="mb-10"
-          />
-          <div className="space-y-4">
-            {page.process.map((step, i) => (
-              <Reveal key={step.title} delay={i * 0.03}>
-                <div className="rounded-card border border-line bg-surface p-6 sm:p-7">
-                  <div className="flex items-baseline gap-4">
-                    <h3 className="text-[1.08rem]">{step.title}</h3>
-                    <span aria-hidden className="h-px flex-1 bg-line" />
-                  </div>
-                  {step.detail ? (
-                    <p className="prose-body mt-3 text-[0.92rem]">{step.detail}</p>
-                  ) : null}
-                  {step.sub ? (
-                    <div className="mt-5 rounded-card border border-line-soft bg-surface-raised p-5">
-                      {step.sub.heading ? (
-                        <p className="eyebrow mb-3">{step.sub.heading}</p>
-                      ) : null}
-                      {step.sub.lead ? (
-                        <p className="mb-3 text-[0.88rem] text-muted">{step.sub.lead}</p>
-                      ) : null}
-                      <MarkerList items={step.sub.items.map((s) => (s.detail ? `${s.title}: ${s.detail}` : s.title))} />
-                    </div>
-                  ) : null}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Section>
-      ) : null}
+      {page.process ? <Section wall="service-automation" tone="surface" className="section">
+        <div className="max-w-3xl">
+          <SectionHeading eyebrow="From first step to delivery" title={page.processHeading ?? "Our Process"} lead={page.processLead} />
+        </div>
+        <ProcessJourney page={page} />
+      </Section> : null}
 
-      {/* -------------------------------- who we serve ------------------------------- */}
-      {page.whoWeServe ? (
-        <Section wall="services" tone="surface" className="section border-y border-line-soft">
-          <SectionHeading eyebrow={page.name} title={page.whoWeServeHeading ?? "Who We Serve"} className="mb-10" />
-          <div className="grid gap-4 sm:grid-cols-2">
-            {page.whoWeServe.map((u, i) => (
-              <Reveal key={u.title} delay={i * 0.04}>
-                <Card tilt className="h-full p-6">
-                  <div className="flex items-start gap-3">
-                    <Check className="mt-1 size-4 shrink-0 text-mint" aria-hidden />
-                    <div>
-                      <h3 className="text-[1rem]">{u.title}</h3>
-                      {u.detail ? (
-                        <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">{u.detail}</p>
-                      ) : null}
-                    </div>
-                  </div>
-                </Card>
-              </Reveal>
-            ))}
+      {page.whoWeServe ? <Section wall="services" className="section border-y border-line-soft">
+        <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
+          <SectionHeading eyebrow="Who we work with" title={page.whoWeServeHeading ?? "Who We Serve"} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            {page.whoWeServe.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
+              <Card className="h-full border border-white/10 bg-brand-pearl p-6 text-white transition-transform duration-300 hover:-translate-y-1">
+                <span className="font-mono text-xs text-brand-teal">{String(index + 1).padStart(2, "0")}</span>
+                <h3 className="mt-6 text-lg text-white">{item.title}</h3>
+                {item.detail ? <p className="mt-3 text-sm leading-7 text-white/60">{item.detail}</p> : null}
+              </Card>
+            </Reveal>)}
           </div>
-        </Section>
-      ) : null}
+        </div>
+      </Section> : null}
 
-      {/* ---------------------------------- extra ---------------------------------- */}
-      {page.extra ? (
-        <Section wall="blog" className="section">
-          <SectionHeading eyebrow={page.name} title={page.extra.heading} className="mb-8" />
-          <div className="max-w-3xl space-y-4">
-            {page.extra.paragraphs.map((paragraph, i) => (
-              <Reveal key={paragraph.slice(0, 24)} delay={i * 0.05}>
-                <p className="prose-body text-[0.98rem]">{paragraph}</p>
-              </Reveal>
-            ))}
-          </div>
-        </Section>
-      ) : null}
+      {page.extra ? <Section wall="blog" tone="raised" className="section">
+        <SectionHeading eyebrow={page.name} title={page.extra.heading} className="mb-8" />
+        <div className="max-w-3xl space-y-4">{page.extra.paragraphs.map((paragraph, index) =>
+          <Reveal key={paragraph.slice(0, 24)} delay={index * 0.05}><p className="prose-body text-[0.98rem]">{paragraph}</p></Reveal>)}</div>
+      </Section> : null}
 
-      {/* ------------------------- sections awaiting copy -------------------------- */}
-      {page.pending?.length ? (
-        <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
-          <div className="rounded-card border border-dashed border-line bg-surface p-6 sm:p-8">
-            <p className="prose-body mx-auto max-w-2xl text-center text-[0.92rem]">
-              {page.pending.join(" and ")} belong on this page. The revamp document asks for them
-              and supplies no copy, so they stay empty rather than being written for you.
-            </p>
-            <div className="mt-5 flex justify-center">
-              <LaunchNoteInline label={`Awaiting copy: ${page.pending.join(", ")}`} />
-            </div>
-          </div>
-        </Section>
-      ) : null}
-
+      {page.pending?.length ? <Section wall="use-case" tone="surface" className="section border-y border-line-soft">
+        <div className="border border-dashed border-line bg-white p-6 sm:p-8">
+          <p className="prose-body mx-auto max-w-2xl text-center text-[0.92rem]">
+            {page.pending.join(" and ")} belong on this page. The revamp document asks for them
+            and supplies no copy, so they stay empty rather than being written for you.
+          </p>
+          <div className="mt-5 flex justify-center"><LaunchNoteInline label={`Awaiting copy: ${page.pending.join(", ")}`} /></div>
+        </div>
+      </Section> : null}
     </>
   );
 }
