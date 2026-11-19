@@ -522,34 +522,44 @@ function StepHeader({
           const clickable = i <= maxVisited && !disabled;
           return (
             <li key={s.key} className="flex min-w-0 shrink-0 items-center gap-1">
-              <button
+              <motion.button
                 type="button"
                 disabled={!clickable}
                 onClick={() => onJump(i)}
                 aria-current={state === "current" ? "step" : undefined}
+                whileHover={clickable ? { y: -2, scale: 1.025 } : undefined}
+                whileTap={clickable ? { scale: 0.97 } : undefined}
+                layout
                 className={cn(
-                  "flex items-center gap-2 rounded-pill border px-3 py-1.5 text-[0.78rem] transition-colors",
-                  state === "current" && "border-mint bg-mint/10 text-mint",
+                  "relative flex items-center gap-2 overflow-hidden rounded-pill border px-3 py-1.5 text-[0.78rem] transition-colors",
+                  state === "current" && "border-mint bg-mint/10 text-mint shadow-[0_0_24px_rgba(109,177,174,.12)]",
                   state === "done" && "border-line bg-surface text-muted hover:text-fg",
                   state === "visited" && "border-line text-muted hover:text-fg",
                   state === "todo" && "border-line-soft text-faint",
                   !clickable && "cursor-default",
                 )}
               >
-                <span className="font-mono text-[0.7rem]">{String(i + 1).padStart(2, "0")}</span>
-                {s.label}
-                {state === "done" ? <Check className="size-3" aria-hidden /> : null}
-              </button>
+                {state === "current" ? <motion.span layoutId="request-step-indicator" className="absolute inset-x-0 bottom-0 h-0.5 bg-mint" /> : null}
+                <span className="relative font-mono text-[0.7rem]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="relative">{s.label}</span>
+                {state === "done" ? <Check className="relative size-3" aria-hidden /> : null}
+              </motion.button>
             </li>
           );
         })}
       </ol>
-      <div className="h-1 overflow-hidden rounded-full bg-line-soft">
-        <div
-          className="h-full rounded-full bg-mint transition-[width] duration-400 ease-out"
-          style={{ width: `${pct}%` }}
+      <div className="relative h-1.5 overflow-hidden rounded-full bg-line-soft">
+        <motion.div
+          className="h-full rounded-full bg-mint shadow-[0_0_14px_rgba(109,177,174,.55)]"
+          initial={false}
+          animate={{ width: `${pct}%` }}
+          transition={{ type: "spring", stiffness: 180, damping: 24 }}
           aria-hidden
         />
+      </div>
+      <div className="mt-2 flex items-center justify-between font-mono text-[0.62rem] uppercase tracking-[0.16em] text-faint">
+        <span>{STEPS[step].blurb}</span>
+        <span>{String(Math.round(pct)).padStart(3, "0")}%</span>
       </div>
       <p className="sr-only" aria-live="polite">
         Step {step + 1} of {STEPS.length}: {STEPS[step].label}. {STEPS[step].blurb}.
