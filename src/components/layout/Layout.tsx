@@ -98,10 +98,7 @@ export function Layout() {
     <>
       {immersive ? <BackgroundFX /> : null}
       <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
-        {/* Nothing is mounted behind this page. Septa asked for the motion to stop belonging to the
-            site: the wallpaper layer is out of the tree on every route, so no plate, film, grid,
-            beam, orb or mesh byte is fetched anywhere, and the only animation left is the one the
-            homepage hero carries inside its own section. */}
+        {/* The immersive wallpaper is mounted only on service and request journeys. */}
         <Nav />
         <main
           id="main"
