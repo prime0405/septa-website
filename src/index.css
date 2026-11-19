@@ -1683,3 +1683,54 @@ html[data-immersive="1"] .band::before {
     border-radius: 2rem;
   }
 }
+
+
+/* The service journey gives the Septa lockup a little more presence without changing
+   the compact navigation used elsewhere on the site. */
+html[data-immersive="1"] header .septa-wordmark {
+  height: 31px;
+  filter: drop-shadow(0 0 0 rgb(109 177 174 / 0));
+  animation: septa-mark-float 5.5s ease-in-out infinite, septa-mark-glow 5.5s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+@keyframes septa-mark-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.025); }
+}
+@keyframes septa-mark-glow {
+  0%, 100% { filter: drop-shadow(0 0 0 rgb(109 177 174 / 0)); }
+  50% { filter: drop-shadow(0 0 9px rgb(109 177 174 / 0.42)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-immersive="1"] header .septa-wordmark { animation: none; }
+}
+
+/* Request page: a denser instrument-panel treatment, kept inside the existing brand palette. */
+.request-hero {
+  isolation: isolate;
+  background: #061820;
+  color: #fff;
+}
+.request-hero > .wrap {
+  position: relative;
+  z-index: 2;
+}
+.request-hero .eyebrow,
+.request-hero [data-eyebrow] { color: #8ac2bf; }
+.request-hero .request-hero-panel {
+  border: 1px solid rgb(109 177 174 / 0.28);
+  background: linear-gradient(145deg, rgb(16 49 62 / 0.88), rgb(6 24 32 / 0.78));
+  box-shadow: 0 30px 90px -48px rgb(0 0 0 / 0.85), inset 0 1px 0 rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(18px);
+}
+.request-hero .request-hero-step {
+  border: 1px solid rgb(255 255 255 / 0.09);
+  background: rgb(255 255 255 / 0.035);
+}
+.request-hero .request-hero-step:first-child {
+  border-color: rgb(109 177 174 / 0.42);
+  background: rgb(109 177 174 / 0.09);
+}
+@media (prefers-reduced-motion: reduce) {
+  .request-hero * { animation-duration: 0.01ms !important; }
+}
