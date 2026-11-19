@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { PageHero } from "../components/blocks/PageHero";
 import { RequestWizard } from "../components/forms/RequestWizard";
 import { IntegrationNotice } from "../components/blocks/LaunchNote";
@@ -9,7 +9,6 @@ import {
   Callout,
   Card,
   MarkerList,
-  Pill,
   Reveal,
   Section,
   SectionHeading,
