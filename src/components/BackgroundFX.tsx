@@ -7,28 +7,14 @@ import { useActiveWall } from "../lib/useActiveWall";
 import { WallMotion } from "./visuals/WallMotion";
 
 /**
- * The moving backdrop. PARKED — nothing mounts it. Septa asked for the site to be white and still
- * everywhere except the homepage hero, and the hero paints its own opaque field, so `Layout` no
- * longer renders this and no route does either. It sits unbuilt in the tree (Vite never bundles an
- * unreferenced module) as the reference for how the wash was assembled; restoring it is a mount,
- * not a rewrite.
+ * The moving backdrop for service and request journeys. It follows the section under the visitor's
+ * eye, while the homepage and informational routes retain their own existing treatments.
  *
- * `bgfx-wash` is colour: a drifting plate, two soft orbs, a beam that crosses every so often, and a
- * slow grid. It sits behind everything and is masked so that most of it lands in the gutters beside
- * the reading column. The plate is a still on most pages and a generated film where a theme supplies
- * one. `bgfx-mesh` is the live line art on top of it, whose subject changes with the page; it is the
- * one layer allowed to pass over the text, held so that nothing it paints can reach the eye at more
- * than 17% Tradewind inside the reading column, which is where the AA measurements are taken.
+ * `bgfx-wash` is colour: a drifting plate, two soft orbs, a passing beam and a slow grid. It sits
+ * behind the page content and changes theme as the visitor moves through the sections.
  *
- * Both layers follow the section under the visitor's eye rather than the address bar, so one long
- * page runs several wallpapers in sequence. Which section that is comes from `useActiveWall`, and
- * every layer dissolves into the new one rather than cutting: the gradient vars transition, the
- * outgoing plate is held until the incoming one has faded up over it, and the mesh hands over
- * between two mounted scenes so the line art never leaves the page at any point in the change.
- *
- * Everything here is decorative and pointer-transparent. The canvas caps its work by area, holds at
- * ~30fps, stops when the tab is hidden, and never starts under `prefers-reduced-motion`, where the
- * film likewise falls back to its own still and the page keeps one wallpaper throughout.
+ * The decorative layers are pointer-transparent, respect reduced motion, pause their media when
+ * the tab is hidden, and keep their work bounded so they do not compete with the page itself.
  */
 export function BackgroundFX() {
   const reduce = useReducedMotion();
