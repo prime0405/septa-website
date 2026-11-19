@@ -87,8 +87,12 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-brand-teal">Capability / {String(active + 1).padStart(2, "0")}</span>
             <span className="font-mono text-xs text-white/45">{String(active + 1).padStart(2, "0")} <span className="text-white/25">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
           </div>
-          <h3 className="mt-12 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] text-white">{item.title}</h3>
-          {item.detail ? <p className="mt-5 max-w-xl text-[0.98rem] leading-8 text-white/70">{item.detail}</p> : null}
+          <AnimatePresence mode="wait">
+            <motion.div key={item.title} initial={{ opacity: 0, y: 18, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -12, filter: "blur(6px)" }} transition={{ duration: .35 }}>
+              <h3 className="mt-12 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] text-white">{item.title}</h3>
+              {item.detail ? <p className="mt-5 max-w-xl text-[0.98rem] leading-8 text-white/70">{item.detail}</p> : null}
+            </motion.div>
+          </AnimatePresence>
         </div>
         <div className="relative mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-5">
           <span className="text-xs text-white/50">Select another capability to explore</span>
@@ -175,9 +179,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
   return (
     <>
       <section className="relative isolate overflow-hidden bg-brand-pearl text-white">
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.13]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.35) 1px, transparent 1px)", backgroundSize: "54px 54px" }} />
-        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 size-[620px] rounded-full border border-brand-teal/20" />
-        <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 size-[380px] rounded-full border border-brand-teal/20" />
+        <ServiceMotionField slug={page.slug} />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl via-brand-pearl/95 to-brand-pearl/45" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-teal/20 via-transparent to-transparent" />
         <div className="wrap relative py-16 sm:py-24 lg:py-28">
           {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-12">
@@ -206,9 +209,9 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-xl lg:pb-2">
-              <div className="absolute -inset-5 border border-brand-teal/20" />
-              <div className="relative bg-[#0d2934] p-6 sm:p-8">
+            <motion.div className="relative mx-auto w-full max-w-xl lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+              <motion.div className="absolute -inset-5 border border-brand-teal/20" animate={{ opacity: [.35,.8,.35], scale: [1,1.015,1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
+              <div className="relative bg-[#0d2934]/95 p-6 shadow-[0_30px_100px_-45px_rgba(0,0,0,.9)] backdrop-blur-md sm:p-8">
                 <div className="flex items-center justify-between border-b border-white/10 pb-5">
                   <span className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-brand-teal">SEPTA / SERVICE MAP</span>
                   <span className="size-2 rounded-full bg-brand-teal shadow-[0_0_16px_rgba(109,177,174,.8)]" />
@@ -229,10 +232,10 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                   <Sparkles className="size-4" aria-hidden />
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-        <div aria-hidden className="h-1 w-full bg-gradient-to-r from-transparent via-brand-teal to-transparent" />
+        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-teal to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
       </section>
 
       <Section wall="use-case" tone="surface" className="section">
