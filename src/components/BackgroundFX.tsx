@@ -121,7 +121,7 @@ const PLATE_FADE = 1100;
 type Slot = { src: string; film: boolean };
 
 function PlateStack({ plate, film, reduce }: { plate: string; film?: string; reduce: boolean }) {
-  const onFilm = Boolean(film) && !reduce;
+  // Use the optimised still plate on immersive pages; continuous background video competed with page motion.
   const wanted: Slot = { src: onFilm ? (film ?? "") : plate, film: onFilm };
   const [slots, setSlots] = useState<{ current: Slot; behind: Slot | null }>({
     current: wanted,
