@@ -80,6 +80,7 @@ export function Layout() {
 
   // Stable so the curtain's timing effect is never restarted while the panels are on screen.
   const finishIntro = useCallback(() => setShowIntro(false), []);
+  const immersive = pathname.startsWith("/services/") || pathname === "/request";
 
   useEffect(() => {
     const root = document.documentElement;
@@ -95,6 +96,7 @@ export function Layout() {
   // stays outside that wrapper, because inert would swallow its click-to-skip too.
   return (
     <>
+      {immersive ? <BackgroundFX /> : null}
       <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
         {/* Nothing is mounted behind this page. Septa asked for the motion to stop belonging to the
             site: the wallpaper layer is out of the tree on every route, so no plate, film, grid,
