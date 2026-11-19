@@ -41,6 +41,7 @@ export default function Request() {
 
   return (
     <>
+      <motion.div initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduce ? 0 : .65, ease: [.22, 1, .36, 1] }}>
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Request a Service" }]}
         eyebrow="Start a project"
@@ -83,8 +84,15 @@ export default function Request() {
           </Reveal>
         }
       />
+      </motion.div>
 
-      <Section wall="answers" className="section">
+      <Section wall="answers" className="section relative isolate overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <motion.div className="absolute -right-24 top-12 size-[28rem] rounded-full border border-mint/20" animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute -right-12 top-24 size-[22rem] rounded-full border border-dashed border-mint/20" animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 65, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute -left-28 bottom-0 size-80 rounded-full bg-mint/10 blur-[90px]" animate={reduce ? undefined : { x: [0, 65, 0], y: [0, -35, 0], scale: [1, 1.2, 1] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} />
+          <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "radial-gradient(circle, var(--color-mint) 1px, transparent 1px)", backgroundSize: "26px 26px" }} />
+        </div>
         <div className="relative z-10 grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
           <motion.div className="min-w-0" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .55 }}>
             {preselected ? (
