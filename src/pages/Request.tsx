@@ -108,6 +108,30 @@ export default function Request() {
           </div>
 
           <motion.aside className="space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
+            <motion.figure className="group relative isolate aspect-[16/10] overflow-hidden bg-brand-pearl shadow-[0_24px_70px_-35px_rgba(6,24,32,.5)]"
+              whileHover={reduce ? undefined : { y: -5 }} transition={{ duration: .35 }}>
+              <motion.img
+                src="/img/work/engineering-floor.webp"
+                alt="Technology professionals working together in an engineering environment"
+                className="absolute inset-0 size-full object-cover"
+                initial={false}
+                animate={reduce ? undefined : { scale: [1.04, 1.1, 1.04] }}
+                transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-pearl/95 via-brand-pearl/15 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white">
+                <div>
+                  <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-brand-teal">SEPTA / COLLABORATION</p>
+                  <p className="mt-2 max-w-xs text-xl font-semibold leading-tight">Good technology starts with understanding the people who use it.</p>
+                </div>
+                <span className="mb-1 hidden size-10 shrink-0 items-center justify-center border border-white/30 bg-white/10 sm:flex">
+                  <ArrowRight className="size-4" />
+                </span>
+              </div>
+              <motion.span aria-hidden className="absolute left-0 top-0 h-1 w-1/3 bg-brand-teal"
+                animate={reduce ? undefined : { x: ["0%", "200%", "0%"] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
+            </motion.figure>
             <IntegrationNotice />
 
             <Card className="p-6">
