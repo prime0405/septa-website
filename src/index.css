@@ -1648,3 +1648,23 @@ html.cursor-none * {
 .skip-link:focus {
   top: 0.75rem;
 }
+
+
+/* Immersive service journeys: let the site's live wallpaper remain visible through
+   the section sheets instead of confining it to the outer gutters. */
+html[data-immersive="1"] {
+  --bgfx-k: 0.88;
+}
+html[data-immersive="1"] .bgfx-wash {
+  mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 max(0px, calc(50% - 760px)),
+    rgb(0 0 0 / 0.62) max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
+    #000 min(100%, calc(50% + 760px)),
+    #000 100%
+  );
+}
+html[data-immersive="1"] .band::before {
+  background: color-mix(in srgb, var(--band) 82%, transparent);
+}
