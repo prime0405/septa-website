@@ -69,8 +69,9 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
         {page.coreServices.map((capability, index) => (
           <button key={capability.title} type="button" role="tab" aria-selected={active === index}
             onClick={() => setActive(index)}
-            className={cn("group flex min-h-[82px] items-center gap-4 border-b px-4 py-4 text-left transition-all duration-300",
+            className={cn("group relative flex min-h-[82px] items-center gap-4 border-b px-4 py-4 text-left transition-all duration-300",
               active === index ? "border-brand-teal bg-brand-pearl text-white shadow-[0_12px_32px_-20px_rgba(6,24,32,.65)]" : "border-line-soft bg-white/70 text-brand-pearl hover:bg-white")}>
+            {active === index ? <motion.span layoutId="service-capability-active" className="absolute inset-y-0 left-0 w-1 bg-brand-teal" transition={{ type: "spring", stiffness: 360, damping: 32 }} /> : null}
             <span className={cn("font-mono text-xs tracking-widest", active === index ? "text-brand-teal" : "text-muted")}>{String(index + 1).padStart(2, "0")}</span>
             <span className="min-w-0 flex-1 text-[0.96rem] font-semibold">{capability.title}</span>
             <ArrowUpRight className={cn("size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5", active === index ? "text-brand-teal" : "text-muted")} aria-hidden />
@@ -148,8 +149,12 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
         <div className="mt-6 h-1 w-full bg-ink-raised" role="progressbar" aria-label="Process exploration progress" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={active + 1}>
           <div className="h-full bg-brand-teal transition-[width] duration-500" style={{ width: `${((active + 1) / steps.length) * 100}%` }} />
         </div>
-        <h3 className="mt-9 max-w-xl text-[clamp(1.65rem,3vw,2.5rem)] leading-tight">{step.title}</h3>
-        {step.detail ? <p className="prose-body mt-4 max-w-2xl text-[0.98rem]">{step.detail}</p> : null}
+        <AnimatePresence mode="wait">
+          <motion.div key={step.title} initial={{ opacity: 0, y: 20, filter: "blur(7px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -12, filter: "blur(5px)" }} transition={{ duration: .32 }}>
+            <h3 className="mt-9 max-w-xl text-[clamp(1.65rem,3vw,2.5rem)] leading-tight">{step.title}</h3>
+            {step.detail ? <p className="prose-body mt-4 max-w-2xl text-[0.98rem]">{step.detail}</p> : null}
+          </motion.div>
+        </AnimatePresence>
         {step.sub ? (
           <div className="mt-7 border-l-2 border-brand-teal bg-surface p-5 sm:p-6">
             {step.sub.heading ? <p className="eyebrow mb-3">{step.sub.heading}</p> : null}
@@ -197,8 +202,10 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                 <span className="flex size-11 items-center justify-center border border-brand-teal/50 bg-brand-teal/10 text-brand-teal"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-teal">{page.name}</span>
               </div>
-              <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
-              <p className="mt-7 max-w-2xl text-[1.02rem] leading-8 text-white/65 sm:text-lg">{page.intro}</p>
+              <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
+                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
+                <p className="mt-7 max-w-2xl text-[1.02rem] leading-8 text-white/65 sm:text-lg">{page.intro}</p>
+              </motion.div>
               <div className="mt-8 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" magnetic>{page.cta.label}</Button> : null}
                 <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/25 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-teal hover:text-brand-teal">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
