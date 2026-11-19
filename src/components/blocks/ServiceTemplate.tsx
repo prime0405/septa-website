@@ -291,18 +291,37 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
           </div>
-          <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
-            {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-              <article className="group relative h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-line-soft bg-white/90 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/40 hover:bg-white hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
-                <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-mono text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
-                <div className="mt-8 flex items-start justify-between gap-3">
-                  <h3 className="max-w-xs text-xl">{item.title}</h3>
-                  <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
-                </div>
-                {item.detail ? <p className="mt-3 max-w-md text-sm leading-7 text-muted">{item.detail}</p> : null}
-              </article>
-            </Reveal>)}
-          </div>
+          {page.slug === "ai-product-development" ? (
+            <div className="divide-y divide-line-soft border-y border-line-soft">
+              {page.whyChoose.map((item, index) => (
+                <Reveal key={item.title} delay={index * 0.035}>
+                  <article className="group grid gap-3 py-5 transition-colors duration-300 hover:bg-brand-teal/[0.035] sm:grid-cols-[3.5rem_minmax(0,0.78fr)_minmax(0,1.22fr)] sm:items-start sm:gap-5 sm:px-4">
+                    <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-teal/[0.08] font-mono text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex items-center justify-between gap-3">
+                      <h3 className="text-lg font-semibold leading-snug text-brand-pearl sm:pt-1">{item.title}</h3>
+                      <ArrowUpRight className="size-4 shrink-0 text-mint opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" aria-hidden />
+                    </div>
+                    {item.detail ? <p className="max-w-2xl text-sm leading-6 text-muted sm:pt-1">{item.detail}</p> : null}
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
+              {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
+                <article className="group relative h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-line-soft bg-white/90 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/40 hover:bg-white hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
+                  <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-mono text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="mt-8 flex items-start justify-between gap-3">
+                    <h3 className="max-w-xs text-xl">{item.title}</h3>
+                    <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
+                  </div>
+                  {item.detail ? <p className="mt-3 max-w-md text-sm leading-7 text-muted">{item.detail}</p> : null}
+                </article>
+              </Reveal>)}
+            </div>
+          )}
         </div>
       </Section>
 
