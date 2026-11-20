@@ -1,9 +1,13 @@
-import { useState } from "react";
+
+import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Check, Send } from "lucide-react";
+
 import { ApiError, api } from "../../lib/api";
 import { useForm, v } from "../../lib/form";
 import { paths } from "../../lib/paths";
+import { openings } from "../../data/jobs";
+
 import {
   CV_ALLOWED_EXT,
   CV_MAX_BYTES,
@@ -11,13 +15,39 @@ import {
   disciplines,
   type SubmissionResult,
 } from "../../shared/schemas";
+
 import { Button } from "../ui/Button";
-import { CheckboxField, FileField, Honeypot, RadioCards, TextArea, TextField } from "../ui/form";
+
+import {
+  CheckboxField,
+  FileField,
+  Honeypot,
+  RadioCards,
+  TextArea,
+  TextField,
+} from "../ui/form";
+
 import { Callout, Pill } from "../ui/primitives";
 
 type Phase = "form" | "sending" | "done" | "failed";
 
-const emptyValues = (source: "careers-page" | "speculative") => ({
+type CareerSource = "careers-page" | "speculative";
+
+interface CareerFormProps {
+  source?: CareerSource;
+  preselectRole?: string;
+}
+
+const careerRoleOptions = [
+  ...new Set([
+    ...openings.map((opening) => opening.title),
+    ...disciplines,
+  ]),
+].map((title) => ({
+  value: title,
+}));
+
+const emptyValues = (source: CareerSource) => ({
   fullName: "",
   email: "",
   role: "",
@@ -36,105 +66,203 @@ const emptyValues = (source: "careers-page" | "speculative") => ({
 export function CareerForm({
   source = "careers-page",
   preselectRole,
-}: {
-  source?: "careers-page" | "speculative";
-  preselectRole?: string;
-}) {
-  const form = useForm(careerSchema, { ...emptyValues(source), role: preselectRole ?? "" });
-  // useForm seeds values once at mount; an Apply click arrives later, so carry it in during render
-  // instead of remounting the form and discarding whatever the candidate already typed.
-  const [appliedPreselect, setAppliedPreselect] = useState(preselectRole);
-  if (preselectRole && preselectRole !== appliedPreselect) {
-    setAppliedPreselect(preselectRole);
-    form.patch({ role: preselectRole });
-  }
+}: CareerFormProps) {
+  const form = useForm(careerSchema, {
+    ...emptyValues(source),
+    role: preselectRole ?? "",
+  });
+
   const [phase, setPhase] = useState<Phase>("form");
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
 
-  const pickFile = (f: File | null) => {
+  // Keep the selected job synchronized with Apply buttons.
+  // Preserve the candidate's other form answers.
+  useEffect(() => {
+    if (preselectRole !== undefined) {
+      form.set("role", preselectRole);
+    }
+  }, [preselectRole]);
+
+  // Keep application source synchronized.
+  useEffect(() => {
+    form.set("source", source);
+  }, [source]);
+
+  // Validate and store selected CV.
+  const pickFile = (selectedFile: File | null) => {
     setFileError(null);
-    if (f) {
-      const ext = (f.name.split(".").pop() ?? "").toLowerCase();
-      if (!CV_ALLOWED_EXT.includes(ext as (typeof CV_ALLOWED_EXT)[number])) {
-        setFileError(`Unsupported file type. Allowed: ${CV_ALLOWED_EXT.join(", ")}.`);
+
+    if (selectedFile) {
+      const ext = (
+        selectedFile.name.split(".").pop() ?? ""
+      ).toLowerCase();
+
+      if (
+        !CV_ALLOWED_EXT.includes(
+          ext as (typeof CV_ALLOWED_EXT)[number]
+        )
+      ) {
+        setFileError(
+          `Unsupported file type. Allowed: ${CV_ALLOWED_EXT.join(", ")}.`
+        );
+
         setFile(null);
         form.set("cvFileName", "");
+        form.patch({ cvSizeBytes: undefined });
         return;
       }
-      if (f.size > CV_MAX_BYTES) {
-        setFileError(`That file is ${(f.size / 1024 / 1024).toFixed(1)} MB. The limit is ${CV_MAX_BYTES / 1024 / 1024} MB.`);
+
+      if (selectedFile.size > CV_MAX_BYTES) {
+        setFileError(
+          `That file is ${(selectedFile.size / 1024 / 1024).toFixed(1)} MB. The limit is ${CV_MAX_BYTES / 1024 / 1024} MB.`
+        );
+
         setFile(null);
         form.set("cvFileName", "");
+        form.patch({ cvSizeBytes: undefined });
         return;
       }
     }
-    setFile(f);
-    form.set("cvFileName", f?.name ?? "");
-    form.patch({ cvSizeBytes: f?.size });
+
+    setFile(selectedFile);
+
+    form.set(
+      "cvFileName",
+      selectedFile?.name ?? ""
+    );
+
+    form.patch({
+      cvSizeBytes: selectedFile?.size,
+    });
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  // Submit application.
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (phase === "sending") return;
     if (fileError) return;
+
     form.setAttempted(true);
+
     const { data: raw, errors } = form.validate();
+
     if (!raw) {
       form.focusFirstError(Object.keys(errors));
       return;
     }
+
     setPhase("sending");
     setFailure(null);
+
     try {
-      const res = await api.careersWithCv(raw, file);
-      setResult(res);
+      const response = await api.careersWithCv(raw, file);
+
+      setResult(response);
       setPhase("done");
     } catch (err) {
       if (err instanceof ApiError) {
-        if (Object.keys(err.fieldErrors).length) form.setErrors(err.fieldErrors);
+        if (Object.keys(err.fieldErrors).length) {
+          form.setErrors(err.fieldErrors);
+        }
+
         setFailure(err.message);
       } else {
-        setFailure("We could not complete the submission. Please try again.");
+        setFailure(
+          "We could not complete the submission. Please try again."
+        );
       }
+
       setPhase("failed");
     }
   };
 
+  // Reset form for another application.
+  const resetApplication = () => {
+    form.reset({
+      ...emptyValues(source),
+      role: preselectRole ?? "",
+    });
+
+    setFile(null);
+    setFileError(null);
+    setResult(null);
+    setFailure(null);
+    setPhase("form");
+  };
+
+  // Application success screen.
   if (phase === "done" && result) {
     return (
-      <div className="card p-6 sm:p-8">
+      <div
+        className="card p-6 sm:p-8"
+        role="status"
+      >
         <span className="flex size-10 items-center justify-center rounded-full bg-mint/15">
-          <Check className="size-5 text-mint" aria-hidden />
+          <Check
+            className="size-5 text-mint"
+            aria-hidden="true"
+          />
         </span>
-        <h2 className="mt-4 text-xl">Application received</h2>
+
+        <h2 className="mt-4 text-xl">
+          Application received
+        </h2>
+
         <p className="prose-body mt-2 text-[0.95rem]">
-          Reference <span className="font-mono text-mint">{result.id}</span>. Keep it if you want to
-          ask about your application later.
+          Thank you for your interest in joining Septa.
+          Your application reference is{" "}
+          <span className="font-mono text-mint">
+            {result.id}
+          </span>.
         </p>
+
+        <p className="prose-body mt-2 text-sm">
+          Keep this reference if you need to ask
+          about your application later.
+        </p>
+
         <div className="mt-4 flex flex-wrap gap-2">
-          <Pill tone={result.forwarded ? "mint" : "amber"}>
-            {result.forwarded ? "Notified to the hiring inbox" : "Stored on the server, not emailed yet"}
+          <Pill
+            tone={result.forwarded ? "mint" : "amber"}
+          >
+            {result.forwarded
+              ? "Notified to the hiring inbox"
+              : "Stored on the server, not emailed yet"}
           </Pill>
-          {file ? <Pill tone="line">CV attached: {file.name}</Pill> : null}
+
+          {file && (
+            <Pill tone="line">
+              CV attached: {file.name}
+            </Pill>
+          )}
         </div>
-        {result.note ? <Callout kind="setup" className="mt-4">{result.note}</Callout> : null}
-        <Callout kind="info" className="mt-4">
-          What happens next is described above this form. We reply either way, including when there
-          is no matching opening yet.
+
+        {result.note && (
+          <Callout
+            kind="setup"
+            className="mt-4"
+          >
+            {result.note}
+          </Callout>
+        )}
+
+        <Callout
+          kind="info"
+          className="mt-4"
+        >
+          You can review the hiring process above
+          to understand the next stages.
         </Callout>
+
         <div className="mt-6">
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => {
-              form.reset(emptyValues(source));
-              setFile(null);
-              setResult(null);
-              setPhase("form");
-            }}
+            onClick={resetApplication}
           >
             Send another application
           </Button>
@@ -144,104 +272,167 @@ export function CareerForm({
   }
 
   return (
-    <form ref={form.formRef} onSubmit={onSubmit} noValidate className="card space-y-5 p-6 sm:p-8">
+    <form
+      ref={form.formRef}
+      onSubmit={onSubmit}
+      noValidate
+      className="card space-y-5 p-6 sm:p-8"
+    >
+      {/* Applicant details */}
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField
           label="Full name"
           value={v(form.values, "fullName")}
-          onChange={(x) => form.set("fullName", x)}
+          onChange={(value) =>
+            form.set("fullName", value)
+          }
           error={form.errors.fullName}
           autoComplete="name"
         />
+
         <TextField
           label="Email"
           type="email"
           value={v(form.values, "email")}
-          onChange={(x) => form.set("email", x)}
+          onChange={(value) =>
+            form.set("email", value)
+          }
           error={form.errors.email}
           autoComplete="email"
         />
       </div>
 
-      <RadioCards
-        label="Which area do you want to work in?"
-        name="role"
-        columns={2}
-        value={v(form.values, "role")}
-        onChange={(x) => form.set("role", x)}
-        error={form.errors.role}
-        options={disciplines.map((d) => ({ value: d }))}
-      />
+      {/* Position selection */}
+      <div>
+        <RadioCards
+          label="Which position are you interested in?"
+          name="role"
+          columns={2}
+          value={v(form.values, "role")}
+          onChange={(value) =>
+            form.set("role", value)
+          }
+          error={form.errors.role}
+          options={careerRoleOptions}
+        />
 
-      {form.values.role === "Something else" ? (
+              {typeof form.values.role === "string" &&
+        form.values.role !== "" &&
+        form.values.role !== "Something else" && (
+          <p className="mt-3 text-sm text-mint">
+            Selected position:{" "}
+            <strong>{form.values.role}</strong>
+          </p>
+        )}
+      </div>
+
+      {/* Custom position */}
+      {form.values.role === "Something else" && (
         <TextField
           label="Describe the role you have in mind"
           value={v(form.values, "roleDetail")}
-          onChange={(x) => form.set("roleDetail", x)}
+          onChange={(value) =>
+            form.set("roleDetail", value)
+          }
           error={form.errors.roleDetail}
           maxLength={120}
         />
-      ) : null}
+      )}
 
+      {/* Location and portfolio */}
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField
           label="Where are you based?"
           optional
           value={v(form.values, "location")}
-          onChange={(x) => form.set("location", x)}
+          onChange={(value) =>
+            form.set("location", value)
+          }
           error={form.errors.location}
           maxLength={120}
           hint="City and time zone is enough."
         />
+
         <TextField
           label="Portfolio or personal site"
           optional
           value={v(form.values, "portfolioUrl")}
-          onChange={(x) => form.set("portfolioUrl", x)}
+          onChange={(value) =>
+            form.set("portfolioUrl", value)
+          }
           error={form.errors.portfolioUrl}
           placeholder="https://…"
         />
       </div>
 
+      {/* LinkedIn */}
       <TextField
         label="LinkedIn profile"
         optional
         value={v(form.values, "linkedinUrl")}
-        onChange={(x) => form.set("linkedinUrl", x)}
+        onChange={(value) =>
+          form.set("linkedinUrl", value)
+        }
         error={form.errors.linkedinUrl}
         placeholder="https://linkedin.com/in/…"
       />
 
+      {/* Applicant message */}
       <TextArea
-        label={source === "speculative" ? "Why are you writing?" : "Why this work, and what would you bring?"}
+        label={
+          source === "speculative"
+            ? "Why are you writing?"
+            : "Why this work, and what would you bring?"
+        }
         rows={6}
         maxLength={3000}
         value={v(form.values, "note")}
-        onChange={(x) => form.set("note", x)}
+        onChange={(value) =>
+          form.set("note", value)
+        }
         error={form.errors.note}
-        hint="One specific thing you have built or fixed is worth more than a summary of your CV."
+        hint="Tell us about your experience, interests, and the value you could bring to Septa."
       />
 
+      {/* CV upload */}
       <FileField
         label="CV or résumé (optional)"
-        accept={CV_ALLOWED_EXT.map((e) => "." + e).join(",")}
+        accept={CV_ALLOWED_EXT.map(
+          (ext) => "." + ext
+        ).join(",")}
         file={file}
         onSelect={pickFile}
-        error={fileError ?? form.errors.cvFileName}
+        error={
+          fileError ?? form.errors.cvFileName
+        }
         hint={`Up to ${CV_MAX_BYTES / 1024 / 1024} MB. ${CV_ALLOWED_EXT.join(", ")}. Stored privately and never published on the site.`}
       />
 
-      <Honeypot value={v(form.values, "_hp")} onChange={(x) => form.set("_hp", x)} />
+      {/* Spam protection */}
+      <Honeypot
+        value={v(form.values, "_hp")}
+        onChange={(value) =>
+          form.set("_hp", value)
+        }
+      />
 
+      {/* Privacy consent */}
       <CheckboxField
         checked={form.values.consent === true}
-        onChange={(x) => form.set("consent", x)}
+        onChange={(value) =>
+          form.set("consent", value)
+        }
         error={form.errors.consent}
         label={
           <>
-            I agree that Septa may store this application, including any attached CV, to consider me
-            for current and future roles, as described in the{" "}
-            <Link to={paths.privacy()} className="text-mint underline underline-offset-4">
+            I agree that Septa may store this
+            application, including any attached CV,
+            to consider me for current and future
+            roles, as described in the{" "}
+            <Link
+              to={paths.privacy()}
+              className="text-mint underline underline-offset-4"
+            >
               Privacy Policy
             </Link>
             .
@@ -249,27 +440,56 @@ export function CareerForm({
         }
       />
 
-      {phase === "failed" && failure ? (
-        <Callout kind="danger" title="Not sent">
-          {failure} Your answers are still on the page.
+      {/* Submission error */}
+      {phase === "failed" && failure && (
+        <Callout
+          kind="danger"
+          title="Not sent"
+        >
+          {failure} Your answers are still on
+          the page.
         </Callout>
-      ) : null}
+      )}
 
+      {/* Submit button */}
       <div className="flex flex-wrap items-center gap-4 pt-1">
         <Button
           type="submit"
           size="lg"
-          disabled={phase === "sending" || Boolean(fileError)}
-          iconStart={phase === "sending" ? undefined : <Send className="size-4" />}
+          disabled={
+            phase === "sending" ||
+            Boolean(fileError)
+          }
+          iconStart={
+            phase === "sending"
+              ? undefined
+              : (
+                <Send className="size-4" />
+              )
+          }
         >
-          {phase === "sending" ? "Submitting…" : source === "speculative" ? "Send expression of interest" : "Submit application"}
+          {phase === "sending"
+            ? "Submitting…"
+            : source === "speculative"
+              ? "Send expression of interest"
+              : "Submit application"}
         </Button>
+
         <p className="text-[0.8rem] text-faint">
-          Only you can see this submission; nothing here is published.
+          Your application is private and
+          will not be published.
         </p>
       </div>
-      <p aria-live="polite" className="sr-only">
-        {phase === "sending" ? "Submitting your application" : phase === "failed" ? "Submission failed" : ""}
+
+      <p
+        aria-live="polite"
+        className="sr-only"
+      >
+        {phase === "sending"
+          ? "Submitting your application"
+          : phase === "failed"
+            ? "Submission failed"
+            : ""}
       </p>
     </form>
   );
