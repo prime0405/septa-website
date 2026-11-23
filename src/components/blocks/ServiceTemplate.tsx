@@ -164,45 +164,20 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
           <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
-          <div className="absolute inset-0" style={{ perspective: "1400px" }}>
-            <AnimatePresence mode="sync" initial={false} custom={direction}>
+          <div className="absolute inset-0">
+            <AnimatePresence mode="wait" initial={false} custom={direction}>
               <motion.div
                 key={visual.src + active}
                 custom={direction}
-                variants={{
-                  enter: (dir: number) => ({
-                    opacity: 0,
-                    rotateY: dir * -72,
-                    scale: 1.035,
-                    x: dir * 22,
-                    transformOrigin: dir > 0 ? "right center" : "left center",
-                  }),
-                  center: {
-                    opacity: 1,
-                    rotateY: 0,
-                    scale: 1,
-                    x: 0,
-                    transformOrigin: "50% 50%",
-                  },
-                  exit: (dir: number) => ({
-                    opacity: 0,
-                    rotateY: dir * 62,
-                    scale: 0.985,
-                    x: dir * -16,
-                    transformOrigin: dir > 0 ? "left center" : "right center",
-                  }),
-                }}
-                initial="enter"
-                animate="center"
-                exit="exit"
+                initial={{ opacity: 0, x: direction * 44 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction * -36 }}
                 className="absolute inset-0"
-                style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
-                transition={{ duration: reduce ? 0 : 0.86, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: reduce ? 0 : 0.58, ease: [0.22, 1, 0.36, 1] }}
               >
                 <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
                 <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
                 <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
-                <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-[18%] bg-gradient-to-l from-black/25 to-transparent" />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -228,14 +203,14 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
             </div>
             <div className="mt-12 grid">
-              <AnimatePresence mode="sync" initial={false}>
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={item.title}
                   className="col-start-1 row-start-1"
-                  initial={{ opacity: 0, x: direction * 24, y: 8, scale: 0.985, filter: "blur(6px)" }}
-                  animate={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, x: direction * -18, y: -4, scale: 0.99, filter: "blur(5px)" }}
-                  transition={{ duration: reduce ? 0 : 0.68, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0, x: direction * 28, y: 5 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  exit={{ opacity: 0, x: direction * -22, y: -3 }}
+                  transition={{ duration: reduce ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
                   <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
