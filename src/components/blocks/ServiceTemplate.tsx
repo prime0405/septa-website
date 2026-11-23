@@ -107,10 +107,10 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 
   const visuals: Record<string, { src: string; alt: string; tag: string }[]> = {
     "ai-product-development": [
-      { src: "/img/work/ai-model-build.webp", alt: "AI model development workstation with a model pipeline and training visualisation", tag: "MODEL ENGINEERING" },
       { src: "/img/section/ai-product-development.webp", alt: "AI product interface and intelligent user experience concept", tag: "EXPERIENCE DESIGN" },
-      { src: "/img/work/product-in-use.webp", alt: "Digital product interface in use", tag: "PRODUCT INTERFACES" },
-      { src: "/img/work/product-delivery.webp", alt: "Product engineering and delivery environment", tag: "INTEGRATION & DELIVERY" },
+      { src: "/img/work/product-in-use.webp", alt: "Digital product interface in use", tag: "WEB PLATFORMS" },
+      { src: "/img/work/product-delivery.webp", alt: "Product engineering and delivery environment", tag: "MOBILE PRODUCTS" },
+      { src: "/img/work/ai-model-build.webp", alt: "AI model development workstation with a model pipeline and training visualisation", tag: "AI & MACHINE LEARNING" },
       { src: "/img/section/traditional-product-development.webp", alt: "Product development workflow and engineering environment", tag: "END-TO-END BUILD" },
     ],
     "workflow-automation": [
@@ -168,10 +168,10 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             <motion.div
               key={visual.src + active}
               className="absolute inset-0"
-              initial={{ opacity: 0, x: direction * 72, scale: 1.055, filter: "blur(7px)" }}
-              animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: direction * -52, scale: .975, filter: "blur(5px)" }}
-              transition={{ duration: .82, ease: [.22, 1, .36, 1] }}
+              initial={{ opacity: 0, x: direction * 64, scale: 1.045 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: direction * -44, scale: .985 }}
+              transition={{ duration: reduce ? 0 : .78, ease: [.22, 1, .36, 1] }}
             >
               <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
@@ -204,10 +204,10 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 <motion.div
                   key={item.title}
                   className="col-start-1 row-start-1"
-                  initial={{ opacity: 0, x: direction * 38, y: 8, filter: "blur(5px)" }}
-                  animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, x: direction * -28, y: -4, filter: "blur(4px)" }}
-                  transition={{ duration: .64, ease: [.22, 1, .36, 1] }}
+                  initial={{ opacity: 0, x: direction * 30, y: 6 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  exit={{ opacity: 0, x: direction * -22, y: -3 }}
+                  transition={{ duration: reduce ? 0 : .58, ease: [.22, 1, .36, 1] }}
                 >
                   <p className="font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
                   <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
