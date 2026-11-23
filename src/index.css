@@ -1972,3 +1972,52 @@ html[data-immersive="1"] .bgfx-orb-b { transform: translate3d(-6%, -4%, 0); opac
     transition: none !important;
   }
 }
+
+
+/* Final service-page colour overrides. Kept after the base glass rules so the brand
+   treatment is not flattened back into neutral white by the shared surface styles. */
+.service-page .service-glass:not(.service-glass-dark) {
+  border-color: color-mix(in srgb, var(--color-brand-teal) 34%, white);
+  background:
+    radial-gradient(120% 100% at 0% 0%, color-mix(in srgb, var(--color-brand-teal) 16%, transparent), transparent 62%),
+    linear-gradient(145deg, rgba(255,255,255,.9), rgba(229,244,241,.82));
+}
+.service-page .service-glass-dark {
+  border-color: rgba(109,177,174,.38);
+  background:
+    radial-gradient(90% 100% at 100% 0%, rgba(109,177,174,.16), transparent 65%),
+    linear-gradient(145deg, rgba(16,49,62,.96), rgba(6,24,32,.94));
+}
+.service-page .service-capability-carousel {
+  isolation: isolate;
+  box-shadow: 0 32px 90px -48px rgba(6,24,32,.72), 0 0 0 1px rgba(109,177,174,.12);
+}
+.service-page .service-capability-carousel button:focus-visible {
+  outline-color: #91d9cf;
+  outline-offset: 3px;
+}
+.service-page .service-capability-art img {
+  filter: saturate(1.12) contrast(1.035);
+}
+.service-page .service-capability-carousel [aria-current="true"] {
+  color: #fff;
+}
+.service-page .service-capability-carousel button:not([aria-current="true"]):hover {
+  color: #fff;
+}
+.service-page .service-people-photo {
+  border-color: rgba(109,177,174,.65);
+  background: rgba(109,177,174,.22);
+}
+.service-page .service-people-photo img {
+  filter: saturate(1.12);
+}
+.service-page .service-glass:not(.service-glass-dark) .text-mint,
+.service-page .service-glass:not(.service-glass-dark) .text-brand-teal {
+  color: var(--color-mint-deep);
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-page .service-capability-carousel * {
+    scroll-behavior: auto !important;
+  }
+}
