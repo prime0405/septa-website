@@ -73,48 +73,137 @@ function ServiceMotionField({ slug }: { slug: string }) {
 
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
-  useEffect(() => setActive(0), [page.slug]);
+  const [paused, setPaused] = useState(false);
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    setActive(0);
+    setPaused(false);
+  }, [page.slug]);
+  useEffect(() => {
+    if (paused || reduce || page.coreServices.length < 2) return;
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % page.coreServices.length);
+    }, 6200);
+    return () => window.clearInterval(timer);
+  }, [active, page.coreServices.length, paused, reduce]);
   const item = page.coreServices[active];
   if (!item) return null;
 
-  return (
-    <div className="mt-12 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:gap-7">
-      <div className="flex flex-col gap-2" role="tablist" aria-label={page.coreServicesHeading}>
-        {page.coreServices.map((capability, index) => (
-          <button key={capability.title} type="button" role="tab" aria-selected={active === index}
-            onClick={() => setActive(index)}
-            className={cn("group relative flex min-h-[82px] items-center gap-4 rounded-2xl border px-4 py-4 text-left transition-all duration-300",
-              active === index ? "service-glass service-glass-dark border-brand-teal/50 bg-brand-pearl/90 text-white shadow-[0_16px_36px_-22px_rgba(6,24,32,.7)]" : "service-glass border-white/55 bg-white/45 text-brand-pearl shadow-sm hover:-translate-y-0.5 hover:border-brand-teal/45 hover:bg-white/75")}>
-            {active === index ? <motion.span layoutId="service-capability-active" className="absolute inset-y-0 left-0 w-1 bg-brand-teal" transition={{ type: "spring", stiffness: 360, damping: 32 }} /> : null}
-            <span className={cn("font-mono text-xs tracking-widest", active === index ? "text-brand-teal" : "text-muted")}>{String(index + 1).padStart(2, "0")}</span>
-            <span className="min-w-0 flex-1 text-[0.96rem] font-semibold">{capability.title}</span>
-            <ArrowUpRight className={cn("size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5", active === index ? "text-brand-teal" : "text-muted")} aria-hidden />
-          </button>
-        ))}
-      </div>
+  const visuals: Record<string, { src: string; alt: string; tag: string }[]> = {
+    "ai-product-development": [
+      { src: "/img/work/ai-model-build.webp", alt: "AI model development workstation with a model pipeline and training visualisation", tag: "MODEL ENGINEERING" },
+      { src: "/img/section/ai-product-development.webp", alt: "AI product interface and intelligent user experience concept", tag: "EXPERIENCE DESIGN" },
+      { src: "/img/work/product-in-use.webp", alt: "Digital product interface in use", tag: "PRODUCT INTERFACES" },
+      { src: "/img/work/product-delivery.webp", alt: "Product engineering and delivery environment", tag: "INTEGRATION & DELIVERY" },
+      { src: "/img/section/traditional-product-development.webp", alt: "Product development workflow and engineering environment", tag: "END-TO-END BUILD" },
+    ],
+    "workflow-automation": [
+      { src: "/img/work/automation-flows.webp", alt: "Workflow automation canvas with connected trigger and action nodes", tag: "WORKFLOW DESIGN" },
+      { src: "/img/work/product-in-use.webp", alt: "Digital tools being used in an operational workflow", tag: "CUSTOM AUTOMATION" },
+      { src: "/img/work/ai-model-build.webp", alt: "Connected technical systems and data processing environment", tag: "SYSTEM INTEGRATION" },
+      { src: "/img/work/transformation-floor.webp", alt: "Business operations transitioning from manual to digital processes", tag: "PROCESS IMPROVEMENT" },
+    ],
+    "digital-transformation": [
+      { src: "/img/work/transformation-floor.webp", alt: "Business operations moving from legacy processes to digital tools", tag: "PROCESS MODERNISATION" },
+      { src: "/img/work/product-delivery.webp", alt: "Modern digital infrastructure and product delivery environment", tag: "CLOUD & INFRASTRUCTURE" },
+      { src: "/img/work/ai-model-build.webp", alt: "Data processing and analytics environment", tag: "DATA INTELLIGENCE" },
+      { src: "/img/work/product-in-use.webp", alt: "Customer-facing digital product interface", tag: "CUSTOMER EXPERIENCE" },
+      { src: "/img/work/engineering-floor.webp", alt: "Technology team collaborating on system adoption", tag: "CHANGE & ADOPTION" },
+    ],
+    "observability-monitoring": [
+      { src: "/img/work/observability-noc.webp", alt: "Monitoring screens showing service health, performance graphs and log activity", tag: "LIVE SYSTEM HEALTH" },
+      { src: "/img/work/ai-model-build.webp", alt: "Technical data panels used to investigate system activity", tag: "LOG INTELLIGENCE" },
+      { src: "/img/work/product-delivery.webp", alt: "Engineering environment focused on system performance", tag: "PERFORMANCE TUNING" },
+      { src: "/img/work/automation-flows.webp", alt: "Connected technical workflow and operational signals", tag: "REPORTING & ALERTS" },
+    ],
+    "talent-solution": [
+      { src: "/img/work/talent-matching.webp", alt: "Candidate profiles and skills being matched to a role", tag: "TALENT SOURCING" },
+      { src: "/img/work/hiring-review.webp", alt: "Recruitment team reviewing candidate applications", tag: "TAILORED RECRUITMENT" },
+      { src: "/img/work/product-in-use.webp", alt: "Digital workforce management interface", tag: "PAYROLL OPERATIONS" },
+      { src: "/img/section/talent-solution.webp", alt: "Employee support and benefits administration concept", tag: "PEOPLE & BENEFITS" },
+    ],
+  };
+  const slides = visuals[page.slug] ?? visuals["ai-product-development"];
+  const visual = slides[active % slides.length];
+  const goTo = (index: number) => setActive((index + page.coreServices.length) % page.coreServices.length);
 
-      <div className="service-glass service-glass-dark relative flex min-h-[360px] flex-col justify-between overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b2830]/75 p-7 text-white shadow-[0_30px_90px_-45px_rgba(6,24,32,.7)] sm:rounded-[2.4rem] sm:p-10 lg:min-h-[430px]" aria-live="polite">
-        <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-80 rounded-full border border-brand-teal/20" />
-        <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-52 rounded-full border border-brand-teal/20" />
-        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-1/2 w-2/3 bg-gradient-to-tl from-brand-teal/20 to-transparent" />
-        <div className="relative">
-          <div className="flex items-center justify-between gap-4">
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-brand-teal">Capability / {String(active + 1).padStart(2, "0")}</span>
-            <span className="font-mono text-xs text-white/45">{String(active + 1).padStart(2, "0")} <span className="text-white/25">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
-          </div>
+  return (
+    <div
+      className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-[#071f27] text-white shadow-[0_32px_90px_-48px_rgba(6,24,32,.72)] sm:rounded-[2.5rem]"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
+      }}
+      aria-roledescription="carousel"
+      aria-label={page.coreServicesHeading}
+    >
+      <div className="grid lg:min-h-[470px] lg:grid-cols-[1.04fr_.96fr]">
+        <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
+          <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <AnimatePresence mode="wait">
-            <motion.div key={item.title} initial={{ opacity: 0, y: 18, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -12, filter: "blur(6px)" }} transition={{ duration: .35 }}>
-              <h3 className="mt-12 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] text-white">{item.title}</h3>
-              {item.detail ? <p className="mt-5 max-w-xl text-[0.98rem] leading-8 text-white/70">{item.detail}</p> : null}
+            <motion.div key={visual.src + active} className="absolute inset-0" initial={{ opacity: 0, scale: 1.035 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: .985 }} transition={{ duration: .55, ease: [.22, 1, .36, 1] }}>
+              <img src={visual.src} alt={visual.alt} loading="lazy" className="size-full object-cover" />
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
             </motion.div>
           </AnimatePresence>
+          <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/25 bg-[#061820]/70 px-3 py-2 backdrop-blur-md sm:left-7 sm:top-7">
+            <span className="size-2 rounded-full bg-[#72d8bd] shadow-[0_0_14px_rgba(114,216,189,.8)]" />
+            <span className="font-mono text-[.62rem] tracking-[.18em] text-white/90">SEPTA / CAPABILITY {String(active + 1).padStart(2, "0")}</span>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
+            <div>
+              <p className="font-mono text-[.62rem] tracking-[.2em] text-[#91d9cf]">{visual.tag}</p>
+              <p className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{page.name}</p>
+            </div>
+            <span className="font-mono text-4xl font-light text-white/65 sm:text-5xl">{String(active + 1).padStart(2, "0")}</span>
+          </div>
         </div>
-        <div className="relative mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-5">
-          <span className="text-xs text-white/50">Select another capability to explore</span>
-          <button type="button" onClick={() => setActive((value) => (value + 1) % page.coreServices.length)}
-            className="inline-flex min-h-11 items-center gap-2 bg-brand-teal px-5 text-sm font-semibold text-brand-pearl transition-colors hover:bg-white">
-            Next capability <ArrowRight className="size-4" aria-hidden />
-          </button>
+
+        <div className="relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-[linear-gradient(145deg,#10333c,#071f27_68%)] p-6 sm:p-9 lg:p-10">
+          <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full border border-brand-teal/20" />
+          <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full bg-brand-teal/[0.12] blur-3xl" />
+          <div className="relative">
+            <div className="flex items-center justify-between gap-4">
+              <span className="font-mono text-[.68rem] uppercase tracking-[.22em] text-[#91d9cf]">What we do / Core services</span>
+              <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.div key={item.title} initial={{ opacity: 0, y: 16, filter: "blur(7px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -10, filter: "blur(5px)" }} transition={{ duration: .34 }}>
+                <p className="mt-12 font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
+                <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
+                {item.detail ? <p className="mt-5 max-w-xl text-[.98rem] leading-8 text-white/75">{item.detail}</p> : null}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="relative mt-10">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <span className="text-xs text-white/55">Explore each capability</span>
+              <div className="flex items-center gap-2">
+                <button type="button" aria-label="Previous capability" onClick={() => goTo(active - 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4 rotate-180" aria-hidden /></button>
+                <button type="button" aria-label={paused ? "Resume carousel" : "Pause carousel"} onClick={() => setPaused((value) => !value)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15">
+                  {paused || reduce ? <ArrowRight className="size-4" aria-hidden /> : <span className="flex gap-[3px]" aria-hidden><span className="h-4 w-[3px] rounded bg-current" /><span className="h-4 w-[3px] rounded bg-current" /></span>}
+                </button>
+                <button type="button" aria-label="Next capability" onClick={() => goTo(active + 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4" aria-hidden /></button>
+              </div>
+            </div>
+            <div className="mb-5 h-1 overflow-hidden rounded-full bg-white/15">
+              <motion.div key={active} className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]" initial={{ scaleX: 0 }} animate={{ scaleX: paused || reduce ? ((active + 1) / page.coreServices.length) : 1 }} transition={{ duration: paused || reduce ? .25 : 6.2, ease: "linear" }} />
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+              {page.coreServices.map((capability, index) => (
+                <button key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
+                  className={cn("min-h-10 rounded-xl border px-3 py-2 text-left text-xs font-semibold transition-all duration-300 sm:flex-1", active === index ? "border-[#91d9cf]/70 bg-[#6db1ae]/20 text-white shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-white/15 bg-white/[.035] text-white/65 hover:border-white/35 hover:bg-white/[.08] hover:text-white")}>
+                  <span className="mr-2 font-mono text-[.62rem] text-[#91d9cf]">{String(index + 1).padStart(2, "0")}</span>{capability.title}
+                </button>
+              ))}
+            </div>
+            <p className="mt-4 text-[.68rem] text-white/35" aria-live="polite">{paused ? "Paused" : reduce ? "Motion reduced" : "Auto-advancing · pauses when you interact"}</p>
+          </div>
         </div>
       </div>
     </div>
