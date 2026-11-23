@@ -74,13 +74,15 @@ function ServiceMotionField({ slug }: { slug: string }) {
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
   const [manualPaused, setManualPaused] = useState(false);
-  const [interactionPaused, setInteractionPaused] = useState(false);
-  const paused = manualPaused || interactionPaused;
+  const [hoverPaused, setHoverPaused] = useState(false);
+  const [focusPaused, setFocusPaused] = useState(false);
+  const paused = manualPaused || hoverPaused || focusPaused;
   const reduce = useReducedMotion();
   useEffect(() => {
     setActive(0);
     setManualPaused(false);
-    setInteractionPaused(false);
+    setHoverPaused(false);
+    setFocusPaused(false);
   }, [page.slug]);
   useEffect(() => {
     if (paused || reduce || page.coreServices.length < 2) return;
@@ -133,12 +135,13 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   return (
     <div
       className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-[#071f27] text-white shadow-[0_32px_90px_-48px_rgba(6,24,32,.72)] sm:rounded-[2.5rem]"
-      onMouseEnter={() => setInteractionPaused(true)}
-      onMouseLeave={() => setInteractionPaused(false)}
-      onFocus={() => setInteractionPaused(true)}
+      onMouseEnter={() => setHoverPaused(true)}
+      onMouseLeave={() => setHoverPaused(false)}
+      onFocus={() => setFocusPaused(true)}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocusPaused(false);
       }}
+      role="region"
       aria-roledescription="carousel"
       aria-label={page.coreServicesHeading}
     >
@@ -194,7 +197,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 <button type="button" aria-label="Next capability" onClick={() => goTo(active + 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4" aria-hidden /></button>
               </div>
             </div>
-            <div className="mb-5 h-1 overflow-hidden rounded-full bg-white/15">
+            <div className="mb-5 h-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Capability carousel progress" aria-valuemin={1} aria-valuemax={page.coreServices.length} aria-valuenow={active + 1}>
               <motion.div key={active} className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]" initial={{ scaleX: 0 }} animate={{ scaleX: paused || reduce ? ((active + 1) / page.coreServices.length) : 1 }} transition={{ duration: paused || reduce ? .25 : 6.2, ease: "linear" }} />
             </div>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
