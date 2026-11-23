@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-r
 import type { ServiceContent } from "../../data/services";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
-import { Card, Reveal, Section, SectionHeading, Pill } from "../ui/primitives";
+import { Reveal, Section, SectionHeading, Pill } from "../ui/primitives";
 import { PhotoFigure } from "./PhotoFigure";
 import { ServiceIcon } from "./ServiceIcon";
 
@@ -209,8 +209,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       alt: "People working in a modernised operations environment",
     },
     "observability-monitoring": {
-      src: "/img/work/observability-noc.webp",
-      alt: "An operations team monitoring digital systems",
+      src: "/img/work/engineering-floor.webp",
+      alt: "An engineering team working together",
     },
     "talent-solution": {
       src: "/img/work/hiring-review.webp",

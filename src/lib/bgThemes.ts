@@ -38,9 +38,9 @@ export type BgTheme =
   | "legal";
 
 /**
- * The five subjects the wallpaper canvas can draw: `rings` is a breathing ring assembly over a wave
- * field, `plexus` the wandering node network, `lattice` an isometric cube grid with a light sweeping
- * across it, `stream` a particle flow, and `strata` stacked bands sliding past each other.
+ * The five subjects the wallpaper canvas can draw: `rings` is a slow wireframe globe, `plexus` the
+ * node network, `lattice` an isometric cube grid, `stream` a set of routed data lanes, and `strata`
+ * stacked bands sliding past each other.
  */
 export type BgMotion = "rings" | "plexus" | "lattice" | "stream" | "strata";
 

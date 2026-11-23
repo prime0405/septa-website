@@ -10,19 +10,13 @@ type Slot = { subject: BgMotion | null; on: boolean; live: boolean };
 /**
  * The moving line art that gives each page its own wallpaper.
  *
- * Five subjects, one per kind of page, chosen by `bgThemes`: a rotating wireframe globe ringed by
- * breathing pulses and orbited by motes, a depth-layered node network carrying packets along its
- * links, an isometric cube lattice with a light front sweeping across it, a bundle of routed data
- * lanes joined by risers, and a stack of sheared strata sliding past each other.
+ * Five subjects, one per kind of page, chosen by `bgThemes`: a slow wireframe globe, a depth-layered
+ * node network, an isometric cube lattice, a bundle of routed data lanes, and a stack of sliding
+ * strata. Each subject keeps its motion legible without competing with the page content.
  *
- * Two facts set every number in this file. The layer runs at 28% (`bgfx-mesh`) and the mask holds it
- * to 0.62 of that across the reading column, so a canvas pixel can never reach the eye at more than
- * 17% Tradewind — but only if nothing is drawn darker than Tradewind at full alpha, because the
- * ceiling is the opaque colour itself, not the coverage. And the page is light, so ink can only ever
- * be seen by being *darker* than the ground: a pale highlight, however large, simply disappears.
- * Together those mean the art has to be carried by Tradewind at high alpha, and that depth has to be
- * expressed with line weight, size and spacing rather than with alpha dropped to a tenth. An alpha
- * below about 0.4 is not a faint stroke on this ground, it is no stroke at all.
+ * The canvas now runs at 15% opacity and the mask holds it to 0.62 across the reading column, keeping
+ * the decorative line art behind the content. Line weight and spacing carry the geometry; motion is
+ * deliberately slower and less prominent than the content it supports.
  *
  * Cost is bounded the same way the mesh bounds it: counts scale with area, links and cubes are
  * bucketed into four weight bands so a field is four stroke calls rather than thousands, the loop
