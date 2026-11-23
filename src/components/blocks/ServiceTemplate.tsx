@@ -73,24 +73,20 @@ function ServiceMotionField({ slug }: { slug: string }) {
 
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
-  const [manualPaused, setManualPaused] = useState(false);
-  const [hoverPaused, setHoverPaused] = useState(false);
-  const [focusPaused, setFocusPaused] = useState(false);
-  const paused = manualPaused || hoverPaused || focusPaused;
+  const [direction, setDirection] = useState(1);
   const reduce = useReducedMotion();
   useEffect(() => {
     setActive(0);
-    setManualPaused(false);
-    setHoverPaused(false);
-    setFocusPaused(false);
+    setDirection(1);
   }, [page.slug]);
   useEffect(() => {
-    if (paused || reduce || page.coreServices.length < 2) return;
+    if (reduce || page.coreServices.length < 2) return;
     const timer = window.setInterval(() => {
+      setDirection(1);
       setActive((current) => (current + 1) % page.coreServices.length);
-    }, 6200);
+    }, 5200);
     return () => window.clearInterval(timer);
-  }, [active, page.coreServices.length, paused, reduce]);
+  }, [page.coreServices.length, page.slug, reduce]);
   const item = page.coreServices[active];
   if (!item) return null;
 
@@ -130,17 +126,15 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   };
   const slides = visuals[page.slug] ?? visuals["ai-product-development"];
   const visual = slides[active % slides.length];
-  const goTo = (index: number) => setActive((index + page.coreServices.length) % page.coreServices.length);
+  const goTo = (index: number) => {
+    const next = (index + page.coreServices.length) % page.coreServices.length;
+    setDirection(next >= active ? 1 : -1);
+    setActive(next);
+  };
 
   return (
     <div
       className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-[#071f27] text-white shadow-[0_32px_90px_-48px_rgba(6,24,32,.72)] sm:rounded-[2.5rem]"
-      onMouseEnter={() => setHoverPaused(true)}
-      onMouseLeave={() => setHoverPaused(false)}
-      onFocus={() => setFocusPaused(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocusPaused(false);
-      }}
       role="region"
       aria-roledescription="carousel"
       aria-label={page.coreServicesHeading}
@@ -150,7 +144,14 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <AnimatePresence mode="wait">
-            <motion.div key={visual.src + active} className="absolute inset-0" initial={{ opacity: 0, scale: 1.035 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: .985 }} transition={{ duration: .55, ease: [.22, 1, .36, 1] }}>
+            <motion.div
+              key={visual.src + active}
+              className="absolute inset-0"
+              initial={{ opacity: 0, x: direction * 54, scale: 1.035, filter: "blur(5px)" }}
+              animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, x: direction * -38, scale: .985, filter: "blur(4px)" }}
+              transition={{ duration: .72, ease: [.22, 1, .36, 1] }}
+            >
               <img src={visual.src} alt={visual.alt} loading="lazy" className="size-full object-cover" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
@@ -178,7 +179,13 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
             </div>
             <AnimatePresence mode="wait">
-              <motion.div key={item.title} initial={{ opacity: 0, y: 16, filter: "blur(7px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -10, filter: "blur(5px)" }} transition={{ duration: .34 }}>
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, x: direction * 24, y: 8, filter: "blur(5px)" }}
+                animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, x: direction * -18, y: -5, filter: "blur(4px)" }}
+                transition={{ duration: .52, ease: [.22, 1, .36, 1] }}
+              >
                 <p className="mt-12 font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
                 <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
                 {item.detail ? <p className="mt-5 max-w-xl text-[.98rem] leading-8 text-white/75">{item.detail}</p> : null}
@@ -190,15 +197,12 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             <div className="mb-5 flex items-center justify-between gap-3">
               <span className="text-xs text-white/55">Explore each capability</span>
               <div className="flex items-center gap-2">
-                <button type="button" aria-label="Previous capability" onClick={() => goTo(active - 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4 rotate-180" aria-hidden /></button>
-                <button type="button" aria-label={manualPaused ? "Resume carousel" : "Pause carousel"} onClick={() => setManualPaused((value) => !value)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15">
-                  {manualPaused || reduce ? <ArrowRight className="size-4" aria-hidden /> : <span className="flex gap-[3px]" aria-hidden><span className="h-4 w-[3px] rounded bg-current" /><span className="h-4 w-[3px] rounded bg-current" /></span>}
-                </button>
-                <button type="button" aria-label="Next capability" onClick={() => goTo(active + 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4" aria-hidden /></button>
+                <button type="button" aria-label="Previous capability" onClick={() => goTo(active - 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-all duration-300 hover:-translate-x-0.5 hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4 rotate-180" aria-hidden /></button>
+                <button type="button" aria-label="Next capability" onClick={() => goTo(active + 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-all duration-300 hover:translate-x-0.5 hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4" aria-hidden /></button>
               </div>
             </div>
             <div className="mb-5 h-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Capability carousel progress" aria-valuemin={1} aria-valuemax={page.coreServices.length} aria-valuenow={active + 1}>
-              <motion.div key={active} className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]" initial={{ scaleX: 0 }} animate={{ scaleX: paused || reduce ? ((active + 1) / page.coreServices.length) : 1 }} transition={{ duration: paused || reduce ? .25 : 6.2, ease: "linear" }} />
+              <motion.div key={active} className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduce ? 0 : 5.2, ease: "linear" }} />
             </div>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
@@ -208,7 +212,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 </button>
               ))}
             </div>
-            <p className="mt-4 text-[.68rem] text-white/35" aria-live="polite">{paused ? "Paused" : reduce ? "Motion reduced" : "Auto-advancing · pauses when you interact"}</p>
+            <p className="mt-4 text-[.68rem] text-white/35" aria-live="polite">{reduce ? "Use the arrows to explore each capability" : "Automatically exploring each capability"}</p>
           </div>
         </div>
       </div>
