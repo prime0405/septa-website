@@ -73,11 +73,14 @@ function ServiceMotionField({ slug }: { slug: string }) {
 
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [manualPaused, setManualPaused] = useState(false);
+  const [interactionPaused, setInteractionPaused] = useState(false);
+  const paused = manualPaused || interactionPaused;
   const reduce = useReducedMotion();
   useEffect(() => {
     setActive(0);
-    setPaused(false);
+    setManualPaused(false);
+    setInteractionPaused(false);
   }, [page.slug]);
   useEffect(() => {
     if (paused || reduce || page.coreServices.length < 2) return;
@@ -130,11 +133,11 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   return (
     <div
       className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-[#071f27] text-white shadow-[0_32px_90px_-48px_rgba(6,24,32,.72)] sm:rounded-[2.5rem]"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
+      onMouseEnter={() => setInteractionPaused(true)}
+      onMouseLeave={() => setInteractionPaused(false)}
+      onFocus={() => setInteractionPaused(true)}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
       }}
       aria-roledescription="carousel"
       aria-label={page.coreServicesHeading}
@@ -185,8 +188,8 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               <span className="text-xs text-white/55">Explore each capability</span>
               <div className="flex items-center gap-2">
                 <button type="button" aria-label="Previous capability" onClick={() => goTo(active - 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4 rotate-180" aria-hidden /></button>
-                <button type="button" aria-label={paused ? "Resume carousel" : "Pause carousel"} onClick={() => setPaused((value) => !value)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15">
-                  {paused || reduce ? <ArrowRight className="size-4" aria-hidden /> : <span className="flex gap-[3px]" aria-hidden><span className="h-4 w-[3px] rounded bg-current" /><span className="h-4 w-[3px] rounded bg-current" /></span>}
+                <button type="button" aria-label={manualPaused ? "Resume carousel" : "Pause carousel"} onClick={() => setManualPaused((value) => !value)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15">
+                  {manualPaused || reduce ? <ArrowRight className="size-4" aria-hidden /> : <span className="flex gap-[3px]" aria-hidden><span className="h-4 w-[3px] rounded bg-current" /><span className="h-4 w-[3px] rounded bg-current" /></span>}
                 </button>
                 <button type="button" aria-label="Next capability" onClick={() => goTo(active + 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4" aria-hidden /></button>
               </div>
