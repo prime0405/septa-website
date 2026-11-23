@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
@@ -74,19 +74,34 @@ function ServiceMotionField({ slug }: { slug: string }) {
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [isVisible, setIsVisible] = useState(false);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   const reduce = useReducedMotion();
+
   useEffect(() => {
-    setActive(0);
-    setDirection(1);
-  }, [page.slug]);
+    const node = carouselRef.current;
+    if (!node) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(Boolean(entry?.isIntersecting)),
+      { threshold: 0.2 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
-    if (reduce || page.coreServices.length < 2) return;
-    const timer = window.setInterval(() => {
+    if (reduce || !isVisible || page.coreServices.length < 2) return;
+    const timer = window.setTimeout(() => {
       setDirection(1);
       setActive((current) => (current + 1) % page.coreServices.length);
     }, 5200);
-    return () => window.clearInterval(timer);
-  }, [page.coreServices.length, page.slug, reduce]);
+    return () => window.clearTimeout(timer);
+  }, [active, isVisible, page.coreServices.length, reduce]);
   const item = page.coreServices[active];
   if (!item) return null;
 
@@ -127,13 +142,19 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const slides = visuals[page.slug] ?? visuals["ai-product-development"];
   const visual = slides[active % slides.length];
   const goTo = (index: number) => {
-    const next = (index + page.coreServices.length) % page.coreServices.length;
-    setDirection(next >= active ? 1 : -1);
+    const length = page.coreServices.length;
+    const next = ((index % length) + length) % length;
+    if (next === active) return;
+
+    const forwardDistance = (next - active + length) % length;
+    const backwardDistance = (active - next + length) % length;
+    setDirection(forwardDistance <= backwardDistance ? 1 : -1);
     setActive(next);
   };
 
   return (
     <div
+      ref={carouselRef}
       className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-[#071f27] text-white shadow-[0_32px_90px_-48px_rgba(6,24,32,.72)] sm:rounded-[2.5rem]"
       role="region"
       aria-roledescription="carousel"
@@ -143,16 +164,16 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
           <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="sync" initial={false}>
             <motion.div
               key={visual.src + active}
               className="absolute inset-0"
-              initial={{ opacity: 0, x: direction * 54, scale: 1.035, filter: "blur(5px)" }}
+              initial={{ opacity: 0, x: direction * 72, scale: 1.055, filter: "blur(7px)" }}
               animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: direction * -38, scale: .985, filter: "blur(4px)" }}
-              transition={{ duration: .72, ease: [.22, 1, .36, 1] }}
+              exit={{ opacity: 0, x: direction * -52, scale: .975, filter: "blur(5px)" }}
+              transition={{ duration: .82, ease: [.22, 1, .36, 1] }}
             >
-              <img src={visual.src} alt={visual.alt} loading="lazy" className="size-full object-cover" />
+              <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
             </motion.div>
@@ -178,19 +199,22 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               <span className="font-mono text-[.68rem] uppercase tracking-[.22em] text-[#91d9cf]">What we do / Core services</span>
               <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
             </div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, x: direction * 24, y: 8, filter: "blur(5px)" }}
-                animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: direction * -18, y: -5, filter: "blur(4px)" }}
-                transition={{ duration: .52, ease: [.22, 1, .36, 1] }}
-              >
-                <p className="mt-12 font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
-                <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
-                {item.detail ? <p className="mt-5 max-w-xl text-[.98rem] leading-8 text-white/75">{item.detail}</p> : null}
-              </motion.div>
-            </AnimatePresence>
+            <div className="mt-12 grid">
+              <AnimatePresence mode="sync" initial={false}>
+                <motion.div
+                  key={item.title}
+                  className="col-start-1 row-start-1"
+                  initial={{ opacity: 0, x: direction * 38, y: 8, filter: "blur(5px)" }}
+                  animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, x: direction * -28, y: -4, filter: "blur(4px)" }}
+                  transition={{ duration: .64, ease: [.22, 1, .36, 1] }}
+                >
+                  <p className="font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
+                  {item.detail ? <p className="mt-5 max-w-xl text-[.98rem] leading-8 text-white/75">{item.detail}</p> : null}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
 
           <div className="relative mt-10">
@@ -202,7 +226,13 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               </div>
             </div>
             <div className="mb-5 h-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Capability carousel progress" aria-valuemin={1} aria-valuemax={page.coreServices.length} aria-valuenow={active + 1}>
-              <motion.div key={active} className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduce ? 0 : 5.2, ease: "linear" }} />
+              <motion.div
+                key={active}
+                className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: reduce ? (active + 1) / page.coreServices.length : isVisible ? 1 : 0 }}
+                transition={{ duration: reduce || !isVisible ? 0 : 5.2, ease: "linear" }}
+              />
             </div>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
@@ -212,7 +242,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 </button>
               ))}
             </div>
-            <p className="mt-4 text-[.68rem] text-white/35" aria-live="polite">{reduce ? "Use the arrows to explore each capability" : "Automatically exploring each capability"}</p>
+            <p className="sr-only" aria-live="polite">{item.title}</p>
           </div>
         </div>
       </div>
@@ -413,7 +443,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
         <div className="max-w-3xl">
           <SectionHeading eyebrow="What we do" title={page.coreServicesHeading} lead={page.coreServicesLead} />
         </div>
-        <CapabilityExplorer page={page} />
+        <CapabilityExplorer key={page.slug} page={page} />
       </Section>
 
       <Section wall="about" tone="raised" className="section border-y border-line-soft">
