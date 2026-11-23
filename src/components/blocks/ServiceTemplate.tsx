@@ -232,10 +232,10 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 <motion.div
                   key={item.title}
                   className="col-start-1 row-start-1"
-                  initial={{ opacity: 0, x: direction * 30, y: 6 }}
-                  animate={{ opacity: 1, x: 0, y: 0 }}
-                  exit={{ opacity: 0, x: direction * -22, y: -3 }}
-                  transition={{ duration: reduce ? 0 : .58, ease: [.22, 1, .36, 1] }}
+                  initial={{ opacity: 0, x: direction * 24, y: 8, scale: 0.985, filter: "blur(6px)" }}
+                  animate={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, x: direction * -18, y: -4, scale: 0.99, filter: "blur(5px)" }}
+                  transition={{ duration: reduce ? 0 : 0.68, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
                   <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
@@ -246,10 +246,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           </div>
 
           <div className="relative mt-10">
-            <div className="mb-5 flex items-center justify-between gap-3">
-              <span className="text-xs text-white/55">Explore each capability</span>
-
-            </div>
+            <p className="mb-5 text-xs text-white/55">Explore each capability</p>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
                 <button key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
