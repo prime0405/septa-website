@@ -12,14 +12,6 @@ import { ServiceIcon } from "./ServiceIcon";
 
 function ServiceMotionField({ slug }: { slug: string }) {
   const reduce = useReducedMotion();
-  const motifs: Record<string, string[]> = {
-    "ai-product-development": ["MODEL GRAPH", "DATA", "INFERENCE", "PRODUCT"],
-    "workflow-automation": ["TRIGGER", "ROUTE", "ACTION", "COMPLETE"],
-    "digital-transformation": ["LEGACY", "CONNECT", "MODERNISE", "SCALE"],
-    "observability-monitoring": ["METRICS", "LOGS", "TRACES", "INSIGHT"],
-    "talent-solution": ["PEOPLE", "SKILLS", "MATCH", "GROWTH"],
-  };
-  const labels = motifs[slug] ?? ["DISCOVER", "DESIGN", "BUILD", "DELIVER"];
   const traces: Record<string, { primary: string; secondary: string }> = {
     "ai-product-development": {
       primary: "M760 90H570L470 190H330L230 290H0",
@@ -43,34 +35,38 @@ function ServiceMotionField({ slug }: { slug: string }) {
     },
   };
   const trace = traces[slug] ?? traces["ai-product-development"];
+
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
-      <motion.div className="absolute -right-32 top-[-18rem] size-[42rem] rounded-full border border-brand-teal/20"
-        animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
-      <motion.div className="absolute -right-12 top-[-12rem] size-[30rem] rounded-full border border-dashed border-brand-teal/25"
-        animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 72, repeat: Infinity, ease: "linear" }} />
-      <div className="absolute right-[9%] top-[16%] size-72 rounded-full bg-brand-teal/15 blur-[90px]" />
-      <div className="absolute -bottom-40 left-[18%] size-96 rounded-full bg-brand-teal/10 blur-[100px]" />
-      <svg className="absolute right-0 top-0 h-full w-[58%] opacity-40" viewBox="0 0 760 620" fill="none">
-        <motion.path d={trace.primary} stroke="#6DB1AE" strokeWidth="1"
-          strokeDasharray="7 11" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-          transition={{ duration: reduce ? 0 : 1.8, ease: "easeOut" }} />
-        <motion.path d={trace.secondary} stroke="#6DB1AE" strokeWidth="1"
-          strokeDasharray="3 9" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-          transition={{ duration: reduce ? 0 : 2.2, delay: .2, ease: "easeOut" }} />
-        {[{x:570,y:90},{x:470,y:190},{x:330,y:190},{x:230,y:290},{x:600,y:410},{x:500,y:310},{x:390,y:310},{x:290,y:410}].map((p,i) =>
-          <motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#6DB1AE"
-            initial={{ opacity: .65 }} animate={{ opacity: 1 }}
-            transition={{ duration: reduce ? 0 : .45, delay: i * .06 }} />
-        )}
+      <div
+        className="absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(109,177,174,.28) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.28) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+        }}
+      />
+      <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-teal/[0.08] blur-[110px]" />
+      <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.24]" viewBox="0 0 760 620" fill="none">
+        <motion.path
+          d={trace.primary}
+          stroke="#6DB1AE"
+          strokeWidth="1.2"
+          strokeDasharray="5 13"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: reduce ? 0 : 2.8, ease: "easeOut" }}
+        />
+        <motion.path
+          d={trace.secondary}
+          stroke="#6DB1AE"
+          strokeWidth="1"
+          strokeDasharray="3 15"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: reduce ? 0 : 3.2, delay: 0.15, ease: "easeOut" }}
+        />
       </svg>
-      <div className="absolute bottom-8 right-8 hidden gap-2 md:flex">
-        {labels.map((label, i) => <motion.span key={label}
-          className="border border-brand-teal/20 bg-white/[0.04] px-3 py-2 font-mono text-[9px] tracking-[.18em] text-brand-teal/70 backdrop-blur-sm"
-          animate={reduce ? undefined : { y: [0, -7, 0], opacity: [.55, 1, .55] }}
-          transition={{ duration: 3.2, delay: i * .35, repeat: Infinity, ease: "easeInOut" }}>{label}</motion.span>)}
-      </div>
     </div>
   );
 }
@@ -88,7 +84,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           <button key={capability.title} type="button" role="tab" aria-selected={active === index}
             onClick={() => setActive(index)}
             className={cn("group relative flex min-h-[82px] items-center gap-4 rounded-2xl border px-4 py-4 text-left transition-all duration-300",
-              active === index ? "border-brand-teal/50 bg-brand-pearl text-white shadow-[0_16px_36px_-22px_rgba(6,24,32,.7)]" : "border-line-soft bg-white/80 text-brand-pearl shadow-sm hover:-translate-y-0.5 hover:border-brand-teal/35 hover:bg-white")}>
+              active === index ? "service-glass service-glass-dark border-brand-teal/50 bg-brand-pearl/90 text-white shadow-[0_16px_36px_-22px_rgba(6,24,32,.7)]" : "service-glass border-white/55 bg-white/45 text-brand-pearl shadow-sm hover:-translate-y-0.5 hover:border-brand-teal/45 hover:bg-white/75")}>
             {active === index ? <motion.span layoutId="service-capability-active" className="absolute inset-y-0 left-0 w-1 bg-brand-teal" transition={{ type: "spring", stiffness: 360, damping: 32 }} /> : null}
             <span className={cn("font-mono text-xs tracking-widest", active === index ? "text-brand-teal" : "text-muted")}>{String(index + 1).padStart(2, "0")}</span>
             <span className="min-w-0 flex-1 text-[0.96rem] font-semibold">{capability.title}</span>
@@ -97,7 +93,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
         ))}
       </div>
 
-      <div className="relative flex min-h-[360px] flex-col justify-between overflow-hidden rounded-[2rem] border border-brand-teal/20 bg-gradient-to-br from-[#0b2830] via-brand-pearl to-[#0a2028] p-7 text-white shadow-[0_30px_90px_-45px_rgba(6,24,32,.7)] sm:rounded-[2.4rem] sm:p-10 lg:min-h-[430px]" aria-live="polite">
+      <div className="service-glass service-glass-dark relative flex min-h-[360px] flex-col justify-between overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b2830]/75 p-7 text-white shadow-[0_30px_90px_-45px_rgba(6,24,32,.7)] sm:rounded-[2.4rem] sm:p-10 lg:min-h-[430px]" aria-live="polite">
         <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-80 rounded-full border border-brand-teal/20" />
         <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-52 rounded-full border border-brand-teal/20" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-1/2 w-2/3 bg-gradient-to-tl from-brand-teal/20 to-transparent" />
@@ -144,7 +140,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
           {steps.map((item, index) => (
             <button key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)}
               className={cn("relative flex w-full items-center gap-4 rounded-2xl border px-3 py-4 text-left transition-all duration-300",
-                active === index ? "border-brand-pearl bg-brand-pearl text-white shadow-lg shadow-brand-pearl/10" : "border-transparent text-brand-pearl hover:border-line-soft hover:bg-white/80")}>
+                active === index ? "border-brand-pearl bg-brand-pearl text-white shadow-lg shadow-brand-pearl/10" : "border-transparent text-brand-pearl hover:border-white/60 hover:bg-white/55")}>
               <span className={cn("relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border font-mono text-xs",
                 index < active ? "border-brand-teal bg-brand-teal text-brand-pearl" : active === index ? "border-brand-teal bg-brand-teal text-brand-pearl" : "border-line bg-white text-muted")}>
                 {index < active ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}
@@ -159,7 +155,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
         </div>
       </div>
 
-      <div className="relative flex min-h-[390px] flex-col overflow-hidden rounded-[2rem] border border-line-soft bg-white/90 p-7 shadow-[0_24px_70px_-50px_rgba(6,24,32,.45)] backdrop-blur-sm sm:rounded-[2.4rem] sm:p-10">
+      <div className="service-glass relative flex min-h-[390px] flex-col overflow-hidden rounded-[2rem] border border-white/60 bg-white/55 p-7 shadow-[0_24px_70px_-50px_rgba(6,24,32,.45)] backdrop-blur-xl sm:rounded-[2.4rem] sm:p-10">
         <div className="flex items-center justify-between gap-4 border-b border-line-soft pb-5">
           <span className="font-mono text-xs uppercase tracking-[0.18em] text-mint">Stage {String(active + 1).padStart(2, "0")}</span>
           <span className="font-mono text-xs text-muted">{Math.round(((active + 1) / steps.length) * 100)}% complete</span>
@@ -199,8 +195,32 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
 }
 
 export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs: { label: string; to?: string }[] }) {
+  const peoplePhotos: Record<string, { src: string; alt: string }> = {
+    "ai-product-development": {
+      src: "/img/work/engineering-floor.webp",
+      alt: "People working together in an engineering environment",
+    },
+    "workflow-automation": {
+      src: "/img/work/product-in-use.webp",
+      alt: "A person working with a digital product",
+    },
+    "digital-transformation": {
+      src: "/img/work/transformation-floor.webp",
+      alt: "People working in a modernised operations environment",
+    },
+    "observability-monitoring": {
+      src: "/img/work/observability-noc.webp",
+      alt: "An operations team monitoring digital systems",
+    },
+    "talent-solution": {
+      src: "/img/work/hiring-review.webp",
+      alt: "Colleagues reviewing candidates together",
+    },
+  };
+  const peoplePhoto = peoplePhotos[page.slug];
+
   return (
-    <>
+    <div className="service-page">
       <section className="relative isolate overflow-hidden bg-brand-pearl text-white">
         <ServiceMotionField slug={page.slug} />
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl via-brand-pearl/95 to-brand-pearl/45" />
@@ -234,8 +254,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </div>
             </div>
 
-            <motion.div className="relative mx-auto w-full max-w-xl rounded-[2.25rem] bg-gradient-to-br from-brand-teal/25 via-white/5 to-transparent p-2.5 sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
-              <motion.div className="absolute -inset-2 rounded-[2.6rem] border border-brand-teal/30" animate={{ opacity: [.35,.85,.35], scale: [1,1.018,1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
+            <motion.div className="service-glass relative mx-auto w-full max-w-xl rounded-[2.25rem] border border-white/25 bg-white/[0.08] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-brand-teal/25" />
               <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
                 <PhotoFigure
                   src={page.image?.src ?? "/img/work/product-in-use.webp"}
@@ -249,13 +269,12 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl/45 via-transparent to-transparent" />
                 <div className="absolute left-5 top-5 flex items-center gap-3 rounded-full border border-white/30 bg-brand-pearl/75 px-4 py-3 text-white shadow-lg backdrop-blur-md sm:left-7 sm:top-7">
                   <span className="relative flex size-2.5">
-                    <motion.span className="absolute inline-flex size-full rounded-full bg-brand-teal" animate={{ scale: [1, 2.4], opacity: [0.8, 0] }} transition={{ duration: 1.8, repeat: Infinity }} />
+                    <span className="absolute inline-flex size-full rounded-full bg-brand-teal/25" />
                     <span className="relative inline-flex size-2.5 rounded-full bg-brand-teal" />
                   </span>
                   <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em]">SEPTA / IN PRACTICE</span>
                 </div>
-                <motion.div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-brand-teal shadow-[0_0_18px_5px_rgba(109,177,174,.38)]"
-                  animate={{ y: ["0%", "65vh"] }} transition={{ duration: 7, repeat: Infinity, ease: "linear" }} />
+                <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-brand-teal/55" />
                 <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-7">
                   <div className="mb-4 flex items-center justify-between gap-3">
                     <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-brand-teal">What this enables</span>
@@ -272,6 +291,19 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                   </div>
                 </div>
               </div>
+              {peoplePhoto ? (
+                <div className="service-people-photo absolute -right-2 -top-3 z-20 h-24 w-32 overflow-hidden rounded-2xl border border-white/65 bg-white/30 p-1 shadow-[0_18px_45px_-20px_rgba(0,0,0,.45)] backdrop-blur-xl sm:-right-5 sm:-top-5 sm:h-32 sm:w-40">
+                  <img
+                    src={peoplePhoto.src}
+                    alt={peoplePhoto.alt}
+                    loading="lazy"
+                    className="size-full rounded-xl object-cover"
+                  />
+                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#061820]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
+                    PEOPLE / IN PRACTICE
+                  </span>
+                </div>
+              ) : null}
             </motion.div>
           </div>
         </div>
@@ -311,7 +343,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           ) : (
             <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
               {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-                <article className="group relative h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-line-soft bg-white/90 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/40 hover:bg-white hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
+                <article className="service-glass group relative h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-white/60 bg-white/50 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
                   <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-mono text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
                   <div className="mt-8 flex items-start justify-between gap-3">
                     <h3 className="max-w-xs text-xl">{item.title}</h3>
@@ -353,7 +385,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               "/img/work/transformation-floor.webp",
             ];
             return <Reveal key={item.title} delay={index * 0.06}>
-              <article className="group relative isolate min-h-[350px] overflow-hidden rounded-[1.8rem] border border-brand-pearl/10 bg-brand-pearl shadow-[0_22px_55px_-32px_rgba(6,24,32,.45)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_65px_-32px_rgba(6,24,32,.55)]">
+              <article className="group relative isolate min-h-[350px] overflow-hidden service-glass service-glass-dark rounded-[1.8rem] border border-white/20 bg-brand-pearl/65 shadow-[0_22px_55px_-32px_rgba(6,24,32,.45)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_65px_-32px_rgba(6,24,32,.55)]">
                 <img
                   src={audienceImages[index] ?? "/img/work/talent-matching.webp"}
                   alt=""
@@ -382,7 +414,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </Section> : null}
 
       {page.extra ? <Section wall="blog" tone="raised" className="section">
-        <div className="relative isolate overflow-hidden rounded-[2rem] border border-brand-teal/20 bg-gradient-to-br from-[#12343b] via-brand-pearl to-[#091f27] p-7 text-white shadow-[0_30px_80px_-55px_rgba(6,24,32,.75)] sm:rounded-[2.5rem] sm:p-12">
+        <div className="service-glass service-glass-dark relative isolate overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b2830]/70 p-7 text-white shadow-[0_30px_80px_-55px_rgba(6,24,32,.75)] sm:rounded-[2.5rem] sm:p-12">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-[28rem] rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-16 size-[20rem] rounded-full bg-brand-teal/10 blur-[80px]" />
           <div className="relative z-10 grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
@@ -400,6 +432,6 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
         </div>
       </Section> : null}
 
-    </>
+    </div>
   );
 }
