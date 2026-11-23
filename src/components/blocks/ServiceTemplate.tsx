@@ -164,20 +164,48 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
           <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
-          <AnimatePresence mode="sync" initial={false}>
-            <motion.div
-              key={visual.src + active}
-              className="absolute inset-0"
-              initial={{ opacity: 0, x: direction * 64, scale: 1.045 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: direction * -44, scale: .985 }}
-              transition={{ duration: reduce ? 0 : .78, ease: [.22, 1, .36, 1] }}
-            >
-              <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
-            </motion.div>
-          </AnimatePresence>
+          <div className="absolute inset-0" style={{ perspective: "1400px" }}>
+            <AnimatePresence mode="sync" initial={false} custom={direction}>
+              <motion.div
+                key={visual.src + active}
+                custom={direction}
+                variants={{
+                  enter: (dir: number) => ({
+                    opacity: 0,
+                    rotateY: dir * -72,
+                    scale: 1.035,
+                    x: dir * 22,
+                    transformOrigin: dir > 0 ? "right center" : "left center",
+                  }),
+                  center: {
+                    opacity: 1,
+                    rotateY: 0,
+                    scale: 1,
+                    x: 0,
+                    transformOrigin: "50% 50%",
+                  },
+                  exit: (dir: number) => ({
+                    opacity: 0,
+                    rotateY: dir * 62,
+                    scale: 0.985,
+                    x: dir * -16,
+                    transformOrigin: dir > 0 ? "left center" : "right center",
+                  }),
+                }}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="absolute inset-0"
+                style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+                transition={{ duration: reduce ? 0 : 0.86, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
+                <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-[18%] bg-gradient-to-l from-black/25 to-transparent" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
           <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/25 bg-[#061820]/70 px-3 py-2 backdrop-blur-md sm:left-7 sm:top-7">
             <span className="size-2 rounded-full bg-[#72d8bd] shadow-[0_0_14px_rgba(114,216,189,.8)]" />
             <span className="font-mono text-[.62rem] tracking-[.18em] text-white/90">SEPTA / CAPABILITY {String(active + 1).padStart(2, "0")}</span>
@@ -220,19 +248,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           <div className="relative mt-10">
             <div className="mb-5 flex items-center justify-between gap-3">
               <span className="text-xs text-white/55">Explore each capability</span>
-              <div className="flex items-center gap-2">
-                <button type="button" aria-label="Previous capability" onClick={() => goTo(active - 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-all duration-300 hover:-translate-x-0.5 hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4 rotate-180" aria-hidden /></button>
-                <button type="button" aria-label="Next capability" onClick={() => goTo(active + 1)} className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white transition-all duration-300 hover:translate-x-0.5 hover:border-[#91d9cf] hover:bg-[#91d9cf]/15"><ChevronRight className="size-4" aria-hidden /></button>
-              </div>
-            </div>
-            <div className="mb-5 h-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Capability carousel progress" aria-valuemin={1} aria-valuemax={page.coreServices.length} aria-valuenow={active + 1}>
-              <motion.div
-                key={active}
-                className="h-full origin-left rounded-full bg-gradient-to-r from-[#6db1ae] to-[#91e0c4]"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: reduce ? (active + 1) / page.coreServices.length : isVisible ? 1 : 0 }}
-                transition={{ duration: reduce || !isVisible ? 0 : 5.2, ease: "linear" }}
-              />
+
             </div>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
