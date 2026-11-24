@@ -228,7 +228,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
   const { frozen, ref: journeyRef, hoverProps } = useAutoPause();
   useEffect(() => {
     if (frozen || steps.length < 2) return;
-    const timer = window.setTimeout(() => setActive((current) => (current + 1) % steps.length), 7000);
+    const timer = window.setTimeout(() => setActive((current) => (current + 1) % steps.length), 3000);
     return () => window.clearTimeout(timer);
   }, [active, frozen, steps.length]);
   const step = steps[active];
