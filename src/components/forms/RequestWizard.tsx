@@ -39,7 +39,7 @@ const SERVICE_OPTIONS = [
   { value: "Workflow Automation", blurb: "Connect systems, remove manual handoffs.", icon: <RotateCcw className="size-4" /> },
   { value: "Digital Transformation", blurb: "Modernise legacy technology and operations." },
   { value: "Observability & Monitoring", blurb: "Metrics, traces, alerting, reliability." },
-  { value: "Talent Solution", blurb: "Engineers, squads or hiring support.", icon: <Users className="size-4" /> },
+  { value: "Talent Solutions", blurb: "Engineers, squads or hiring support.", icon: <Users className="size-4" /> },
   { value: "Other", blurb: "Not sure yet. Describe it instead." },
 ];
 
@@ -86,7 +86,7 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
   const form = useForm(requestSchema, bootstrap.values);
   const [restored, setRestored] = useState(bootstrap.hadDraft);
   const [step, setStep] = useState(preselected && !bootstrap.hadDraft ? 1 : 0);
-  const [maxVisited, setMaxVisited] = useState(0);
+  const [maxVisited, setMaxVisited] = useState(preselected && !bootstrap.hadDraft ? 1 : 0);
   const [phase, setPhase] = useState<Phase>("editing");
   const [stepError, setStepError] = useState<string | null>(null);
   const [result, setResult] = useState<SubmissionResult | null>(null);
