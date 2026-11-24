@@ -18,6 +18,7 @@ export function PageHero({
   className,
   wall,
   art,
+  density = "default",
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
@@ -31,6 +32,8 @@ export function PageHero({
   wall?: BgTheme;
   /** A painted plate of the page's own, in place of the shared grid, glow and photo foot. */
   art?: ReactNode;
+  /** Tighter vertical rhythm for the services overview header. */
+  density?: "default" | "compact";
 }) {
   return (
     // `band` puts the same solid plate under this header as the sections below it carry, so the
