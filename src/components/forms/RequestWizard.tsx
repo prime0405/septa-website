@@ -193,14 +193,14 @@ export function RequestWizard({ preselected }: { preselected?: string }) {
   const isReview = step === STEPS.length - 1;
 
   return (
-    <div ref={topRef} className="card request-console overflow-hidden">
+    <div ref={topRef} className="card request-console w-full min-w-0 max-w-full overflow-hidden">
       <div className="request-console-topline">
         <span className="request-console-kicker"><span className="request-console-live" /> SEPTA / INTAKE CONSOLE</span>
         <span className="request-console-encrypted">PRIVATE PROJECT ENQUIRY</span>
       </div>
       <StepHeader step={step} maxVisited={maxVisited} onJump={jumpTo} disabled={phase === "sending"} />
 
-      <div className="request-console-body p-5 sm:p-8">
+      <div className="request-console-body min-w-0 p-5 sm:p-8">
         {restored && step === 0 ? (
           <Callout kind="info" className="mb-5" title="Draft restored">
             We found your unfinished request from an earlier visit on this device.{" "}
@@ -584,10 +584,10 @@ function StepShell({
   children: React.ReactNode;
 }) {
   return (
-    <div data-form-anchor tabIndex={-1} className="request-step-content focus:outline-none">
+    <div data-form-anchor tabIndex={-1} className="request-step-content min-w-0 break-words focus:outline-none">
       <div className="request-step-heading"><span className="request-step-index">0{index + 1} / 05</span><h2 className="text-[1.55rem] sm:text-[1.8rem]">{title}</h2></div>
       <p className="prose-body mt-2 max-w-2xl text-[0.92rem]">{hint}</p>
-      <div className="mt-6">{children}</div>
+      <div className="mt-6 min-w-0">{children}</div>
       <p className="sr-only">Step {index + 1}.</p>
     </div>
   );
@@ -649,7 +649,7 @@ function ReviewList({
               .map((k) => (
                 <div key={k} className="grid gap-1 px-4 py-3 sm:grid-cols-[170px_1fr] sm:gap-4">
                   <dt className="text-[0.8rem] text-faint">{LABELS[k]}</dt>
-                  <dd className="text-[0.88rem] whitespace-pre-wrap text-fg">{String(values[k])}</dd>
+                  <dd className="break-words text-[0.88rem] whitespace-pre-wrap text-fg [overflow-wrap:anywhere]">{String(values[k])}</dd>
                 </div>
               ))}
             {g.keys.every((k) => String(values[k] ?? "").trim().length === 0) ? (
