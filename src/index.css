@@ -36,52 +36,28 @@
 }
 
 @theme {
-  /*
-   * Brand palette (manual p.15): Black #000000, Black Pearl #061820,
-   * Tradewind #6DB1AE, White #FFFFFF. Light mode: white is the page, Black Pearl is
-   * the type, and Tradewind is the accent.
-   *
-   * Tradewind itself is only 2.5:1 on white, so it is not used as text. The accent
-   * tokens below are Tradewind taken down Black Pearl's hue until each one clears
-   * WCAG AA on white; `brand-teal` stays the unchanged brand value and is reserved
-   * for solid fills that carry Black Pearl text on top.
-   */
-  --color-ink: #ffffff;
-  --color-ink-raised: #eef4f4;
-  --color-surface: #f6faf9;
-  --color-surface-raised: #ffffff;
-  --color-line: #cfe0de;
-  --color-line-soft: #e0ecea;
-  --color-fg: #061820;
-  --color-muted: #3a5a63;
-  /* The mesh drifts over the whole page, including over the chips, so the token that carries the
-     smallest type on the site (10.5-11.5px mono labels) is darkened to keep a full step of margin:
-     #56707a measured 4.29:1 on an ink-raised chip once the mesh crossed it. */
-  --color-faint: #4d6772;
-  /* `mint*` is the historical token name for the accent; it now carries deep Tradewind.
-   * These two are set so the accent still clears AA *on its own tint*: labels and selected
-   * states put `mint` or `amber` text inside a 10% chip of the same colour, which costs
-   * about 0.6 of contrast, so the plain text value would land at 4.24:1 there. */
-  --color-mint: #286f6a;
-  --color-mint-bright: #1b625e;
-  --color-mint-deep: #12403f;
-  --color-amber: #785c11;
-  --color-rose: #b0413e;
-
-  --color-brand-teal: #6db1ae;
+  /* Septa Technologies official palette */
+  --color-ink: #EDF4F0;
+  --color-ink-raised: #DDEFE6;
+  --color-surface: #EDF4F0;
+  --color-surface-raised: #FFFFFF;
+  --color-line: #c9ddd4;
+  --color-line-soft: #dce9e2;
+  --color-fg: #344B49;
+  --color-muted: #526b67;
+  --color-faint: #657c77;
+  --color-mint: #4f9692;
+  --color-mint-bright: #438984;
+  --color-mint-deep: #344B49;
+  --color-amber: #8a7040;
+  --color-rose: #b45c58;
+  --color-brand-teal: #6DB1AE;
   --color-brand-teal-lift: #8ac2bf;
-  --color-brand-pearl: #061820;
-  --color-brand-pearl-raised: #10313e;
-  /* Values that stay dark whatever the page does: the core disc, and type on it. */
-  --color-brand-white: #ffffff;
-
-  /* The homepage hero runs on a charcoal field, and #5fdd9d is the accent that lights it. It is a
-     bright value, so it is used for rules, glows, the primary button and one headline word — never
-     for a large body of type and never as the field itself. On Black Pearl it measures 10.6:1, so
-     even the smallest label can carry it; on white it measures 2.4:1, which is why nothing outside
-     the dark hero is allowed to use it as text. */
-  --color-brand-mint: #5fdd9d;
-  --color-charcoal: #0b1b21;
+  --color-brand-pearl: #344B49;
+  --color-brand-pearl-raised: #526b67;
+  --color-brand-white: #FFFFFF;
+  --color-brand-mint: #6DB1AE;
+  --color-charcoal: #344B49;
 
   --font-sans: "Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif;
   /* The brief asks for one family across the whole site, so the display stack is Open Sans too.
@@ -182,17 +158,7 @@
      to agree with it: that gutter paints the root background, and a white one beside a dark field
      reads as a page that stops short of the edge. `Home` writes the flag while the field owns the
      middle of the viewport. */
-  html[data-hero-wall="1"] {
-    --bgfx-k: 1;
-    scrollbar-color: #1c4453 var(--color-brand-pearl);
-  }
-  html[data-hero-wall="1"]::-webkit-scrollbar-track {
-    background: var(--color-brand-pearl);
-  }
-  html[data-hero-wall="1"]::-webkit-scrollbar-thumb {
-    background: #1c4453;
-    border-color: var(--color-brand-pearl);
-  }
+
 
   body {
     margin: 0;
@@ -2018,3 +1984,10 @@ html[data-immersive="1"] .bgfx-orb-b { transform: translate3d(-6%, -4%, 0); opac
     padding-inline: 0.25rem;
   }
 }
+
+/* Septa visual reset: backgrounds remain still and use the official light palette. */
+.bgfx, .bgfx-wash, .bgfx-sheet, .bgfx-plate, .bgfx-grid, .bgfx-beam, .bgfx-orb,
+.hero-field > [aria-hidden="true"], .hero-field svg { display: none !important; }
+.hero-field { background: #EDF4F0 !important; color: #344B49 !important; }
+.hero-field h1, .hero-field p { color: #344B49 !important; }
+.roll-fill { display: none !important; }
