@@ -3,7 +3,7 @@ import { ArrowUpRight, Clock } from "lucide-react";
 import type { UseCase } from "../../data/useCases";
 import type { Post } from "../../data/posts";
 import type { ServiceContent } from "../../data/services";
-import { cn, formatDate, readingTime } from "../../lib/cn";
+import { cn, readingTime } from "../../lib/cn";
 import { photoFor } from "../../lib/photos";
 import { usePointerTrack } from "../../lib/pointerGlow";
 import { paths } from "../../lib/paths";
@@ -126,12 +126,12 @@ export function CaseCard({ study, featured }: { study: UseCase; featured?: boole
   );
 }
 
-export function PostCard({ post, variant = "default" }: { post: Post; variant?: "default" | "featured" | "compact" }) {
+export function PostCard({ post, variant = "default", showCategory = true }: { post: Post; variant?: "default" | "featured" | "compact"; showCategory?: boolean }) {
   const track = usePointerTrack<HTMLAnchorElement>("tilt", 7);
   const inner = (
     <>
       <div className="flex flex-wrap items-center gap-2">
-        <Pill tone="mint">{post.category}</Pill>
+        {showCategory ? <Pill tone="mint">{post.category}</Pill> : null}
         <span className="inline-flex items-center gap-1 font-mono text-[0.72rem] text-faint">
           <Clock className="size-3" aria-hidden />
           {readingTime(postContent(post))} min read
@@ -148,17 +148,6 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
       {variant !== "compact" ? (
         <p className="mt-2.5 text-[0.9rem] leading-relaxed text-muted">{post.excerpt}</p>
       ) : null}
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        {post.tags.slice(0, 3).map((t) => (
-          <span key={t} className="rounded-pill border border-line px-2.5 py-0.5 text-[0.72rem] text-faint">
-            #{t}
-          </span>
-        ))}
-      </div>
-      <p className="mt-auto flex items-center justify-between gap-3 pt-4 text-[0.78rem] text-faint">
-        <span>{post.author}</span>
-        <span>{formatDate(post.date)}</span>
-      </p>
     </>
   );
 
@@ -185,10 +174,7 @@ export function PostCard({ post, variant = "default" }: { post: Post; variant?: 
               the piece's real facts, not skeleton placeholders. */}
           <div className="absolute inset-x-4 bottom-4 rounded-card bg-ink px-3 py-2.5">
             <p className="font-mono text-[0.66rem] tracking-[0.12em] text-muted uppercase">
-              {post.category}, {readingTime(postContent(post))} min read
-            </p>
-            <p className="mt-1 font-mono text-[0.66rem] text-faint">
-              {formatDate(post.date)}, {post.author}
+              {showCategory ? `${post.category}, ` : ""}{readingTime(postContent(post))} min read
             </p>
           </div>
         </div>
