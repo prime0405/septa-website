@@ -76,7 +76,7 @@ export default function Services() {
       />
 
       <Section wall="use-case" className="section">
-        <SectionHero eyebrow="Our Services" title={serviceOverview} className="mb-12" />
+        <SectionHero eyebrow="Our Services" title="Explore our five service areas" className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {serviceListings.map((s, i) => {
             const svc = services.find((x) => x.slug === s.slug);
