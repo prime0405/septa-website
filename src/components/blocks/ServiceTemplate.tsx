@@ -8,6 +8,7 @@ import { Button } from "../ui/Button";
 import { Reveal, Section, SectionHeading, Pill } from "../ui/primitives";
 import { PhotoFigure } from "./PhotoFigure";
 import { ServiceIcon } from "./ServiceIcon";
+import { useAutoPause } from "../../lib/useRollCycle";
 
 
 function ServiceMotionField({ slug }: { slug: string }) {
@@ -74,34 +75,16 @@ function ServiceMotionField({ slug }: { slug: string }) {
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [isVisible, setIsVisible] = useState(false);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-  const reduce = useReducedMotion();
+  const { reduce, frozen, ref: carouselRef, hoverProps } = useAutoPause();
 
   useEffect(() => {
-    const node = carouselRef.current;
-    if (!node) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(Boolean(entry?.isIntersecting)),
-      { threshold: 0.2 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (reduce || !isVisible || page.coreServices.length < 2) return;
+    if (frozen || page.coreServices.length < 2) return;
     const timer = window.setTimeout(() => {
       setDirection(1);
       setActive((current) => (current + 1) % page.coreServices.length);
-    }, 5200);
+    }, 3000);
     return () => window.clearTimeout(timer);
-  }, [active, isVisible, page.coreServices.length, reduce]);
+  }, [active, frozen, page.coreServices.length]);
   const item = page.coreServices[active];
   if (!item) return null;
 
@@ -159,6 +142,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
       role="region"
       aria-roledescription="carousel"
       aria-label={page.coreServicesHeading}
+      {...hoverProps}
     >
       <div className="grid lg:min-h-[470px] lg:grid-cols-[1.04fr_.96fr]">
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
@@ -241,12 +225,17 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 function ProcessJourney({ page }: { page: ServiceContent }) {
   const steps = page.process ?? [];
   const [active, setActive] = useState(0);
-  useEffect(() => setActive(0), [page.slug]);
+  const { reduce, frozen, ref: journeyRef, hoverProps } = useAutoPause();
+  useEffect(() => {
+    if (frozen || steps.length < 2) return;
+    const timer = window.setTimeout(() => setActive((current) => (current + 1) % steps.length), 7000);
+    return () => window.clearTimeout(timer);
+  }, [active, frozen, steps.length]);
   const step = steps[active];
   if (!step) return null;
 
   return (
-    <div className="mt-12 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
+    <div ref={journeyRef} {...hoverProps} className="mt-12 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
       <div>
         <div className="mb-8 flex items-center justify-between gap-3">
           <Pill tone="mint"><Compass className="size-3.5" aria-hidden /> Your journey</Pill>
