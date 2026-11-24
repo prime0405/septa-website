@@ -165,7 +165,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <div className="absolute inset-0">
-            <AnimatePresence mode="wait" initial={false} custom={direction}>
+            <AnimatePresence mode="sync" initial={false} custom={direction}>
               <motion.div
                 key={visual.src + active}
                 custom={direction}
@@ -203,7 +203,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
             </div>
             <div className="mt-12 grid">
-              <AnimatePresence mode="wait" initial={false}>
+              <AnimatePresence mode="sync" initial={false}>
                 <motion.div
                   key={item.title}
                   className="col-start-1 row-start-1"
