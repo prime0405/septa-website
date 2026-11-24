@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../../lib/cn";
 import { useRollCycle } from "../../lib/useRollCycle";
-import { RollTicks } from "../ui/AutoRollList";
 
 export type ProcessStep = { title: string; detail: string; icon?: ReactNode; note?: string };
 
@@ -86,14 +85,6 @@ export function ProcessSteps({
         })}
       </ol>
       {rolling ? (
-        <RollTicks
-          className="mt-3"
-          count={steps.length}
-          active={active}
-          cycle={cycle}
-          interval={interval}
-          advance={advance}
-        />
       ) : null}
       {caption ? (
         <p className="mt-3 text-[0.8rem] text-faint" aria-hidden>
