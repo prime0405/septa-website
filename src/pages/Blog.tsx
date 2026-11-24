@@ -4,287 +4,172 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Search, SearchX } from "lucide-react";
 import { PageHero } from "../components/blocks/PageHero";
 import { BlogHeroArt } from "../components/visuals/BlogHeroArt";
-import { DevNote } from "../components/blocks/LaunchNote";
+import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
-  Callout,
-  Card,
   EmptyState,
-  MarkerList,
   Pill,
   Reveal,
   Section,
   SectionHeading,
 } from "../components/ui/primitives";
-import { allTags, postCategories, posts } from "../data/posts";
-import { cn, readingTime } from "../lib/cn";
+import { posts } from "../data/posts";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
 
-const ALL = "All";
-
-const postText = (p: (typeof posts)[number]) =>
-  p.body.map((b) => ("text" in b ? b.text : "items" in b ? b.items.join(" ") : "")).join(" ");
+const postText = (post: (typeof posts)[number]) =>
+  post.body.map((block) => ("text" in block ? block.text : "items" in block ? block.items.join(" ") : "")).join(" ");
 
 export default function Blog() {
   usePageMeta({
     title: "Blog",
     description:
-      "Writing from Septa on AI product delivery, automation, legacy modernisation, observability and technology strategy. Current articles are placeholder editorial content.",
+      "Perspectives on AI product development, software engineering, workflow automation and digital transformation.",
   });
 
   const reduce = useReducedMotion();
   const [params, setParams] = useSearchParams();
   const query = params.get("q") ?? "";
-  const category = params.get("category") ?? ALL;
-  const tag = params.get("tag");
+  const sort = params.get("sort") ?? "newest";
 
   const update = (next: Record<string, string | null>) => {
     const merged = new URLSearchParams(params);
-    for (const [k, v] of Object.entries(next)) {
-      if (v === null || v === "" || v === ALL) merged.delete(k);
-      else merged.set(k, v);
+    for (const [key, value] of Object.entries(next)) {
+      if (value === null || value === "") merged.delete(key);
+      else merged.set(key, value);
     }
     setParams(merged, { replace: true });
   };
 
-  const sort = params.get("sort") ?? "newest";
-
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return posts.filter((p) => {
-      if (category !== ALL && p.category !== category) return false;
-      if (tag && !p.tags.includes(tag)) return false;
+    return posts.filter((post) => {
       if (!q) return true;
-      return `${p.title} ${p.excerpt} ${p.tags.join(" ")} ${p.author} ${postText(p)}`
+      return `${post.title} ${post.excerpt} ${post.tags.join(" ")} ${postText(post)}`
         .toLowerCase()
         .includes(q);
     });
-  }, [query, category, tag]);
+  }, [query]);
 
   const ordered = useMemo(() => {
-    const arr = [...results];
-    if (sort === "longest") arr.sort((a, b) => postText(b).length - postText(a).length);
-    else if (sort === "title") arr.sort((a, b) => a.title.localeCompare(b.title));
-    else arr.sort((a, b) => b.date.localeCompare(a.date));
-    return arr;
+    const items = [...results];
+    if (sort === "longest") items.sort((a, b) => postText(b).length - postText(a).length);
+    else if (sort === "title") items.sort((a, b) => a.title.localeCompare(b.title));
+    else items.sort((a, b) => b.date.localeCompare(a.date));
+    return items;
   }, [results, sort]);
 
-  const reads = useMemo(
-    () => posts.map((p) => ({ post: p, mins: readingTime(postText(p)) })),
-    [],
-  );
-  const longest = [...reads].sort((a, b) => b.mins - a.mins).slice(0, 3);
-  const maxMins = Math.max(...reads.map((r) => r.mins));
-
-  const featured = category === ALL && !tag && !query ? posts[0] : null;
-  const list = featured ? ordered.filter((p) => p.slug !== featured.slug) : ordered;
+  const featured = !query ? posts[0] : null;
+  const list = featured ? ordered.filter((post) => post.slug !== featured.slug) : ordered;
+  const clearFilters = () => setParams(new URLSearchParams(), { replace: true });
 
   return (
     <>
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Blog" }]}
-        eyebrow="Writing"
-        title="Notes from the work, written to be useful"
-        lead="Opinions grounded in delivery: how AI projects actually get stuck, what makes automation survive, how to ask a good question about a legacy system, and what monitoring is for."
+        eyebrow="The Septa journal"
+        title="A clearer view of what technology can do."
+        lead="Practical perspectives on AI, product engineering, automation and the decisions behind technology that works."
         meta={
           <>
             <Pill tone="mint">{posts.length} articles</Pill>
-            <Pill tone="line">{postCategories.length} categories</Pill>
-            <Pill tone="line">{allTags.length} tags</Pill>
-            <Pill tone="amber">Placeholder editorial</Pill>
           </>
         }
         actions={
           <>
-            <Button to={paths.request()} size="lg" magnetic>
-              Work with us
-            </Button>
-            <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
-              Send us a topic
-            </Button>
+            <Button to={paths.request()} size="lg" magnetic>Start a conversation</Button>
+            <Button to={paths.contact()} size="lg" variant="secondary" magnetic>Contact Septa</Button>
           </>
         }
         art={<BlogHeroArt />}
         aside={
-          <Reveal>
-            <div className="relative overflow-hidden rounded-card border border-line bg-ink-raised/85 p-6">
-              <div aria-hidden className="rule-bg absolute inset-0 opacity-40" />
-              <div className="relative">
-                <p className="eyebrow mb-4">The reading list</p>
-                <ul className="space-y-4">
-                  {longest.map(({ post: p, mins }, i) => (
-                    <li key={p.slug} className="group">
-                      <Link
-                        to={paths.post(p.slug)}
-                        className="group flex items-baseline gap-3 text-[0.88rem] text-muted hover:text-mint"
-                      >
-                        <span className="font-mono text-[0.72rem] text-faint group-hover:text-mint">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="min-w-0 flex-1 truncate">{p.title}</span>
-                        <span className="font-mono text-[0.72rem] text-faint">{mins}m</span>
-                      </Link>
-                      {/* a length meter against the longest piece, so the list reads as a shelf of
-                          spines rather than three identical rows */}
-                      <span
-                        aria-hidden
-                        className="mt-1.5 ml-7 block h-0.5 rounded-full bg-line"
-                      >
-                        <span
-                          className="block h-full rounded-full bg-mint/45 transition-colors group-hover:bg-mint/70"
-                          style={{ width: `${Math.round((mins / maxMins) * 100)}%` }}
-                        />
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-faint uppercase">
-                  Longest reads, measured against the longest
-                </p>
-              </div>
+          <div className="relative">
+            <PhotoFigure
+              eager
+              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85"
+              alt="A diverse team sharing ideas and collaborating around a table in a bright workspace"
+              ratio="aspect-[4/3]"
+              edge="none"
+            />
+            <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-xl border border-white/15 bg-brand-pearl/90 p-4 shadow-xl backdrop-blur-md sm:inset-x-6 sm:bottom-6 sm:p-5">
+              <p className="mb-2 font-mono text-[0.62rem] tracking-[0.18em] text-brand-mint uppercase">Explore the thinking</p>
+              <p className="max-w-sm font-display text-[1.3rem] leading-snug text-white sm:text-[1.45rem]">
+                Useful ideas. Clear decisions. Better technology.
+              </p>
             </div>
-          </Reveal>
+          </div>
         }
       />
 
-      <Section wall="use-case" className="section">
-        <Callout kind="warn" title="Sample editorial content" className="mb-10">
-          <p>
-            These articles exist to prove out the blog architecture: list, search, filters, article
-            template and related posts. Authorship and dates are placeholders, not real bylines.
-            <DevNote>
-              {" "}Add or replace articles by appending to{" "}
-              <code className="font-mono text-[0.8rem]">src/data/posts.ts</code>; the page layout reads
-              entirely from that file, so new content needs no template work.
-            </DevNote>
-          </p>
-        </Callout>
-
-        {/* --------------------------- controls --------------------------- */}
-        <div className="mb-9 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeading as="h2" eyebrow="Library" title="Browse the writing" />
-          <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-end lg:w-auto">
-            <div className="w-full sm:w-72">
-              <label htmlFor="blog-search" className="eyebrow mb-2 block">
-                Search articles
-              </label>
+      <Section id="journal" wall="use-case" className="section">
+        <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading
+            as="h2"
+            eyebrow="Explore the journal"
+            title="Perspectives for the work ahead"
+          />
+          <div className="grid w-full gap-3 sm:grid-cols-[minmax(15rem,1fr)_10rem] lg:w-auto">
+            <div className="w-full sm:min-w-64">
+              <label htmlFor="blog-search" className="eyebrow mb-2 block">Search articles</label>
               <div className="relative">
-                <Search
-                  className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-faint"
-                  aria-hidden
-                />
+                <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-faint" aria-hidden />
                 <input
                   id="blog-search"
                   type="search"
                   value={query}
-                  onChange={(e) => update({ q: e.target.value })}
-                  placeholder="e.g. evaluation, error budget"
-                  className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[1rem] text-fg placeholder:text-faint"
+                  onChange={(event) => update({ q: event.target.value })}
+                  placeholder="Search a topic or idea"
+                  className="w-full rounded-pill border border-line bg-ink-raised py-2.5 pr-4 pl-10 text-[0.92rem] text-fg placeholder:text-faint focus:border-mint/60 focus:outline-none focus:ring-2 focus:ring-mint/10"
                 />
               </div>
             </div>
-            <div className="w-full sm:w-44">
-              <label htmlFor="blog-sort" className="eyebrow mb-2 block">
-                Order
-              </label>
+            <div className="w-full">
+              <label htmlFor="blog-sort" className="eyebrow mb-2 block">Sort by</label>
               <select
                 id="blog-sort"
                 value={sort}
-                onChange={(e) => update({ sort: e.target.value === "newest" ? null : e.target.value })}
-                className="w-full rounded-pill border border-line bg-ink-raised px-4 py-2.5 text-[0.92rem] text-fg"
+                onChange={(event) => update({ sort: event.target.value === "newest" ? null : event.target.value })}
+                className="w-full rounded-pill border border-line bg-ink-raised px-4 py-2.5 text-[0.88rem] text-fg"
               >
-                <option value="newest">Newest first</option>
+                <option value="newest">Newest</option>
                 <option value="longest">Longest read</option>
-                <option value="title">Title A to Z</option>
+                <option value="title">Title A–Z</option>
               </select>
             </div>
           </div>
         </div>
 
-        <div className="mb-8 flex flex-wrap items-center gap-2">
-          <span className="mr-1 font-mono text-[0.68rem] tracking-wider text-faint uppercase">
-            Category
-          </span>
-          {[ALL, ...postCategories].map((cat) => {
-            const active = category === cat;
-            return (
-              <button
-                key={cat}
-                type="button"
-                aria-pressed={active}
-                onClick={() => update({ category: cat, tag: null })}
-                className={cn(
-                  "rounded-pill border px-3.5 py-1.5 text-[0.82rem] transition-colors",
-                  active
-                    ? "border-mint/50 bg-mint/10 text-mint"
-                    : "border-line bg-ink-raised text-muted hover:border-muted/50 hover:text-fg",
-                )}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mb-10 flex flex-wrap items-center gap-2">
-          <span className="mr-1 font-mono text-[0.68rem] tracking-wider text-faint uppercase">
-            Tags
-          </span>
-          {allTags.map((t) => {
-            const active = tag === t;
-            return (
-              <button
-                key={t}
-                type="button"
-                aria-pressed={active}
-                onClick={() => update({ tag: active ? null : t })}
-                className={cn(
-                  "rounded-pill border px-3 py-1 font-mono text-[0.72rem] transition-colors",
-                  active
-                    ? "border-mint/50 bg-mint/10 text-mint"
-                    : "border-line bg-transparent text-faint hover:border-muted/50 hover:text-muted",
-                )}
-              >
-                #{t}
-              </button>
-            );
-          })}
-        </div>
-
-        {(query || category !== ALL || tag) && (
-          <p className="-mt-6 mb-8 flex flex-wrap items-center gap-3 text-[0.85rem] text-faint">
+        {query && (
+          <p className="-mt-3 mb-7 flex flex-wrap items-center gap-3 text-[0.85rem] text-faint">
             Showing {results.length} of {posts.length}
-            <button type="button" onClick={() => setParams(new URLSearchParams(), { replace: true })} className="text-mint hover:underline">
-              Reset filters
-            </button>
+            <button type="button" onClick={clearFilters} className="text-mint hover:underline">Clear filters</button>
           </p>
         )}
 
-        {/* --------------------------- featured --------------------------- */}
-        {featured ? (
-          <Reveal className="mb-8">
-            <p className="eyebrow mb-4">Featured</p>
-            <PostCard post={featured} variant="featured" />
+        {featured && (
+          <Reveal className="mb-9">
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <p className="eyebrow">Featured perspective</p>
+            </div>
+            <PostCard post={featured} variant="featured" showCategory={false} />
           </Reveal>
-        ) : null}
+        )}
 
-        {/* ---------------------------- list ----------------------------- */}
         {results.length ? (
           <motion.div layout={!reduce} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
-              {list.map((p, i) => (
+              {list.map((post, index) => (
                 <motion.div
-                  key={p.slug}
+                  key={post.slug}
                   layout={!reduce}
                   initial={reduce ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduce ? undefined : { opacity: 0, y: -8 }}
-                  transition={{ duration: 0.32, delay: Math.min(i * 0.03, 0.18) }}
+                  transition={{ duration: 0.28, delay: Math.min(index * 0.025, 0.15) }}
                   className="h-full"
                 >
-                  <PostCard post={p} />
+                  <PostCard post={post} showCategory={false} />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -292,68 +177,26 @@ export default function Blog() {
         ) : (
           <EmptyState
             icon={<SearchX className="size-5" />}
-            title="Nothing published matches that"
+            title="No matching perspectives"
             action={
               <div className="flex flex-wrap justify-center gap-3">
-                <Button onClick={() => setParams(new URLSearchParams(), { replace: true })} size="sm" variant="secondary">
-                  Clear search and filters
-                </Button>
-                <Button to={paths.contact()} size="sm">
-                  Ask us to write about it
-                </Button>
+                <Button onClick={clearFilters} size="sm" variant="secondary">Clear filters</Button>
+                <Button to={paths.contact()} size="sm">Suggest a topic</Button>
               </div>
             }
           >
-            Search covers titles, excerpts, tags, authors and article bodies. If a topic matters to
-            you, it is worth telling us.
+            Try another search or topic. You can also tell us what you would like to read about.
           </EmptyState>
         )}
-      </Section>
 
-      {/* ------------------------ content model ------------------------ */}
-      <Section wall="service-automation" tone="raised" className="section">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-          <SectionHeading
-            eyebrow="Content model"
-            title="How an article gets published"
-            lead="The blog is data-driven by design: structured content in one file, one template, no rebuild needed to add a piece."
-          />
-          <div className="space-y-6">
-            <MarkerList
-              items={[
-                {
-                  label: "One entry in a single data file",
-                  detail: "Title, excerpt, category, tags, author, date and body blocks.",
-                },
-                {
-                  label: "Write the body as blocks",
-                  detail: "Paragraphs, headings, lists, quotes and code, rendered by the article template.",
-                },
-                {
-                  label: "Categories and tags update themselves",
-                  detail: "Filters are derived from the data, so a new category appears without page edits.",
-                },
-                {
-                  label: "Swap in a CMS later",
-                  detail:
-                    "The page consumes one exported array, so replacing the file with a fetch keeps the layout intact.",
-                },
-              ]}
-            />
-            <Card className="p-5">
-              <p className="eyebrow mb-3">Body block types</p>
-              <div className="flex flex-wrap gap-2">
-                {["p", "h2", "h3", "ul", "quote", "code"].map((b) => (
-                  <span
-                    key={b}
-                    className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[0.74rem] text-muted"
-                  >
-                    {b}
-                  </span>
-                ))}
-              </div>
-            </Card>
-          </div>
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
+          <p className="text-[0.85rem] text-muted">
+            {ordered.length} {ordered.length === 1 ? "piece" : "pieces"} in this view
+          </p>
+          <Link to={paths.contact()} className="inline-flex items-center gap-2 text-[0.86rem] font-medium text-mint hover:underline">
+            Have a topic in mind? Tell us
+            <span aria-hidden>↗</span>
+          </Link>
         </div>
       </Section>
     </>
