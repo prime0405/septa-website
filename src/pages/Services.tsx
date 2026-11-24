@@ -71,7 +71,7 @@ export default function Services() {
             </Button>
           </>
         }
-        art={<ServicesHeroArt />}
+        art={<ServicesHeroArt />}\n        density="compact"
         aside={serviceLegend}
       />
 
