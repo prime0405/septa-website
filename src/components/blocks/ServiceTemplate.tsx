@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
@@ -225,7 +225,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 function ProcessJourney({ page }: { page: ServiceContent }) {
   const steps = page.process ?? [];
   const [active, setActive] = useState(0);
-  const { reduce, frozen, ref: journeyRef, hoverProps } = useAutoPause();
+  const { frozen, ref: journeyRef, hoverProps } = useAutoPause();
   useEffect(() => {
     if (frozen || steps.length < 2) return;
     const timer = window.setTimeout(() => setActive((current) => (current + 1) % steps.length), 7000);
@@ -467,7 +467,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
         <div className="max-w-3xl">
           <SectionHeading eyebrow="From first step to delivery" title={page.processHeading ?? "Our Process"} lead={page.processLead} />
         </div>
-        <ProcessJourney page={page} />
+        <ProcessJourney key={page.slug} page={page} />
       </Section> : null}
 
       {page.slug === "talent-solution" && page.whoWeServe ? <Section wall="services" tone="surface" className="section border-y border-line-soft">
