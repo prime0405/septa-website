@@ -21,7 +21,7 @@ export function Decode({ text }: { text: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
   const held = useIntroHeld();
-  const inView = useInView(ref, { once: true, margin: "-30px 0px -30px 0px" });
+  const inView = useInView(ref, { once: false, amount: 0.35, margin: "-30px 0px -30px 0px" });
   const [scrambled, setScrambled] = useState<string | null>(null);
 
   useEffect(() => {
