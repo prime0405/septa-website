@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass, Pause, Play } from "lucide-react";
 import type { ServiceContent } from "../../data/services";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
@@ -75,16 +75,17 @@ function ServiceMotionField({ slug }: { slug: string }) {
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
   const { reduce, frozen, ref: carouselRef, hoverProps } = useAutoPause();
 
   useEffect(() => {
-    if (frozen || page.coreServices.length < 2) return;
+    if (frozen || paused || page.coreServices.length < 2) return;
     const timer = window.setTimeout(() => {
       setDirection(1);
       setActive((current) => (current + 1) % page.coreServices.length);
     }, 3000);
     return () => window.clearTimeout(timer);
-  }, [active, frozen, page.coreServices.length]);
+  }, [active, frozen, page.coreServices.length, paused]);
   const item = page.coreServices[active];
   if (!item) return null;
 
@@ -184,7 +185,12 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           <div className="relative">
             <div className="flex items-center justify-between gap-4">
               <span className="font-mono text-[.68rem] uppercase tracking-[.22em] text-[#91d9cf]">What we do / Core services</span>
-              <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
+                <button type="button" aria-pressed={paused} aria-label={paused ? "Resume automatic capability rotation" : "Pause automatic capability rotation"} onClick={() => setPaused((value) => !value)} className="inline-flex size-9 items-center justify-center rounded-full border border-white/20 text-white/75 transition-colors hover:border-[#91d9cf] hover:text-white">
+                  {paused ? <Play className="size-3.5" aria-hidden /> : <Pause className="size-3.5" aria-hidden />}
+                </button>
+              </div>
             </div>
             <div className="mt-12 grid">
               <AnimatePresence mode="sync" initial={false}>
@@ -225,12 +231,13 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 function ProcessJourney({ page }: { page: ServiceContent }) {
   const steps = page.process ?? [];
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
   const { frozen, ref: journeyRef, hoverProps } = useAutoPause();
   useEffect(() => {
-    if (frozen || steps.length < 2) return;
+    if (frozen || paused || steps.length < 2) return;
     const timer = window.setTimeout(() => setActive((current) => (current + 1) % steps.length), 3000);
     return () => window.clearTimeout(timer);
-  }, [active, frozen, steps.length]);
+  }, [active, frozen, steps.length, paused]);
   const step = steps[active];
   if (!step) return null;
 
@@ -264,9 +271,14 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
       <div className="service-glass relative flex min-h-[390px] flex-col overflow-hidden rounded-[2rem] border border-white/60 bg-white/55 p-7 shadow-[0_24px_70px_-50px_rgba(6,24,32,.45)] backdrop-blur-xl sm:rounded-[2.4rem] sm:p-10">
         <div className="flex items-center justify-between gap-4 border-b border-line-soft pb-5">
           <span className="font-mono text-xs uppercase tracking-[0.18em] text-mint">Stage {String(active + 1).padStart(2, "0")}</span>
-          <span className="font-mono text-xs text-muted">{Math.round(((active + 1) / steps.length) * 100)}% complete</span>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-xs text-muted">{active + 1} of {steps.length} stages</span>
+            <button type="button" aria-pressed={paused} aria-label={paused ? "Resume automatic process rotation" : "Pause automatic process rotation"} onClick={() => setPaused((value) => !value)} className="inline-flex size-9 items-center justify-center rounded-full border border-line text-fg transition-colors hover:border-mint hover:text-mint">
+              {paused ? <Play className="size-3.5" aria-hidden /> : <Pause className="size-3.5" aria-hidden />}
+            </button>
+          </div>
         </div>
-        <div className="mt-6 h-1 w-full bg-ink-raised" role="progressbar" aria-label="Process exploration progress" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={active + 1}>
+        <div className="mt-6 h-1 w-full bg-ink-raised" role="progressbar" aria-label="Selected process stage" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={active + 1}>
           <div className="h-full bg-brand-teal transition-[width] duration-500" style={{ width: `${((active + 1) / steps.length) * 100}%` }} />
         </div>
         <AnimatePresence mode="wait">
