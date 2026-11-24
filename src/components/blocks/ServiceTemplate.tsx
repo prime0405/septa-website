@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass, Pause, Play } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
 import type { ServiceContent } from "../../data/services";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
@@ -75,17 +75,17 @@ function ServiceMotionField({ slug }: { slug: string }) {
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [paused, setPaused] = useState(false);
+  
   const { reduce, frozen, ref: carouselRef, hoverProps } = useAutoPause();
 
   useEffect(() => {
-    if (frozen || paused || page.coreServices.length < 2) return;
+    if (frozen || page.coreServices.length < 2) return;
     const timer = window.setTimeout(() => {
       setDirection(1);
       setActive((current) => (current + 1) % page.coreServices.length);
     }, 3000);
     return () => window.clearTimeout(timer);
-  }, [active, frozen, page.coreServices.length, paused]);
+  }, [active, frozen, page.coreServices.length]);
   const item = page.coreServices[active];
   if (!item) return null;
 
@@ -142,7 +142,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   return (
     <div
       ref={carouselRef}
-      className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-[#071f27] text-white shadow-[0_32px_90px_-48px_rgba(6,24,32,.72)] sm:rounded-[2.5rem]"
+      className="service-capability-carousel mt-12 overflow-hidden rounded-[2rem] border border-brand-teal/25 bg-white text-fg shadow-[0_18px_55px_-38px_rgba(52,75,73,.25)] sm:rounded-[2.5rem]"
       role="region"
       aria-roledescription="carousel"
       aria-label={page.coreServicesHeading}
@@ -174,36 +174,33 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                     <div aria-hidden className="size-44 rounded-full border border-brand-teal/30 bg-brand-teal/[0.06] shadow-[0_0_90px_rgba(109,177,174,.16)]" />
                     <div aria-hidden className="absolute size-28 rotate-45 border border-brand-teal/40" />
                     <div aria-hidden className="absolute h-px w-3/4 bg-gradient-to-r from-transparent via-brand-teal/60 to-transparent" />
-                    <span className="absolute bottom-8 font-mono text-[.65rem] tracking-[.24em] text-white/50">SEPTA / DIGITAL CAPABILITY</span>
+                    <span className="absolute bottom-8 font-mono text-[.65rem] tracking-[.24em] text-muted">SEPTA / DIGITAL CAPABILITY</span>
                   </div>
                 )}
               </motion.div>
             </AnimatePresence>
           </div>
-          <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/25 bg-[#061820]/70 px-3 py-2 backdrop-blur-md sm:left-7 sm:top-7">
+          <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-[#DDEFE6] bg-[#061820]/70 px-3 py-2 backdrop-blur-md sm:left-7 sm:top-7">
             <span className="size-2 rounded-full bg-[#72d8bd] shadow-[0_0_14px_rgba(114,216,189,.8)]" />
-            <span className="font-mono text-[.62rem] tracking-[.18em] text-white/90">SEPTA / CAPABILITY {String(active + 1).padStart(2, "0")}</span>
+            <span className="font-mono text-[.62rem] tracking-[.18em] text-fg">SEPTA / CAPABILITY {String(active + 1).padStart(2, "0")}</span>
           </div>
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
             <div>
-              <p className="font-mono text-[.62rem] tracking-[.2em] text-[#91d9cf]">{visual.tag}</p>
+              <p className="font-mono text-[.62rem] tracking-[.2em] text-[#4f9692]">{visual.tag}</p>
               
             </div>
-            <span className="font-mono text-4xl font-light text-white/65 sm:text-5xl">{String(active + 1).padStart(2, "0")}</span>
+            <span className="font-mono text-4xl font-light text-muted sm:text-5xl">{String(active + 1).padStart(2, "0")}</span>
           </div>
         </div>
 
-        <div className="relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-[linear-gradient(145deg,#10333c,#071f27_68%)] p-6 sm:p-9 lg:p-10">
+        <div className="relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-[#DDEFE6] p-6 sm:p-9 lg:p-10">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full bg-brand-teal/[0.12] blur-3xl" />
           <div className="relative">
             <div className="flex items-center justify-between gap-4">
               <span className="font-mono text-[.68rem] uppercase tracking-[.22em] text-[#91d9cf]">What we do / Core services</span>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs text-white/55">{String(active + 1).padStart(2, "0")} <span className="text-white/30">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
-                <button type="button" aria-pressed={paused} aria-label={paused ? "Resume automatic capability rotation" : "Pause automatic capability rotation"} onClick={() => setPaused((value) => !value)} className="inline-flex size-9 items-center justify-center rounded-full border border-white/20 text-white/75 transition-colors hover:border-[#91d9cf] hover:text-white">
-                  {paused ? <Play className="size-3.5" aria-hidden /> : <Pause className="size-3.5" aria-hidden />}
-                </button>
+                <span className="font-mono text-xs text-muted">{String(active + 1).padStart(2, "0")} <span className="text-faint">/</span> {String(page.coreServices.length).padStart(2, "0")}</span>
               </div>
             </div>
             <div className="mt-8 grid min-w-0 sm:mt-10">
@@ -216,9 +213,9 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                   exit={{ opacity: 0, x: direction * -22, y: -3 }}
                   transition={{ duration: reduce ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <p className="font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-4 max-w-xl break-words text-balance text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.08] tracking-tight text-white">{item.title}</h3>
-                  {item.detail ? <p className="mt-5 max-w-xl break-words text-[.98rem] leading-7 text-white/75 sm:leading-8">{item.detail}</p> : null}
+                  <p className="font-mono text-xs tracking-[.2em] text-[#4f9692]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-4 max-w-xl break-words text-balance text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.08] tracking-tight text-fg">{item.title}</h3>
+                  {item.detail ? <p className="mt-5 max-w-xl break-words text-[.98rem] leading-7 text-muted sm:leading-8">{item.detail}</p> : null}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -229,7 +226,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
                 <button key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
-                  className={cn("min-h-10 min-w-0 break-words rounded-xl border px-3 py-2 text-left text-xs font-semibold leading-snug transition-all duration-300 sm:flex-1", active === index ? "border-[#91d9cf]/70 bg-[#6db1ae]/20 text-white shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-white/15 bg-white/[.035] text-white/65 hover:border-white/35 hover:bg-white/[.08] hover:text-white")}>
+                  className={cn("min-h-10 min-w-0 break-words rounded-xl border px-3 py-2 text-left text-xs font-semibold leading-snug transition-all duration-300 sm:flex-1", active === index ? "border-[#6DB1AE] bg-[#DDEFE6] text-fg shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-line bg-white text-muted hover:border-[#6DB1AE] hover:bg-[#EDF4F0] hover:text-fg")}>
                   <span className="mr-2 font-mono text-[.62rem] text-[#91d9cf]">{String(index + 1).padStart(2, "0")}</span>{capability.title}
                 </button>
               ))}
@@ -248,10 +245,10 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
   const [paused, setPaused] = useState(false);
   const { frozen, ref: journeyRef, hoverProps } = useAutoPause();
   useEffect(() => {
-    if (frozen || paused || steps.length < 2) return;
+    if (frozen || steps.length < 2) return;
     const timer = window.setTimeout(() => setActive((current) => (current + 1) % steps.length), 3000);
     return () => window.clearTimeout(timer);
-  }, [active, frozen, steps.length, paused]);
+  }, [active, frozen, steps.length]);
   const step = steps[active];
   if (!step) return null;
 
@@ -287,13 +284,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
           <span className="font-mono text-xs uppercase tracking-[0.18em] text-mint">Stage {String(active + 1).padStart(2, "0")}</span>
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs text-muted">{active + 1} of {steps.length} stages</span>
-            <button type="button" aria-pressed={paused} aria-label={paused ? "Resume automatic process rotation" : "Pause automatic process rotation"} onClick={() => setPaused((value) => !value)} className="inline-flex size-9 items-center justify-center rounded-full border border-line text-fg transition-colors hover:border-mint hover:text-mint">
-              {paused ? <Play className="size-3.5" aria-hidden /> : <Pause className="size-3.5" aria-hidden />}
-            </button>
           </div>
-        </div>
-        <div className="mt-6 h-1 w-full bg-ink-raised" role="progressbar" aria-label="Selected process stage" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={active + 1}>
-          <div className="h-full bg-brand-teal transition-[width] duration-500" style={{ width: `${((active + 1) / steps.length) * 100}%` }} />
         </div>
         <AnimatePresence mode="wait">
           <motion.div key={step.title} initial={{ opacity: 0, y: 20, filter: "blur(7px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -12, filter: "blur(5px)" }} transition={{ duration: .32 }}>
@@ -353,13 +344,13 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
 
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-brand-pearl text-white">
+      <section className="relative isolate overflow-hidden bg-[#EDF4F0] text-[#344B49]">
         <ServiceMotionField slug={page.slug} />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl via-brand-pearl/95 to-brand-pearl/45" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#EDF4F0] via-[#EDF4F0]/95 to-[#EDF4F0]/45" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-teal/20 via-transparent to-transparent" />
         <div className="wrap relative py-11 sm:py-14 lg:py-16">
           {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-white/45">
+            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-muted">
               {crumbs.map((crumb, index) => <li key={crumb.label} className="flex items-center gap-2">
                 {index > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
                 {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-brand-teal">{crumb.label}</Link> : <span className="text-brand-teal">{crumb.label}</span>}
@@ -373,8 +364,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-teal">{page.name}</span>
               </div>
               <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
-                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
-                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/65 sm:text-base sm:leading-7">{page.intro}</p>
+                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-[#344B49]">{page.heroTitle}</h1>
+                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-muted sm:text-base sm:leading-7">{page.intro}</p>
               </motion.div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" magnetic>{page.cta.label}</Button> : null}
@@ -386,9 +377,9 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </div>
             </div>
 
-            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-white/25 bg-white/[0.08] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-white/25 bg-white p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
               <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-brand-teal/25" />
-              <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
+              <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-white shadow-[0_18px_55px_-38px_rgba(52,75,73,.25)] sm:rounded-[2rem]">
                 <PhotoFigure
                   src={page.image?.src ?? "/img/work/product-in-use.webp"}
                   alt={page.image?.alt ?? `Septa ${page.name} in practice`}
@@ -397,8 +388,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                   className="w-full photo-soft-frame"
                   eager
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-pearl via-brand-pearl/25 to-brand-pearl/5" />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl/45 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#344B49]/65 via-[#344B49]/10 to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#344B49]/10 via-transparent to-transparent" />
                 <div className="absolute left-5 top-5 flex items-center gap-3 rounded-full border border-white/30 bg-brand-pearl/75 px-4 py-3 text-white shadow-lg backdrop-blur-md sm:left-7 sm:top-7">
                   <span className="relative flex size-2.5">
                     <span className="absolute inline-flex size-full rounded-full bg-brand-teal/25" />
