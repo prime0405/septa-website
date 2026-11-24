@@ -89,42 +89,42 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const item = page.coreServices[active];
   if (!item) return null;
 
-  const visuals: Record<string, { src: string; alt: string; tag: string }[]> = {
-    "ai-product-development": [
-      { src: "/img/section/ai-product-development.webp", alt: "AI product interface and intelligent user experience concept", tag: "EXPERIENCE DESIGN" },
-      { src: "/img/work/product-in-use.webp", alt: "Digital product interface in use", tag: "WEB PLATFORMS" },
-      { src: "/img/work/product-delivery.webp", alt: "Product engineering and delivery environment", tag: "MOBILE PRODUCTS" },
-      { src: "/img/work/ai-model-build.webp", alt: "AI model development workstation with a model pipeline and training visualisation", tag: "AI & MACHINE LEARNING" },
-      { src: "/img/section/traditional-product-development.webp", alt: "Product development workflow and engineering environment", tag: "END-TO-END BUILD" },
-    ],
-    "workflow-automation": [
-      { src: "/img/work/automation-flows.webp", alt: "Workflow automation canvas with connected trigger and action nodes", tag: "WORKFLOW DESIGN" },
-      { src: "/img/work/product-in-use.webp", alt: "Digital tools being used in an operational workflow", tag: "CUSTOM AUTOMATION" },
-      { src: "/img/work/ai-model-build.webp", alt: "Connected technical systems and data processing environment", tag: "SYSTEM INTEGRATION" },
-      { src: "/img/work/transformation-floor.webp", alt: "Business operations transitioning from manual to digital processes", tag: "PROCESS IMPROVEMENT" },
-    ],
-    "digital-transformation": [
-      { src: "/img/work/transformation-floor.webp", alt: "Business operations moving from legacy processes to digital tools", tag: "PROCESS MODERNISATION" },
-      { src: "/img/work/product-delivery.webp", alt: "Modern digital infrastructure and product delivery environment", tag: "CLOUD & INFRASTRUCTURE" },
-      { src: "/img/work/ai-model-build.webp", alt: "Data processing and analytics environment", tag: "DATA INTELLIGENCE" },
-      { src: "/img/work/product-in-use.webp", alt: "Customer-facing digital product interface", tag: "CUSTOMER EXPERIENCE" },
-      { src: "/img/work/engineering-floor.webp", alt: "Technology team collaborating on system adoption", tag: "CHANGE & ADOPTION" },
-    ],
-    "observability-monitoring": [
-      { src: "/img/work/observability-noc.webp", alt: "Monitoring screens showing service health, performance graphs and log activity", tag: "LIVE SYSTEM HEALTH" },
-      { src: "/img/work/ai-model-build.webp", alt: "Technical data panels used to investigate system activity", tag: "LOG INTELLIGENCE" },
-      { src: "/img/work/product-delivery.webp", alt: "Engineering environment focused on system performance", tag: "PERFORMANCE TUNING" },
-      { src: "/img/work/automation-flows.webp", alt: "Connected technical workflow and operational signals", tag: "REPORTING & ALERTS" },
-    ],
-    "talent-solution": [
-      { src: "/img/work/talent-matching.webp", alt: "Candidate profiles and skills being matched to a role", tag: "TALENT SOURCING" },
-      { src: "/img/work/hiring-review.webp", alt: "Recruitment team reviewing candidate applications", tag: "TAILORED RECRUITMENT" },
-      { src: "/img/work/product-in-use.webp", alt: "Digital workforce management interface", tag: "PAYROLL OPERATIONS" },
-      { src: "/img/section/talent-solution.webp", alt: "Employee support and benefits administration concept", tag: "PEOPLE & BENEFITS" },
-    ],
+  const visuals: Record<string, Record<string, { src: string; alt: string; tag: string }>> = {
+    "ai-product-development": {
+      "UI/UX Design": { src: "/img/section/ai-product-development.webp", alt: "AI product interface and intelligent user experience concept", tag: "EXPERIENCE DESIGN" },
+      "Web Development": { src: "/img/work/product-in-use.webp", alt: "Digital product interface in use", tag: "WEB PLATFORMS" },
+      "Mobile App Development": { src: "/img/work/product-delivery.webp", alt: "Product engineering and delivery environment", tag: "MOBILE PRODUCTS" },
+      "AI and Machine Learning Integration": { src: "/img/work/ai-model-build.webp", alt: "AI model development workstation with a model pipeline and training visualisation", tag: "AI & MACHINE LEARNING" },
+      "End-to-End Delivery": { src: "/img/section/traditional-product-development.webp", alt: "Product development workflow and engineering environment", tag: "END-TO-END BUILD" },
+    },
+    "workflow-automation": {
+      "Business Process Automation": { src: "/img/work/automation-flows.webp", alt: "Workflow automation canvas with connected trigger and action nodes", tag: "WORKFLOW DESIGN" },
+      "Custom Automation Tools": { src: "/img/work/product-in-use.webp", alt: "Digital tools being used in an operational workflow", tag: "CUSTOM AUTOMATION" },
+      "System Integration": { src: "/img/work/ai-model-build.webp", alt: "Connected technical systems and data processing environment", tag: "SYSTEM INTEGRATION" },
+      "Repetitive Task Elimination": { src: "/img/work/transformation-floor.webp", alt: "Business operations transitioning from manual to digital processes", tag: "PROCESS IMPROVEMENT" },
+    },
+    "digital-transformation": {
+      "Process Modernization": { src: "/img/work/transformation-floor.webp", alt: "Business operations moving from legacy processes to digital tools", tag: "PROCESS MODERNISATION" },
+      "Cloud Migration": { src: "/img/work/product-delivery.webp", alt: "Modern digital infrastructure and product delivery environment", tag: "CLOUD & INFRASTRUCTURE" },
+      "Data Intelligence": { src: "/img/work/ai-model-build.webp", alt: "Data processing and analytics environment", tag: "DATA INTELLIGENCE" },
+      "Customer Experience Upgrades": { src: "/img/work/product-in-use.webp", alt: "Customer-facing digital product interface", tag: "CUSTOMER EXPERIENCE" },
+      "Change Management Support": { src: "/img/work/engineering-floor.webp", alt: "Technology team collaborating on system adoption", tag: "CHANGE & ADOPTION" },
+    },
+    "observability-monitoring": {
+      "Real-Time Monitoring": { src: "/img/work/observability-noc.webp", alt: "Monitoring screens showing service health, performance graphs and log activity", tag: "LIVE SYSTEM HEALTH" },
+      "Log Management": { src: "/img/work/ai-model-build.webp", alt: "Technical data panels used to investigate system activity", tag: "LOG INTELLIGENCE" },
+      "Performance Optimization": { src: "/img/work/product-delivery.webp", alt: "Engineering environment focused on system performance", tag: "PERFORMANCE TUNING" },
+      "Dashboards & Reporting": { src: "/img/work/automation-flows.webp", alt: "Connected technical workflow and operational signals", tag: "REPORTING & ALERTS" },
+    },
+    "talent-solution": {
+      "Access to a pool of pre-scanned talent solutions": { src: "/img/work/talent-matching.webp", alt: "Candidate profiles and skills being matched to a role", tag: "TALENT SOURCING" },
+      "Tailored Recruitment process": { src: "/img/work/hiring-review.webp", alt: "Recruitment team reviewing candidate applications", tag: "TAILORED RECRUITMENT" },
+      "Payroll management": { src: "/img/work/product-in-use.webp", alt: "Digital workforce management interface", tag: "PAYROLL OPERATIONS" },
+      "Employee benefits administration": { src: "/img/section/talent-solution.webp", alt: "Employee support and benefits administration concept", tag: "PEOPLE & BENEFITS" },
+    },
   };
-  const slides = visuals[page.slug] ?? visuals["ai-product-development"];
-  const visual = slides[active % slides.length];
+  const visual = visuals[page.slug]?.[item.title];
+  if (!visual) return null;
   const goTo = (index: number) => {
     const length = page.coreServices.length;
     const next = ((index % length) + length) % length;
