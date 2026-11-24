@@ -11,67 +11,6 @@ import { ServiceIcon } from "./ServiceIcon";
 import { useAutoPause } from "../../lib/useRollCycle";
 
 
-function ServiceMotionField({ slug }: { slug: string }) {
-  const reduce = useReducedMotion();
-  const traces: Record<string, { primary: string; secondary: string }> = {
-    "ai-product-development": {
-      primary: "M760 90H570L470 190H330L230 290H0",
-      secondary: "M760 410H600L500 310H390L290 410H130",
-    },
-    "workflow-automation": {
-      primary: "M760 160H610V260H470V180H330V300H190V420H0",
-      secondary: "M610 260H690V390H520V470H350",
-    },
-    "digital-transformation": {
-      primary: "M760 100H650V190H540V280H420V370H280V460H120V540H0",
-      secondary: "M760 500H650V410H540V320H420V230H280V140H120V70H0",
-    },
-    "observability-monitoring": {
-      primary: "M760 300H650L620 300L590 210L555 390L520 150L485 440L450 260H0",
-      secondary: "M760 500H620L580 450H500L460 500H380L340 450H0",
-    },
-    "talent-solution": {
-      primary: "M760 90H610L500 200H380L260 320H0",
-      secondary: "M760 500H620L500 390H380L260 270H120",
-    },
-  };
-  const trace = traces[slug] ?? traces["ai-product-development"];
-
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(109,177,174,.28) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.28) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
-      />
-      <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-teal/[0.08] blur-[110px]" />
-      <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.24]" viewBox="0 0 760 620" fill="none">
-        <motion.path
-          d={trace.primary}
-          stroke="#6DB1AE"
-          strokeWidth="1.2"
-          strokeDasharray="5 13"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduce ? 0 : 2.8, ease: "easeOut" }}
-        />
-        <motion.path
-          d={trace.secondary}
-          stroke="#6DB1AE"
-          strokeWidth="1"
-          strokeDasharray="3 15"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduce ? 0 : 3.2, delay: 0.15, ease: "easeOut" }}
-        />
-      </svg>
-    </div>
-  );
-}
-
 function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -150,7 +89,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     >
       <div className="grid lg:min-h-[470px] lg:grid-cols-[1.04fr_.96fr]">
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
+          <div aria-hidden className="absolute inset-0 bg-[#DDEFE6]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <div className="absolute inset-0">
             <AnimatePresence mode="sync" initial={false} custom={direction}>
@@ -166,8 +105,8 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 {visual.src ? (
                   <>
                     <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#344B49]/45 via-transparent to-transparent" />
+                    <div aria-hidden className="absolute inset-0 bg-transparent" />
                   </>
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -180,8 +119,8 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               </motion.div>
             </AnimatePresence>
           </div>
-          <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-[#DDEFE6] bg-[#061820]/70 px-3 py-2 backdrop-blur-md sm:left-7 sm:top-7">
-            <span className="size-2 rounded-full bg-[#72d8bd] shadow-[0_0_14px_rgba(114,216,189,.8)]" />
+          <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-[#DDEFE6] bg-white/85 px-3 py-2 backdrop-blur-md sm:left-7 sm:top-7">
+            <span className="size-2 rounded-full bg-[#6DB1AE] shadow-[0_0_14px_rgba(114,216,189,.8)]" />
             <span className="font-mono text-[.62rem] tracking-[.18em] text-fg">SEPTA / CAPABILITY {String(active + 1).padStart(2, "0")}</span>
           </div>
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
@@ -222,7 +161,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           </div>
 
           <div className="relative mt-10">
-            <p className="mb-5 text-xs text-white/55">Explore each capability</p>
+            <p className="mb-5 text-xs text-muted">Explore each capability</p>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
                 <button key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
@@ -264,14 +203,14 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
           {steps.map((item, index) => (
             <button key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)}
               className={cn("relative flex w-full items-center gap-4 rounded-2xl border px-3 py-4 text-left transition-all duration-300",
-                active === index ? "border-brand-pearl bg-brand-pearl text-white shadow-lg shadow-brand-pearl/10" : "border-transparent text-brand-pearl hover:border-white/60 hover:bg-white/55")}>
+                active === index ? "border-[#6DB1AE] bg-[#DDEFE6] text-[#344B49] shadow-sm" : "border-transparent text-[#344B49] hover:border-[#6DB1AE]/60 hover:bg-white")}>
               <span className={cn("relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border font-mono text-xs",
                 index < active ? "border-brand-teal bg-brand-teal text-brand-pearl" : active === index ? "border-brand-teal bg-brand-teal text-brand-pearl" : "border-line bg-white text-muted")}>
                 {index < active ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}
               </span>
               <span className="min-w-0 flex-1">
-                <span className={cn("block text-sm font-semibold", active === index ? "text-white" : "text-brand-pearl")}>{item.title}</span>
-                <span className={cn("mt-1 block text-xs", active === index ? "text-white/50" : "text-muted")}>{active === index ? "Currently viewing" : "Explore this stage"}</span>
+                <span className={cn("block text-sm font-semibold", active === index ? "text-[#344B49]" : "text-[#344B49]")}>{item.title}</span>
+                <span className={cn("mt-1 block text-xs", text-muted)}>{active === index ? "Currently viewing" : "Explore this stage"}</span>
               </span>
               <ChevronRight className={cn("size-4", active === index ? "text-brand-teal" : "text-muted")} aria-hidden />
             </button>
@@ -308,7 +247,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
           <button type="button" disabled={active === 0} onClick={() => setActive((value) => Math.max(0, value - 1))}
             className="min-h-11 border border-line px-5 text-sm font-medium text-fg transition-colors hover:border-mint disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
           <button type="button" onClick={() => setActive((value) => (value + 1) % steps.length)}
-            className="inline-flex min-h-11 items-center gap-2 bg-brand-pearl px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-teal hover:text-brand-pearl">
+            className="inline-flex min-h-11 items-center gap-2 bg-[#6DB1AE] px-5 text-sm font-semibold text-[#344B49] transition-colors hover:bg-brand-teal hover:text-brand-pearl">
             {active === steps.length - 1 ? "Start again" : "Next stage"} <ArrowRight className="size-4" aria-hidden />
           </button>
         </div>
@@ -345,7 +284,6 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
   return (
     <div className="service-page">
       <section className="relative isolate overflow-hidden bg-[#EDF4F0] text-[#344B49]">
-        <ServiceMotionField slug={page.slug} />
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#EDF4F0] via-[#EDF4F0]/95 to-[#EDF4F0]/45" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-teal/20 via-transparent to-transparent" />
         <div className="wrap relative py-11 sm:py-14 lg:py-16">
@@ -369,10 +307,10 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </motion.div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" magnetic>{page.cta.label}</Button> : null}
-                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/25 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-teal hover:text-brand-teal">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
+                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-[#6DB1AE]/60 px-5 text-sm font-semibold text-[#344B49] transition-colors hover:border-brand-teal hover:text-brand-teal">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/15 pt-4">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-2 font-mono text-xs text-white/65"><strong className="text-brand-teal">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#6DB1AE]/30 bg-white px-3 py-2 font-mono text-xs text-muted"><strong className="text-brand-teal">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
                 {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-2 font-mono text-xs text-white/65"><strong className="text-brand-teal">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
               </div>
             </div>
@@ -390,7 +328,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#344B49]/65 via-[#344B49]/10 to-transparent" />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#344B49]/10 via-transparent to-transparent" />
-                <div className="absolute left-5 top-5 flex items-center gap-3 rounded-full border border-white/30 bg-brand-pearl/75 px-4 py-3 text-white shadow-lg backdrop-blur-md sm:left-7 sm:top-7">
+                <div className="absolute left-5 top-5 flex items-center gap-3 rounded-full border border-[#DDEFE6] bg-white/90 px-4 py-3 text-[#344B49] shadow-lg backdrop-blur-md sm:left-7 sm:top-7">
                   <span className="relative flex size-2.5">
                     <span className="absolute inline-flex size-full rounded-full bg-brand-teal/25" />
                     <span className="relative inline-flex size-2.5 rounded-full bg-brand-teal" />
@@ -422,7 +360,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                     loading="lazy"
                     className="size-full rounded-xl object-cover"
                   />
-                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#061820]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
+                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#344B49]/55 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
                     PEOPLE / IN PRACTICE
                   </span>
                 </div>
@@ -445,7 +383,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
-            <figure className="mt-7 max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)]">
+            <figure className="mt-7 max-w-sm overflow-hidden rounded-[1.5rem] border border-[#DDEFE6] bg-white shadow-[0_18px_45px_-35px_rgba(52,75,73,.2)]">
               <img
                 src="https://images.pexels.com/photos/6132652/pexels-photo-6132652.jpeg?cs=srgb&dl=pexels-aderawilson-6132652.jpg&fm=jpg"
                 alt="An African professional smiling while working at his desk in a bright office"
@@ -520,17 +458,17 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               "/img/work/transformation-floor.webp",
             ];
             return <Reveal key={item.title} delay={index * 0.06}>
-              <article className="group relative isolate min-h-[350px] overflow-hidden service-glass service-glass-dark rounded-[1.8rem] border border-white/20 bg-brand-pearl/65 shadow-[0_22px_55px_-32px_rgba(6,24,32,.45)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_65px_-32px_rgba(6,24,32,.55)]">
+              <article className="group relative isolate min-h-[350px] overflow-hidden service-glass service-glass-dark rounded-[1.8rem] border border-white/20 bg-white shadow-[0_22px_55px_-32px_rgba(6,24,32,.45)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_65px_-32px_rgba(6,24,32,.55)]">
                 <img
                   src={audienceImages[index] ?? "/img/work/talent-matching.webp"}
                   alt=""
                   loading="lazy"
                   className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820] via-[#061820]/55 to-[#061820]/5" />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#344B49]/55 via-[#344B49]/15 to-transparent" />
                 <div aria-hidden className="absolute inset-0 ring-1 ring-inset ring-white/15" />
                 <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
-                  <span className="rounded-full border border-white/25 bg-[#061820]/35 px-3 py-1.5 font-mono text-[0.65rem] tracking-[0.16em] text-white/90 backdrop-blur-md">
+                  <span className="rounded-full border border-white/25 bg-[#344B49]/45 px-3 py-1.5 font-mono text-[0.65rem] tracking-[0.16em] text-white/90 backdrop-blur-md">
                     0{index + 1} / 04
                   </span>
                   <ArrowUpRight className="size-5 text-white/75 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden />
@@ -549,18 +487,18 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </Section> : null}
 
       {page.extra ? <Section wall="blog" tone="raised" className="section">
-        <div className="service-glass service-glass-dark relative isolate overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b2830]/70 p-7 text-white shadow-[0_30px_80px_-55px_rgba(6,24,32,.75)] sm:rounded-[2.5rem] sm:p-12">
+        <div className="service-glass service-glass-dark relative isolate overflow-hidden rounded-[2rem] border border-white/20 bg-[#DDEFE6] p-7 text-[#344B49] shadow-[0_30px_80px_-55px_rgba(6,24,32,.75)] sm:rounded-[2.5rem] sm:p-12">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-[28rem] rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-16 size-[20rem] rounded-full bg-brand-teal/10 blur-[80px]" />
           <div className="relative z-10 grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
             <div>
               <p className="font-mono text-[0.68rem] uppercase tracking-[0.22em] text-brand-teal">{page.name}</p>
-              <h2 className="mt-5 max-w-sm text-[clamp(1.8rem,3.2vw,2.7rem)] font-semibold leading-[1.08] tracking-tight text-white">{page.extra.heading}</h2>
+              <h2 className="mt-5 max-w-sm text-[clamp(1.8rem,3.2vw,2.7rem)] font-semibold leading-[1.08] tracking-tight text-[#344B49]">{page.extra.heading}</h2>
             </div>
             <div className="space-y-5 border-l border-brand-teal/30 pl-6 sm:pl-8">
               {page.extra.paragraphs.map((paragraph, index) =>
                 <Reveal key={paragraph.slice(0, 24)} delay={index * 0.05}>
-                  <p className="max-w-3xl text-[1.02rem] leading-8 text-white/75">{paragraph}</p>
+                  <p className="max-w-3xl text-[1.02rem] leading-8 text-muted">{paragraph}</p>
                 </Reveal>)}
             </div>
           </div>
