@@ -357,8 +357,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
         <ServiceMotionField slug={page.slug} />
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl via-brand-pearl/95 to-brand-pearl/45" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-teal/20 via-transparent to-transparent" />
-        <div className="wrap relative py-16 sm:py-24 lg:py-28">
-          {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-12">
+        <div className="wrap relative py-11 sm:py-14 lg:py-16">
+          {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-white/45">
               {crumbs.map((crumb, index) => <li key={crumb.label} className="flex items-center gap-2">
                 {index > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
@@ -366,34 +366,34 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </li>)}
             </ol>
           </nav> : null}
-          <div className="grid items-end gap-12 lg:grid-cols-[1.1fr_.9fr] lg:gap-16">
+          <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-10">
             <div className="max-w-3xl">
-              <div className="mb-7 inline-flex items-center gap-3">
+              <div className="mb-5 inline-flex items-center gap-3">
                 <span className="flex size-11 items-center justify-center border border-brand-teal/50 bg-brand-teal/10 text-brand-teal"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-teal">{page.name}</span>
               </div>
               <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
                 <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
-                <p className="mt-7 max-w-2xl text-[1.02rem] leading-8 text-white/65 sm:text-lg">{page.intro}</p>
+                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/65 sm:text-base sm:leading-7">{page.intro}</p>
               </motion.div>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" magnetic>{page.cta.label}</Button> : null}
                 <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/25 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-teal hover:text-brand-teal">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
-              <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-white/15 pt-6">
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/15 pt-4">
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-2 font-mono text-xs text-white/65"><strong className="text-brand-teal">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
                 {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-2 font-mono text-xs text-white/65"><strong className="text-brand-teal">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
               </div>
             </div>
 
-            <motion.div className="service-glass relative mx-auto w-full max-w-xl rounded-[2.25rem] border border-white/25 bg-white/[0.08] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-white/25 bg-white/[0.08] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
               <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-brand-teal/25" />
               <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
                 <PhotoFigure
                   src={page.image?.src ?? "/img/work/product-in-use.webp"}
                   alt={page.image?.alt ?? `Septa ${page.name} in practice`}
                   edge="none"
-                  ratio="aspect-[4/5] sm:aspect-[5/4]"
+                  ratio="aspect-[5/4]"
                   className="w-full photo-soft-frame"
                   eager
                 />
