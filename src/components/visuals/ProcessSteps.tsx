@@ -21,7 +21,7 @@ export function ProcessSteps({
   autoRoll?: boolean;
   interval?: number;
 }) {
-  const { reduce, active, cycle, frozen, advance, ref, hoverProps } = useRollCycle(steps.length);
+  const { reduce, active, frozen, ref, hoverProps } = useRollCycle(steps.length);
   const rolling = autoRoll && !reduce;
 
   return (
@@ -49,15 +49,6 @@ export function ProcessSteps({
                 rolling ? (lit ? "bg-surface-raised" : "bg-surface") : "bg-surface-raised hover:bg-surface",
               )}
             >
-              {rolling ? (
-                <span
-                  aria-hidden
-                  className={cn(
-                    "absolute inset-x-0 top-0 h-[2px] origin-left bg-mint transition-transform duration-500 ease-out",
-                    lit ? "scale-x-100" : "scale-x-0",
-                  )}
-                />
-              ) : null}
               <div className="mb-3 flex items-center gap-3">
                 <span
                   className={cn(
@@ -84,8 +75,6 @@ export function ProcessSteps({
           );
         })}
       </ol>
-      {rolling ? (
-      ) : null}
       {caption ? (
         <p className="mt-3 text-[0.8rem] text-faint" aria-hidden>
           {caption}
