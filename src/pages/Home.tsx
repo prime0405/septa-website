@@ -3,7 +3,6 @@ import type { CSSProperties, ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useIntroHeld } from "../lib/intro";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
-import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { SectionStage } from "../components/blocks/SectionStage";
@@ -215,7 +214,6 @@ export default function Home() {
               measured box of the headline block, so no glyph ever sits on a stroke stronger than the
               site-wide mesh's worst pixel, while the gutters and corners get the line at full run.
               The box is re-measured every frame, which is what lets the headline shrink underneath it. */}
-          <HeroSpiral copyRef={copyRef} className="pointer-events-none absolute inset-0 z-0 size-full" />
 
           <motion.div
             ref={copyRef}
@@ -223,7 +221,7 @@ export default function Home() {
             className="wrap relative z-[2]"
           >
             <div className="mx-auto max-w-4xl text-center">
-              <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] text-brand-white sm:leading-[0.98]">
+              <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] text-[#344B49] sm:leading-[0.98]">
                 {headlineWords.map((word, i) => (
                   <span key={`${word}-${i}`}>
                     <Rise i={i} held={held}>
@@ -231,7 +229,7 @@ export default function Home() {
                           emphasis rather than a green hero, and #5fdd9d over 4.9rem of type would
                           turn the headline into the lighting effect. */}
                       {word === "Forward." ? (
-                        <span className="text-brand-mint">{word}</span>
+                        <span className="text-[#6DB1AE]">{word}</span>
                       ) : (
                         word
                       )}
@@ -242,7 +240,7 @@ export default function Home() {
               </h1>
 
               <Reveal delay={0.12}>
-                <p className="mx-auto mt-6 max-w-2xl text-[1.06rem] leading-[1.7] text-brand-white/88">
+                <p className="mx-auto mt-6 max-w-2xl text-[1.06rem] leading-[1.7] text-[#344B49]/85">
                   {hero.subheadline}
                 </p>
               </Reveal>
@@ -250,12 +248,12 @@ export default function Home() {
               <Reveal delay={0.18}>
                 <div className="mt-9 flex flex-wrap justify-center gap-3">
                   <CtaArrival waiting={held}>
-                    <Button to={paths.services()} size="lg" variant="dark-cta" magnetic>
+                    <Button to={paths.services()} size="lg" variant="primary" magnetic>
                       {hero.ctaPrimary}
                     </Button>
                   </CtaArrival>
                   <CtaArrival waiting={held}>
-                    <Button to={paths.contact()} size="lg" variant="outline-light" magnetic>
+                    <Button to={paths.contact()} size="lg" variant="secondary" magnetic>
                       {hero.ctaSecondary}
                     </Button>
                   </CtaArrival>
