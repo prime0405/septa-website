@@ -118,7 +118,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Brand Recognition",
-        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+        detail: "We build product experiences with a clear, consistent identity across the web, mobile, and AI features people use.",
       },
     ],
     processHeading: "Our Product Development Process",
@@ -285,7 +285,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Brand Recognition",
-        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+        detail: "We make automated customer and internal touchpoints more consistent, helping every interaction reflect the same dependable service.",
       },
     ],
     cta: {
@@ -356,9 +356,10 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Brand Recognition",
-        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+        detail: "We bring disconnected systems and customer touchpoints into a coherent digital experience that customers can recognise and trust.",
       },
     ],
+    pending: ["Our Process"],
     cta: {
       headline: "Experience growth without limits.",
       copy: "Discover how we can help your business thrive in the digital age.",
@@ -414,7 +415,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Brand Recognition",
-        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+        detail: "Reliable systems support reliable customer experiences. We help protect the availability and performance people associate with your brand.",
       },
     ],
     processHeading: "Our Process",
@@ -472,18 +473,18 @@ export const services: ServiceContent[] = [
   },
   {
     slug: "talent-solution",
-    name: "Talent Solution",
+    name: "Talent Solutions",
     icon: "talent",
     navBlurb:
       "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
-    heroTitle: "Septa Talent Solution",
+    heroTitle: "Septa Talent Solutions",
     intro:
       "At Septa Talent Solutions, we take the hassle out of hiring, payroll, and employee benefits management, allowing businesses and organizations to focus on what truly matters: growth and innovation. We specialize in providing highly skilled professionals across various industries while managing everything from payroll processing, tax compliance, pension, HMO, and other employee benefits. Whether you’re a startup, SME, or large enterprise, we ensure seamless workforce management so you can scale without stress.",
     image: {
       src: "/img/work/talent-matching.webp",
       alt: "A monitor showing a grid of candidate profiles as abstract avatars with skill bars, two of them joined by a curve, beside a laptop running a video interview",
     },
-    coreServicesHeading: "Why Choose Us?",
+    coreServicesHeading: "Core Services",
     coreServices: [
       {
         title: "Access to a pool of pre-scanned talent solutions",
@@ -520,7 +521,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Brand Recognition",
-        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+        detail: "Thoughtful recruitment and workforce support create a consistent experience for candidates and employees, strengthening your reputation as an employer.",
       },
     ],
     processHeading: "Our Process",
@@ -567,7 +568,7 @@ export const services: ServiceContent[] = [
     ],
     cta: {
       headline: "Let’s Build What’s Next, Together!",
-      copy: "Whether you need an AI powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
+      copy: "Find the right technology professionals for your team, with recruitment, payroll, and employee benefits support that helps your workforce grow.",
       label: "Partner with Septa",
       to: "/contact",
     },
