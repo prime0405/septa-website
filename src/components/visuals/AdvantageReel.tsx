@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { BadgeCheck, Brain, Layers, RefreshCw, ShieldCheck, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
