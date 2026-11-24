@@ -116,6 +116,10 @@ export const services: ServiceContent[] = [
         detail:
           "We design AI products around human behavior. Complex technologies are translated into simple, intuitive experiences that users can easily understand and trust.",
       },
+      {
+        title: "Brand Recognition",
+        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+      },
     ],
     processHeading: "Our Product Development Process",
     processLead:
@@ -279,6 +283,10 @@ export const services: ServiceContent[] = [
         title: "Low Disruption Delivery",
         detail: "We implement in phases to keep your operations running smoothly.",
       },
+      {
+        title: "Brand Recognition",
+        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+      },
     ],
     cta: {
       headline: "Work Smarter, Not Harder",
@@ -346,6 +354,10 @@ export const services: ServiceContent[] = [
         detail:
           "Every solution is tracked and optimized to show clear improvements in efficiency, cost savings, and customer satisfaction.",
       },
+      {
+        title: "Brand Recognition",
+        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+      },
     ],
     cta: {
       headline: "Experience growth without limits.",
@@ -399,6 +411,10 @@ export const services: ServiceContent[] = [
       {
         title: "Actionable Insights",
         detail: "Reporting and analytics that drive better decisions and performance improvements.",
+      },
+      {
+        title: "Brand Recognition",
+        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
       },
     ],
     processHeading: "Our Process",
@@ -501,6 +517,10 @@ export const services: ServiceContent[] = [
       {
         title: "Partnership Approach",
         detail: "We don’t just hire; we become your long-term workforce partner.",
+      },
+      {
+        title: "Brand Recognition",
+        detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
       },
     ],
     processHeading: "Our Process",
