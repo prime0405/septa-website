@@ -5,7 +5,6 @@ import type { LucideIcon } from "lucide-react";
 import { advantagePillars } from "../../data/content";
 import { cn } from "../../lib/cn";
 import { useRollCycle } from "../../lib/useRollCycle";
-import { RollTicks } from "../ui/AutoRollList";
 
 /*
  * The label above the active advantage. Each phrase is a substring of that pillar's own supplied
@@ -117,19 +116,6 @@ export function AdvantageReel() {
           <h3 className="mt-6 text-[1.35rem] leading-snug sm:text-[1.5rem]">{current.title}</h3>
           <p className="mt-3 min-h-13 text-[0.95rem] leading-relaxed text-muted">{current.detail}</p>
         </motion.div>
-        <div className="mt-6 flex items-center justify-between gap-6 border-t border-line-soft pt-5">
-          <p className="font-mono text-[0.72rem] text-faint">
-            Advantage {pad(active + 1)} of {pad(rows.length)}
-          </p>
-          <RollTicks
-            className="w-28 shrink-0"
-            count={rows.length}
-            active={active}
-            cycle={cycle}
-            interval={INTERVAL}
-            advance={advance}
-          />
-        </div>
       </div>
 
       <ul className="space-y-2.5 lg:order-1" {...hoverProps}>
@@ -148,15 +134,6 @@ export function AdvantageReel() {
                   lit ? "border-mint/40 bg-mint/[0.05]" : "border-line bg-surface hover:border-mint/25",
                 )}
               >
-                <span aria-hidden className="absolute inset-x-0 top-0 h-[2px] bg-line">
-                  {lit ? (
-                    <span
-                      key={`${active}-${cycle}`}
-                      className="roll-fill absolute inset-0 bg-mint"
-                      style={{ "--roll-interval": `${INTERVAL}ms` } as CSSProperties}
-                    />
-                  ) : null}
-                </span>
                 <span className="flex items-start gap-4">
                   <IconTile title={p.title} className={lit ? undefined : "opacity-70"} />
                   <span className="min-w-0">
