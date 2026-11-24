@@ -440,6 +440,18 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
+            <figure className="mt-7 max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)]">
+              <img
+                src="https://images.pexels.com/photos/6132652/pexels-photo-6132652.jpeg?cs=srgb&dl=pexels-aderawilson-6132652.jpg&fm=jpg"
+                alt="An African professional smiling while working at his desk in a bright office"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[16/10] w-full object-cover object-center"
+              />
+              <figcaption className="border-t border-brand-teal/20 px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-mint">
+                People first. Technology with purpose.
+              </figcaption>
+            </figure>
           </div>
           {page.slug === "ai-product-development" ? (
             <div className="divide-y divide-line-soft border-y border-line-soft">
