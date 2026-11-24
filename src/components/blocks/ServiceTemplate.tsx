@@ -91,36 +91,36 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 
   const visuals: Record<string, Record<string, { src: string; alt: string; tag: string }>> = {
     "ai-product-development": {
-      "UI/UX Design": { src: "/img/section/ai-product-development.webp", alt: "AI product interface and intelligent user experience concept", tag: "EXPERIENCE DESIGN" },
-      "Web Development": { src: "/img/work/product-in-use.webp", alt: "Digital product interface in use", tag: "WEB PLATFORMS" },
-      "Mobile App Development": { src: "/img/work/product-delivery.webp", alt: "Product engineering and delivery environment", tag: "MOBILE PRODUCTS" },
-      "AI and Machine Learning Integration": { src: "/img/work/ai-model-build.webp", alt: "AI model development workstation with a model pipeline and training visualisation", tag: "AI & MACHINE LEARNING" },
-      "End-to-End Delivery": { src: "/img/section/traditional-product-development.webp", alt: "Product development workflow and engineering environment", tag: "END-TO-END BUILD" },
+      "UI/UX Design": { src: "/img/services/ui-ux-design.webp", alt: "Black product designer reviewing interface wireframes and a connected prototype", tag: "EXPERIENCE DESIGN" },
+      "Web Development": { src: "/img/services/web-development.webp", alt: "Responsive website layouts displayed across desktop and mobile screens", tag: "WEB PLATFORMS" },
+      "Mobile App Development": { src: "/img/services/mobile-app-development.webp", alt: "A set of polished mobile application screens displayed in smartphone mockups", tag: "MOBILE PRODUCTS" },
+      "AI and Machine Learning Integration": { src: "/img/services/ai-ml-integration.webp", alt: "Machine learning model pipeline connecting data, training and product features", tag: "AI & MACHINE LEARNING" },
+      "End-to-End Delivery": { src: "/img/services/end-to-end-delivery.webp", alt: "Software product lifecycle from planning and development through testing and deployment", tag: "END-TO-END BUILD" },
     },
     "workflow-automation": {
-      "Business Process Automation": { src: "/img/work/automation-flows.webp", alt: "Workflow automation canvas with connected trigger and action nodes", tag: "WORKFLOW DESIGN" },
-      "Custom Automation Tools": { src: "/img/work/product-in-use.webp", alt: "Digital tools being used in an operational workflow", tag: "CUSTOM AUTOMATION" },
-      "System Integration": { src: "/img/work/ai-model-build.webp", alt: "Connected technical systems and data processing environment", tag: "SYSTEM INTEGRATION" },
-      "Repetitive Task Elimination": { src: "/img/work/transformation-floor.webp", alt: "Business operations transitioning from manual to digital processes", tag: "PROCESS IMPROVEMENT" },
+      "Business Process Automation": { src: "/img/services/business-process-automation.webp", alt: "Black operations professional reviewing an automated business workflow", tag: "WORKFLOW DESIGN" },
+      "Custom Automation Tools": { src: "/img/services/custom-automation-tools.webp", alt: "Custom operations software interface with controls and automated task status", tag: "CUSTOM AUTOMATION" },
+      "System Integration": { src: "/img/services/system-integration.webp", alt: "API architecture diagram connecting business applications and data services", tag: "SYSTEM INTEGRATION" },
+      "Repetitive Task Elimination": { src: "/img/services/repetitive-task-automation.webp", alt: "Document processing workflow showing manual steps replaced by automated actions", tag: "PROCESS IMPROVEMENT" },
     },
     "digital-transformation": {
-      "Process Modernization": { src: "/img/work/transformation-floor.webp", alt: "Business operations moving from legacy processes to digital tools", tag: "PROCESS MODERNISATION" },
-      "Cloud Migration": { src: "/img/work/product-delivery.webp", alt: "Modern digital infrastructure and product delivery environment", tag: "CLOUD & INFRASTRUCTURE" },
-      "Data Intelligence": { src: "/img/work/ai-model-build.webp", alt: "Data processing and analytics environment", tag: "DATA INTELLIGENCE" },
-      "Customer Experience Upgrades": { src: "/img/work/product-in-use.webp", alt: "Customer-facing digital product interface", tag: "CUSTOMER EXPERIENCE" },
-      "Change Management Support": { src: "/img/work/engineering-floor.webp", alt: "Technology team collaborating on system adoption", tag: "CHANGE & ADOPTION" },
+      "Process Modernization": { src: "/img/services/process-modernization.webp", alt: "Business process transitioning from legacy paperwork and systems to a modern digital workflow", tag: "PROCESS MODERNISATION" },
+      "Cloud Migration": { src: "/img/services/cloud-migration.webp", alt: "Cloud migration architecture moving workloads from on-premise infrastructure into cloud services", tag: "CLOUD & INFRASTRUCTURE" },
+      "Data Intelligence": { src: "/img/services/data-intelligence.webp", alt: "Black data analyst interpreting business intelligence dashboards and data visualisations", tag: "DATA INTELLIGENCE" },
+      "Customer Experience Upgrades": { src: "/img/services/customer-experience.webp", alt: "Customer journey and omnichannel service experience interface", tag: "CUSTOMER EXPERIENCE" },
+      "Change Management Support": { src: "/img/services/change-management.webp", alt: "Black and diverse team collaborating during a digital change and adoption workshop", tag: "CHANGE & ADOPTION" },
     },
     "observability-monitoring": {
-      "Real-Time Monitoring": { src: "/img/work/observability-noc.webp", alt: "Monitoring screens showing service health, performance graphs and log activity", tag: "LIVE SYSTEM HEALTH" },
-      "Log Management": { src: "/img/work/ai-model-build.webp", alt: "Technical data panels used to investigate system activity", tag: "LOG INTELLIGENCE" },
-      "Performance Optimization": { src: "/img/work/product-delivery.webp", alt: "Engineering environment focused on system performance", tag: "PERFORMANCE TUNING" },
-      "Dashboards & Reporting": { src: "/img/work/automation-flows.webp", alt: "Connected technical workflow and operational signals", tag: "REPORTING & ALERTS" },
+      "Real-Time Monitoring": { src: "/img/services/real-time-monitoring.webp", alt: "Black network operations engineer monitoring live infrastructure and service health screens", tag: "LIVE SYSTEM HEALTH" },
+      "Log Management": { src: "/img/services/log-management.webp", alt: "Black software engineer investigating application logs and system event records", tag: "LOG INTELLIGENCE" },
+      "Performance Optimization": { src: "/img/services/performance-optimization.webp", alt: "Black systems engineer reviewing application response times and performance metrics", tag: "PERFORMANCE TUNING" },
+      "Dashboards & Reporting": { src: "/img/services/dashboards-reporting.webp", alt: "Business intelligence dashboard with key performance indicators, charts and reporting panels", tag: "REPORTING & ALERTS" },
     },
     "talent-solution": {
-      "Access to a pool of pre-scanned talent solutions": { src: "/img/work/talent-matching.webp", alt: "Candidate profiles and skills being matched to a role", tag: "TALENT SOURCING" },
-      "Tailored Recruitment process": { src: "/img/work/hiring-review.webp", alt: "Recruitment team reviewing candidate applications", tag: "TAILORED RECRUITMENT" },
-      "Payroll management": { src: "/img/work/product-in-use.webp", alt: "Digital workforce management interface", tag: "PAYROLL OPERATIONS" },
-      "Employee benefits administration": { src: "/img/section/talent-solution.webp", alt: "Employee support and benefits administration concept", tag: "PEOPLE & BENEFITS" },
+      "Access to a pool of pre-scanned talent solutions": { src: "/img/services/talent-pool.webp", alt: "Candidate talent database with profiles, verified skills and role matching indicators", tag: "TALENT SOURCING" },
+      "Tailored Recruitment process": { src: "/img/services/tailored-recruitment.webp", alt: "Black recruiter conducting a tailored interview with a candidate", tag: "TAILORED RECRUITMENT" },
+      "Payroll management": { src: "/img/services/payroll-management.webp", alt: "Payroll administration interface showing salary records, payslips and payment status", tag: "PAYROLL OPERATIONS" },
+      "Employee benefits administration": { src: "/img/services/employee-benefits.webp", alt: "Black HR professional helping an employee review healthcare, pension and insurance benefits", tag: "PEOPLE & BENEFITS" },
     },
   };
   const visual = visuals[page.slug]?.[item.title];
@@ -173,7 +173,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
             <div>
               <p className="font-mono text-[.62rem] tracking-[.2em] text-[#91d9cf]">{visual.tag}</p>
-              <p className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{page.name}</p>
+              
             </div>
             <span className="font-mono text-4xl font-light text-white/65 sm:text-5xl">{String(active + 1).padStart(2, "0")}</span>
           </div>
@@ -192,19 +192,19 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 </button>
               </div>
             </div>
-            <div className="mt-12 grid">
+            <div className="mt-8 grid min-w-0 sm:mt-10">
               <AnimatePresence mode="sync" initial={false}>
                 <motion.div
                   key={item.title}
-                  className="col-start-1 row-start-1"
+                  className="col-start-1 row-start-1 min-w-0"
                   initial={{ opacity: 0, x: direction * 28, y: 5 }}
                   animate={{ opacity: 1, x: 0, y: 0 }}
                   exit={{ opacity: 0, x: direction * -22, y: -3 }}
                   transition={{ duration: reduce ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="font-mono text-xs tracking-[.2em] text-[#75c9bd]">CAPABILITY / {String(active + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-4 max-w-xl text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] tracking-tight text-white">{item.title}</h3>
-                  {item.detail ? <p className="mt-5 max-w-xl text-[.98rem] leading-8 text-white/75">{item.detail}</p> : null}
+                  <h3 className="mt-4 max-w-xl break-words text-balance text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.08] tracking-tight text-white">{item.title}</h3>
+                  {item.detail ? <p className="mt-5 max-w-xl break-words text-[.98rem] leading-7 text-white/75 sm:leading-8">{item.detail}</p> : null}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -215,7 +215,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
                 <button key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
-                  className={cn("min-h-10 rounded-xl border px-3 py-2 text-left text-xs font-semibold transition-all duration-300 sm:flex-1", active === index ? "border-[#91d9cf]/70 bg-[#6db1ae]/20 text-white shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-white/15 bg-white/[.035] text-white/65 hover:border-white/35 hover:bg-white/[.08] hover:text-white")}>
+                  className={cn("min-h-10 min-w-0 break-words rounded-xl border px-3 py-2 text-left text-xs font-semibold leading-snug transition-all duration-300 sm:flex-1", active === index ? "border-[#91d9cf]/70 bg-[#6db1ae]/20 text-white shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-white/15 bg-white/[.035] text-white/65 hover:border-white/35 hover:bg-white/[.08] hover:text-white")}>
                   <span className="mr-2 font-mono text-[.62rem] text-[#91d9cf]">{String(index + 1).padStart(2, "0")}</span>{capability.title}
                 </button>
               ))}
@@ -440,6 +440,18 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
+            <figure className="mt-7 max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)]">
+              <img
+                src="https://images.pexels.com/photos/6132652/pexels-photo-6132652.jpeg?cs=srgb&dl=pexels-aderawilson-6132652.jpg&fm=jpg"
+                alt="An African professional smiling while working at his desk in a bright office"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[16/10] w-full object-cover object-center"
+              />
+              <figcaption className="border-t border-brand-teal/20 px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-mint">
+                People first. Technology with purpose.
+              </figcaption>
+            </figure>
           </div>
           {page.slug === "ai-product-development" ? (
             <div className="divide-y divide-line-soft border-y border-line-soft">

@@ -93,8 +93,8 @@ export default function Request() {
           <div className="absolute -left-28 bottom-0 size-80 rounded-full bg-mint/10 blur-[90px]" />
           <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "radial-gradient(circle, var(--color-mint) 1px, transparent 1px)", backgroundSize: "26px 26px" }} />
         </div>
-        <div className="relative z-10 grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
-          <motion.div className="min-w-0" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .55 }}>
+        <div className="relative z-10 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-16">
+          <motion.div className="min-w-0 max-w-full" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .55 }}>
             {preselected ? (
               <Callout kind="info" title="Service preselected" className="mb-6">
                 <p>
@@ -113,7 +113,7 @@ export default function Request() {
             </div>
           </motion.div>
 
-          <motion.aside className="space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
+          <motion.aside className="min-w-0 space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
             <motion.figure className="group relative isolate aspect-[16/10] overflow-hidden bg-brand-pearl shadow-[0_24px_70px_-35px_rgba(6,24,32,.5)]"
               whileHover={reduce ? undefined : { y: -5 }} transition={{ duration: .35 }}>
               <motion.img

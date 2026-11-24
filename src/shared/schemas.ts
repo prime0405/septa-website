@@ -102,7 +102,7 @@ export const requestServices = [
   "Workflow Automation",
   "Digital Transformation",
   "Observability & Monitoring",
-  "Talent Solution",
+  "Talent Solutions",
   "Other",
 ] as const;
 

@@ -1969,3 +1969,52 @@ html[data-immersive="1"] .bgfx-orb-b { transform: translate3d(-6%, -4%, 0); opac
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Responsive guardrails for the service capability carousel and project intake. */
+.service-capability-carousel,
+.service-capability-carousel > div,
+.service-capability-carousel .service-capability-art,
+.request-wizard-frame,
+.request-console,
+.request-console-body,
+.request-step-content {
+  min-width: 0;
+  max-width: 100%;
+}
+.service-capability-carousel h3,
+.service-capability-carousel p,
+.service-capability-carousel button {
+  overflow-wrap: anywhere;
+}
+.request-console-steps ol {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.request-step-heading h2 {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.request-console [data-form-anchor] input,
+.request-console [data-form-anchor] textarea,
+.request-console [data-form-anchor] select {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+.request-console .request-console-actions {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+@media (max-width: 639px) {
+  .request-console {
+    border-radius: 1.25rem;
+  }
+  .request-console-steps {
+    padding-inline: 1rem;
+  }
+  .request-console-steps ol {
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+  }
+}
