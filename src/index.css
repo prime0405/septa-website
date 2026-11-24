@@ -417,10 +417,73 @@
   border-color: color-mix(in oklab, var(--color-mint) 55%, var(--color-line));
   box-shadow: var(--shadow-glow);
 }
-/* A touchscreen has no hover to leave, but it does report a sticky `:hover` after every tap, so
-   a tapped card stays lifted and re-tinted until the user taps something else. Both lift styles
-   are therefore only armed where a real pointer can hover; the transition above still runs, the
-   state just never enters. */
+
+/* The three About-page principles panels float together with a restrained,
+   synchronised rise. The wrapper owns the movement; the Card keeps its pointer tilt. */
+@keyframes approach-card-levitate {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes approach-card-shadow {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: scaleX(0.9);
+    filter: blur(6px);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scaleX(1.03);
+    filter: blur(8px);
+  }
+}
+
+.approach-float-stage {
+  position: relative;
+  isolation: isolate;
+}
+.approach-float {
+  position: relative;
+  z-index: 1;
+  animation: approach-card-levitate 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
+}
+
+/* SCRIBE keeps the same gentle 6px levitation, with a slightly quicker shared cycle. */
+.scribe-float-stage .approach-float,
+.scribe-float-stage .approach-float__shadow {
+  animation-duration: 2.4s;
+}
+
+.approach-float__shadow {
+  position: absolute;
+  z-index: 0;
+  right: 15%;
+  bottom: -13px;
+  left: 15%;
+  height: 17px;
+  border-radius: 999px;
+  background: rgb(6 24 32 / 18%);
+  pointer-events: none;
+  animation: approach-card-shadow 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .approach-float,
+  .approach-float__shadow {
+    animation: none;
+    transform: none;
+    filter: none;
+  }
+  .approach-float__shadow {
+    opacity: 0.2;
+  }
+}
 @media (hover: none) {
   .card-hover:hover {
     transform: none;
@@ -1115,7 +1178,7 @@
 /* The subject under the visitor's eye, and the one still fading out of it. `--bgfx-k` is the same
    loudness control the wash uses, so the line art steps back everywhere except the homepage hero. */
 .bgfx-mesh[data-on="1"] {
-  opacity: calc(0.15 * var(--bgfx-k, 1));
+  opacity: calc(0.28 * var(--bgfx-k, 1));
 }
 
 /* ---------- the per-page gradient themes ---------- */
@@ -1650,371 +1713,197 @@ html.cursor-none * {
 }
 
 
-/* Immersive service journeys: let the site's live wallpaper remain visible through
-   the section sheets instead of confining it to the outer gutters. */
-html[data-immersive="1"] {
-  --bgfx-k: 0.88;
+/* The vision and mission band has a living, slow-moving atmosphere: soft teal light drifts
+   behind the copy while the orbital linework turns at two different speeds. The text stays
+   on its own layer and the motion remains deliberately slower than the page's micro-interactions. */
+.vision-band__backdrop {
+  isolation: isolate;
 }
-html[data-immersive="1"] .bgfx-wash {
-  mask-image: linear-gradient(
-    to right,
-    #000 0,
-    #000 max(0px, calc(50% - 760px)),
-    rgb(0 0 0 / 0.62) max(0px, calc(50% - 600px)) min(100%, calc(50% + 600px)),
-    #000 min(100%, calc(50% + 760px)),
-    #000 100%
-  );
-}
-html[data-immersive="1"] .band::before {
-  background: color-mix(in srgb, var(--band) 82%, transparent);
-}
-
-
-/* Service pages: softer, more tactile surfaces with enough depth to keep long layouts composed. */
-.photo-soft-frame {
-  margin-inline: 0 !important;
-}
-.photo-soft-frame .photo-cut {
-  clip-path: none !important;
-  border-radius: 1.8rem;
-}
-@media (min-width: 640px) {
-  .photo-soft-frame .photo-cut {
-    border-radius: 2rem;
-  }
-}
-
-
-/* The service journey gives the Septa lockup a little more presence without changing
-   the compact navigation used elsewhere on the site. */
-html[data-immersive="1"] header .septa-wordmark {
-  height: 31px;
-  filter: drop-shadow(0 0 0 rgb(109 177 174 / 0));
-  animation: septa-mark-float 5.5s ease-in-out infinite, septa-mark-glow 5.5s ease-in-out infinite;
+.vision-band__wash {
+  background:
+    radial-gradient(58% 76% at 78% 18%, color-mix(in oklab, var(--color-brand-pearl-raised) 94%, transparent) 0%, transparent 68%),
+    radial-gradient(48% 72% at 18% 82%, color-mix(in oklab, var(--color-brand-teal) 28%, transparent) 0%, transparent 68%),
+    radial-gradient(34% 46% at 56% 52%, color-mix(in oklab, var(--color-mint-deep) 34%, transparent) 0%, transparent 72%);
   transform-origin: 50% 50%;
+  animation: vision-wash-drift 38s ease-in-out infinite alternate;
+  will-change: transform;
 }
-@keyframes septa-mark-float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-2px) scale(1.025); }
-}
-@keyframes septa-mark-glow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgb(109 177 174 / 0)); }
-  50% { filter: drop-shadow(0 0 9px rgb(109 177 174 / 0.42)); }
-}
-@media (prefers-reduced-motion: reduce) {
-  html[data-immersive="1"] header .septa-wordmark { animation: none; }
-}
-
-/* Request page: a denser instrument-panel treatment, kept inside the existing brand palette. */
-.request-hero {
-  isolation: isolate;
-  background: #061820;
-  color: #fff;
-}
-.request-hero > .wrap {
-  position: relative;
-  z-index: 2;
-}
-.request-hero .eyebrow,
-.request-hero [data-eyebrow] { color: #8ac2bf; }
-.request-hero .request-hero-panel {
-  border: 1px solid rgb(109 177 174 / 0.28);
-  background: linear-gradient(145deg, rgb(16 49 62 / 0.88), rgb(6 24 32 / 0.78));
-  box-shadow: 0 30px 90px -48px rgb(0 0 0 / 0.85), inset 0 1px 0 rgb(255 255 255 / 0.08);
-  backdrop-filter: blur(18px);
-}
-.request-hero .request-hero-step {
-  border: 1px solid rgb(255 255 255 / 0.09);
-  background: rgb(255 255 255 / 0.035);
-}
-.request-hero .request-hero-step:first-child {
-  border-color: rgb(109 177 174 / 0.42);
-  background: rgb(109 177 174 / 0.09);
-}
-@media (prefers-reduced-motion: reduce) {
-  .request-hero * { animation-duration: 0.01ms !important; }
-}
-
-
-.request-wizard-frame > .card {
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--color-brand-teal) 36%, var(--color-line));
-  border-radius: 1.75rem;
-  background: linear-gradient(145deg, rgb(255 255 255 / 0.98), rgb(246 250 249 / 0.94));
-  box-shadow: 0 34px 90px -48px rgb(6 24 32 / 0.42), 0 0 0 1px rgb(255 255 255 / 0.75) inset;
-}
-.request-wizard-frame > .card > div:first-child {
-  background: linear-gradient(105deg, #061820, #10313e 62%, #16434b);
-}
-.request-wizard-frame .request-step-glow {
-  box-shadow: 0 0 22px rgb(109 177 174 / 0.2);
-}
-
-
-/* Request intake console: the form is the primary experience, not a generic card. */
-.request-console {
-  position: relative;
-  isolation: isolate;
-  border: 1px solid rgb(109 177 174 / 0.42);
-  border-radius: 1.9rem;
-  background:
-    radial-gradient(ellipse at 92% 2%, rgb(109 177 174 / 0.12), transparent 34%),
-    linear-gradient(145deg, #ffffff 0%, #f7fbfa 58%, #f0f7f6 100%);
-  box-shadow: 0 42px 110px -54px rgb(6 24 32 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.9) inset;
-}
-.request-console::before {
-  content: "";
+.vision-band__glow {
   position: absolute;
-  z-index: -1;
-  inset: 0;
+  width: min(48vw, 38rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(76px);
   pointer-events: none;
-  border-radius: inherit;
-  opacity: .34;
-  background-image: radial-gradient(rgb(20 74 78 / .22) .7px, transparent .7px);
-  background-size: 19px 19px;
-  mask-image: linear-gradient(135deg, #000, transparent 52%);
+  will-change: transform, opacity;
 }
-.request-console-topline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: .85rem 1.35rem;
-  color: rgb(255 255 255 / .62);
-  background: #061820;
-  border-bottom: 1px solid rgb(109 177 174 / .22);
-  font: 600 .62rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: .16em;
+.vision-band__glow--one {
+  top: -58%;
+  right: 8%;
+  background: radial-gradient(circle, color-mix(in oklab, var(--color-brand-teal) 27%, transparent) 0%, transparent 70%);
+  animation: vision-glow-one 31s ease-in-out infinite alternate;
 }
-.request-console-kicker { display: inline-flex; align-items: center; gap: .6rem; color: #a5d2cf; }
-.request-console-live {
-  width: .48rem; height: .48rem; border-radius: 50%;
-  background: #6db1ae; box-shadow: 0 0 12px rgb(109 177 174 / .9);
-  animation: request-live-pulse 2.4s ease-in-out infinite;
+.vision-band__glow--two {
+  bottom: -72%;
+  left: 8%;
+  width: min(42vw, 32rem);
+  background: radial-gradient(circle, color-mix(in oklab, var(--color-brand-teal-lift) 22%, transparent) 0%, transparent 70%);
+  animation: vision-glow-two 36s ease-in-out infinite alternate-reverse;
 }
-.request-console-encrypted { color: rgb(255 255 255 / .42); }
-@keyframes request-live-pulse { 50% { opacity: .42; box-shadow: 0 0 3px rgb(109 177 174 / .4); } }
-.request-console-steps {
-  background:
-    linear-gradient(110deg, rgb(6 24 32 / .99), rgb(12 43 52 / .98) 65%, rgb(17 61 66 / .96));
-  border-color: rgb(109 177 174 / .2);
+.vision-band__orbit {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
 }
-.request-console-steps ol { scrollbar-width: thin; scrollbar-color: rgb(109 177 174 / .45) transparent; }
-.request-console-steps ol button { min-height: 2.45rem; }
-.request-console-body { position: relative; }
-.request-step-content { position: relative; }
-.request-step-heading {
-  position: relative;
-  padding-left: 1rem;
-  border-left: 3px solid #6db1ae;
+.vision-band__orbit--large {
+  animation: vision-orbit-clockwise 92s linear infinite;
 }
-.request-step-index {
-  display: block;
-  margin-bottom: .55rem;
-  color: #438b88;
-  font: 700 .62rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: .2em;
+.vision-band__orbit--small {
+  animation: vision-orbit-counter 118s linear infinite;
 }
-.request-step-heading h2 { color: #102b33; letter-spacing: -.035em; line-height: 1.15; }
-.request-console .request-console-actions {
-  border-color: rgb(16 67 72 / .14);
+.vision-band__orbit-dash {
+  animation: vision-dash-travel 28s linear infinite;
 }
-.request-console .request-console-actions > div > span {
-  color: #438b88;
+@keyframes vision-wash-drift {
+  0% {
+    transform: translate3d(-1.5%, 1%, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(2%, -1.5%, 0) scale(1.12);
+  }
 }
-.request-console .request-console-footnote {
-  border-top: 1px solid rgb(16 67 72 / .08);
-  padding-top: .85rem;
+@keyframes vision-glow-one {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate3d(-18%, 34%, 0) scale(1.2);
+    opacity: 0.82;
+  }
 }
-.request-console [data-form-anchor] input,
-.request-console [data-form-anchor] textarea,
-.request-console [data-form-anchor] select {
-  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+@keyframes vision-glow-two {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+    opacity: 0.36;
+  }
+  100% {
+    transform: translate3d(24%, -24%, 0) scale(0.9);
+    opacity: 0.72;
+  }
 }
-.request-console [data-form-anchor] input:focus,
-.request-console [data-form-anchor] textarea:focus,
-.request-console [data-form-anchor] select:focus {
-  border-color: #438b88;
-  box-shadow: 0 0 0 3px rgb(109 177 174 / .16);
+@keyframes vision-orbit-clockwise {
+  to {
+    transform: rotate(360deg);
+  }
 }
-.request-console [data-form-anchor] label { color: #19363d; }
-.request-console [data-form-anchor] [role="radiogroup"] > label,
-.request-console [data-form-anchor] [role="radiogroup"] > button {
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+@keyframes vision-orbit-counter {
+  to {
+    transform: rotate(-360deg);
+  }
 }
-.request-console [data-form-anchor] [role="radiogroup"] > label:hover,
-.request-console [data-form-anchor] [role="radiogroup"] > button:hover {
-  transform: translateY(-2px);
-  border-color: rgb(67 139 136 / .55);
-  box-shadow: 0 12px 28px -22px rgb(6 24 32 / .6);
+@keyframes vision-dash-travel {
+  to {
+    stroke-dashoffset: -168;
+  }
 }
-.request-console .rounded-card {
-  border-color: rgb(16 67 72 / .14);
-}
-@media (max-width: 639px) {
-  .request-console-topline { padding-inline: 1rem; font-size: .55rem; letter-spacing: .1em; }
-  .request-console-encrypted { display: none; }
-  .request-console-body { padding: 1.15rem; }
+@media (max-width: 640px) {
+  .vision-band__glow {
+    width: 82vw;
+    filter: blur(56px);
+  }
+  .vision-band__glow--one {
+    right: -22%;
+  }
+  .vision-band__glow--two {
+    left: -24%;
+  }
+  .vision-band__orbit--large {
+    right: -19rem;
+    bottom: -16rem;
+  }
+  .vision-band__orbit--small {
+    left: -17rem;
+    top: -17rem;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .request-console-live { animation: none; }
-  .request-console [data-form-anchor] input,
-  .request-console [data-form-anchor] textarea,
-  .request-console [data-form-anchor] select { transition: none; }
-}
-
-/* Immersive service/request pages: keep the layered atmosphere, but avoid continuous
-   large-area repainting from moving gradients, blurred beams and scrolling grids. */
-html[data-immersive="1"] .bgfx-sheet-a,
-html[data-immersive="1"] .bgfx-sheet-b,
-html[data-immersive="1"] .bgfx-plate,
-html[data-immersive="1"] .bgfx-grid,
-html[data-immersive="1"] .bgfx-beam,
-html[data-immersive="1"] .bgfx-orb {
-  animation: none !important;
-}
-html[data-immersive="1"] .bgfx-sheet-a { transform: translate3d(-2%, -1%, 0) scale(1.08); }
-html[data-immersive="1"] .bgfx-sheet-b { transform: translate3d(2%, 1%, 0) scale(1.06); }
-html[data-immersive="1"] .bgfx-beam { display: none; }
-html[data-immersive="1"] .bgfx-orb-a { transform: translate3d(8%, 5%, 0); opacity: .52; }
-html[data-immersive="1"] .bgfx-orb-b { transform: translate3d(-6%, -4%, 0); opacity: .4; }
-
-
-/* ---------- service page visual system ---------- */
-
-/* Glass is used as a surface treatment, not as a blur on every element. The page keeps clear
-   reading surfaces while selected panels pick up the light and depth behind them. */
-.service-page .service-glass {
-  border-color: rgba(255, 255, 255, 0.58);
-  background: rgba(255, 255, 255, 0.5);
-  -webkit-backdrop-filter: blur(22px) saturate(1.16);
-  backdrop-filter: blur(22px) saturate(1.16);
-  box-shadow: 0 24px 70px -48px rgba(6, 24, 32, 0.42);
-}
-
-.service-page .service-glass-dark {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(6, 24, 32, 0.72);
-  color: #fff;
-  -webkit-backdrop-filter: blur(24px) saturate(1.12);
-  backdrop-filter: blur(24px) saturate(1.12);
-}
-
-.service-page .service-people-photo {
-  -webkit-backdrop-filter: blur(20px) saturate(1.18);
-  backdrop-filter: blur(20px) saturate(1.18);
-}
-
-@media (max-width: 639px) {
-  .service-page .service-people-photo {
-    right: 0.35rem;
-    top: 0.35rem;
-    width: 6.25rem;
-    height: 5.25rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .service-page .service-people-photo,
-  .service-page .service-glass {
-    transition: none !important;
+  .vision-band__wash,
+  .vision-band__glow,
+  .vision-band__orbit,
+  .vision-band__orbit-dash {
+    animation: none;
+    will-change: auto;
   }
 }
 
 
-/* Final service-page colour overrides. Kept after the base glass rules so the brand
-   treatment is not flattened back into neutral white by the shared surface styles. */
-.service-page .service-glass:not(.service-glass-dark) {
-  border-color: color-mix(in srgb, var(--color-brand-teal) 34%, white);
+/* About page hero: slow ambient colour drift and orbit motion, kept behind the headline. */
+.about-hero-art__wash {
   background:
-    radial-gradient(120% 100% at 0% 0%, color-mix(in srgb, var(--color-brand-teal) 16%, transparent), transparent 62%),
-    linear-gradient(145deg, rgba(255,255,255,.9), rgba(229,244,241,.82));
+    radial-gradient(52% 68% at 10% 6%, color-mix(in oklab, var(--color-brand-teal-lift) 30%, transparent) 0%, transparent 62%),
+    radial-gradient(46% 62% at 90% 26%, color-mix(in oklab, var(--color-brand-teal) 20%, transparent) 0%, transparent 60%),
+    radial-gradient(40% 48% at 68% 100%, color-mix(in oklab, var(--color-amber) 9%, transparent) 0%, transparent 64%);
+  animation: about-hero-wash 32s ease-in-out infinite alternate;
+  will-change: transform;
 }
-.service-page .service-glass-dark {
-  border-color: rgba(109,177,174,.38);
-  background:
-    radial-gradient(90% 100% at 100% 0%, rgba(109,177,174,.16), transparent 65%),
-    linear-gradient(145deg, rgba(16,49,62,.96), rgba(6,24,32,.94));
+.about-hero-art__glow {
+  position: absolute;
+  width: min(48vw, 560px);
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  filter: blur(82px);
+  pointer-events: none;
 }
-.service-page .service-capability-carousel {
-  isolation: isolate;
-  box-shadow: 0 32px 90px -48px rgba(6,24,32,.72), 0 0 0 1px rgba(109,177,174,.12);
+.about-hero-art__glow--one {
+  top: -32%;
+  left: 12%;
+  background: color-mix(in oklab, var(--color-brand-teal-lift) 15%, transparent);
+  animation: about-hero-glow-one 29s ease-in-out infinite alternate;
 }
-.service-page .service-capability-carousel button:focus-visible {
-  outline-color: #91d9cf;
-  outline-offset: 3px;
+.about-hero-art__glow--two {
+  right: 2%;
+  bottom: -48%;
+  background: color-mix(in oklab, var(--color-brand-teal) 13%, transparent);
+  animation: about-hero-glow-two 34s ease-in-out infinite alternate-reverse;
 }
-.service-page .service-capability-art img {
-  filter: saturate(1.12) contrast(1.035);
+.about-hero-art__orbit--large {
+  transform-origin: 50% 50%;
+  animation: about-hero-orbit 110s linear infinite;
 }
-.service-page .service-capability-carousel [aria-current="true"] {
-  color: #fff;
+.about-hero-art__orbit--small {
+  transform-origin: 50% 50%;
+  animation: about-hero-orbit-reverse 126s linear infinite;
 }
-.service-page .service-capability-carousel button:not([aria-current="true"]):hover {
-  color: #fff;
+.about-hero-art__dash {
+  animation: about-hero-dash 30s linear infinite;
 }
-.service-page .service-people-photo {
-  border-color: rgba(109,177,174,.65);
-  background: rgba(109,177,174,.22);
+@keyframes about-hero-wash {
+  from { transform: translate3d(-1.2%, 1%, 0) scale(1.02); }
+  to { transform: translate3d(1.8%, -1.4%, 0) scale(1.12); }
 }
-.service-page .service-people-photo img {
-  filter: saturate(1.12);
+@keyframes about-hero-glow-one {
+  from { transform: translate3d(0, 0, 0) scale(0.92); opacity: 0.42; }
+  to { transform: translate3d(18%, 28%, 0) scale(1.18); opacity: 0.78; }
 }
-.service-page .service-glass:not(.service-glass-dark) .text-mint,
-.service-page .service-glass:not(.service-glass-dark) .text-brand-teal {
-  color: var(--color-mint-deep);
+@keyframes about-hero-glow-two {
+  from { transform: translate3d(0, 0, 0) scale(1.08); opacity: 0.34; }
+  to { transform: translate3d(-20%, -24%, 0) scale(0.9); opacity: 0.68; }
+}
+@keyframes about-hero-orbit { to { transform: rotate(360deg); } }
+@keyframes about-hero-orbit-reverse { to { transform: rotate(-360deg); } }
+@keyframes about-hero-dash { to { stroke-dashoffset: -168; } }
+@media (max-width: 640px) {
+  .about-hero-art__glow { width: 82vw; filter: blur(58px); }
+  .about-hero-art__orbit--large { right: -19rem; top: -15rem; }
+  .about-hero-art__orbit--small { left: -17rem; bottom: -17rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .service-page .service-capability-carousel * {
-    scroll-behavior: auto !important;
-  }
-}
-
-
-/* Responsive guardrails for the service capability carousel and project intake. */
-.service-capability-carousel,
-.service-capability-carousel > div,
-.service-capability-carousel .service-capability-art,
-.request-wizard-frame,
-.request-console,
-.request-console-body,
-.request-step-content {
-  min-width: 0;
-  max-width: 100%;
-}
-.service-capability-carousel h3,
-.service-capability-carousel p,
-.service-capability-carousel button {
-  overflow-wrap: anywhere;
-}
-.request-console-steps ol {
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-}
-.request-step-heading h2 {
-  overflow-wrap: anywhere;
-  text-wrap: balance;
-}
-.request-console [data-form-anchor] input,
-.request-console [data-form-anchor] textarea,
-.request-console [data-form-anchor] select {
-  box-sizing: border-box;
-  max-width: 100%;
-  min-width: 0;
-}
-.request-console .request-console-actions {
-  min-width: 0;
-  flex-wrap: wrap;
-}
-@media (max-width: 639px) {
-  .request-console {
-    border-radius: 1.25rem;
-  }
-  .request-console-steps {
-    padding-inline: 1rem;
-  }
-  .request-console-steps ol {
-    margin-inline: -0.25rem;
-    padding-inline: 0.25rem;
+  .about-hero-art__wash,
+  .about-hero-art__glow,
+  .about-hero-art__orbit,
+  .about-hero-art__dash {
+    animation: none;
+    will-change: auto;
   }
 }
