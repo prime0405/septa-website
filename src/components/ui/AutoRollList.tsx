@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "../../lib/cn";
 import { useRollCycle } from "../../lib/useRollCycle";
