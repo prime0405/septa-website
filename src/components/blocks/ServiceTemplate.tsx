@@ -91,40 +91,43 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 
   const visuals: Record<string, Record<string, { src: string; alt: string; tag: string }>> = {
     "ai-product-development": {
-      "UI/UX Design": { src: "/img/services/ui-ux-design.webp", alt: "Black product designer reviewing interface wireframes and a connected prototype", tag: "EXPERIENCE DESIGN" },
+      "UI/UX Design": { src: "/img/services/UIUX Design.jpg", alt: "Black product designer reviewing interface wireframes and a connected prototype", tag: "EXPERIENCE DESIGN" },
       "Web Development": { src: "/img/services/web-development.webp", alt: "Responsive website layouts displayed across desktop and mobile screens", tag: "WEB PLATFORMS" },
-      "Mobile App Development": { src: "/img/services/mobile-app-development.webp", alt: "A set of polished mobile application screens displayed in smartphone mockups", tag: "MOBILE PRODUCTS" },
+      "Mobile App Development": { src: "/img/services/Mobile App Development.jpg", alt: "A set of polished mobile application screens displayed in smartphone mockups", tag: "MOBILE PRODUCTS" },
       "AI and Machine Learning Integration": { src: "/img/services/ai-ml-integration.webp", alt: "Machine learning model pipeline connecting data, training and product features", tag: "AI & MACHINE LEARNING" },
       "End-to-End Delivery": { src: "/img/services/end-to-end-delivery.webp", alt: "Software product lifecycle from planning and development through testing and deployment", tag: "END-TO-END BUILD" },
     },
     "workflow-automation": {
-      "Business Process Automation": { src: "/img/services/business-process-automation.webp", alt: "Black operations professional reviewing an automated business workflow", tag: "WORKFLOW DESIGN" },
+      "Business Process Automation": { src: "/img/services/Business Process Automation.jpg", alt: "Black operations professional reviewing an automated business workflow", tag: "WORKFLOW DESIGN" },
       "Custom Automation Tools": { src: "/img/services/custom-automation-tools.webp", alt: "Custom operations software interface with controls and automated task status", tag: "CUSTOM AUTOMATION" },
       "System Integration": { src: "/img/services/system-integration.webp", alt: "API architecture diagram connecting business applications and data services", tag: "SYSTEM INTEGRATION" },
       "Repetitive Task Elimination": { src: "/img/services/repetitive-task-automation.webp", alt: "Document processing workflow showing manual steps replaced by automated actions", tag: "PROCESS IMPROVEMENT" },
     },
     "digital-transformation": {
-      "Process Modernization": { src: "/img/services/process-modernization.webp", alt: "Business process transitioning from legacy paperwork and systems to a modern digital workflow", tag: "PROCESS MODERNISATION" },
-      "Cloud Migration": { src: "/img/services/cloud-migration.webp", alt: "Cloud migration architecture moving workloads from on-premise infrastructure into cloud services", tag: "CLOUD & INFRASTRUCTURE" },
-      "Data Intelligence": { src: "/img/services/data-intelligence.webp", alt: "Black data analyst interpreting business intelligence dashboards and data visualisations", tag: "DATA INTELLIGENCE" },
+      "Process Modernization": { src: "/img/services/Digital Transformation.jpg", alt: "Business process transitioning from legacy paperwork and systems to a modern digital workflow", tag: "PROCESS MODERNISATION" },
+      "Cloud Migration": { src: "/img/services/Cloud Migration.jpg", alt: "Cloud migration architecture moving workloads from on-premise infrastructure into cloud services", tag: "CLOUD & INFRASTRUCTURE" },
+      "Data Intelligence": { src: "/img/services/Data intelligence.jpg", alt: "Black data analyst interpreting business intelligence dashboards and data visualisations", tag: "DATA INTELLIGENCE" },
       "Customer Experience Upgrades": { src: "/img/services/customer-experience.webp", alt: "Customer journey and omnichannel service experience interface", tag: "CUSTOMER EXPERIENCE" },
       "Change Management Support": { src: "/img/services/change-management.webp", alt: "Black and diverse team collaborating during a digital change and adoption workshop", tag: "CHANGE & ADOPTION" },
     },
     "observability-monitoring": {
-      "Real-Time Monitoring": { src: "/img/services/real-time-monitoring.webp", alt: "Black network operations engineer monitoring live infrastructure and service health screens", tag: "LIVE SYSTEM HEALTH" },
-      "Log Management": { src: "/img/services/log-management.webp", alt: "Black software engineer investigating application logs and system event records", tag: "LOG INTELLIGENCE" },
-      "Performance Optimization": { src: "/img/services/performance-optimization.webp", alt: "Black systems engineer reviewing application response times and performance metrics", tag: "PERFORMANCE TUNING" },
-      "Dashboards & Reporting": { src: "/img/services/dashboards-reporting.webp", alt: "Business intelligence dashboard with key performance indicators, charts and reporting panels", tag: "REPORTING & ALERTS" },
+      "Real-Time Monitoring": { src: "/img/services/Real-Time Monitoring.jpg", alt: "Black network operations engineer monitoring live infrastructure and service health screens", tag: "LIVE SYSTEM HEALTH" },
+      "Log Management": { src: "/img/services/Real time moitoring.jpg", alt: "Black software engineer investigating application logs and system event records", tag: "LOG INTELLIGENCE" },
+      "Performance Optimization": { src: "/img/services/Performance Optimization.jpg", alt: "Black systems engineer reviewing application response times and performance metrics", tag: "PERFORMANCE TUNING" },
+      "Dashboards & Reporting": { src: "/img/services/Dashboards & Reporting.jpg", alt: "Business intelligence dashboard with key performance indicators, charts and reporting panels", tag: "REPORTING & ALERTS" },
     },
     "talent-solution": {
-      "Access to a pool of pre-scanned talent solutions": { src: "/img/services/talent-pool.webp", alt: "Candidate talent database with profiles, verified skills and role matching indicators", tag: "TALENT SOURCING" },
-      "Tailored Recruitment process": { src: "/img/services/tailored-recruitment.webp", alt: "Black recruiter conducting a tailored interview with a candidate", tag: "TAILORED RECRUITMENT" },
-      "Payroll management": { src: "/img/services/payroll-management.webp", alt: "Payroll administration interface showing salary records, payslips and payment status", tag: "PAYROLL OPERATIONS" },
-      "Employee benefits administration": { src: "/img/services/employee-benefits.webp", alt: "Black HR professional helping an employee review healthcare, pension and insurance benefits", tag: "PEOPLE & BENEFITS" },
+      "Access to a pool of pre-scanned talent solutions": { src: "/img/services/Access to a Pool of Pre-Screened Talent.jpg", alt: "Candidate talent database with profiles, verified skills and role matching indicators", tag: "TALENT SOURCING" },
+      "Tailored Recruitment process": { src: "/img/services/tailored recruitment process.jpg", alt: "Black recruiter conducting a tailored interview with a candidate", tag: "TAILORED RECRUITMENT" },
+      "Payroll management": { src: "/img/services/Payroll Management.jpg", alt: "Payroll administration interface showing salary records, payslips and payment status", tag: "PAYROLL OPERATIONS" },
+      "Employee benefits administration": { src: "/img/services/Hr customer benefits.jpg", alt: "Black HR professional helping an employee review healthcare, pension and insurance benefits", tag: "PEOPLE & BENEFITS" },
     },
   };
-  const visual = visuals[page.slug]?.[item.title];
-  if (!visual) return null;
+  const visual = visuals[page.slug]?.[item.title] ?? {
+    src: "",
+    alt: "",
+    tag: "CAPABILITY OVERVIEW",
+  };
   const goTo = (index: number) => {
     const length = page.coreServices.length;
     const next = ((index % length) + length) % length;
@@ -160,9 +163,20 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                 className="absolute inset-0"
                 transition={{ duration: reduce ? 0 : 0.58, ease: [0.22, 1, 0.36, 1] }}
               >
-                <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
+                {visual.src ? (
+                  <>
+                    <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
+                  </>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div aria-hidden className="size-44 rounded-full border border-brand-teal/30 bg-brand-teal/[0.06] shadow-[0_0_90px_rgba(109,177,174,.16)]" />
+                    <div aria-hidden className="absolute size-28 rotate-45 border border-brand-teal/40" />
+                    <div aria-hidden className="absolute h-px w-3/4 bg-gradient-to-r from-transparent via-brand-teal/60 to-transparent" />
+                    <span className="absolute bottom-8 font-mono text-[.65rem] tracking-[.24em] text-white/50">SEPTA / DIGITAL CAPABILITY</span>
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
