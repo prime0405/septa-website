@@ -90,6 +90,10 @@ export const advantagePillars = [
     title: "Proactive, End-to-End Support",
     detail: "Septa AI handles requests, resolves issues, and keeps your product running smoothly.",
   },
+  {
+    title: "Stronger Brand Recognition",
+    detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+  },
 ];
 
 export const serviceOverview =
