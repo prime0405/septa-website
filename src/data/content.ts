@@ -97,10 +97,10 @@ export const advantagePillars = [
 ];
 
 export const serviceOverview =
-  "From startups to enterprises, we craft custom software solutions, provide top-tier tech talent, and upskill professionals for the future of work.";
+  "One technology partner. Five ways to move your business forward.";
 
 export const servicesIntro =
-  "We build AI-powered digital products, automate workflows, modernise business operations, strengthen system reliability, and connect organisations with skilled technology talent."
+  "We build AI-powered digital products, automate workflows, modernise business operations, strengthen system reliability, and connect organisations with skilled technology talent.";
 
 /** The five entries of the document's "OUR SERVICES" list, with the CTA labels it gives each. */
 export const serviceListings = [
