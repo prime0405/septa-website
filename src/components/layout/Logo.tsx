@@ -25,7 +25,7 @@ export function Wordmark({ className }: { className?: string }) {
   return (
     <svg
       viewBox={LOCKUP_VIEWBOX}
-      className={cn("h-[22px] w-auto shrink-0", className)}
+      className={cn("septa-wordmark h-[28px] w-auto shrink-0", className)}
       role="img"
       aria-label="Septa"
     >

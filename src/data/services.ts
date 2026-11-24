@@ -41,7 +41,7 @@ export type ServiceContent = {
    *  source wording but no longer rendered — the footer's banner is now the one close on every
    *  page, and a second panel above it said the same thing. */
   cta?: { headline: string; copy: string; label: string; to: string };
-  /** Sections expected on this page for which the document gives no copy. */
+  /** Sections expected on this page for which the source document gives no copy; not rendered. */
   pending?: string[];
 };
 
@@ -115,6 +115,10 @@ export const services: ServiceContent[] = [
         title: "User-Centered Approach",
         detail:
           "We design AI products around human behavior. Complex technologies are translated into simple, intuitive experiences that users can easily understand and trust.",
+      },
+      {
+        title: "Brand Recognition",
+        detail: "We build product experiences with a clear, consistent identity across the web, mobile, and AI features people use.",
       },
     ],
     processHeading: "Our Product Development Process",
@@ -279,6 +283,10 @@ export const services: ServiceContent[] = [
         title: "Low Disruption Delivery",
         detail: "We implement in phases to keep your operations running smoothly.",
       },
+      {
+        title: "Brand Recognition",
+        detail: "We make automated customer and internal touchpoints more consistent, helping every interaction reflect the same dependable service.",
+      },
     ],
     cta: {
       headline: "Work Smarter, Not Harder",
@@ -346,7 +354,12 @@ export const services: ServiceContent[] = [
         detail:
           "Every solution is tracked and optimized to show clear improvements in efficiency, cost savings, and customer satisfaction.",
       },
+      {
+        title: "Brand Recognition",
+        detail: "We bring disconnected systems and customer touchpoints into a coherent digital experience that customers can recognise and trust.",
+      },
     ],
+    pending: ["Our Process"],
     cta: {
       headline: "Experience growth without limits.",
       copy: "Discover how we can help your business thrive in the digital age.",
@@ -399,6 +412,10 @@ export const services: ServiceContent[] = [
       {
         title: "Actionable Insights",
         detail: "Reporting and analytics that drive better decisions and performance improvements.",
+      },
+      {
+        title: "Brand Recognition",
+        detail: "Reliable systems support reliable customer experiences. We help protect the availability and performance people associate with your brand.",
       },
     ],
     processHeading: "Our Process",
@@ -456,18 +473,18 @@ export const services: ServiceContent[] = [
   },
   {
     slug: "talent-solution",
-    name: "Talent Solution",
+    name: "Talent Solutions",
     icon: "talent",
     navBlurb:
       "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
-    heroTitle: "Septa Talent Solution",
+    heroTitle: "Septa Talent Solutions",
     intro:
       "At Septa Talent Solutions, we take the hassle out of hiring, payroll, and employee benefits management, allowing businesses and organizations to focus on what truly matters: growth and innovation. We specialize in providing highly skilled professionals across various industries while managing everything from payroll processing, tax compliance, pension, HMO, and other employee benefits. Whether you’re a startup, SME, or large enterprise, we ensure seamless workforce management so you can scale without stress.",
     image: {
       src: "/img/work/talent-matching.webp",
       alt: "A monitor showing a grid of candidate profiles as abstract avatars with skill bars, two of them joined by a curve, beside a laptop running a video interview",
     },
-    coreServicesHeading: "Why Choose Us?",
+    coreServicesHeading: "Core Services",
     coreServices: [
       {
         title: "Access to a pool of pre-scanned talent solutions",
@@ -501,6 +518,10 @@ export const services: ServiceContent[] = [
       {
         title: "Partnership Approach",
         detail: "We don’t just hire; we become your long-term workforce partner.",
+      },
+      {
+        title: "Brand Recognition",
+        detail: "Thoughtful recruitment and workforce support create a consistent experience for candidates and employees, strengthening your reputation as an employer.",
       },
     ],
     processHeading: "Our Process",
@@ -547,7 +568,7 @@ export const services: ServiceContent[] = [
     ],
     cta: {
       headline: "Let’s Build What’s Next, Together!",
-      copy: "Whether you need an AI powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
+      copy: "Find the right technology professionals for your team, with recruitment, payroll, and employee benefits support that helps your workforce grow.",
       label: "Partner with Septa",
       to: "/contact",
     },

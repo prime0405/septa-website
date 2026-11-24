@@ -54,7 +54,7 @@ export function RollTicks({
  */
 export function AutoRollList({
   items,
-  interval = 3200,
+  interval = 3000,
   className,
 }: {
   items: (string | Item)[];
