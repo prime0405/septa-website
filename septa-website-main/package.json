@@ -1,0 +1,51 @@
+{
+  "name": "septa-website",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n web,api -c cyan,magenta \"npm:dev:web\" \"npm:dev:server\"",
+    "dev:web": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "build": "tsc -b && vite build && npm run build:api",
+    "build:api": "esbuild server/vercel-handler.ts --bundle --platform=node --format=cjs --packages=external --banner:js=\"/* Generated from server/vercel-handler.ts by npm run build:api. Do not edit. Committed so the Vercel git build detects this Function. */\" --outfile=api/[...all].js",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "start:api": "tsx server/index.ts",
+    "api:inbox": "tsx scripts/inbox.ts",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/open-sans": "^5.3.0",
+    "@vercel/blob": "^2.8.2",
+    "busboy": "^1.6.0",
+    "clsx": "^2.1.1",
+    "express": "^5.3.0",
+    "lucide-react": "^1.61.0",
+    "motion": "^14.6.0",
+    "nodemailer": "^10.2.1",
+    "postgres": "^3.4.9",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "tsx": "^4.23.15",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.19.2",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^10.0.6",
+    "esbuild": "^0.28.2",
+    "oxlint": "^1.88.0",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4"
+  }
+}
