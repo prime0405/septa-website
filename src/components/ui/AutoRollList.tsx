@@ -14,14 +14,7 @@ const toRows = (items: (string | Item)[]) =>
  * bar and the jump in step, and `animation-play-state` (driven by `data-roll-paused` further up the
  * tree) is the only pause mechanism.
  */
-export function RollTicks({
-  count,
-  active,
-  cycle,
-  interval,
-  advance,
-  className,
-}: {
+export function RollTicks(_props: {
   count: number;
   active: number;
   cycle: number;
@@ -29,22 +22,7 @@ export function RollTicks({
   advance: () => void;
   className?: string;
 }) {
-  return (
-    <div aria-hidden className={cn("flex gap-1.5", className)}>
-      {Array.from({ length: count }, (_, i) => (
-        <span key={i} className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-line">
-          {i === active ? (
-            <span
-              key={`${active}-${cycle}`}
-              className="roll-fill absolute inset-0 bg-mint"
-              style={{ "--roll-interval": `${interval}ms` } as CSSProperties}
-              onAnimationEnd={advance}
-            />
-          ) : null}
-        </span>
-      ))}
-    </div>
-  );
+  return null;
 }
 
 /**
