@@ -454,57 +454,49 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </Section>
 
       <Section id="the-septa-difference" wall="about" tone="raised" className="section service-why-section border-y border-line-soft">
-        <div className="grid items-stretch gap-10 lg:min-h-[36rem] lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
-          <div className="relative flex">
-            <div className="lg:sticky lg:top-28 lg:flex lg:h-full lg:flex-col">
-              <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
-              <p className="mt-6 max-w-sm text-sm leading-7 text-muted">
-                A considered approach, built around the work your organisation needs to get done.
-              </p>
-              <figure className="mt-auto max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)] lg:pt-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
+            <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-muted">
+              A considered approach, built around the work your organisation needs to get done.
+            </p>
+          </div>
+
+          <div className="septa-orbit mt-10 sm:mt-14" style={{ "--orbit-count": page.whyChoose.length } as React.CSSProperties}>
+            <div className="septa-orbit__stage">
+              <div className="septa-orbit__track" aria-hidden="true" />
+              <figure className="septa-orbit__portrait">
                 <img
-                  src="https://images.pexels.com/photos/6132652/pexels-photo-6132652.jpeg?cs=srgb&dl=pexels-aderawilson-6132652.jpg&fm=jpg"
-                  alt="An African professional smiling while working at his desk in a bright office"
+                  src={encodeURI("/img/services/Confident Corporate Portrait of a Smiling Executive.png")}
+                  alt="Smiling Black business executive in a black suit, standing with his arms crossed"
                   loading="lazy"
                   decoding="async"
-                  className="aspect-[16/10] w-full object-cover object-center"
                 />
-                <figcaption className="border-t border-brand-teal/20 px-4 py-3 font-sans text-[0.62rem] uppercase tracking-[0.16em] text-mint">
-                  People first. Technology with purpose.
-                </figcaption>
+                <figcaption>People first. Technology with purpose.</figcaption>
               </figure>
-            </div>
-          </div>
-          <div className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
-            <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
-            <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-44 rounded-full bg-white/35 blur-3xl" />
-            <div className="relative flex flex-1 flex-col">
-              <div className="mb-5 border-b border-[#6DB1AE]/30 pb-4">
-                <span className="font-sans text-[.62rem] font-semibold uppercase tracking-[.2em] text-[#286F6A]">The Septa advantage</span>
-              </div>
-              <div
-                className="grid flex-1 divide-y divide-[#6DB1AE]/25"
-                style={{ gridTemplateRows: `repeat(${page.whyChoose.length}, minmax(0, 1fr))` }}
-              >
-                {page.whyChoose.map((item, index) => (
-                  <Reveal key={item.title} delay={index * 0.045} className="h-full">
-                    <Link
-                      to={item.href ?? "#core-services"}
-                      className="group grid h-full grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-center gap-3 py-4 transition-colors duration-300 first:pt-1 last:pb-0 sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-4 sm:py-5"
+              <div className="septa-orbit__cards">
+                {page.whyChoose.map((item, index) => {
+                  const angle = -90 + (360 / page.whyChoose.length) * index;
+                  return (
+                    <div
+                      key={item.title}
+                      className="septa-orbit__item"
+                      style={{ "--orbit-angle": `${angle}deg`, "--orbit-index": index } as React.CSSProperties}
                     >
-                      <span className="pt-0.5 font-sans text-xl font-light tracking-tight text-[#6A9E91] transition-colors duration-300 group-hover:text-[#286F6A] sm:text-2xl">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-[.98rem] font-semibold leading-snug text-[#23413D] transition-colors duration-300 group-hover:text-[#286F6A] sm:text-lg">
-                          {item.title}
+                      <Link
+                        to={item.href ?? "#core-services"}
+                        className="septa-orbit__card group"
+                      >
+                        <span className="septa-orbit__number">{String(index + 1).padStart(2, "0")}</span>
+                        <span className="septa-orbit__copy">
+                          <strong>{item.title}</strong>
+                          {item.detail ? <span>{item.detail}</span> : null}
                         </span>
-                        {item.detail ? <span className="mt-1.5 block max-w-xl text-[.82rem] leading-6 text-[#52736D] sm:text-sm">{item.detail}</span> : null}
-                      </span>
-                      <ArrowUpRight className="mt-1 size-4 text-[#6A9E91] transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#286F6A] sm:size-5" aria-hidden />
-                    </Link>
-                  </Reveal>
-                ))}
+                        <ArrowUpRight className="septa-orbit__arrow" aria-hidden />
+                      </Link>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
