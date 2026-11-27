@@ -258,7 +258,7 @@ function InHouseFeature({ reduceMotion }: { reduceMotion: boolean }) {
               className="group mt-8 inline-flex w-fit items-center gap-2 rounded-full border border-white/35 px-5 py-3 text-[0.82rem] font-semibold text-white transition-colors hover:border-brand-teal hover:bg-brand-teal hover:text-brand-pearl"
             >
               Explore Septa LMS
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
           <div className="relative min-h-[18rem] overflow-hidden bg-[#e7efec] sm:min-h-[24rem] lg:min-h-[30rem]">
