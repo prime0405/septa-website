@@ -150,7 +150,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     >
       <div className="grid lg:min-h-[470px] lg:grid-cols-[1.04fr_.96fr]">
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(6,24,32,.14),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <div className="absolute inset-0">
             <AnimatePresence mode="sync" initial={false} custom={direction}>
@@ -472,7 +472,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               {page.whyChoose.map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.035}>
                   <article className="group grid gap-3 py-5 transition-colors duration-300 hover:bg-brand-teal/[0.035] sm:grid-cols-[3.5rem_minmax(0,0.78fr)_minmax(0,1.22fr)] sm:items-start sm:gap-5 sm:px-4">
-                    <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-pearl/[0.08] font-mono text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
+                    <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-teal/[0.08] font-mono text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="flex items-center justify-between gap-3">
