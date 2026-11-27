@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useIntroHeld } from "../lib/intro";
+import { motion, useScroll, useTransform } from "motion/react";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
 import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
@@ -45,9 +44,8 @@ const blockWalls: Record<string, BgTheme> = {
 };
 
 /** One headline word, rising into place. `held` keeps it waiting for the curtain. */
-function Rise({ i, held, children }: { i: number; held: boolean; children: ReactNode }) {
-  const reduce = true;
-  if (reduce) return <span className="inline-block">{children}</span>;
+function Rise({ children }: { children: ReactNode }) {
+  return <span className="inline-block">{children}</span>;
   return (
     <motion.span
       className="inline-block"
@@ -103,10 +101,9 @@ const headlineWords = hero.headline.split(" ");
 
 export default function Home() {
   usePageMeta({ title: site.name, description: hero.subheadline });
-  const held = useIntroHeld();
   const stageRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = true;
   const wide = useWideHero();
   const pinned = false;
 
@@ -227,7 +224,7 @@ export default function Home() {
               <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] text-brand-white sm:leading-[0.98]">
                 {headlineWords.map((word, i) => (
                   <span key={`${word}-${i}`}>
-                    <Rise i={i} held={held}>
+                    <Rise>
                       {/* One word carries the accent, and only one: the brief asks for green used for
                           emphasis rather than a green hero, and #5fdd9d over 4.9rem of type would
                           turn the headline into the lighting effect. */}
@@ -250,11 +247,11 @@ export default function Home() {
 
               <div>
                 <div className="mt-9 flex flex-wrap justify-center gap-3">
-                  <CtaArrival waiting={held}>
+                  <div>
                     <Button to={paths.services()} size="lg" variant="dark-cta">
                       {hero.ctaPrimary}
                     </Button>
-                  </CtaArrival>
+                  </div>
                   <CtaArrival waiting={held}>
                     <Button to={paths.contact()} size="lg" variant="outline-light">
                       {hero.ctaSecondary}
