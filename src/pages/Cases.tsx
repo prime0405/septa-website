@@ -376,7 +376,7 @@ export default function Cases() {
               className="group mt-8 inline-flex items-center gap-3 rounded-full bg-brand-pearl px-6 py-4 text-[0.86rem] font-semibold text-white transition-colors duration-300 hover:bg-brand-teal hover:text-brand-pearl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-teal"
             >
               Start a project
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="size-4" />
             </Link>
           </div>
         </div>
