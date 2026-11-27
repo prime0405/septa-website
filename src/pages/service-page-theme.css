@@ -175,13 +175,13 @@
 
 /* Why Choose Septa: benefits orbit a fixed portrait, without spokes or tentacle-like connectors. */
 .service-page .septa-orbit {
-  --orbit-radius: clamp(205px, 27vw, 238px);
+  --orbit-radius: clamp(260px, 30vw, 315px);
   width: 100%;
 }
 .service-page .septa-orbit__stage {
   position: relative;
-  width: min(100%, 900px);
-  height: 620px;
+  width: min(100%, 1080px);
+  height: 790px;
   margin-inline: auto;
   isolation: isolate;
 }
@@ -201,7 +201,7 @@
   z-index: 2;
   left: 50%;
   top: 50%;
-  width: clamp(190px, 24vw, 250px);
+  width: clamp(220px, 25vw, 285px);
   margin: 0;
   overflow: hidden;
   border: 5px solid #fff;
@@ -236,39 +236,50 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(235px, 29%);
+  width: min(285px, 27%);
   transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-1 * var(--orbit-angle)));
 }
 .service-page .septa-orbit__card {
+  position: relative;
   display: flex;
-  min-height: 136px;
+  min-height: 154px;
   align-items: flex-start;
-  gap: .7rem;
-  padding: 1rem;
-  border: 1px solid rgb(109 177 174 / 38%);
-  border-radius: 1.15rem;
-  background: rgb(255 255 255 / 96%);
-  box-shadow: 0 16px 42px -30px rgb(6 44 42 / 40%);
+  gap: .85rem;
+  overflow: hidden;
+  padding: 1.25rem 1.15rem;
+  border: 1px solid rgb(79 151 132 / 34%);
+  border-radius: 1.45rem;
+  background: linear-gradient(145deg, #ffffff 0%, #f5fbf7 58%, #eaf5f0 100%);
+  box-shadow: 0 22px 55px -34px rgb(6 44 42 / 42%), inset 0 1px 0 rgb(255 255 255 / 95%);
   color: #17383b;
   text-decoration: none;
   animation: septa-orbit-counter 42s linear infinite;
-  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease, filter .25s ease;
+}
+.service-page .septa-orbit__card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, #5fdd9d, #318b83);
+  content: "";
 }
 .service-page .septa-orbit__card:hover {
-  border-color: #6db1ae;
-  background: #f7fcf9;
-  box-shadow: 0 20px 48px -30px rgb(6 44 42 / 48%);
+  border-color: #4caa91;
+  background: linear-gradient(145deg, #ffffff 0%, #effaf3 100%);
+  box-shadow: 0 28px 62px -34px rgb(6 44 42 / 52%), inset 0 1px 0 #fff;
+  filter: saturate(1.08);
 }
 .service-page .septa-orbit__number {
   display: grid;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2.35rem;
+  height: 2.35rem;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: .55rem;
-  background: #eaf5f0;
+  border: 1px solid rgb(95 221 157 / 38%);
+  border-radius: .8rem;
+  background: linear-gradient(145deg, #e1f7e9, #d5eee5);
   color: #286f6a;
-  font-size: .65rem;
+  font-size: .72rem;
   font-weight: 800;
 }
 .service-page .septa-orbit__copy {
@@ -278,27 +289,41 @@
 .service-page .septa-orbit__copy strong {
   display: block;
   color: #17383b;
-  font-size: .86rem;
+  font-size: .98rem;
+  font-weight: 750;
+  letter-spacing: -.015em;
   line-height: 1.35;
 }
 .service-page .septa-orbit__copy > span {
   display: -webkit-box;
-  margin-top: .45rem;
+  margin-top: .55rem;
   overflow: hidden;
   color: #49666a;
-  font-size: .72rem;
-  line-height: 1.5;
+  font-size: .79rem;
+  line-height: 1.6;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
 .service-page .septa-orbit__arrow {
-  width: 1rem;
-  height: 1rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: auto;
+  padding: .35rem;
+  border-radius: 999px;
+  background: #e5f3ec;
   flex: 0 0 auto;
   color: #6a9e91;
 }
 @keyframes septa-orbit-rotation { to { transform: rotate(360deg); } }
 @keyframes septa-orbit-counter { to { transform: rotate(-360deg); } }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .service-page .septa-orbit { --orbit-radius: 245px; }
+  .service-page .septa-orbit__stage { height: 700px; }
+  .service-page .septa-orbit__item { width: min(235px, 29%); }
+  .service-page .septa-orbit__card { min-height: 142px; padding: 1rem; }
+}
+
 @media (max-width: 767px) {
   .service-page .septa-orbit__stage {
     display: flex;
