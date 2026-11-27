@@ -46,7 +46,7 @@ function ServiceMotionField({ slug }: { slug: string }) {
           backgroundSize: "56px 56px",
         }}
       />
-      <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-pearl/[0.08] blur-[110px]" />
+      <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-mint/[0.10] blur-[110px]" />
       <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.14]" viewBox="0 0 760 620" fill="none">
         <motion.path
           d={trace.primary}
@@ -346,13 +346,13 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                 <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/20 pt-4">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-3 py-2 font-mono text-xs text-white/75"><strong className="text-[#344B49]">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
-                {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-[#344B49]/20 bg-[#344B49]/[0.04] px-3 py-2 font-mono text-xs text-[#344B49]/75"><strong className="text-[#344B49]">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-3 py-2 font-mono text-xs text-white/75"><strong className="text-white">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
+                {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-3 py-2 font-mono text-xs text-white/75"><strong className="text-white">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
               </div>
             </div>
 
-            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-[#344B49]/20 bg-white/[0.12] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
-              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-[#344B49]/20" />
+            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-brand-teal/25 bg-white/[0.04] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-brand-teal/25" />
               <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
                 <PhotoFigure
                   src={page.image?.src ?? "/img/work/product-in-use.webp"}
@@ -396,7 +396,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                     loading="lazy"
                     className="size-full rounded-xl object-cover"
                   />
-                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#344B49]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
+                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#061820]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
                     PEOPLE / IN PRACTICE
                   </span>
                 </div>
@@ -404,7 +404,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             </motion.div>
           </div>
         </div>
-        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-[#344B49]/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
+        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
       </section>
 
       <Section wall="use-case" tone="surface" className="section">
