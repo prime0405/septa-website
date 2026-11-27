@@ -81,16 +81,16 @@ var requestServices = [
 ];
 var budgetRanges = [
   "Under $5,000",
-  "$5,000 \u2013 $15,000",
-  "$15,000 \u2013 $50,000",
+  "$5,000 to $15,000",
+  "$15,000 to $50,000",
   "$50,000+",
   "Not sure yet"
 ];
 var timelines = [
   "As soon as possible",
   "Within 1 month",
-  "1 \u2013 3 months",
-  "3 \u2013 6 months",
+  "1 to 3 months",
+  "3 to 6 months",
   "Later / exploring"
 ];
 var projectStages = [

@@ -80,7 +80,7 @@ export function BackgroundFX() {
           style={{ transform: "translate3d(0, var(--bgfx-slow, 0), 0)", opacity: "var(--bgfx-k, 1)" }}
         >
           <div className="bgfx-plate relative size-full">
-            <PlateStack plate={plate} film={film} reduce={Boolean(reduce)} />
+            <PlateStack plate={plate} film={film} />
           </div>
         </div>
         {/* The grid and the light work sit in one opacity group so `--bgfx-k` reaches all of them at
@@ -120,7 +120,7 @@ const PLATE_FADE = 1100;
 
 type Slot = { src: string; film: boolean };
 
-function PlateStack({ plate, film, reduce }: { plate: string; film?: string; reduce: boolean }) {
+function PlateStack({ plate, film }: { plate: string; film?: string }) {
   // Use the optimised still plate on immersive pages; continuous background video competed with page motion.
   const onFilm = false;
   const wanted: Slot = { src: onFilm ? (film ?? "") : plate, film: onFilm };

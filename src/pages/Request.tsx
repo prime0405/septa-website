@@ -9,7 +9,6 @@ import {
   Callout,
   Card,
   MarkerList,
-  Reveal,
   Section,
   SectionHeading,
 } from "../components/ui/primitives";

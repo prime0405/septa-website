@@ -84,11 +84,12 @@ export function Layout() {
 
   useEffect(() => {
     const root = document.documentElement;
-    const immersive = pathname.startsWith("/services/") || pathname === "/request";
     if (immersive) root.dataset.immersive = "1";
     else delete root.dataset.immersive;
-    return () => delete root.dataset.immersive;
-  }, [pathname]);
+    return () => {
+      delete root.dataset.immersive;
+    };
+  }, [immersive]);
 
   // `held` is what stops a curtain that was interrupted by navigation from replaying
   // when the visitor comes back to the homepage in the same session. The page wrapper is
