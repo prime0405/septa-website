@@ -72,7 +72,7 @@ export function ServicesHeroArt() {
               fill="currentColor"
               fillOpacity={i === 4 ? 0.85 : 0.5}
               fontSize="13"
-              fontFamily="Manrope, sans-serif"
+              fontFamily="Open Sans, sans-serif"
             >
               {nd.n}
             </text>
