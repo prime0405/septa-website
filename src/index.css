@@ -1908,3 +1908,324 @@ html.cursor-none * {
     will-change: auto;
   }
 }
+
+/* ---------- case-study atmosphere + reveal motion ---------- */
+/* Calm, fixed-colour hero atmosphere. Small particles carry the movement; there
+   are no sweeping beams, bright streaks, or large animated colour fields. */
+.case-atmosphere {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
+.case-atmosphere__wash {
+  position: absolute;
+  inset: -42%;
+  background:
+    radial-gradient(ellipse at 14% 76%, rgb(109 177 174 / 24%), transparent 34%),
+    radial-gradient(ellipse at 82% 22%, rgb(109 177 174 / 18%), transparent 32%),
+    radial-gradient(ellipse at 48% 48%, rgb(20 94 91 / 9%), transparent 42%);
+}
+.case-atmosphere__orb {
+  position: absolute;
+  width: clamp(18rem, 38vw, 42rem);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  filter: blur(64px);
+  opacity: 0.28;
+}
+.case-atmosphere__orb--one {
+  top: -42%;
+  left: -18%;
+  background: radial-gradient(circle, rgb(109 177 174 / 38%) 0%, rgb(109 177 174 / 12%) 48%, transparent 72%);
+}
+.case-atmosphere__orb--two {
+  right: -20%;
+  bottom: -60%;
+  width: clamp(19rem, 42vw, 46rem);
+  background: radial-gradient(circle, rgb(49 143 137 / 30%) 0%, rgb(109 177 174 / 9%) 48%, transparent 72%);
+}
+.case-atmosphere__rings {
+  position: absolute;
+  top: -70%;
+  right: -22%;
+  width: clamp(29rem, 68vw, 72rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(109 177 174 / 14%);
+  border-radius: 50%;
+}
+.case-atmosphere__rings::before,
+.case-atmosphere__rings::after {
+  position: absolute;
+  content: "";
+  border: 1px solid rgb(109 177 174 / 10%);
+  border-radius: 50%;
+}
+.case-atmosphere__rings::before { inset: 9%; }
+.case-atmosphere__rings::after { inset: 19%; }
+
+.case-atmosphere__grid {
+  position: absolute;
+  inset: -24px;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(to right, rgb(6 24 32 / 9%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(6 24 32 / 9%) 1px, transparent 1px);
+  background-size: 76px 76px;
+  mask-image: radial-gradient(ellipse at 50% 42%, black 0%, transparent 76%);
+}
+
+/* Tiny points of light drift independently through the hero. Their paths are
+   intentionally short and their glow stays soft, so they feel atmospheric. */
+.case-atmosphere__particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #6db1ae;
+  opacity: 0.44;
+  box-shadow: 0 0 8px 2px rgb(109 177 174 / 28%);
+  will-change: transform, opacity;
+}
+.case-atmosphere__particle--one {
+  top: 18%;
+  left: 22%;
+  animation: case-particle-drift-a 5s ease-in-out infinite;
+}
+.case-atmosphere__particle--two {
+  top: 74%;
+  left: 38%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-b 5.67s 0.67s ease-in-out infinite;
+}
+.case-atmosphere__particle--three {
+  top: 33%;
+  left: 68%;
+  animation: case-particle-drift-c 5.33s 1.33s ease-in-out infinite;
+}
+.case-atmosphere__particle--four {
+  top: 82%;
+  left: 82%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-d 6s 0.33s ease-in-out infinite;
+}
+.case-atmosphere__particle--five {
+  top: 54%;
+  left: 12%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-b 5.33s 2.33s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--six {
+  top: 13%;
+  left: 84%;
+  animation: case-particle-drift-d 5s 1.67s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--seven {
+  top: 62%;
+  left: 57%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-a 5.67s 3s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--eight {
+  top: 42%;
+  left: 91%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-c 6s 1s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--nine {
+  top: 90%;
+  left: 26%;
+  animation: case-particle-drift-d 5.67s 3.67s ease-in-out infinite;
+}
+.case-atmosphere__particle--ten {
+  top: 24%;
+  left: 47%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-c 6.33s 2s ease-in-out infinite;
+}
+.case-atmosphere__particle--eleven {
+  top: 58%;
+  left: 31%;
+  animation: case-particle-drift-a 5.33s 2.67s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--twelve {
+  top: 8%;
+  left: 58%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-b 7s 1s ease-in-out infinite;
+}
+.case-atmosphere__particle--thirteen {
+  top: 45%;
+  left: 76%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-d 6s 4s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--fourteen {
+  top: 92%;
+  left: 62%;
+  width: 3px;
+  height: 3px;
+  animation: case-particle-drift-c 6.67s 1.67s ease-in-out infinite;
+}
+.case-atmosphere__particle--fifteen {
+  top: 68%;
+  left: 8%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-a 6s 4.33s ease-in-out infinite;
+}
+.case-atmosphere__particle--sixteen {
+  top: 29%;
+  left: 94%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-b 7s 1.33s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--seventeen {
+  top: 8%;
+  left: 9%;
+  width: 2px;
+  height: 2px;
+  animation: case-particle-drift-c 5.67s 3.33s ease-in-out infinite reverse;
+}
+.case-atmosphere__particle--eighteen {
+  top: 52%;
+  left: 52%;
+  width: 3px;
+  height: 3px;
+  animation: case-particle-drift-d 7.33s 2.33s ease-in-out infinite;
+}
+
+.case-atmosphere--light .case-atmosphere__wash {
+  opacity: 0.72;
+}
+.case-atmosphere--light .case-atmosphere__grid {
+  opacity: 0.07;
+}
+.case-atmosphere--light .case-atmosphere__rings {
+  border-color: rgb(6 24 32 / 10%);
+}
+.case-atmosphere--light .case-atmosphere__rings::before,
+.case-atmosphere--light .case-atmosphere__rings::after {
+  border-color: rgb(6 24 32 / 7%);
+}
+.case-atmosphere--light .case-atmosphere__orb--one {
+  opacity: 0.22;
+}
+.case-atmosphere--light .case-atmosphere__particle {
+  background: #286f6a;
+  box-shadow: 0 0 7px 2px rgb(40 111 106 / 18%);
+}
+.case-atmosphere--dark .case-atmosphere__wash {
+  background:
+    radial-gradient(ellipse at 14% 76%, rgb(109 177 174 / 22%), transparent 34%),
+    radial-gradient(ellipse at 82% 22%, rgb(28 105 105 / 20%), transparent 32%),
+    radial-gradient(ellipse at 48% 48%, rgb(0 0 0 / 22%), transparent 42%);
+}
+.case-atmosphere--dark .case-atmosphere__grid {
+  opacity: 0.11;
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 10%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 10%) 1px, transparent 1px);
+}
+.case-atmosphere--dark .case-atmosphere__rings {
+  border-color: rgb(109 177 174 / 17%);
+}
+.case-atmosphere--dark .case-atmosphere__rings::before,
+.case-atmosphere--dark .case-atmosphere__rings::after {
+  border-color: rgb(109 177 174 / 12%);
+}
+.case-atmosphere--dark .case-atmosphere__orb--one,
+.case-atmosphere--dark .case-atmosphere__orb--two {
+  opacity: 0.34;
+}
+.case-atmosphere--dark .case-atmosphere__particle {
+  background: #9bd7d2;
+  box-shadow: 0 0 8px 2px rgb(109 177 174 / 28%);
+  opacity: 0.48;
+}
+
+@keyframes case-particle-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .32; }
+  50% { transform: translate3d(28px, -36px, 0); opacity: .62; }
+}
+@keyframes case-particle-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .28; }
+  50% { transform: translate3d(-22px, -42px, 0); opacity: .58; }
+}
+@keyframes case-particle-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .34; }
+  50% { transform: translate3d(18px, 32px, 0); opacity: .64; }
+}
+@keyframes case-particle-drift-d {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .26; }
+  50% { transform: translate3d(-26px, 28px, 0); opacity: .54; }
+}
+@media (max-width: 640px) {
+  .case-atmosphere__orb {
+    filter: blur(48px);
+  }
+  .case-atmosphere__rings {
+    right: -68%;
+    top: -36%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-atmosphere__particle {
+    animation: none !important;
+    transform: none;
+    will-change: auto;
+    opacity: 0.34;
+  }
+}
+
+
+/* A quiet constellation for the community/events section: connections travel between
+   shared points while each node breathes at a slightly different rhythm. */
+.ideas-network {
+  color: color-mix(in oklab, var(--color-brand-teal) 78%, var(--color-brand-pearl));
+  opacity: 0.24;
+  mask-image: linear-gradient(to right, transparent 0%, black 28%, black 82%, transparent 100%);
+}
+.ideas-network svg {
+  overflow: visible;
+}
+.ideas-network__lines {
+  stroke-dasharray: 5 13;
+  animation: ideas-network-flow 22s linear infinite;
+}
+.ideas-network__nodes {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.ideas-network__nodes circle {
+  opacity: 0.48;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ideas-node-pulse 4.8s ease-in-out infinite alternate;
+}
+.ideas-network__nodes circle:nth-child(3n) { animation-delay: -1.6s; }
+.ideas-network__nodes circle:nth-child(3n + 1) { animation-delay: -3.1s; }
+@keyframes ideas-network-flow {
+  to { stroke-dashoffset: -180; }
+}
+@keyframes ideas-node-pulse {
+  from { opacity: 0.28; transform: scale(0.82); }
+  to { opacity: 0.9; transform: scale(1.28); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ideas-network__lines,
+  .ideas-network__nodes circle {
+    animation: none !important;
+  }
+}
