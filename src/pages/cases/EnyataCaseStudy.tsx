@@ -52,26 +52,18 @@ function cleanPillarTitle(title: string) {
 function CaseCoverVisual({ study }: { study: UseCase }) {
   const visual = caseStudyVisualFor(study.slug);
   const [photoFailed, setPhotoFailed] = useState(false);
-  const reduceMotion = useReducedMotion() ?? false;
   const hasPhoto = Boolean(visual.photo && !photoFailed);
 
   return (
     <div className="relative min-h-[22rem] overflow-hidden rounded-[1.65rem] border border-white/10 bg-white/[0.045] shadow-[0_34px_100px_-48px_rgba(0,0,0,.75)] sm:min-h-[28rem] lg:min-h-[34rem]">
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,rgba(109,177,174,.22),transparent_48%),linear-gradient(145deg,rgba(255,255,255,.07),transparent_58%)]" />
       {hasPhoto ? (
-        <motion.img
+        <img
           src={visual.photo}
           alt={visual.photoAlt ?? ""}
           loading="eager"
           decoding="async"
           onError={() => setPhotoFailed(true)}
-          initial={false}
-          animate={reduceMotion ? undefined : {
-            scale: visual.fit === "contain" ? [1, 1.018, 1] : [1.035, 1.095, 1.035],
-            x: visual.fit === "contain" ? [0, 0, 0] : [0, -8, 0],
-            y: visual.fit === "contain" ? [0, -3, 0] : [0, 7, 0],
-          }}
-          transition={{ duration: visual.fit === "contain" ? 32 : 27, ease: "easeInOut", repeat: Infinity }}
           className={
             "absolute inset-0 size-full " +
             (visual.fit === "contain" ? "object-contain p-7 sm:p-10" : "object-cover") +
@@ -106,12 +98,7 @@ function CaseCoverVisual({ study }: { study: UseCase }) {
           />
         </div>
       ) : null}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-brand-teal/25"
-        animate={reduceMotion ? undefined : { rotate: 360 }}
-        transition={{ duration: 70, ease: "linear", repeat: Infinity }}
-      />
+      <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-brand-teal/25" />
     </div>
   );
 }
@@ -198,10 +185,10 @@ export default function EnyataCaseStudy({ study }: { study: UseCase }) {
 
   return (
     <main className="overflow-hidden bg-white">
-      <section className="relative isolate overflow-hidden bg-brand-pearl text-white">
+      <section data-static-hero="" className="relative isolate overflow-hidden bg-brand-pearl text-white">
         <AnimatedCaseBackdrop variant="dark" />
         <div className="wrap relative z-10 py-9 sm:py-12 lg:py-14">
-          <ScrollReveal style="soft" className="mb-10 sm:mb-14">
+          <div className="mb-10 sm:mb-14">
             <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-[0.76rem] text-white/50">
             <Link to={paths.home()} className="transition-colors hover:text-brand-teal">Home</Link>
             <ChevronRight aria-hidden className="size-3" />
@@ -209,7 +196,7 @@ export default function EnyataCaseStudy({ study }: { study: UseCase }) {
             <ChevronRight aria-hidden className="size-3" />
             <span className="text-white/85">{study.client}</span>
             </nav>
-          </ScrollReveal>
+          </div>
 
           <div className="grid items-center gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14">
             <div className="max-w-2xl">
