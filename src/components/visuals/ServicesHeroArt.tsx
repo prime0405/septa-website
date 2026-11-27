@@ -23,14 +23,14 @@ export function ServicesHeroArt() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, #6DB1AE 0%, #6DB1AE 70%, #6DB1AE 100%)",
+            "linear-gradient(132deg, #344B49 0%, #123A43 52%, #061820 100%)",
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(50% 64% at 12% 6%, rgba(255,255,255,.18) 0%, transparent 62%), radial-gradient(44% 58% at 90% 90%, rgba(6,24,32,.08) 0%, transparent 64%)",
+            "radial-gradient(50% 64% at 12% 6%, rgba(109,177,174,.28) 0%, transparent 62%), radial-gradient(44% 58% at 90% 90%, rgba(95,221,157,.12) 0%, transparent 64%)",
         }}
       />
       {/* swimlanes: the horizontal bands a workflow diagram keeps its stages in */}
@@ -42,7 +42,7 @@ export function ServicesHeroArt() {
         }}
       />
       <svg
-        className="absolute -top-10 -right-16 size-[300px] text-[#344B49] sm:size-[520px]"
+        className="absolute -top-10 -right-16 size-[300px] text-[#6DB1AE] sm:size-[520px]"
         viewBox="0 0 520 460"
         fill="none"
       >
@@ -85,7 +85,7 @@ export function ServicesHeroArt() {
       </svg>
       {/* the legend down the left margin: the same five nodes as a key */}
       <svg
-        className="absolute inset-y-0 left-0 hidden h-full w-20 text-[#344B49] opacity-70 sm:block"
+        className="absolute inset-y-0 left-0 hidden h-full w-20 text-[#6DB1AE] opacity-70 sm:block"
         viewBox="0 0 80 800"
         preserveAspectRatio="none"
         fill="none"
