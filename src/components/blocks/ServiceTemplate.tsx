@@ -450,7 +450,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </figcaption>
             </figure>
           </div>
-          <div className="relative h-fit overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
+          <div className="relative h-fit overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] px-5 py-10 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:px-7 sm:py-12 lg:px-8 lg:py-14">
             <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
             <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-44 rounded-full bg-white/35 blur-3xl" />
             <div className="relative">
