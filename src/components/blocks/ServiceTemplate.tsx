@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
@@ -222,6 +222,16 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 function ProcessJourney({ page }: { page: ServiceContent }) {
   const steps = page.process ?? [];
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (steps.length < 2) return;
+
+    const timer = window.setTimeout(() => {
+      setActive((current) => (current + 1) % steps.length);
+    }, 2500);
+
+    return () => window.clearTimeout(timer);
+  }, [active, steps.length]);
 
   const step = steps[active];
   if (!step) return null;
