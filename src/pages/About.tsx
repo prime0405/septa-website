@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Award, HeartHandshake, Lightbulb } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { Decode } from "../components/ui/Decode";
 import { PageHero } from "../components/blocks/PageHero";
 import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { SectionStage } from "../components/blocks/SectionStage";
@@ -60,7 +59,6 @@ export default function About() {
     <>
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "About Us" }]}
-        eyebrow="About Septa"
         title="Technology should move people and businesses forward."
         lead="We bring product thinking, engineering and AI together to make work simpler and ambitious ideas achievable."
         art={<AboutHeroArt />}
@@ -73,16 +71,12 @@ export default function About() {
               ratio="aspect-[4/3]"
               edge="none"
             />
-            <p className="mt-4 font-mono text-[0.68rem] tracking-[0.12em] text-faint uppercase">
-              Thoughtful technology. Practical progress.
-            </p>
           </div>
         }
       />
 
       <Section wall="service-automation" className="section">
         <SectionHeading
-          eyebrow="Who we are"
           title="Built around real-world needs."
           className="mb-6 max-w-4xl"
         />
@@ -107,7 +101,6 @@ export default function About() {
 
       <Section wall="use-case" tone="raised" className="section">
         <SectionHeading
-          eyebrow="The Septa approach"
           title="Good technology starts with the right questions."
           lead="Our work is shaped by three principles that keep innovation grounded in the people and outcomes it is meant to serve."
           className="mb-10"
@@ -180,9 +173,6 @@ export default function About() {
         <SectionStage>
           <div className="wrap relative grid gap-12 py-16 sm:py-22 lg:grid-cols-2 lg:gap-20">
             <div>
-              <p className="mb-5 font-mono text-[0.7rem] tracking-[0.22em] text-brand-mint uppercase">
-                Our vision
-              </p>
               <MaskRise>
                 <p className="max-w-xl font-display text-[clamp(1.8rem,4vw,3rem)] leading-[1.14] text-brand-white">
                   {about.vision}
@@ -190,9 +180,6 @@ export default function About() {
               </MaskRise>
             </div>
             <div className="lg:pt-2">
-              <p className="mb-5 font-mono text-[0.7rem] tracking-[0.22em] text-brand-mint uppercase">
-                Our mission
-              </p>
               <p className="max-w-xl text-[1rem] leading-relaxed text-brand-teal-lift">
                 {about.mission}
               </p>
@@ -204,8 +191,7 @@ export default function About() {
       <Section wall="blog" tone="surface" className="section">
         <Reveal y={18} className="mb-10">
           <SectionHeading
-            eyebrow="What guides us"
-            title={about.valuesHeading}
+              title={about.valuesHeading}
             lead="Six principles that shape how we think, build and work with people."
             className="max-w-3xl"
           />
@@ -245,8 +231,7 @@ export default function About() {
                         className={`group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border text-left transition-colors duration-500 ${active ? "flex-[3.4] border-mint/40 bg-surface shadow-[0_22px_70px_-45px_rgba(15,118,110,0.4)]" : "flex-1 border-line bg-surface/55 hover:border-mint/30 hover:bg-surface/80"}`}
                       >
                         <div className="flex items-center justify-between gap-3 p-5">
-                          <span className="font-mono text-[0.64rem] tracking-[0.16em] text-faint">0{i + 1} / 06</span>
-                          <span className={`flex size-10 shrink-0 items-center justify-center rounded-xl border font-display text-2xl transition-all duration-500 ${active ? "border-mint/30 bg-mint/10 text-mint" : "border-line bg-surface text-muted group-hover:border-mint/30 group-hover:text-mint"}`}>
+                          <span className={`flex size-16 shrink-0 items-center justify-center rounded-2xl border font-display text-4xl transition-all duration-500 ${active ? "border-mint/30 bg-mint/10 text-mint" : "border-line bg-surface text-muted group-hover:border-mint/30 group-hover:text-mint"}`}>
                             {value.letter}
                           </span>
                         </div>
@@ -258,14 +243,10 @@ export default function About() {
                             transition={{ duration: 0.45, ease: "easeOut" }}
                             className="flex flex-1 flex-col justify-end px-6 pb-7"
                           >
-                            <span className="mb-3 font-mono text-[0.62rem] tracking-[0.2em] text-mint uppercase">SCRIBE principle</span>
                             <h3 className="max-w-[18rem] font-display text-[clamp(1.6rem,2.3vw,2.5rem)] leading-[1.05] tracking-[-0.035em] text-fg">
-                              <Decode text={value.word} />
+                              {value.word}
                             </h3>
                             <p className="mt-4 max-w-[22rem] text-[0.94rem] leading-relaxed text-muted">{details[i]}</p>
-                            <span className="mt-8 flex items-center gap-2 font-mono text-[0.62rem] tracking-[0.15em] text-faint uppercase">
-                              <span className="size-1.5 rounded-full bg-mint" /> Selected value
-                            </span>
                           </motion.div>
                         ) : (
                           <div className="flex flex-1 items-end justify-center pb-7">
@@ -301,17 +282,13 @@ export default function About() {
                       className="rounded-2xl border border-line bg-surface/90 p-5 sm:p-6"
                     >
                       <div className="flex items-center justify-between gap-4">
-                        <span className="font-mono text-[0.64rem] tracking-[0.16em] text-faint">0{i + 1} / 06</span>
-                        <span className="flex size-10 items-center justify-center rounded-xl border border-mint/20 bg-mint/[0.07] font-display text-2xl text-mint">{value.letter}</span>
+                        <span className="flex size-16 items-center justify-center rounded-2xl border border-mint/20 bg-mint/[0.07] font-display text-4xl text-mint">{value.letter}</span>
                       </div>
-                      <h3 className="mt-4 font-display text-[1.35rem] leading-tight text-fg"><Decode text={value.word} /></h3>
+                      <h3 className="mt-4 font-display text-[1.35rem] leading-tight text-fg">{value.word}</h3>
                       <p className="mt-2 max-w-2xl text-[0.9rem] leading-relaxed text-muted">{details[i]}</p>
                     </motion.article>
                   ))}
                 </div>
-                <p className="mt-5 hidden text-center font-mono text-[0.62rem] tracking-[0.16em] text-faint uppercase lg:block">
-                  Automatically exploring each principle · select any panel to jump ahead
-                </p>
               </>
             );
           })()}
