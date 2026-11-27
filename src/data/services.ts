@@ -105,7 +105,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Solid Security Infrastructure",
-        href: "/services/observability-monitoring#capability-real-time-monitoring",
+        href: "/services/ai-product-development#capability-web-development",
         detail:
           "We build secure systems that protect sensitive data, ensure compliance, and support reliable AI operations at scale.",
       },
