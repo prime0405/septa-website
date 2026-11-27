@@ -187,7 +187,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           </div>
         </div>
 
-        <div className="service-capability-copy relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-[#DDEFE6] p-6 sm:p-9 lg:p-10">
+        <div className="service-capability-copy relative flex min-h-[520px] flex-col justify-between overflow-hidden bg-[#DDEFE6] p-6 sm:min-h-[540px] sm:p-9 lg:min-h-[560px] lg:p-10">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full bg-brand-teal/[0.12] blur-3xl" />
           <div className="relative">
@@ -231,14 +231,14 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                       : "border-[#6db1ae]/25 bg-white/65 text-[#17383b] hover:-translate-y-0.5 hover:border-[#6db1ae]/60 hover:bg-white hover:shadow-[0_12px_26px_-20px_rgba(6,44,42,.55)]"
                   )}
                 >
-                  <span className={cn(
+                  <strong className={cn(
                     "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg rounded-br-xl border font-sans text-[.68rem] font-bold transition-colors",
                     active === index
                       ? "border-[#286f6a]/30 bg-[#286f6a] text-white"
                       : "border-[#286f6a]/20 bg-[#eaf5f0] text-[#286f6a]"
                   )}>
                     {String(index + 1).padStart(2, "0")}
-                  </span>
+                  </strong>
                   <span className="min-w-0 flex-1 whitespace-normal break-words [overflow-wrap:anywhere] text-[.76rem] font-semibold leading-[1.35] sm:text-[.8rem]">
                     {capability.title}
                   </span>
