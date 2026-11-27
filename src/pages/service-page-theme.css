@@ -132,3 +132,31 @@
   background-color: #5fdd9d !important;
   color: #061820 !important;
 }
+
+
+/* The services index is the sixth service-facing page and uses the same intro field. */
+.service-page .services-overview-legend {
+  background: rgba(6, 24, 32, 0.88) !important;
+  border-color: rgba(95, 221, 157, 0.28) !important;
+  color: #ffffff !important;
+}
+
+.service-page .services-overview-card {
+  background: rgba(16, 49, 62, 0.78) !important;
+  border-color: rgba(109, 177, 174, 0.28) !important;
+  color: #ffffff !important;
+}
+
+.service-page .services-overview-card h2,
+.service-page .services-overview-card p,
+.service-page .services-overview-card .text-faint {
+  color: rgba(255, 255, 255, 0.86) !important;
+}
+
+.service-page [class*="text-[#344B49]"] {
+  color: #ffffff !important;
+}
+
+.service-page [class*="border-[#DDEFE6]"] {
+  border-color: rgba(109, 177, 174, 0.28) !important;
+}
