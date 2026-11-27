@@ -37,6 +37,13 @@
     linear-gradient(135deg, #edf7f2 0%, #e7f2ef 100%) !important;
 }
 
+/* The Why Choose Septa section has its own vertical rhythm.
+   Keep this override scoped to the shared service-detail section so global .section spacing
+   remains unchanged everywhere else. Content spacing inside the two columns is preserved. */
+.service-page #the-septa-difference.service-why-section {
+  padding-block: clamp(2.75rem, 5vw, 4.25rem);
+}
+
 /* The service hero uses the homepage hero's exact background treatment:
    Black Pearl into charcoal, with subtle mint and Tradewind light. */
 .service-page > section:first-child {
