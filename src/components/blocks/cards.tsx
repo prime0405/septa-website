@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import type { UseCase } from "../../data/useCases";
 import type { Post } from "../../data/posts";
 import type { ServiceContent } from "../../data/services";
@@ -58,7 +58,7 @@ export function ServiceCard({
       ) : null}
       <span className="mt-5 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-mint">
         {ctaLabel}
-        <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
       </span>
     </Link>
   );
@@ -115,7 +115,7 @@ export function CaseCard({ study, featured }: { study: UseCase; featured?: boole
         </dl>
         <div className="mt-auto flex items-center gap-1.5 pt-5 text-[0.85rem] font-medium text-mint">
           View Case Study
-          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
         </div>
       </div>
       <span

@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Link2 } from "lucide-react";
+import { ArrowRight, Check, Link2 } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 import { CareerForm } from "../components/forms/CareerForm";
@@ -100,11 +100,7 @@ const steps = [
 ========================================== */
 
 function Arrow() {
-  return (
-    <span className="sc-arrow" aria-hidden="true">
-      →
-    </span>
-  );
+  return <ArrowRight aria-hidden="true" className="sc-arrow size-4" />;
 }
 
 /* ==========================================
@@ -457,9 +453,7 @@ export default function Careers() {
 
                       <span className="sc-role-toggle">
                         View requirements
-                        <span className="sc-arrow" aria-hidden="true">
-                          →
-                        </span>
+                        <ArrowRight aria-hidden="true" className="sc-arrow size-4" />
                       </span>
                     </summary>
 

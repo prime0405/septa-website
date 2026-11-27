@@ -20,15 +20,16 @@ const variants: Record<Variant, string> = {
     "bg-brand-teal text-brand-pearl hover:bg-brand-teal-lift shadow-[0_10px_26px_-16px_rgb(6_24_32/0.45)] hover:shadow-[0_16px_34px_-14px_rgb(109_177_174/0.8)]",
   secondary: "bg-ink-raised text-fg border border-line hover:border-mint/55 hover:bg-surface-raised",
   "outline-mint": "border border-mint/45 text-mint hover:bg-mint/10 hover:border-mint",
-  /* The two buttons the dark homepage hero takes. `dark-cta` is the #5fdd9d fill with Black Pearl
-     on it — 10.6:1 — and `outline-light` is the same green held to a hairline around white type so
-     the secondary action reads as paired with the fill rather than as a light-page button that
-     wandered onto a charcoal field. Both are separate variants rather than className overrides
-     because `cn` is clsx, which does not deduplicate conflicting utilities. */
+  /* The two buttons the dark homepage hero takes. `dark-cta` is the same teal fill the header
+     CTA uses, so every prominent action on the site reads as one button; `outline-light` holds
+     that teal to a hairline around white type so the secondary action pairs with the fill rather
+     than looking like a light-page button that wandered onto a charcoal field. Both are separate
+     variants rather than className overrides because `cn` is clsx, which does not deduplicate
+     conflicting utilities. */
   "dark-cta":
-    "bg-brand-mint text-brand-pearl hover:bg-brand-mint/85 shadow-[0_14px_34px_-16px_rgb(95_221_157/0.55)]",
+    "bg-brand-teal text-brand-pearl hover:bg-brand-teal-lift shadow-[0_14px_34px_-16px_rgb(109_177_174/0.6)]",
   "outline-light":
-    "border border-brand-white/35 text-brand-white hover:border-brand-mint/70 hover:bg-brand-mint/10",
+    "border border-brand-white/35 text-brand-white hover:border-brand-teal-lift/80 hover:bg-brand-teal/15",
   ghost: "text-muted hover:text-fg hover:bg-surface",
   text: "text-mint hover:text-mint-bright underline-offset-4 hover:underline",
 };

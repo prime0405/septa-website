@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { PageHero } from "../components/blocks/PageHero";
 import { ServiceIcon } from "../components/blocks/ServiceIcon";
@@ -31,8 +31,8 @@ const serviceLegend = (
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="min-w-0 flex-1 truncate">{s.name}</span>
-                <ArrowUpRight
-                  className="size-3.5 shrink-0 text-faint transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-mint"
+                <ArrowRight
+                  className="size-3.5 shrink-0 text-faint transition-transform group-hover:translate-x-1 group-hover:text-mint"
                   aria-hidden
                 />
               </Link>

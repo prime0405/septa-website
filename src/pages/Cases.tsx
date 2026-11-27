@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CaseCard } from "../components/blocks/cards";
 import { PageHero } from "../components/blocks/PageHero";
 import { CasesHeroArt } from "../components/visuals/CasesHeroArt";
@@ -38,8 +38,8 @@ const studyIndex = (
                 </span>
                 <span className="min-w-0 flex-1 truncate">{u.client}</span>
                 <span className="hidden font-mono text-[0.68rem] text-faint sm:inline">{u.kind}</span>
-                <ArrowUpRight
-                  className="size-3.5 shrink-0 text-faint transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-mint"
+                <ArrowRight
+                  className="size-3.5 shrink-0 text-faint transition-transform group-hover:translate-x-1 group-hover:text-mint"
                   aria-hidden
                 />
               </Link>

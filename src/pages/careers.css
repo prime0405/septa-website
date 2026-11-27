@@ -6,6 +6,10 @@
 
   --sc-teal: #286f6a;
 
+  --sc-cta: #6db1ae;
+
+  --sc-cta-lift: #8ac2bf;
+
   --sc-cream: #f6f7f3;
 
   --sc-white: #fff;
@@ -180,15 +184,15 @@
 
 }
 
-.septa-careers .sc-primary { background: var(--sc-mint); color: var(--sc-ink); }
+.septa-careers .sc-primary { background: var(--sc-cta); color: var(--sc-ink); }
 
-.septa-careers .sc-primary:hover { background: color-mix(in srgb, var(--sc-mint) 92%, var(--sc-ink)); }
+.septa-careers .sc-primary:hover { background: var(--sc-cta-lift); }
 
 .septa-careers .sc-secondary { color: var(--sc-white); border-color: rgb(255 255 255 / 28%); }
 
 .septa-careers .sc-secondary:hover { background: rgb(255 255 255 / 8%); border-color: var(--sc-white); }
 
-.sc-arrow { display: inline-block; transition: transform 250ms ease-out; }
+.sc-arrow { display: inline-block; flex-shrink: 0; vertical-align: middle; transition: transform 250ms ease-out; }
 
 .septa-careers a:hover .sc-arrow { transform: translateX(4px); }
 
