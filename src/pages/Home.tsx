@@ -188,16 +188,14 @@ export default function Home() {
             className="pointer-events-none absolute inset-[-6%]"
           >
             <img
-              src="/img/work/engineering-floor.webp"
+              src="https://images.pexels.com/photos/4508751/pexels-photo-4508751.jpeg?auto=compress&cs=tinysrgb&w=2000"
               alt=""
               decoding="async"
               fetchPriority="high"
               className="plate-drift-slow size-full object-cover opacity-[0.34] mask-fade"
             />
-            {/* The photograph is a night-lit hall, so the field no longer needs Pearl to pull a
-                daylight image down to charcoal — it needs a scrim that keeps the charcoal and lets
-                the rack lights stay dots rather than becoming the subject. 58% of the field's own
-                colour over 34% of a mostly-black image is the pass the contrast harness measured. */}
+            {/* The Pexels data-centre photograph is deliberately treated as atmosphere, not a subject: the
+                low image opacity and charcoal scrim keep the rack lights subtle behind the headline. */}
             <div className="absolute inset-0 bg-charcoal/58" />
             <div className="grid-bg-dark absolute inset-0 opacity-[0.6] mask-fade" />
           </motion.div>
