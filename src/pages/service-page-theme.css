@@ -237,7 +237,7 @@
   left: 50%;
   top: 50%;
   width: min(235px, 29%);
-  transform: rotate(var(--orbit-angle)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-1 * var(--orbit-angle)));
+  transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-1 * var(--orbit-angle)));
 }
 .service-page .septa-orbit__card {
   display: flex;
