@@ -397,7 +397,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </div>
             </div>
 
-            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-brand-teal/25 bg-white/[0.04] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+            <div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-brand-teal/25 bg-white/[0.04] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2">
               <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-brand-teal/25" />
               <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
                 <PhotoFigure
@@ -434,10 +434,10 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
-        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
+        <div className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent">
       </section>
 
       <Section id="core-services" wall="use-case" tone="surface" className="section">
