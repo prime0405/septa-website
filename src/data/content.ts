@@ -39,8 +39,9 @@ export const landingBlocks: LandingBlock[] = [
       "We use AI to accelerate product development, helping you turn your ideas into market-ready products in 4 to 6 weeks. From concept to launch, we combine AI, product strategy, and engineering that solve user problems and support your business growth.",
     cta: "Explore AI Product Development",
     to: "/services/ai-product-development",
-    image: "/img/work/ai-model-build.webp",
-    alt: "Two monitors in an engineering room, one showing a model pipeline as a branching node graph and the other a training curve falling above a grid of evaluation panels, with a hand at the keyboard in the foreground",
+    image: "https://images.pexels.com/photos/19805876/pexels-photo-19805876.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    // Pexels: Naboth Otieno — an African software developer working in a modern office.
+    alt: "An African software developer working across a desktop monitor and laptop in a modern Nairobi office.",
   },
   {
     key: "traditional",
@@ -50,8 +51,9 @@ export const landingBlocks: LandingBlock[] = [
       "We turn ideas into intelligent products that solve real problems, delight users, and drive growth, powered by smart strategy, and thoughtful design.",
     cta: "Build with us",
     to: "/case-studies",
-    image: "/img/work/product-delivery.webp",
-    alt: "Two colleagues standing at a wall of printed screen flows and coloured notes, one pointing at a step, while a monitor beside them shows a build pipeline with four stages checked and the fifth running",
+    image: "https://images.pexels.com/photos/3931436/pexels-photo-3931436.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    // Pexels: Andrea Piacquadio — a diverse project team collaborating in a bright workspace.
+    alt: "A diverse group of colleagues collaborating around a laptop in a bright, modern office.",
   },
   {
     key: "talent",
@@ -61,8 +63,9 @@ export const landingBlocks: LandingBlock[] = [
       "Connecting you with top tech talents to fuel innovation and accelerate growth.",
     cta: "Hire Top Tech Talents Now",
     to: "/services/talent-solution",
-    image: "/img/work/talent-matching.webp",
-    alt: "A monitor showing a grid of candidate profiles as abstract avatars with skill bars, two of them joined by a curve, beside a laptop running a video interview",
+    image: "https://images.pexels.com/photos/30688908/pexels-photo-30688908.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    // Pexels: Ninthgrid — an African professional working in Lagos.
+    alt: "An African woman working on her laptop in a bright, modern Lagos café.",
   },
 ];
 
