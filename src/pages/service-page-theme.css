@@ -1,4 +1,4 @@
-/* Shared light service-page theme. Button fills and button text are intentionally untouched. */
+/* Shared Septa service-page palette. Keep interactive button styling owned by each component. */
 .service-page {
   position: relative;
   isolation: isolate;
@@ -23,115 +23,125 @@
   background-size: auto, auto, 56px 56px, 56px 56px, auto;
 }
 
-.service-page > section {
-  background-color: transparent !important;
-  color: #17383b !important;
-}
-
-.service-page > section:first-child {
-  background: transparent !important;
-}
-
-/* Main page and section typography */
-.service-page h1,
-.service-page h2,
-.service-page h3,
-.service-page h4,
-.service-page .text-brand-pearl,
-.service-page .text-fg {
-  color: #17383b !important;
-}
-
-.service-page p,
-.service-page .text-muted,
-.service-page .text-faint {
-  color: #49666a !important;
-}
-
-.service-page .text-mint,
-.service-page .text-brand-mint,
-.service-page .text-brand-teal {
-  color: #286f6a !important;
-}
-
-/* Convert the formerly dark hero and panel surfaces to soft white/mint surfaces. */
-.service-page :not(a):not(button):not(a *):not(button *)[class*="bg-[#061820]"],
-.service-page :not(a):not(button):not(a *):not(button *)[class*="bg-brand-pearl"],
-.service-page .service-capability-carousel,
-.service-page .services-overview-legend {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(40, 111, 106, 0.2) !important;
-  color: #17383b !important;
-  box-shadow: 0 24px 70px -48px rgba(23, 56, 59, 0.28);
-}
-
-.service-page .service-capability-copy,
-.service-page .service-process-journey > div:last-child,
-.service-page .service-glass,
-.service-page .service-extra-panel,
-.service-page .services-overview-card {
-  background: rgba(235, 247, 243, 0.92) !important;
-  border-color: rgba(40, 111, 106, 0.2) !important;
-  color: #17383b !important;
-  backdrop-filter: blur(18px);
-}
-
-.service-page .service-capability-copy .text-white,
-.service-page .service-capability-copy [class*="text-white/"],
-.service-page .service-extra-panel .text-white,
-.service-page .service-extra-panel [class*="text-white/"],
-.service-page .services-overview-card [class*="text-white"],
-.service-page .services-overview-legend [class*="text-white"] {
-  color: #49666a !important;
-}
-
-/* Make the non-interactive hero copy readable on the new light hero field.
-   Interactive buttons/links are excluded so their approved colours stay unchanged. */
-.service-page :not(a):not(button):not(a *):not(button *)[class*="text-white"] {
-  color: #17383b !important;
-}
-.service-page .service-capability-art :not(a):not(button)[class*="text-white"] {
-  color: #ffffff !important;
-}
-
-/* Bring legacy hard-coded section borders and text onto the same light palette. */
-.service-page [class*="text-[#344B49]"] {
-  color: #17383b !important;
-}
-.service-page [class*="border-[#DDEFE6]"] {
-  border-color: rgba(40, 111, 106, 0.2) !important;
-}
-.service-page [class*="bg-[#DDEFE6]"] {
-  background-color: #eaf5f1 !important;
-}
-.service-page [class*="text-[#91d9cf]"] {
-  color: #286f6a !important;
-}
-
-/* Restore the stronger Septa green hierarchy: heroes and featured capability frame
-   use the deep green, while bright mint remains reserved for existing buttons/highlights. */
+/* The first section is the page hero on both the Services overview and all five detail pages. */
 .service-page > section:first-child {
   background: linear-gradient(132deg, #344b49 0%, #123a43 48%, #061820 100%) !important;
   color: #ffffff !important;
 }
 
-.service-page > section:first-child h1,
-.service-page > section:first-child h2,
-.service-page > section:first-child h3,
-.service-page > section:first-child p,
-.service-page > section:first-child .text-muted,
-.service-page > section:first-child .text-faint {
+.service-page > section:first-child :is(h1, h2, h3, h4, p) {
   color: #ffffff !important;
 }
 
+.service-page > section:first-child [class*="text-[#344B49]"] {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.service-page > section:first-child .text-brand-mint,
+.service-page > section:first-child .text-brand-teal,
+.service-page > section:first-child [class*="text-[#91d9cf]"] {
+  color: #5fdd9d !important;
+}
+
+.service-page > section:first-child nav,
+.service-page > section:first-child nav :is(li, span, a) {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.service-page > section:first-child nav a:hover {
+  color: #5fdd9d !important;
+}
+
+/* Light content surfaces use dark, readable text and restrained Tradewind accents. */
+.service-page > section:not(:first-child) {
+  background-color: transparent !important;
+  color: #17383b !important;
+}
+
+.service-page :is(h1, h2, h3, h4) {
+  color: #17383b;
+}
+
+.service-page p,
+.service-page .text-muted,
+.service-page .text-faint {
+  color: #49666a;
+}
+
+.service-page .text-mint,
+.service-page .text-brand-mint,
+.service-page .text-brand-teal {
+  color: #286f6a;
+}
+
+.service-page [class*="text-[#344B49]"] {
+  color: #17383b;
+}
+
+.service-page [class*="border-[#DDEFE6]"] {
+  border-color: rgba(40, 111, 106, 0.2);
+}
+
+.service-page [class*="bg-[#DDEFE6]"] {
+  background-color: #eaf5f1;
+}
+
+.service-page [class*="text-[#91d9cf]"] {
+  color: #286f6a;
+}
+
+/* The capability carousel is the strong green anchor; its copy panel remains pale for contrast. */
 .service-page .service-capability-carousel {
   background: linear-gradient(145deg, #344b49 0%, #123a43 52%, #061820 100%) !important;
   border-color: rgba(109, 177, 174, 0.42) !important;
-  color: #ffffff !important;
+  color: #ffffff;
   box-shadow: 0 32px 90px -48px rgba(6, 24, 32, 0.72);
 }
 
-/* The capability copy panel stays light for readable body text; its frame and artwork
-   provide the deeper green contrast. Existing button rules remain untouched. */
+.service-page .service-capability-copy {
+  background: #eaf5f1 !important;
+  border-color: rgba(40, 111, 106, 0.2) !important;
+  color: #17383b !important;
+}
 
-/* Keep the existing approved button colours exactly as authored. */
+.service-page .service-capability-copy :is(h3, p),
+.service-page .service-capability-copy [class*="text-white"]:not(button *),
+.service-page .service-capability-copy .text-brand-pearl:not(button *) {
+  color: #17383b !important;
+}
+
+.service-page .service-capability-copy .text-muted:not(button *),
+.service-page .service-capability-copy .text-faint:not(button *) {
+  color: #49666a !important;
+}
+
+/* Supporting cards and process panels use a light mint surface, not another dark block. */
+.service-page .service-glass,
+.service-page .service-process-journey > div:last-child,
+.service-page .service-extra-panel,
+.service-page .services-overview-card {
+  background: rgba(235, 247, 243, 0.94);
+  border-color: rgba(40, 111, 106, 0.2);
+  color: #17383b;
+  backdrop-filter: blur(18px);
+}
+
+.service-page .service-extra-panel :is(h2, p, span) {
+  color: #17383b;
+}
+
+.service-page .services-overview-legend {
+  background: linear-gradient(145deg, #344b49 0%, #123a43 52%, #061820 100%) !important;
+  border-color: rgba(109, 177, 174, 0.42) !important;
+  color: #ffffff;
+}
+
+.service-page .services-overview-legend .text-faint {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.service-page .services-overview-card {
+  background: rgba(235, 247, 243, 0.94) !important;
+}
+
+/* Button colours are intentionally not declared or overridden in this file. */
