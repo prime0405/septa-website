@@ -465,7 +465,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           <div className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
             <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
             <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-44 rounded-full bg-white/35 blur-3xl" />
-            <div className="relative">
+            <div className="relative flex flex-1 flex-col">
               <div className="mb-5 border-b border-[#6DB1AE]/30 pb-4">
                 <span className="font-sans text-[.62rem] font-semibold uppercase tracking-[.2em] text-[#286F6A]">The Septa advantage</span>
               </div>
