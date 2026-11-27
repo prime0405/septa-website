@@ -44,7 +44,6 @@ export function HeroSpiral({
     let theta = 0;
     let dir = 1;
     let last = 0;
-    let frame = 0;
     let maskAt = 0;
 
     const dimOn = () => {
@@ -152,7 +151,7 @@ export function HeroSpiral({
       ro?.disconnect();
       window.removeEventListener("resize", renderStatic);
     };
-  }, [copyRef]
+  }, [copyRef]);
 
   return <canvas ref={canvasRef} aria-hidden className={className} />;
 }
