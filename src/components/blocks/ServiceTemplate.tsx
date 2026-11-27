@@ -371,7 +371,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
 export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs: { label: string; to?: string }[] }) {
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-[#061820] text-white">
+      <section data-static-hero="" className="relative isolate overflow-hidden bg-[#061820] text-white">
         <ServiceMotionField slug={page.slug} />
 
         <div className="wrap relative py-11 sm:py-14 lg:py-16">
