@@ -146,8 +146,8 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
       role="region"
       aria-label={page.coreServicesHeading}
     >
-      <div className="grid lg:min-h-[470px] lg:grid-cols-[1.04fr_.96fr]">
-        <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
+      <div className="grid lg:min-h-[400px] lg:grid-cols-[1.04fr_.96fr]">
+        <div className="service-capability-art relative min-h-[230px] overflow-hidden sm:min-h-[300px] lg:min-h-[400px]">
           <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <div className="absolute inset-0">
@@ -187,7 +187,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           </div>
         </div>
 
-        <div className="service-capability-copy relative flex min-h-[520px] flex-col justify-between overflow-hidden bg-[#DDEFE6] p-6 sm:min-h-[540px] sm:p-9 lg:min-h-[560px] lg:p-10">
+        <div className="service-capability-copy relative flex flex-col justify-between overflow-hidden bg-[#DDEFE6] p-5 sm:p-7 lg:p-8">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full bg-brand-teal/[0.12] blur-3xl" />
           <div className="relative">
@@ -195,7 +195,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               <span className="font-sans text-[.68rem] uppercase tracking-[.22em] text-[#91d9cf]">What we do / Core services</span>
 
             </div>
-            <div className="mt-8 grid min-w-0 sm:mt-10">
+            <div className="mt-5 grid min-w-0 sm:mt-6">
               <AnimatePresence mode="sync" initial={false}>
                 <motion.div
                   key={item.title}
@@ -213,8 +213,8 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             </div>
           </div>
 
-          <div className="relative mt-10">
-            <p className="mb-5 text-xs text-white/55">Explore each capability</p>
+          <div className="relative mt-6">
+            <p className="mb-3 text-xs text-white/55">Explore each capability</p>
             <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
               {page.coreServices.map((capability, index) => (
                 <button
@@ -225,21 +225,21 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
                   aria-current={active === index ? "true" : undefined}
                   onClick={() => goTo(index)}
                   className={cn(
-                    "group relative flex min-h-[88px] min-w-0 items-start gap-3 overflow-hidden rounded-[1.15rem] rounded-tr-[2rem] rounded-bl-[1.8rem] border px-3.5 py-3.5 text-left transition-all duration-300 sm:min-h-[96px] sm:px-4 sm:py-4",
+                    "group relative flex min-h-[66px] min-w-0 items-center gap-2.5 overflow-hidden rounded-[1rem] rounded-tr-[1.8rem] rounded-bl-[1.45rem] border px-3 py-2.5 text-left transition-all duration-300 sm:min-h-[72px] sm:px-3.5 sm:py-3",
                     active === index
                       ? "border-[#6db1ae]/70 bg-[#6db1ae]/15 text-[#123f3d] shadow-[0_10px_24px_-18px_rgba(6,44,42,.65),inset_0_0_0_1px_rgba(109,177,174,.18)]"
                       : "border-[#6db1ae]/25 bg-white/65 text-[#17383b] hover:-translate-y-0.5 hover:border-[#6db1ae]/60 hover:bg-white hover:shadow-[0_12px_26px_-20px_rgba(6,44,42,.55)]"
                   )}
                 >
                   <strong className={cn(
-                    "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg rounded-br-xl border font-sans text-[.68rem] font-bold transition-colors",
+                    "flex size-7 shrink-0 items-center justify-center rounded-md rounded-br-lg border font-sans text-[.64rem] font-bold transition-colors",
                     active === index
                       ? "border-[#286f6a]/30 bg-[#286f6a] text-white"
                       : "border-[#286f6a]/20 bg-[#eaf5f0] text-[#286f6a]"
                   )}>
                     {String(index + 1).padStart(2, "0")}
                   </strong>
-                  <span className="min-w-0 flex-1 whitespace-normal break-words [overflow-wrap:anywhere] text-[.76rem] font-semibold leading-[1.35] sm:text-[.8rem]">
+                  <span className="min-w-0 flex-1 whitespace-normal break-words [overflow-wrap:anywhere] text-[.74rem] font-semibold leading-[1.3] sm:text-[.78rem]">
                     {capability.title}
                   </span>
                   <span aria-hidden className={cn(
@@ -470,13 +470,13 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           ) : (
             <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
               {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-                <Link to={item.href ?? "#core-services"} className="service-glass group relative block h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-white/60 bg-white/50 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
+                <Link to={item.href ?? "#core-services"} className="service-glass group relative block h-full overflow-hidden rounded-[1.35rem] rounded-tr-[2.8rem] rounded-bl-[2.1rem] border border-white/60 bg-white/50 p-5 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-6">
                   <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-sans text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
-                  <div className="mt-8 flex items-start justify-between gap-3">
-                    <h3 className="max-w-xs text-xl">{item.title}</h3>
+                  <div className="mt-5 flex items-start justify-between gap-3">
+                    <h3 className="max-w-xs text-lg font-semibold leading-snug">{item.title}</h3>
                     <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
                   </div>
-                  {item.detail ? <p className="mt-3 max-w-md text-sm leading-7 text-muted">{item.detail}</p> : null}
+                  {item.detail ? <p className="mt-2 max-w-md text-sm leading-6 text-muted">{item.detail}</p> : null}
                 </Link>
               </Reveal>)}
             </div>
