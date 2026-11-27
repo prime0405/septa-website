@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
-import { useReducedMotion } from "motion/react";
 
 const TURNS = 4.2;
 /** How far behind the head the trail is drawn, in full turns. */
@@ -29,7 +28,7 @@ export function HeroSpiral({
   copyRef: RefObject<HTMLElement | null>;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = true;
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
