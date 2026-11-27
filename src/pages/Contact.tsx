@@ -58,7 +58,7 @@ function ContactRow({
 }
 
 const firstMessage = (
-  <Reveal>
+  <div>
     <div className="relative overflow-hidden rounded-card border border-line bg-ink-raised/85 p-6">
       <div aria-hidden className="dot-bg absolute inset-0 opacity-30" />
       <div className="relative">
@@ -76,7 +76,7 @@ const firstMessage = (
         </p>
       </div>
     </div>
-  </Reveal>
+  </div>
 );
 
 export default function Contact() {
