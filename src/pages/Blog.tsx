@@ -80,6 +80,7 @@ export default function Blog() {
           <div className="relative">
             <PhotoFigure
               eager
+              static
               src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85"
               alt="A diverse team sharing ideas and collaborating around a table in a bright workspace"
               ratio="aspect-[4/3]"
