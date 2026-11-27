@@ -28,6 +28,15 @@
   opacity: 0.82;
 }
 
+/* Service CTAs use the approved teal accent instead of the legacy mint fill. */
+.service-page a.bg-brand-mint,
+.service-page button.bg-brand-mint,
+.service-page a.bg-brand-teal,
+.service-page button.bg-brand-teal {
+  background-color: #6DB1AE !important;
+  color: #344B49 !important;
+}
+
 .service-page .service-capability-carousel {
   background: #DDEFE6 !important;
   border-color: #6DB1AE !important;
