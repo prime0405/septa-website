@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import { PhotoFigure } from "../components/blocks/PhotoFigure";
