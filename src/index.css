@@ -2229,3 +2229,25 @@ html.cursor-none * {
     animation: none !important;
   }
 }
+
+
+/* Septa request: keep every hero/background plate visually present but completely still. */
+.bgfx-sheet,
+.bgfx-plate,
+.bgfx-grid,
+.bgfx-beam,
+.bgfx-orb,
+.plate-drift,
+.plate-drift-slow,
+.hero-field .plate-drift,
+.hero-field .plate-drift-slow {
+  animation: none !important;
+  transform: none !important;
+}
+.bgfx-sheet,
+.bgfx-plate,
+.bgfx-grid,
+.bgfx-beam,
+.bgfx-orb {
+  will-change: auto;
+}
