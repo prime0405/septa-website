@@ -114,8 +114,8 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     },
   };
   const visual = visuals[page.slug]?.[item.title] ?? {
-    src: "",
-    alt: "",
+    src: page.image?.src ?? "/img/work/product-delivery.webp",
+    alt: page.image?.alt ?? `Septa ${page.name} capability in practice`,
     tag: "CAPABILITY OVERVIEW",
   };
   useEffect(() => {
@@ -163,7 +163,17 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
               >
                 {visual.src ? (
                   <>
-                    <img src={visual.src} alt={visual.alt} loading="eager" decoding="async" className="size-full object-cover" />
+                    <img
+                      src={encodeURI(visual.src)}
+                      alt={visual.alt}
+                      loading="eager"
+                      decoding="async"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = "/img/work/product-delivery.webp";
+                      }}
+                      className="size-full object-cover"
+                    />
                     <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/90 via-[#061820]/15 to-[#061820]/10" />
                     <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/20 via-transparent to-[#061820]/10" />
                   </>
@@ -433,12 +443,12 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </Section>
 
       <Section id="the-septa-difference" wall="about" tone="raised" className="section service-why-section border-y border-line-soft">
-        <div className="grid items-stretch gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
-          <div className="relative">
-            <div className="lg:sticky lg:top-28">
+        <div className="grid items-stretch gap-10 lg:min-h-[36rem] lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
+          <div className="relative flex">
+            <div className="lg:sticky lg:top-28 lg:flex lg:h-full lg:flex-col">
               <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
-            <figure className="mt-7 max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)]">
+            <figure className="mt-auto max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)] lg:pt-8">
               <img
                 src="https://images.pexels.com/photos/6132652/pexels-photo-6132652.jpeg?cs=srgb&dl=pexels-aderawilson-6132652.jpg&fm=jpg"
                 alt="An African professional smiling while working at his desk in a bright office"
@@ -452,19 +462,22 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </figure>
             </div>
           </div>
-          <div className="relative h-full overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
+          <div className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
             <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
             <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-44 rounded-full bg-white/35 blur-3xl" />
             <div className="relative">
               <div className="mb-5 border-b border-[#6DB1AE]/30 pb-4">
                 <span className="font-sans text-[.62rem] font-semibold uppercase tracking-[.2em] text-[#286F6A]">The Septa advantage</span>
               </div>
-              <div className="divide-y divide-[#6DB1AE]/25">
+              <div
+                className="grid flex-1 divide-y divide-[#6DB1AE]/25"
+                style={{ gridTemplateRows: `repeat(${page.whyChoose.length}, minmax(0, 1fr))` }}
+              >
                 {page.whyChoose.map((item, index) => (
-                  <Reveal key={item.title} delay={index * 0.045}>
+                  <Reveal key={item.title} delay={index * 0.045} className="h-full">
                     <Link
                       to={item.href ?? "#core-services"}
-                      className="group grid grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-start gap-3 py-4 transition-colors duration-300 first:pt-1 last:pb-0 sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-4 sm:py-5"
+                      className="group grid h-full grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-center gap-3 py-4 transition-colors duration-300 first:pt-1 last:pb-0 sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-4 sm:py-5"
                     >
                       <span className="pt-0.5 font-sans text-xl font-light tracking-tight text-[#6A9E91] transition-colors duration-300 group-hover:text-[#286F6A] sm:text-2xl">
                         {String(index + 1).padStart(2, "0")}
