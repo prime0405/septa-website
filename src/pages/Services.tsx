@@ -112,46 +112,67 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {services.map((service, index) => (
-            <Reveal key={service.slug} delay={index * 0.045}>
-              <article className="service-glass group relative flex h-full min-h-[31rem] flex-col overflow-hidden rounded-[1.7rem] border border-white/60 bg-white/55 shadow-[0_18px_48px_-38px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:shadow-[0_26px_58px_-38px_rgba(6,24,32,.42)]">
-                <div className="relative overflow-hidden bg-brand-pearl">
-                  <img
-                    src={service.image?.src ?? "/img/work/product-in-use.webp"}
-                    alt={service.image?.alt ?? `Septa ${service.name} in practice`}
-                    loading="lazy"
-                    decoding="async"
-                    className="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
-                  />
-                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-brand-pearl/70 via-transparent to-transparent" />
-                  <span className="absolute left-5 top-5 flex size-11 items-center justify-center border border-white/35 bg-brand-pearl/75 text-brand-teal shadow-lg backdrop-blur-md">
-                    <ServiceIcon icon={service.icon} className="size-5" strokeWidth={1.8} />
-                  </span>
-                  <span className="absolute bottom-4 right-5 font-sans text-4xl font-light text-white/85">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          {services.map((service, index) => {
+            const featured = index === 0;
+            return (
+              <Reveal key={service.slug} delay={index * 0.045} className={featured ? "md:col-span-2" : ""}>
+                <article
+                  className={`service-glass group relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-white shadow-[0_22px_60px_-42px_rgba(6,44,42,.28)] transition-all duration-300 hover:-translate-y-1 hover:border-[#6DB1AE]/70 hover:shadow-[0_28px_70px_-42px_rgba(6,44,42,.36)] ${featured ? "md:grid md:grid-cols-[.94fr_1.06fr]" : "min-h-[27rem]"}`}
+                >
+                  <div className={`service-catalogue-image relative overflow-hidden bg-[#061820] ${featured ? "min-h-[17rem] md:min-h-[27rem]" : "aspect-[16/9]"}`}>
+                    <img
+                      src={service.image?.src ?? "/img/work/product-in-use.webp"}
+                      alt={service.image?.alt ?? `Septa ${service.name} in practice`}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-[1.045]"
+                    />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#061820]/75 via-[#061820]/5 to-transparent" />
+                    {featured ? <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#061820]/25 via-transparent to-transparent" /> : null}
+                    <span className="absolute left-5 top-5 flex size-11 items-center justify-center border border-white/35 bg-[#061820]/65 text-[#91d9cf] shadow-lg backdrop-blur-md">
+                      <ServiceIcon icon={service.icon} className="size-5" strokeWidth={1.8} />
+                    </span>
+                    <span className={`absolute bottom-4 right-5 font-sans font-light leading-none text-white/90 ${featured ? "text-6xl sm:text-7xl" : "text-5xl"}`}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {featured ? (
+                      <span className="absolute bottom-6 left-6 rounded-full border border-white/25 bg-[#061820]/55 px-3 py-2 font-sans text-[.62rem] uppercase tracking-[.18em] text-white/85 backdrop-blur-md">
+                        Featured service
+                      </span>
+                    ) : null}
+                  </div>
 
-                <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="font-sans text-[0.62rem] uppercase tracking-[0.18em] text-mint">Septa service / {String(index + 1).padStart(2, "0")}</p>
-                    <span className="font-sans text-[0.68rem] text-faint">{service.coreServices.length} capabilities</span>
+                  <div className={`flex flex-1 flex-col p-6 sm:p-8 ${featured ? "md:justify-center md:p-9 lg:p-11" : ""}`}>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <p className="font-sans text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[#286F6A]">
+                        Septa service / {String(index + 1).padStart(2, "0")}
+                      </p>
+                      <span className="inline-flex items-center gap-2 rounded-full border border-[#6DB1AE]/30 bg-[#EEF6F3] px-3 py-1.5 font-sans text-[0.68rem] text-[#49666A]">
+                        <span className="size-1.5 rounded-full bg-[#429B89]" />
+                        {service.coreServices.length} capabilities
+                      </span>
+                    </div>
+                    <h2 className={`mt-5 max-w-xl font-semibold leading-[1.08] tracking-tight text-[#123F3D] ${featured ? "text-[clamp(2rem,3.6vw,3.25rem)]" : "text-[1.55rem]"}`}>
+                      {service.name}
+                    </h2>
+                    <p className={`mt-4 flex-1 text-sm leading-7 text-[#49666A] ${featured ? "max-w-xl sm:text-[.96rem] sm:leading-8" : ""}`}>
+                      {service.intro}
+                    </p>
+                    <div className="mt-7 border-t border-[#6DB1AE]/25 pt-5">
+                      <Link
+                        to={paths.service(service.slug)}
+                        className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#286F6A] transition-colors hover:text-[#123F3D]"
+                      >
+                        Explore service
+                        <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden />
+                      </Link>
+                    </div>
                   </div>
-                  <h2 className="mt-4 text-[1.45rem] leading-tight tracking-tight text-brand-pearl">{service.name}</h2>
-                  <p className="mt-3 flex-1 text-sm leading-7 text-muted">{service.intro}</p>
-                  <div className="mt-6 border-t border-line-soft pt-5">
-                    <Link
-                      to={paths.service(service.slug)}
-                      className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand-pearl transition-colors hover:text-mint"
-                    >
-                      Explore service <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden />
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
       </Section>
 
