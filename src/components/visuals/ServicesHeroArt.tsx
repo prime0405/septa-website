@@ -72,7 +72,7 @@ export function ServicesHeroArt() {
               fill="currentColor"
               fillOpacity={i === 4 ? 0.85 : 0.5}
               fontSize="13"
-              fontFamily="JetBrains Mono Variable, monospace"
+              fontFamily="Manrope, sans-serif"
             >
               {nd.n}
             </text>
