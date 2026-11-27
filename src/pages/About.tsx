@@ -42,6 +42,13 @@ export default function About() {
   const [isValuesPaused, setIsValuesPaused] = useState(false);
 
   useEffect(() => {
+    const target = window.location.hash.slice(1);
+    if (target === "deep-expertise" || target === "people-first-partnership") {
+      document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
+
+  useEffect(() => {
     if (isValuesPaused) return;
 
     const timeout = window.setTimeout(() => {
