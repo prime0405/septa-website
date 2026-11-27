@@ -222,6 +222,25 @@ export const services: ServiceContent[] = [
         },
       },
     ],
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      {
+        title: "Startups and Founders",
+        detail: "Teams turning an idea into a web, mobile, or AI-enabled product.",
+      },
+      {
+        title: "Businesses Building Digital Products",
+        detail: "Organizations developing customer-facing platforms or enterprise solutions.",
+      },
+      {
+        title: "Product and Engineering Teams",
+        detail: "Teams seeking product strategy, design, and engineering support from concept through delivery.",
+      },
+      {
+        title: "Businesses Adding AI Capabilities",
+        detail: "Organizations integrating intelligent features into an existing product or service.",
+      },
+    ],
     extra: {
       heading: "Why Work With Us?",
       paragraphs: [
