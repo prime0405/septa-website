@@ -16,6 +16,10 @@
 
   --sc-padding: 96px;
 
+  /* Clears the site's 72px sticky header and the careers sub-nav (measured into --careers-nav-h)
+     plus breathing room when a section is linked to. */
+  --careers-scroll-offset: calc(72px + var(--careers-nav-h, 72px) + 16px);
+
   background: var(--sc-white);
 
   color: var(--sc-ink);
@@ -246,7 +250,7 @@
 
 
 
-.septa-careers .sc-culture, .septa-careers .sc-values { display: grid; gap: 16px; margin-block-start: 36px; }
+.septa-careers .sc-culture { display: grid; gap: 16px; margin-block-start: 36px; }
 
 .sc-culture { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
@@ -254,29 +258,29 @@
 
 .sc-card svg { color: var(--sc-mint); margin-block-end: 14px; display: block; }
 
-.septa-careers :is(.sc-card, .sc-values, .sc-timeline) p { margin-block-start: 8px; color: var(--sc-muted); }
-
-.sc-values { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
-.sc-values li { position: relative; isolation: isolate; min-height: 132px; padding: 24px 10px 16px 18px; border-block-start: 1px solid var(--sc-line); }
-
-.sc-values li > span { position: absolute; z-index: -1; inset-inline-start: 7px; inset-block-start: 5px; color: var(--sc-mint); opacity: .25; font-size: 56px; font-weight: 700; line-height: 1; }
+.septa-careers :is(.sc-card, .sc-timeline) p { margin-block-start: 8px; color: var(--sc-muted); }
 
 
 
-.septa-careers .sc-timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-block-start: 36px; }
+.septa-careers .sc-timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; margin-block-start: 40px; }
 
-.sc-timeline li { position: relative; padding-inline-end: 20px; }
+.sc-timeline li {
 
-.sc-timeline li:not(:last-child)::before {
+  padding: 26px 22px;
 
-  content: "";
+  border: 1px solid var(--sc-line);
 
-  position: absolute;
+  border-radius: 18px;
 
-  inset: 20px -4px auto 4px;
+  background: var(--sc-white);
 
-  border-block-start: 1px solid var(--sc-mint);
+  transition:
+
+    transform 300ms ease,
+
+    border-color 300ms ease,
+
+    box-shadow 300ms ease;
 
 }
 
@@ -286,13 +290,11 @@
 
   place-items: center;
 
-  position: relative;
-
   width: 40px;
 
   height: 40px;
 
-  margin-block-end: 14px;
+  margin-block-end: 18px;
 
   border: 1px solid var(--sc-mint);
 
@@ -304,53 +306,33 @@
 
   font-weight: 700;
 
+  transition:
+
+    background-color 300ms ease,
+
+    color 300ms ease,
+
+    transform 300ms ease;
+
 }
 
 .septa-careers .sc-note { margin-block-start: 28px; color: var(--sc-muted); }
 
 .sc-note a { color: var(--sc-teal); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 
-.septa-careers .sc-roles-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-
-.sc-roles-heading span, .sc-tags span { border-radius: 9999px; padding: 3px 10px; font-size: 13px; letter-spacing: normal; text-transform: none; }
-
-.sc-roles-heading span { color: var(--sc-ink); background: var(--sc-mint); }
-
-.sc-roles li { border-block-start: 1px solid var(--sc-line); }
-
-.sc-roles li:last-child { border-block-end: 1px solid var(--sc-line); }
-
-.sc-role { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; padding-block: 20px; }
-
-.sc-role h3 { font-size: 20px; }
-
-.sc-role:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
-
-.sc-role > .sc-arrow { color: var(--sc-mint); font-size: 24px; line-height: 1; }
-
-.sc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-
-.sc-tags span { background: var(--sc-cream); color: var(--sc-ink); }
-
-.sc-tags span:first-child { color: var(--sc-teal); }
-
-.septa-careers .sc-role-description { max-width: 70ch; margin-top: 6px; padding-block-end: 0; font-size: 14px; color: var(--sc-muted); }
 
 
+@media (max-width: 1100px) {
 
-@media (max-width: 1000px) {
+  .septa-careers .sc-timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-  .sc-values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
-  .septa-careers .sc-timeline { grid-template-columns: 1fr; }
+@media (max-width: 767px) {
 
-  .sc-timeline li { padding: 4px 0 24px 56px; }
+  .septa-careers .sc-timeline { grid-template-columns: 1fr; gap: 12px; margin-block-start: 32px; }
 
-  .sc-timeline li:last-child { padding-block-end: 0; }
-
-  .sc-timeline li:not(:last-child)::before { inset: 20px auto -20px 20px; border-block-start: 0; border-inline-start: 1px solid var(--sc-mint); }
-
-  .sc-node { position: absolute; inset: 0 auto auto 0; }
+  .sc-timeline li { padding: 22px; }
 
 }
 
@@ -358,19 +340,13 @@
 
   .septa-careers { --sc-padding: 64px; }
 
-  .sc-culture, .sc-values { grid-template-columns: 1fr; }
+  .sc-culture { grid-template-columns: 1fr; }
 
   .sc-route li { flex: 0 0 auto; }
 
   .sc-route li + li { border: 0; margin-inline-start: 8px; }
 
   .sc-route a { border: 1px solid var(--sc-line); border-radius: 9999px; }
-
-  .sc-role { grid-template-columns: minmax(0, 1fr) auto; gap: 9px 12px; }
-
-  .sc-role > .sc-arrow { grid-column: 2; grid-row: 1; }
-
-  .sc-tags { grid-column: 1 / -1; }
 
 }
 
@@ -384,39 +360,11 @@
 
 
 
-.sc-job summary { cursor: pointer; list-style: none; }
-
-.sc-job summary::-webkit-details-marker { display: none; }
-
-.sc-job summary:focus-visible { outline: 2px solid var(--sc-mint); outline-offset: 2px; }
-
-.sc-job[open] summary > .sc-arrow { transform: rotate(90deg); }
-
-.sc-job-detail, .sc-apply { display: grid; gap: 24px; }
-
-.sc-job-detail { border-top: 1px solid var(--sc-line); padding-block: 24px; }
-
-.sc-job-detail h4 { color: var(--sc-ink); font-weight: 600; margin-block: 0 8px; }
-
-.sc-job-detail .sc-button { justify-self: start; align-self: start; }
-
-.sc-job-detail li, .sc-job-detail li:last-child { border: 0; color: var(--sc-muted); }
-
-.sc-job-detail ul { display: grid; gap: 8px; }
+.sc-apply { display: grid; gap: 24px; }
 
 @media (min-width: 768px) {
 
-  .sc-job-detail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
   .sc-apply { grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: 56px; }
-
-}
-
-
-
-@media (prefers-reduced-motion: reduce) {
-
-  .sc-job[open] summary > .sc-arrow { transform: none; }
 
 }
 
@@ -511,6 +459,41 @@
   margin-top: 36px;
 
 }
+
+
+
+/* The hero takes the page's white surface; the grid and motif ring invert to ink so they stay
+   visible, and the secondary button sheds its white-on-dark treatment. */
+
+.septa-careers .sc-hero-light {
+
+  background-color: var(--sc-white);
+
+  color: var(--sc-ink);
+
+}
+
+
+
+.septa-careers .sc-hero-light.sc-grid {
+
+  background-image:
+
+    linear-gradient(rgb(6 24 32 / 4%) 1px, transparent 1px),
+
+    linear-gradient(90deg, rgb(6 24 32 / 4%) 1px, transparent 1px);
+
+}
+
+
+
+.septa-careers .sc-hero-light.sc-motif::before { border-color: rgb(6 24 32 / 7%); }
+
+
+
+.septa-careers .sc-hero-light .sc-secondary { color: var(--sc-ink); border-color: rgb(6 24 32 / 24%); }
+
+.septa-careers .sc-hero-light .sc-secondary:hover { background: rgb(6 24 32 / 5%); border-color: rgb(6 24 32 / 45%); }
 
 
 
@@ -648,6 +631,14 @@
 
 
 
+.sc-culture-section > .sc-wrap > h2 {
+
+  color: var(--sc-white);
+
+}
+
+
+
 .sc-culture-grid {
 
   display: grid;
@@ -716,66 +707,6 @@
 
 
 
-/* SCRIBE values */
-
-
-
-.sc-values-block {
-
-  margin-top: 90px;
-
-  padding-top: 65px;
-
-  border-top: 1px solid rgb(255 255 255 / 14%);
-
-}
-
-
-
-.sc-values-block h2 {
-
-  margin-bottom: 18px;
-
-}
-
-
-
-.sc-values-block .sc-values {
-
-  margin-top: 45px;
-
-}
-
-
-
-.sc-values-block .sc-values li {
-
-  padding: 30px 20px;
-
-  min-height: 160px;
-
-}
-
-
-
-.sc-values-block .sc-values h3 {
-
-  color: var(--sc-white);
-
-}
-
-
-
-.sc-values-block .sc-values p {
-
-  color: rgb(255 255 255 / 70%);
-
-  font-size: 15px;
-
-}
-
-
-
 /* ==========================================
 
    4. OPEN POSITIONS
@@ -787,116 +718,6 @@
 .sc-openings-section {
 
   background: var(--sc-cream);
-
-}
-
-
-
-.sc-roles-count {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  margin-top: 32px;
-
-  margin-bottom: 22px;
-
-  padding: 7px 16px;
-
-  border-radius: 999px;
-
-  background: rgb(95 221 157 / 18%);
-
-  color: var(--sc-teal);
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-}
-
-
-
-.sc-openings-section .sc-roles {
-
-  margin-top: 10px;
-
-}
-
-
-
-.sc-openings-section .sc-roles > li {
-
-  background: var(--sc-white);
-
-  border: 1px solid var(--sc-line);
-
-  border-radius: 14px;
-
-  margin-bottom: 14px;
-
-  overflow: hidden;
-
-}
-
-
-
-.sc-openings-section .sc-role {
-
-  padding: 25px 28px;
-
-}
-
-
-
-.sc-openings-section .sc-role h3 {
-
-  font-size: 21px;
-
-}
-
-
-
-.sc-openings-section .sc-role > .sc-arrow {
-
-  color: var(--sc-teal);
-
-}
-
-
-
-.sc-openings-section .sc-tags span {
-
-  background: var(--sc-cream);
-
-  color: var(--sc-teal);
-
-}
-
-
-
-.sc-openings-section .sc-job-detail {
-
-  padding: 30px;
-
-  gap: 30px;
-
-}
-
-
-
-.sc-openings-section .sc-job[open] {
-
-  background: var(--sc-white);
-
-}
-
-
-
-.sc-openings-section .sc-job[open] summary {
-
-  background: rgb(95 221 157 / 6%);
 
 }
 
@@ -982,6 +803,8 @@
 
   font-size: 17px;
 
+  transition: color 300ms ease;
+
 }
 
 
@@ -995,8 +818,6 @@
 
 
 .sc-hiring-section .sc-node {
-
-  background: var(--sc-white);
 
   color: var(--sc-teal);
 
@@ -1032,6 +853,10 @@
 
   max-width: 550px;
 
+  /* The global heading rule paints h2 in ink; this band is dark. */
+
+  color: var(--sc-white);
+
 }
 
 
@@ -1039,34 +864,6 @@
 .sc-application-section .sc-lead {
 
   max-width: 520px;
-
-}
-
-
-
-.sc-selected-role {
-
-  margin-top: 28px !important;
-
-  padding: 14px 18px;
-
-  border: 1px solid rgb(95 221 157 / 35%);
-
-  border-radius: 12px;
-
-  background: rgb(95 221 157 / 8%);
-
-  color: var(--sc-white);
-
-  font-size: 15px;
-
-}
-
-
-
-.sc-selected-role strong {
-
-  color: var(--sc-mint);
 
 }
 
@@ -1170,32 +967,6 @@
 
 
 
-  .sc-values-block {
-
-    margin-top: 60px;
-
-    padding-top: 45px;
-
-  }
-
-
-
-  .sc-openings-section .sc-role {
-
-    padding: 20px;
-
-  }
-
-
-
-  .sc-openings-section .sc-job-detail {
-
-    padding: 22px;
-
-  }
-
-
-
   .sc-speculative {
 
     padding: 26px;
@@ -1247,14 +1018,6 @@
   .sc-culture-card h3 {
 
     font-size: 19px;
-
-  }
-
-
-
-  .sc-openings-section .sc-role h3 {
-
-    font-size: 18px;
 
   }
 
@@ -1394,17 +1157,9 @@
 }
 .septa-careers .sc-hiring-cta h3 { margin-bottom: 12px; font-size: 24px; }
 .septa-careers .sc-hiring-cta p { max-width: 60ch; margin-bottom: 24px; color: var(--sc-muted); }
-.septa-careers .sc-openings-section .sc-role { transition: background-color 200ms ease; }
-.septa-careers .sc-openings-section .sc-role:hover { background-color: rgb(95 221 157 / 7%); }
-.septa-careers .sc-openings-section .sc-job-detail h4 { margin-bottom: 12px; font-size: 17px; }
-.septa-careers .sc-openings-section .sc-job-detail ul { gap: 10px; }
-.septa-careers .sc-openings-section .sc-job-detail li { line-height: 1.7; }
 @media (max-width: 600px) {
   .septa-careers .sc-hiring-cta { margin-top: 40px; padding: 24px; }
   .septa-careers .sc-hiring-cta h3 { font-size: 21px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .septa-careers .sc-openings-section .sc-role { transition: none; }
 }
 
 /* Layered Careers scrolling: add to the END of src/pages/careers.css */
@@ -1434,8 +1189,8 @@
 .septa-careers .sc-layer-stage > .sc-route { position: relative; z-index: 2; background: var(--sc-cream); }
 .septa-careers .sc-layer-hero { overflow: hidden; }
 .septa-careers .sc-layer-hero .sc-layer-copy { z-index: 2; }
-.septa-careers .sc-layer-hero h1 { color: #fff; opacity: 1; }
-.septa-careers .sc-layer-hero h1 span { color: var(--sc-mint); }
+.septa-careers .sc-layer-hero h1 { color: var(--sc-ink); opacity: 1; }
+.septa-careers .sc-layer-hero h1 span { color: var(--sc-teal); }
 .septa-careers .sc-layer-hero .sc-layer-background { z-index: 0; }
 .septa-careers .sc-layer-stage > .stack-sheet { width: 100%; }
 @media (prefers-reduced-motion: reduce) {
@@ -1473,4 +1228,316 @@
   .septa-careers .sc-feature-motion:hover .sc-feature-card {
     transform: none;
   }
+}
+
+/* HIRING TIMELINE CARD HOVER */
+
+@media (hover: hover) {
+  .septa-careers .sc-timeline li:hover {
+    transform: translateY(-6px);
+    border-color: var(--sc-mint);
+    box-shadow: 0 18px 36px rgb(6 24 32 / 8%);
+  }
+
+  .septa-careers .sc-timeline li:hover .sc-node {
+    transform: scale(1.08);
+    background: var(--sc-mint);
+    color: var(--sc-ink);
+  }
+
+  .septa-careers .sc-timeline li:hover h3 {
+    color: var(--sc-teal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .septa-careers .sc-timeline li,
+  .septa-careers .sc-timeline .sc-node,
+  .septa-careers .sc-timeline h3 {
+    transition: none;
+  }
+
+  .septa-careers .sc-timeline li:hover {
+    transform: none;
+  }
+
+  .septa-careers .sc-timeline li:hover .sc-node {
+    transform: none;
+  }
+}
+
+/* ==========================================
+   CULTURE: FOUR VALUE CARDS (2x2)
+   ========================================== */
+
+@media (min-width: 768px) {
+  .septa-careers .sc-culture-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .septa-careers .sc-culture-grid > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* ==========================================
+   OPEN POSITIONS: ROLE CARDS
+   ========================================== */
+
+.septa-careers .sc-openings-section .sc-roles {
+  display: grid;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.sc-openings-section .sc-roles > li {
+  border: 1px solid var(--sc-line);
+  border-radius: 18px;
+  background: var(--sc-white);
+  overflow: hidden;
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+}
+
+@media (hover: hover) {
+  .sc-openings-section .sc-roles > li:hover {
+    border-color: rgb(40 111 106 / 30%);
+  }
+}
+
+.sc-openings-section .sc-job[open] {
+  box-shadow: 0 18px 40px rgb(6 24 32 / 6%);
+}
+
+.septa-careers .sc-role {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: 24px 28px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sc-role::-webkit-details-marker {
+  display: none;
+}
+
+.sc-role h3 {
+  font-size: 22px;
+  transition: color 200ms ease;
+}
+
+@media (hover: hover) {
+  .sc-role:hover h3 {
+    color: var(--sc-teal);
+  }
+}
+
+.sc-role:focus-visible {
+  outline: 2px solid var(--sc-teal);
+  outline-offset: -4px;
+}
+
+.sc-job[open] .sc-role {
+  border-bottom: 1px solid var(--sc-line);
+  background: rgb(95 221 157 / 6%);
+}
+
+.sc-role-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  color: var(--sc-teal);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sc-role-toggle .sc-arrow {
+  transition: transform 250ms ease-out;
+}
+
+.sc-job[open] .sc-role-toggle .sc-arrow {
+  transform: rotate(90deg);
+}
+
+.sc-job-detail {
+  padding: 0 28px 28px;
+}
+
+.sc-job-groups {
+  display: grid;
+  gap: 28px 40px;
+  padding-block: 26px;
+}
+
+@media (min-width: 900px) {
+  .sc-job-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.sc-job-group h4 {
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.sc-req {
+  display: grid;
+  gap: 9px;
+}
+
+.sc-req li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--sc-muted);
+  line-height: 1.7;
+}
+
+.sc-req li::before {
+  content: "";
+  position: absolute;
+  inset: 0.68em auto auto 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sc-mint);
+}
+
+.sc-job-actions {
+  padding-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .septa-careers .sc-role {
+    padding: 20px;
+    gap: 8px;
+  }
+
+  .sc-role h3 {
+    font-size: 19px;
+  }
+
+  .sc-role-toggle {
+    font-size: 14px;
+  }
+
+  .sc-job-detail {
+    padding: 0 20px 22px;
+  }
+
+  .sc-job-groups {
+    gap: 24px;
+    padding-block: 20px;
+  }
+}
+
+/* ==========================================
+   HIRING PROCESS: VERTICAL TIMELINE
+   ========================================== */
+
+.septa-careers .sc-hiring-section .sc-timeline {
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.septa-careers .sc-hiring-section .sc-timeline li {
+  position: relative;
+  min-height: 92px;
+  padding: 28px 30px 28px 96px;
+}
+
+.septa-careers .sc-hiring-section .sc-timeline .sc-node {
+  position: absolute;
+  inset: 28px auto auto 30px;
+  margin: 0;
+  background: var(--sc-cream);
+}
+
+.septa-careers .sc-hiring-section .sc-timeline p {
+  max-width: 80ch;
+}
+
+@media (max-width: 767px) {
+  .septa-careers .sc-hiring-section .sc-timeline li {
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .septa-careers .sc-hiring-section .sc-timeline .sc-node {
+    position: static;
+    margin-block-end: 14px;
+  }
+}
+
+/* Keep the hover motion out of reduced-motion and touch-only setups. */
+@media (prefers-reduced-motion: reduce) {
+  .sc-openings-section .sc-roles > li,
+  .sc-role h3,
+  .sc-role-toggle .sc-arrow {
+    transition: none;
+  }
+
+  .sc-job[open] .sc-role-toggle .sc-arrow {
+    transform: none;
+  }
+}
+
+/* The sub-nav stays available for the whole page, parked just under the site header.
+   It is the last rule on purpose: the layered-stage block above sets it to `relative`. */
+.septa-careers .sc-layer-stage > .sc-route {
+  position: sticky;
+  top: 72px;
+  z-index: 30;
+  padding-block: 12px;
+  border-block-end: 1px solid var(--sc-line);
+  box-shadow: 0 14px 26px -26px rgb(6 24 32 / 55%);
+}
+
+@media (max-width: 600px) {
+  .septa-careers .sc-layer-stage > .sc-route { padding-block: 8px; }
+
+  .septa-careers .sc-layer-stage > .sc-route .sc-eyebrow { display: none; }
+}
+
+/* Per-role link sharing, shown once a role is expanded. */
+.septa-careers .sc-job-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.septa-careers .sc-copy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 11px 20px;
+  border: 1px solid color-mix(in srgb, var(--sc-teal) 35%, transparent);
+  border-radius: 9999px;
+  color: var(--sc-teal);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 200ms ease-out, border-color 200ms ease-out;
+}
+
+.septa-careers .sc-copy-link:hover {
+  border-color: var(--sc-teal);
+  background: color-mix(in srgb, var(--sc-teal) 8%, transparent);
+}
+
+.septa-careers .sc-copy-link:focus-visible {
+  outline: 2px solid var(--sc-teal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .septa-careers .sc-copy-link { transition: none; }
 }

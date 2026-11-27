@@ -107,7 +107,7 @@ function careerPayload(extra: Record<string, unknown> = {}): Record<string, unkn
   return {
     fullName: "Priya Raman",
     email: "priya.raman@example.com",
-    role: "Backend Engineering",
+    role: "Sales Manager",
     roleDetail: "Node.js, Postgres, observability",
     location: "Remote (CET)",
     portfolioUrl: "https://example.com/priya",
@@ -380,7 +380,7 @@ const cases: Array<{ group: string; name: string; run: CaseFn }> = [
       appendCareerFields(fd, {
         fullName: "P",
         email: "bad-email",
-        role: "Backend Engineering",
+        role: "Sales Manager",
         note: "short",
         consent: "true",
       });

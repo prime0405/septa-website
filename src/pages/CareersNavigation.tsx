@@ -1,6 +1,5 @@
 
-import { useEffect, useState } from "react";
-import { openings } from "../data/jobs";
+import { useEffect, useRef, useState } from "react";
 
 const links = [
   { id: "why-septa", label: "Why Septa" },
@@ -12,12 +11,40 @@ const links = [
 
 export default function CareersNavigation() {
   const [active, setActive] = useState("");
+  const navRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLOListElement>(null);
+  const activeRef = useRef("");
+
+  // Keep the page's scroll offset in step with the bar's rendered height.
+  useEffect(() => {
+    const nav = navRef.current;
+
+    if (!nav) return;
+
+    const measure = () => {
+      document.documentElement.style.setProperty(
+        "--careers-nav-h",
+        `${nav.offsetHeight}px`
+      );
+    };
+
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--careers-nav-h");
+    };
+  }, []);
 
   useEffect(() => {
     const sectionIds = links.map((link) => link.id);
 
     const updateActiveSection = () => {
-      const scrollPosition = window.scrollY + 180;
+      const navHeight = navRef.current?.offsetHeight ?? 72;
+      const scrollPosition = window.scrollY + 72 + navHeight + 20;
 
       let currentSection = "";
 
@@ -34,30 +61,35 @@ export default function CareersNavigation() {
       }
 
       setActive(currentSection);
-    };
 
-    const updateHash = () => {
-      const id = decodeURIComponent(
-        window.location.hash.slice(1)
-      );
+      // On narrow screens the links become a scrolling rail; keep the current one in view
+      // when the section changes, without fighting a manual swipe.
+      if (currentSection === activeRef.current) return;
 
-      const opening = openings.find(
-        (job) => job.slug === id
-      );
+      activeRef.current = currentSection;
 
-      if (opening) {
-        const container = document.getElementById(id);
+      const list = listRef.current;
+      const link = currentSection
+        ? list?.querySelector<HTMLAnchorElement>(`a[href="#${currentSection}"]`)
+        : null;
 
-        const details = container?.querySelector(
-          "details.sc-job"
-        );
+      if (!list || !link) return;
 
-        if (details instanceof HTMLDetailsElement) {
-          details.open = true;
-        }
-      }
+      const listRect = list.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
 
-      updateActiveSection();
+      if (linkRect.left >= listRect.left && linkRect.right <= listRect.right) return;
+
+      list.scrollBy({
+        left:
+          linkRect.left -
+          listRect.left -
+          (list.clientWidth - linkRect.width) / 2,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+          .matches
+          ? "auto"
+          : "smooth",
+      });
     };
 
     window.addEventListener(
@@ -73,10 +105,10 @@ export default function CareersNavigation() {
 
     window.addEventListener(
       "hashchange",
-      updateHash
+      updateActiveSection
     );
 
-    updateHash();
+    updateActiveSection();
 
     return () => {
       window.removeEventListener(
@@ -91,7 +123,7 @@ export default function CareersNavigation() {
 
       window.removeEventListener(
         "hashchange",
-        updateHash
+        updateActiveSection
       );
     };
   }, []);
@@ -103,18 +135,27 @@ export default function CareersNavigation() {
 
     if (!target) return;
 
+    const navHeight = navRef.current?.offsetHeight ?? 72;
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    target.scrollIntoView({
-      behavior: reducedMotion ? "auto" : "smooth",
-      block: "start",
+    // Measured here rather than left to the browser: the browser's own jump uses a
+    // position from before the stacked sections settle, which lands short.
+    window.scrollTo({
+      top:
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        (72 + navHeight + 16),
+      behavior: reducedMotion ? "instant" : "smooth",
     });
+
+    window.history.pushState(null, "", `#${id}`);
   };
 
   return (
     <nav
+      ref={navRef}
       className="sc-route sc-cream"
       aria-label="Careers page navigation"
     >
@@ -123,7 +164,7 @@ export default function CareersNavigation() {
           Explore Careers
         </p>
 
-        <ol>
+        <ol ref={listRef}>
           {links.map((link, index) => (
             <li key={link.id}>
               <a
@@ -133,9 +174,10 @@ export default function CareersNavigation() {
                     ? "location"
                     : undefined
                 }
-                onClick={() =>
-                  handleNavigation(link.id)
-                }
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleNavigation(link.id);
+                }}
               >
                 <span aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}

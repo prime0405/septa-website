@@ -39,6 +39,83 @@ var import_express = __toESM(require("express"), 1);
 
 // src/shared/schemas.ts
 var import_zod = require("zod");
+
+// src/data/jobs.ts
+var openings = [
+  {
+    slug: "sales-manager",
+    title: "Sales Manager",
+    groups: [
+      {
+        heading: "Education & Experience",
+        items: [
+          "Bachelor's degree in Business, Marketing, or a related field.",
+          "Proven experience in sales, with 2-3+ years in a managerial or supervisory role."
+        ]
+      },
+      {
+        heading: "Skills",
+        items: [
+          "Strong leadership and team management abilities.",
+          "Excellent communication and interpersonal skills.",
+          "Ability to develop and implement sales strategies.",
+          "Proficient in CRM tools and sales analytics."
+        ]
+      },
+      {
+        heading: "Knowledge",
+        items: [
+          "Deep understanding of the sales process and customer lifecycle.",
+          "Market knowledge in the relevant industry.",
+          "Familiarity with target setting, forecasting, and performance tracking."
+        ]
+      },
+      {
+        heading: "Traits",
+        items: [
+          "Results-driven and highly motivated.",
+          "Strategic thinker with problem-solving skills.",
+          "Adaptable and able to thrive in a fast-paced environment."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "digital-marketing-specialist",
+    title: "Digital Marketing Specialist",
+    groups: [
+      {
+        heading: "Education & Experience",
+        items: [
+          "Bachelor's degree in Marketing, Communications, Business, or a related field.",
+          "2-3 years of hands-on experience in digital marketing.",
+          "Proven success in managing digital campaigns and improving online visibility."
+        ]
+      },
+      {
+        heading: "Technical Skills",
+        items: [
+          "Proficient in Google Ads, Facebook/Meta Ads Manager, and SEO/SEM techniques.",
+          "Experience with email marketing tools (e.g., Mailchimp, HubSpot).",
+          "Comfortable using Google Analytics, Search Console, and reporting dashboards.",
+          "Familiarity with CMS platforms like WordPress.",
+          "Basic understanding of HTML/CSS is a plus."
+        ]
+      },
+      {
+        heading: "Core Skills",
+        items: [
+          "Strong writing and content creation abilities.",
+          "Analytical mindset with a focus on performance and ROI.",
+          "Ability to manage multiple campaigns and meet deadlines.",
+          "Good communication and collaboration skills."
+        ]
+      }
+    ]
+  }
+];
+
+// src/shared/schemas.ts
 var text = (label, max = 400) => import_zod.z.string().trim().min(2, `${label} is required.`).max(max, `${label} must be shorter than ${max} characters.`);
 var optionalText = (max = 1200) => import_zod.z.string().trim().max(max, "Please keep this under " + max + " characters.").optional().transform((v) => v && v.length > 0 ? v : void 0);
 var honeypot = import_zod.z.string().optional().transform((v) => v === void 0 || v === "" ? void 0 : "spam").refine((v) => v === void 0, { message: "Spam detected." });
@@ -81,16 +158,16 @@ var requestServices = [
 ];
 var budgetRanges = [
   "Under $5,000",
-  "$5,000 \u2013 $15,000",
-  "$15,000 \u2013 $50,000",
+  "$5,000 to $15,000",
+  "$15,000 to $50,000",
   "$50,000+",
   "Not sure yet"
 ];
 var timelines = [
   "As soon as possible",
   "Within 1 month",
-  "1 \u2013 3 months",
-  "3 \u2013 6 months",
+  "1 to 3 months",
+  "3 to 6 months",
   "Later / exploring"
 ];
 var projectStages = [
@@ -140,22 +217,10 @@ var requestSchema = import_zod.z.object({
   ...requestStep3.shape,
   ...requestStep4.shape
 });
+var OTHER_ROLE = "General / Other";
 var disciplines = [
-  // The titles Septa has published as open roles, first, so the Apply buttons on the career page
-  // can preselect them. Everything after this is an area of work rather than a live vacancy.
-  "Sales Manager",
-  "Digital Marketing Specialist",
-  "AI / Machine Learning Engineering",
-  "Backend Engineering",
-  "Frontend Engineering",
-  "Full-Stack Engineering",
-  "Data Engineering",
-  "DevOps / Platform / Observability",
-  "Product Design (UI/UX)",
-  "Product Management",
-  "Quality Assurance",
-  "Business Analysis / Consulting",
-  "Something else"
+  ...openings.map((opening) => opening.title),
+  OTHER_ROLE
 ];
 var CV_MAX_BYTES = 4 * 1024 * 1024;
 var CV_ALLOWED_EXT = ["pdf", "doc", "docx", "rtf", "txt"];
@@ -168,7 +233,7 @@ var careerSchema = import_zod.z.object({
   portfolioUrl: urlField,
   linkedinUrl: urlField,
   note: import_zod.z.string().trim().min(20, "Tell us a little about your work (at least 20 characters).").max(3e3, "Please keep your note under 3,000 characters."),
-  cvFileName: optionalText(200),
+  cvFileName: text("CV or r\xE9sum\xE9", 200),
   cvSizeBytes: import_zod.z.number().int().nonnegative().optional(),
   source: import_zod.z.enum(["careers-page", "speculative"]).default("careers-page"),
   consent,

@@ -1572,6 +1572,14 @@ html.cursor-none * {
   cursor: none !important;
 }
 
+/* The trailing ring and dot are a pointer aid, so they stay off anything that is not a
+   fine-pointer desktop — including a phone-width preview of the site. */
+@media (max-width: 767px), (hover: none), (pointer: coarse) {
+  .cursor-halo {
+    display: none !important;
+  }
+}
+
 /* ---------- self-advancing lists ---------- */
 
 /* The tick under the active item fills over exactly one interval, so the wait reads as

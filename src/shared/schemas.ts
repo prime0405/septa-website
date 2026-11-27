@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { openings } from "../data/jobs.ts";
+
 /**
  * Validation schemas shared by the browser and the API server.
  * The server re-validates everything: client validation is for speed, not safety.
@@ -193,23 +195,14 @@ export type RequestDraft = Partial<RequestPayload>;
 /* Careers                                                             */
 /* ------------------------------------------------------------------ */
 
+/** The dropdown asks for an open role or a general application. Role titles come from the jobs
+ * list, so adding a role there also adds it to the form and its validation. */
+export const OTHER_ROLE = "General / Other";
+
 export const disciplines = [
-  // The titles Septa has published as open roles, first, so the Apply buttons on the career page
-  // can preselect them. Everything after this is an area of work rather than a live vacancy.
-  "Sales Manager",
-  "Digital Marketing Specialist",
-  "AI / Machine Learning Engineering",
-  "Backend Engineering",
-  "Frontend Engineering",
-  "Full-Stack Engineering",
-  "Data Engineering",
-  "DevOps / Platform / Observability",
-  "Product Design (UI/UX)",
-  "Product Management",
-  "Quality Assurance",
-  "Business Analysis / Consulting",
-  "Something else",
-] as const;
+  ...openings.map((opening) => opening.title),
+  OTHER_ROLE,
+];
 
 /** Below the ~4.5 MB body limit a Vercel Function rejects before our code runs, so an applicant
  * who picks a huge CV gets the field message here instead of a platform error page. */
@@ -229,7 +222,7 @@ export const careerSchema = z.object({
     .trim()
     .min(20, "Tell us a little about your work (at least 20 characters).")
     .max(3000, "Please keep your note under 3,000 characters."),
-  cvFileName: optionalText(200),
+  cvFileName: text("CV or résumé", 200),
   cvSizeBytes: z.number().int().nonnegative().optional(),
   source: z.enum(["careers-page", "speculative"]).default("careers-page"),
   consent,

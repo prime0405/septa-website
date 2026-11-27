@@ -6,11 +6,11 @@ import { Check, Send } from "lucide-react";
 import { ApiError, api } from "../../lib/api";
 import { useForm, v } from "../../lib/form";
 import { paths } from "../../lib/paths";
-import { openings } from "../../data/jobs";
 
 import {
   CV_ALLOWED_EXT,
   CV_MAX_BYTES,
+  OTHER_ROLE,
   careerSchema,
   disciplines,
   type SubmissionResult,
@@ -22,7 +22,7 @@ import {
   CheckboxField,
   FileField,
   Honeypot,
-  RadioCards,
+  SelectField,
   TextArea,
   TextField,
 } from "../ui/form";
@@ -37,15 +37,6 @@ interface CareerFormProps {
   source?: CareerSource;
   preselectRole?: string;
 }
-
-const careerRoleOptions = [
-  ...new Set([
-    ...openings.map((opening) => opening.title),
-    ...disciplines,
-  ]),
-].map((title) => ({
-  value: title,
-}));
 
 const emptyValues = (source: CareerSource) => ({
   fullName: "",
@@ -303,31 +294,20 @@ export function CareerForm({
       </div>
 
       {/* Position selection */}
-      <div>
-        <RadioCards
-          label="Which position are you interested in?"
-          name="role"
-          columns={2}
-          value={v(form.values, "role")}
-          onChange={(value) =>
-            form.set("role", value)
-          }
-          error={form.errors.role}
-          options={careerRoleOptions}
-        />
-
-              {typeof form.values.role === "string" &&
-        form.values.role !== "" &&
-        form.values.role !== "Something else" && (
-          <p className="mt-3 text-sm text-mint">
-            Selected position:{" "}
-            <strong>{form.values.role}</strong>
-          </p>
-        )}
-      </div>
+      <SelectField
+        label="Which area are you interested in?"
+        name="role"
+        value={v(form.values, "role")}
+        onChange={(value) =>
+          form.set("role", value)
+        }
+        error={form.errors.role}
+        options={disciplines}
+        placeholder="Select an area…"
+      />
 
       {/* Custom position */}
-      {form.values.role === "Something else" && (
+      {form.values.role === OTHER_ROLE && (
         <TextField
           label="Describe the role you have in mind"
           value={v(form.values, "roleDetail")}
@@ -340,43 +320,6 @@ export function CareerForm({
       )}
 
       {/* Location and portfolio */}
-      <div className="grid gap-5 sm:grid-cols-2">
-        <TextField
-          label="Where are you based?"
-          optional
-          value={v(form.values, "location")}
-          onChange={(value) =>
-            form.set("location", value)
-          }
-          error={form.errors.location}
-          maxLength={120}
-          hint="City and time zone is enough."
-        />
-
-        <TextField
-          label="Portfolio or personal site"
-          optional
-          value={v(form.values, "portfolioUrl")}
-          onChange={(value) =>
-            form.set("portfolioUrl", value)
-          }
-          error={form.errors.portfolioUrl}
-          placeholder="https://…"
-        />
-      </div>
-
-      {/* LinkedIn */}
-      <TextField
-        label="LinkedIn profile"
-        optional
-        value={v(form.values, "linkedinUrl")}
-        onChange={(value) =>
-          form.set("linkedinUrl", value)
-        }
-        error={form.errors.linkedinUrl}
-        placeholder="https://linkedin.com/in/…"
-      />
-
       {/* Applicant message */}
       <TextArea
         label={
@@ -396,7 +339,8 @@ export function CareerForm({
 
       {/* CV upload */}
       <FileField
-        label="CV or résumé (optional)"
+        label="CV or résumé"
+        id="cvFileName"
         accept={CV_ALLOWED_EXT.map(
           (ext) => "." + ext
         ).join(",")}
@@ -456,6 +400,7 @@ export function CareerForm({
         <Button
           type="submit"
           size="lg"
+          variant="dark-cta"
           disabled={
             phase === "sending" ||
             Boolean(fileError)

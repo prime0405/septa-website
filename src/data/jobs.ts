@@ -1,5 +1,8 @@
 /**
- * The two open roles the document supplies, with their requirement groups transcribed as given.
+ * The single source of open roles. Add, edit or remove entries here; the careers page and the
+ * application-form dropdown both read from this array, and an empty array shows the
+ * "No Open Roles at the Moment" message instead of the role cards.
+ *
  * The document states no location, salary or closing date for either role, so none is claimed.
  */
 export type RequirementGroup = { heading: string; items: string[] };
@@ -7,7 +10,6 @@ export type RequirementGroup = { heading: string; items: string[] };
 export type Opening = {
   slug: string;
   title: string;
-  lead: string;
   groups: RequirementGroup[];
 };
 
@@ -15,13 +17,12 @@ export const openings: Opening[] = [
   {
     slug: "sales-manager",
     title: "Sales Manager",
-    lead: "Job Requirement:",
     groups: [
       {
         heading: "Education & Experience",
         items: [
-          "Bachelor’s degree in Business, Marketing, or a related field.",
-          "Proven experience in sales, with at least 2 years in a managerial or supervisory role.",
+          "Bachelor's degree in Business, Marketing, or a related field.",
+          "Proven experience in sales, with 2-3+ years in a managerial or supervisory role.",
         ],
       },
       {
@@ -46,7 +47,7 @@ export const openings: Opening[] = [
         items: [
           "Results-driven and highly motivated.",
           "Strategic thinker with problem-solving skills.",
-          "Adaptable and able to thrive in a fast paced environment.",
+          "Adaptable and able to thrive in a fast-paced environment.",
         ],
       },
     ],
@@ -54,13 +55,12 @@ export const openings: Opening[] = [
   {
     slug: "digital-marketing-specialist",
     title: "Digital Marketing Specialist",
-    lead: "Job Requirements:",
     groups: [
       {
         heading: "Education & Experience",
         items: [
-          "Bachelor’s degree in Marketing, Communications, Business, or a related field.",
-          "2 to 3 years of hands-on experience in digital marketing.",
+          "Bachelor's degree in Marketing, Communications, Business, or a related field.",
+          "2-3 years of hands-on experience in digital marketing.",
           "Proven success in managing digital campaigns and improving online visibility.",
         ],
       },
