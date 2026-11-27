@@ -59,7 +59,7 @@ function ServiceMotionField({ slug }: { slug: string }) {
         />
         <motion.path
           d={trace.secondary}
-          stroke="#344B49"
+          stroke="#6db1ae"
           strokeWidth="1"
           strokeDasharray="3 15"
           initial={{ pathLength: 0 }}
