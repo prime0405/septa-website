@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, Compass } from "lucide-react";
 import type { ServiceContent } from "../../data/services";
 import { cn } from "../../lib/cn";
 import { Button } from "../ui/Button";
@@ -395,7 +395,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </motion.div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" variant="dark-cta" magnetic>{page.cta.label}</Button> : null}
-                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
+                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">Explore all services <ArrowRight className="size-4" aria-hidden /></Link>
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/20 pt-4">
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-3 py-2 font-sans text-xs text-white/75"><strong className="text-white">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
@@ -501,7 +501,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                         </span>
                         {item.detail ? <span className="mt-1.5 block max-w-xl text-[.82rem] leading-6 text-[#52736D] sm:text-sm">{item.detail}</span> : null}
                       </span>
-                      <ArrowUpRight className="mt-1 size-4 text-[#6A9E91] transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#286F6A] sm:size-5" aria-hidden />
+                      <ArrowRight className="mt-1 size-4 text-[#6A9E91] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#286F6A] sm:size-5" aria-hidden />
                     </Link>
                   </Reveal>
                 ))}

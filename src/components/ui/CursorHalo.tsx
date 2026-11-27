@@ -100,12 +100,12 @@ export function CursorHalo() {
       <div
         ref={ring}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[80] -ml-3 -mt-3 size-6 rounded-full border border-mint/55 opacity-0 will-change-transform transition-opacity duration-300"
+        className="cursor-halo pointer-events-none fixed top-0 left-0 z-[80] -ml-3 -mt-3 size-6 rounded-full border border-mint/55 opacity-0 will-change-transform transition-opacity duration-300"
       />
       <div
         ref={dot}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[80] -ml-[3.5px] -mt-[3.5px] size-[7px] rounded-full bg-mint opacity-0 shadow-[0_0_0_3px_rgba(255,255,255,0.75)] will-change-transform transition-opacity duration-200"
+        className="cursor-halo pointer-events-none fixed top-0 left-0 z-[80] -ml-[3.5px] -mt-[3.5px] size-[7px] rounded-full bg-mint opacity-0 shadow-[0_0_0_3px_rgba(255,255,255,0.75)] will-change-transform transition-opacity duration-200"
       />
     </>
   );

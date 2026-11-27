@@ -1,274 +1,645 @@
-import { useState } from "react";
-import { ArrowDownRight, Briefcase, Users } from "lucide-react";
-import { PageHero } from "../components/blocks/PageHero";
-import { PhotoFigure } from "../components/blocks/PhotoFigure";
+
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, Link2 } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+
 import { CareerForm } from "../components/forms/CareerForm";
-import { CareersHeroArt } from "../components/visuals/CareersHeroArt";
-import { IntegrationNotice } from "../components/blocks/LaunchNote";
-import { LaunchNoteInline } from "../components/blocks/LaunchNote";
+import { StackSheet } from "../components/blocks/StackSheet";
 import { Button } from "../components/ui/Button";
-import {
-  Card,
-  MarkerList,
-  Pill,
-  Reveal,
-  Section,
-  SectionHero,
-  SectionHeading,
-} from "../components/ui/primitives";
-import { about, careers } from "../data/content";
+
+import { careers } from "../data/content";
 import { openings } from "../data/jobs";
-import { paths } from "../lib/paths";
+import { OTHER_ROLE } from "../shared/schemas";
 import { usePageMeta } from "../lib/usePageMeta";
 
-const scrollToRoles = () =>
-  document.getElementById("open-roles")?.scrollIntoView({ behavior: "smooth", block: "start" });
-const scrollToApply = () =>
-  document.getElementById("apply")?.scrollIntoView({ behavior: "smooth", block: "start" });
+import CareersNavigation from "./CareersNavigation";
+import {
+  CareersReveal,
+  CareersMagneticButton,
+} from "../components/careers/CareersAnimations";
+import "./careers.css";
 
-const reqCount = (o: (typeof openings)[number]) =>
-  o.groups.reduce((n, g) => n + g.items.length, 0);
+/* ==========================================
+   WHY WORK WITH SEPTA
+========================================== */
 
-/**
- * The route down the hero's right margin: the open roles first, then the three stops every
- * candidate passes on the way to the form. Every row is a real in-page anchor.
- */
-const careerRoute = (
-  <Reveal>
-    <div className="relative overflow-hidden rounded-card border border-line bg-ink-raised/85 p-6">
-      <div aria-hidden className="dot-bg absolute inset-0 opacity-30" />
-      <div className="relative">
-        <p className="eyebrow mb-4">The route</p>
-        <ul className="space-y-3">
-          {openings.map((o, i) => (
-            <li key={o.slug}>
-              <a
-                href={`#${o.slug}`}
-                className="group flex items-baseline gap-3 text-[0.88rem] text-muted hover:text-mint"
-              >
-                <span className="font-mono text-[0.72rem] text-faint group-hover:text-mint">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="min-w-0 flex-1 truncate">{o.title}</span>
-                <span className="hidden font-mono text-[0.68rem] text-faint sm:inline">
-                  {reqCount(o)} requirements
-                </span>
-                <ArrowDownRight
-                  className="size-3.5 shrink-0 text-faint transition-transform group-hover:translate-y-0.5 group-hover:text-mint"
-                  aria-hidden
-                />
-              </a>
-            </li>
-          ))}
-        </ul>
-        <ul className="mt-4 space-y-3 border-t border-line pt-4">
-          {[
-            { href: "#culture", label: "Our Culture" },
-            { href: "#hiring-process", label: "Our Hiring Process" },
-            { href: "#apply", label: "Apply" },
-          ].map((r, i) => (
-            <li key={r.href}>
-              <a
-                href={r.href}
-                className="group flex items-baseline gap-3 text-[0.88rem] text-muted hover:text-mint"
-              >
-                <span className="font-mono text-[0.72rem] text-faint group-hover:text-mint">
-                  {String(openings.length + i + 1).padStart(2, "0")}
-                </span>
-                <span className="min-w-0 flex-1 truncate">{r.label}</span>
-                <ArrowDownRight
-                  className="size-3.5 shrink-0 text-faint transition-transform group-hover:translate-y-0.5 group-hover:text-mint"
-                  aria-hidden
-                />
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-faint uppercase">
-          {openings.length} roles open, requirements as supplied
-        </p>
-      </div>
-    </div>
-  </Reveal>
-);
+const benefits = [
+  {
+    title: "Solve real problems",
+    description:
+      "Build AI and software solutions that help businesses improve how they work.",
+  },
+  {
+    title: "Work as a team",
+    description:
+      "Collaborate across engineering, design and business to develop practical solutions.",
+  },
+  {
+    title: "Grow through ownership",
+    description:
+      "Develop your skills by taking responsibility for meaningful work and learning through delivery.",
+  },
+];
 
-export default function Careers() {
-  usePageMeta({ title: "Career", description: careers.intro });
+/* ==========================================
+   OUR CULTURE
+========================================== */
 
-  const [role, setRole] = useState<string | null>(null);
+const culture = [
+  {
+    title: "Collaboration & Curiosity",
+    description:
+      "We believe the best ideas come from working together. Every perspective matters, and curiosity drives us to keep asking 'what's possible?'",
+  },
+  {
+    title: "Creativity in Action",
+    description:
+      "Challenges inspire us. Whether it's AI-powered platforms, digital products, or talent solutions, we solve problems with creativity and practical innovation.",
+  },
+  {
+    title: "Growth Mindset",
+    description:
+      "Learning, experimentation, and ownership are part of who we are. We empower our team to push boundaries and innovate with purpose.",
+  },
+  {
+    title: "Integrity & Transparency",
+    description:
+      "We work with honesty and openness, ensuring trust at every step with clients, colleagues, and partners.",
+  },
+];
+
+/* ==========================================
+   HIRING PROCESS
+========================================== */
+
+const steps = [
+  [
+    "Application Review",
+    "Our team carefully reviews your resume and portfolio to understand your skills, experience, and alignment with Septa's mission of building intelligent, practical solutions.",
+  ],
+  [
+    "Introductory Conversation",
+    "A friendly chat to discuss your background, career goals, and interest in Septa. Learn about our culture, exciting projects, and how you can grow with us.",
+  ],
+  [
+    "Assessment & Technical Interview",
+    "For technical and specialized roles, you'll take on a challenge that reflects real project scenarios, allowing us to see your problem-solving skills and expertise in action. Afterwards, you'll engage in a detailed conversation with our technical team to dive deeper into your experience, approach, and how you can contribute to impactful projects at Septa.",
+  ],
+  [
+    "Final Interview",
+    "A conversation with senior leadership to align your vision, goals, and career aspirations with Septa's mission. It's also a chance for you to ask any remaining questions.",
+  ],
+  [
+    "Offer & Onboarding",
+    "If selected, you'll receive an offer and a guided onboarding experience to help you integrate seamlessly into the team and start making an impact from day one.",
+  ],
+];
+
+/* ==========================================
+   ARROW COMPONENT
+========================================== */
+
+function Arrow() {
+  return <ArrowRight aria-hidden="true" className="sc-arrow size-4" />;
+}
+
+/* ==========================================
+   COPY ROLE LINK
+========================================== */
+
+function CopyRoleLink({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const copy = async () => {
+    const url = new URL(window.location.href);
+    url.hash = slug;
+
+    try {
+      await navigator.clipboard.writeText(url.href);
+    } catch {
+      return;
+    }
+
+    window.history.replaceState(null, "", url.href);
+    setCopied(true);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <>
-      <PageHero
-        crumbs={[{ label: "Home", to: paths.home() }, { label: "Career" }]}
-        title="Career"
-        lead={careers.intro}
-        meta={
-          <>
-            <Pill tone="mint">
-              <Briefcase className="size-3.5" />
-              {openings.length} open roles
-            </Pill>
-            <Pill tone="line">{careers.hiring.length} hiring steps</Pill>
-          </>
-        }
-        art={<CareersHeroArt />}
-        aside={careerRoute}
-        actions={
-          <Button onClick={scrollToRoles} size="lg" magnetic>
-            {careers.rolesCta}
-          </Button>
-        }
-      />
+    <button
+      type="button"
+      className="sc-copy-link"
+      onClick={copy}
+      aria-live="polite"
+    >
+      {copied ? (
+        <Check size={18} aria-hidden="true" />
+      ) : (
+        <Link2 size={18} aria-hidden="true" />
+      )}
+      {copied ? "Link copied" : "Copy link"}
+    </button>
+  );
+}
 
-      {/* ---------------------------- our culture ---------------------------- */}
-      <Section wall="blog" tone="raised" id="culture" className="section scroll-mt-24">
-        <SectionHero title="Our Culture" lead={careers.cultureLead} className="mb-10" />
-        {/* Culture is the one heading on this page that cannot be shown as a list of benefits, so
-            it gets a room with people in it. Held to the width of the prose column: at full section
-            width the same frame is taller than the viewport and becomes the page, not the point.
-            A general scene, not a claim about a Septa team. */}
-        <Reveal className="mb-12 block">
-          <PhotoFigure
-            src="/img/work/hiring-review.webp"
-            alt="A laptop open on a code editor beside a tablet showing a candidate profile as an avatar and a shortlist of skill bars, two pairs of hands at the table, one writing a note"
-            ratio="aspect-[3/2]"
-            width={1200}
-            height={800}
-            className="mx-auto max-w-4xl"
-          />
-        </Reveal>
-        <div className="grid gap-4 md:grid-cols-2">
-          {careers.culture.map((c, i) => (
-            <Reveal key={c.title} delay={i * 0.05} className="h-full">
-              <Card tilt className="card-hover group relative flex h-full flex-col overflow-hidden p-6 sm:p-7">
-                <span className="flex size-11 items-center justify-center rounded-xl border border-mint/25 bg-mint/[0.07] text-mint transition-colors group-hover:border-mint/50">
-                  <Users className="size-5" />
-                </span>
-                <h3 className="mt-5 text-[1.12rem]">{c.title}</h3>
-                <p className="mt-2.5 flex-1 text-[0.92rem] leading-relaxed text-muted">{c.detail}</p>
-                <span
-                  aria-hidden
-                  className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-mint/45 transition-transform duration-500 group-hover:scale-x-100"
-                />
-              </Card>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
+/* ==========================================
+   MAIN CAREERS PAGE
+========================================== */
 
-      {/* ------------------------ our value ecosystem ------------------------ */}
-      <Section wall="use-case" className="section">
-        <SectionHeading eyebrow="Values" title="Our Value Ecosystem" className="mb-8" />
-        <Reveal>
-          <ul className="flex flex-wrap gap-2.5">
-            {about.values.map((value) => (
-              <li
-                key={value.letter}
-                className="group flex items-center gap-2.5 rounded-card border border-line bg-ink-raised px-4 py-3 transition-colors hover:border-mint/40 hover:bg-mint/[0.06]"
-              >
-                <span className="font-display text-[1.15rem] text-mint transition-colors group-hover:text-mint-bright">
-                  {value.letter}
-                </span>
-                <span className="text-[0.92rem]">{value.word}</span>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-        <div className="mt-5 rounded-card border border-dashed border-line px-5 py-4">
-          <LaunchNoteInline label="Awaiting copy: the revamp gives this section a heading and the six value words, but no text under them" />
-        </div>
-      </Section>
+export default function Careers() {
+  usePageMeta({
+    title: "Careers at Septa | AI & Software Engineering Jobs",
+    description: careers.intro,
+    absoluteTitle: true,
+  });
 
-      {/* ------------------------- hiring process ------------------------- */}
-      <Section wall="service-automation" tone="surface" id="hiring-process" className="section scroll-mt-24">
-        <SectionHero title="Our Hiring Process" lead={careers.hiringLead} className="mb-12" />
-        <ol className="grid gap-4">
-          {careers.hiring.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.04}>
-              <li className="group relative flex gap-5 overflow-hidden rounded-card border border-line bg-ink px-5 py-5 transition-colors hover:border-mint/35 sm:gap-7 sm:px-7">
-                <span className="font-mono text-[1.5rem] leading-none text-mint transition-colors group-hover:text-mint-bright">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-[1.05rem]">{s.title.replace(/^\d+\.\s*/, "")}</h3>
-                  <p className="mt-2 text-[0.92rem] leading-relaxed text-muted">{s.detail}</p>
-                </div>
-                <span
-                  aria-hidden
-                  className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-mint/45 transition-transform duration-500 group-hover:scale-x-100"
-                />
-              </li>
-            </Reveal>
-          ))}
-        </ol>
-      </Section>
+  const runwayRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: runwayRef,
+    offset: ["start end", "end end"],
+  });
+  const copyScale = useTransform(scrollYProgress, [0, 1], [1, reduceMotion ? 1 : 0.79]);
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -22]);
+  const backdropY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 110]);
+  const backdropScale = useTransform(scrollYProgress, [0, 1], [1, reduceMotion ? 1 : 1.12]);
 
-      {/* ---------------------------- open roles ---------------------------- */}
-      <Section wall="service-talent" tone="raised" id="open-roles" className="section scroll-mt-24">
-        <SectionHeading eyebrow="Career" title="Open Roles" className="mb-9" />
-        <div className="grid gap-5">
-          {openings.map((o, i) => (
-            <div key={o.slug} id={o.slug} className="scroll-mt-28">
-              <Reveal delay={i * 0.04} className="h-full">
-                <Card className="group relative flex h-full flex-col overflow-hidden p-6 sm:p-7">
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -top-5 -right-2 font-display text-[5rem] leading-none text-mint/[0.07]"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="relative flex flex-wrap items-start justify-between gap-4">
-                    <h3 className="text-[1.25rem]">{o.title}</h3>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        setRole(o.title);
-                        scrollToApply();
-                      }}
-                    >
-                      Apply
-                    </Button>
-                  </div>
-                  <p className="relative mt-3 font-mono text-[0.72rem] tracking-[0.14em] text-faint uppercase">
-                    {o.lead}
-                  </p>
-                  <p className="relative mt-1.5 font-mono text-[0.72rem] text-faint">
-                    {o.groups.length} groups, {reqCount(o)} requirements listed
-                  </p>
-                  <div
-                    className="relative mt-5 grid flex-1 gap-6 border-t border-line pt-6 sm:grid-cols-2 lg:grid-cols-4"
-                  >
-                    {o.groups.map((g) => (
-                      <div key={g.heading}>
-                        <p className="eyebrow mb-3">{g.heading}</p>
-                        <MarkerList items={g.items} />
-                      </div>
-                    ))}
-                  </div>
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-mint/45 transition-transform duration-500 group-hover:scale-x-100"
-                  />
-                </Card>
-              </Reveal>
-            </div>
-          ))}
-        </div>
-      </Section>
+  const [role, setRole] = useState<string>();
+  const [speculative, setSpeculative] = useState(false);
 
-      {/* ------------------------------ apply ------------------------------ */}
-      <Section wall="engage" id="apply" className="section scroll-mt-24">
-        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <SectionHeading eyebrow="Open Roles" title={careers.rolesCta} />
-            <div className="mt-6">
-              <IntegrationNotice />
-            </div>
+  // Select a role from its card without resetting the rest of the form.
+  const selectRole = (title: string) => {
+    setSpeculative(false);
+    setRole(title);
+  };
+
+  // Expression of interest.
+  const selectSpeculative = () => {
+    setSpeculative(true);
+  };
+
+  // A shared role link (…/careers#sales-manager) opens that role on arrival.
+  useEffect(() => {
+    const openRoleFromHash = () => {
+      const slug = window.location.hash.slice(1);
+      const target = slug ? document.getElementById(slug) : null;
+
+      if (!(target instanceof HTMLDetailsElement)) return;
+
+      target.open = true;
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+    };
+
+    openRoleFromHash();
+    window.addEventListener("hashchange", openRoleFromHash);
+
+    return () => window.removeEventListener("hashchange", openRoleFromHash);
+  }, []);
+
+  // The stacked sections retract as the page settles, which can leave a deep link a screen
+  // away from its target. Follow the target until it holds still, then leave scrolling alone.
+  useEffect(() => {
+    const slug = window.location.hash.slice(1);
+    const target = slug ? document.getElementById(slug) : null;
+
+    if (!target) return;
+
+    const start = performance.now();
+    let last = Number.NaN;
+    let stable = 0;
+    let timer = 0;
+    let cancelled = false;
+
+    const stop = () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+
+      for (const type of ["wheel", "touchstart", "keydown"] as const) {
+        window.removeEventListener(type, stop);
+      }
+
+      window.removeEventListener("load", wake);
+    };
+
+    // A late font or image swap moves everything above the target, so the count restarts.
+    function wake() {
+      stable = 0;
+    }
+
+    const tick = () => {
+      if (cancelled || window.location.hash.slice(1) !== slug) {
+        return stop();
+      }
+
+      const nav = document.querySelector<HTMLElement>(".sc-route");
+      const offset = 72 + (nav?.offsetHeight ?? 72) + 16;
+      const delta = target.getBoundingClientRect().top - offset;
+
+      if (Math.abs(delta) > 1) {
+        window.scrollTo({
+          top: window.scrollY + delta,
+          behavior: "instant",
+        });
+      }
+
+      const top = target.getBoundingClientRect().top + window.scrollY;
+
+      stable = Math.abs(top - last) < 1 ? stable + 1 : 0;
+      last = top;
+
+      const ready =
+        document.readyState === "complete" && document.fonts.status === "loaded";
+
+      if ((ready && stable >= 3) || performance.now() - start > 5000) {
+        return stop();
+      }
+
+      timer = window.setTimeout(tick, 100);
+    };
+
+    for (const type of ["wheel", "touchstart", "keydown"] as const) {
+      window.addEventListener(type, stop, { passive: true });
+    }
+
+    window.addEventListener("load", wake);
+    void document.fonts.ready.then(wake);
+
+    tick();
+
+    return stop;
+  }, []);
+
+  return (
+    <div className="septa-careers">
+      <div className="sc-layer-stage">
+
+      {/* ======================================
+          1. HERO SECTION
+      ====================================== */}
+
+      <section
+        className={`sc-hero-light sc-motif sc-grid sc-hero sc-layer-hero${reduceMotion ? "" : " sc-layer-pinned"}`}
+        aria-labelledby="careers-title"
+      >
+        <motion.div
+          aria-hidden="true"
+          className="sc-layer-background"
+          style={{ y: backdropY, scale: backdropScale }}
+        />
+        <motion.div className="sc-wrap sc-layer-copy" style={{ scale: copyScale, y: copyY }}>
+          <p className="sc-eyebrow">
+            Careers at Septa
+          </p>
+
+          <h1 id="careers-title">
+            Build Work That Matters.
+            <br />
+            <span>Grow With Septa.</span>
+          </h1>
+
+          <p className="sc-lead">
+            At Septa, we believe that talented individuals are the driving
+            force behind our success. We are a dynamic and innovative company
+            that values creativity, collaboration, and continuous learning.
+            Join our team and be part of a diverse community of professionals
+            who are passionate about making a difference in the world.
+          </p>
+
+          <div className="sc-actions">
+            <Button href="#open-roles" magnetic variant="dark-cta" className="sc-button sc-primary">
+              See Open Roles
+              <Arrow />
+            </Button>
+
+            <Button href="#hiring-process" magnetic variant="outline-light" className="sc-button sc-secondary">
+              How We Hire
+              <Arrow />
+            </Button>
           </div>
-          <CareerForm preselectRole={role ?? undefined} />
+        </motion.div>
+      </section>
+      <div ref={runwayRef} aria-hidden="true" className={reduceMotion ? "sc-runway-reduced" : "sc-layer-runway"} />
+
+      {/* ======================================
+          CAREERS NAVIGATION
+      ====================================== */}
+
+      <CareersNavigation />
+
+      {/* ======================================
+          2. WHY WORK WITH US
+      ====================================== */}
+
+      <StackSheet order={2}>
+      <section
+        className="sc-section sc-why-section"
+        id="why-septa"
+        aria-labelledby="why-septa-title"
+      >
+        <div className="sc-wrap">
+          <p className="sc-eyebrow">
+            Why Septa?
+          </p>
+
+          <h2 id="why-septa-title">
+            Meaningful Work. Shared Ambition.
+          </h2>
+
+          <p className="sc-lead">
+            Discover the kind of work, collaboration
+            and professional development we value.
+          </p>
+
+          <CareersReveal>
+            <div className="sc-feature-grid">
+              {benefits.map((benefit, index) => (
+                <CareersReveal
+                  key={benefit.title}
+                  delay={index * 0.12}
+                  className="sc-feature-motion"
+                >
+                  <article className="sc-feature-card">
+                    <span className="sc-feature-number">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <h3>{benefit.title}</h3>
+                    <p>{benefit.description}</p>
+                  </article>
+                </CareersReveal>
+              ))}
+            </div>
+          </CareersReveal>
         </div>
-      </Section>
-    </>
+      </section>
+      </StackSheet>
+
+      {/* ======================================
+          3. OUR CULTURE
+      ====================================== */}
+
+      <StackSheet order={3}>
+      <section
+        className="sc-section sc-dark sc-motif sc-culture-section"
+        id="culture"
+        aria-labelledby="careers-culture-title"
+      >
+        <div className="sc-wrap">
+          <h2 id="careers-culture-title">
+            Our Culture
+          </h2>
+
+          <p className="sc-lead">
+            At Septa, we don't just build solutions, we create an environment
+            where people and ideas thrive.
+          </p>
+
+          <CareersReveal>
+          <div className="sc-culture-grid">
+            {culture.map((item) => (
+              <article
+                className="sc-culture-card"
+                key={item.title}
+              >
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </article>
+            ))}
+          </div>
+          </CareersReveal>
+        </div>
+      </section>
+      </StackSheet>
+
+      {/* ======================================
+          4. OPEN POSITIONS
+      ====================================== */}
+
+      <StackSheet order={4}>
+      <section
+        className="sc-section sc-cream sc-openings-section"
+        id="open-roles"
+        aria-labelledby="careers-roles-title"
+      >
+        <div className="sc-wrap">
+          <p className="sc-eyebrow">
+            Career Opportunities
+          </p>
+
+          <h2 id="careers-roles-title">
+            {openings.length === 0
+              ? "No Open Roles at the Moment."
+              : "Open Positions"}
+          </h2>
+
+          {openings.length === 0 ? (
+            <p className="sc-lead">
+              We open new roles from time to time and
+              post them here first. Until then, we
+              would still like to meet you.
+            </p>
+          ) : (
+            <CareersReveal>
+            <ul className="sc-roles">
+              {openings.map((opening) => (
+                <li key={opening.slug}>
+                  <details className="sc-job" id={opening.slug}>
+                    <summary className="sc-role">
+                      <h3>{opening.title}</h3>
+
+                      <span className="sc-role-toggle">
+                        View requirements
+                        <ArrowRight aria-hidden="true" className="sc-arrow size-4" />
+                      </span>
+                    </summary>
+
+                    <div className="sc-job-detail">
+                      <div className="sc-job-groups">
+                        {opening.groups.map((group) => (
+                          <div
+                            className="sc-job-group"
+                            key={group.heading}
+                          >
+                            <h4>{group.heading}</h4>
+
+                            <ul className="sc-req">
+                              {group.items.map((item) => (
+                                <li key={item}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="sc-job-actions">
+                        <CareersMagneticButton
+                          className="sc-button sc-primary"
+                          href="#apply"
+                          onClick={() => selectRole(opening.title)}
+                        >
+                          Apply for this role
+                          <Arrow />
+                        </CareersMagneticButton>
+
+                        <CopyRoleLink slug={opening.slug} />
+                      </div>
+                    </div>
+                  </details>
+                </li>
+              ))}
+            </ul>
+            </CareersReveal>
+          )}
+
+          {/* SEND US YOUR CV */}
+
+          <CareersReveal>
+          <div className="sc-speculative">
+            <h3>
+              Send Us Your CV.
+            </h3>
+
+            <p>
+              Introduce yourself, tell us the kind of
+              work you would like to do, and share
+              your experience. We read every
+              application and will reach out when a
+              role matches your skills.
+            </p>
+
+            <CareersMagneticButton
+              className="sc-button sc-primary"
+              href="#apply"
+              onClick={selectSpeculative}
+            >
+              Send Your CV
+              <Arrow />
+            </CareersMagneticButton>
+          </div>
+          </CareersReveal>
+        </div>
+      </section>
+      </StackSheet>
+
+      {/* ======================================
+          5. HIRING TIMELINE
+      ====================================== */}
+
+      <StackSheet order={5}>
+      <section
+        className="sc-section sc-hiring-section"
+        id="hiring-process"
+        aria-labelledby="careers-process-title"
+      >
+        <div className="sc-wrap">
+          <p className="sc-eyebrow">
+            Our Hiring Process
+          </p>
+
+          <h2 id="careers-process-title">
+            Your Journey to Septa.
+          </h2>
+
+          <p className="sc-lead">
+            At Septa, we believe in a transparent and engaging hiring journey.
+            Here's what to expect when you apply:
+          </p>
+
+          <CareersReveal>
+          <ol className="sc-timeline">
+            {steps.map(
+              ([title, description], index) => (
+                <li key={title}>
+                  <span
+                    className="sc-node"
+                    aria-hidden="true"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </li>
+              )
+            )}
+          </ol>
+          </CareersReveal>
+
+          {/* HIRING CTA */}
+
+          <CareersReveal>
+          <div className="sc-hiring-cta">
+            <h3>
+              Ready to Take the Next Step?
+            </h3>
+
+            <p>
+              Send us your CV and we will reach out
+              when a role matches your experience.
+            </p>
+
+            <CareersMagneticButton
+              className="sc-button sc-primary"
+              href="#apply"
+              onClick={selectSpeculative}
+            >
+              Send Your CV
+              <Arrow />
+            </CareersMagneticButton>
+          </div>
+          </CareersReveal>
+        </div>
+      </section>
+      </StackSheet>
+
+      </div>
+
+      {/* ======================================
+          6. APPLICATION SECTION
+      ====================================== */}
+
+      <section
+        className="sc-section sc-dark sc-application-section"
+        id="apply"
+        aria-labelledby="careers-apply-title"
+      >
+        <div className="sc-wrap sc-apply">
+          <div>
+            <p className="sc-eyebrow">
+              Join Septa
+            </p>
+
+            <h2 id="careers-apply-title">
+              {speculative
+                ? "Introduce Yourself."
+                : "Your Next Chapter Starts Here."}
+            </h2>
+
+            <p className="sc-lead">
+              {speculative
+                ? "Share your CV and tell us how you would like to contribute."
+                : "Complete the application form to express your interest in joining our team."}
+            </p>
+          </div>
+
+          <CareerForm
+            preselectRole={speculative ? OTHER_ROLE : role}
+            source={
+              speculative
+                ? "speculative"
+                : "careers-page"
+            }
+          />
+        </div>
+      </section>
+
+
+      {/* Shared footer remains in the main layout */}
+
+    </div>
   );
 }

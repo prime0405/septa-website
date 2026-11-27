@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUpRight,
   Check,
   ChevronRight,
   Circle,
@@ -404,7 +403,7 @@ export default function EnyataCaseStudy({ study }: { study: UseCase }) {
               <p className="mt-4 max-w-xl text-[0.95rem] leading-[1.8] text-muted">Tell us what you’re looking to create. We’ll help you find the right way forward.</p>
             </div>
             <Link to={paths.contact()} className="group inline-flex items-center justify-center gap-3 rounded-full bg-brand-pearl px-6 py-4 text-[0.88rem] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-brand-teal hover:text-brand-pearl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-teal">
-              Start a conversation <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              Start a conversation <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </ScrollReveal>
           <ScrollReveal style="soft" className="mt-8 flex flex-col gap-5 border-t border-line-soft pt-6 sm:flex-row sm:items-center sm:justify-between">

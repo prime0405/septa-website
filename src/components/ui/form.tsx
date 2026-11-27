@@ -334,6 +334,7 @@ export function FileField({
   error,
   accept,
   id,
+  optional = false,
 }: {
   label: ReactNode;
   hint?: ReactNode;
@@ -342,11 +343,12 @@ export function FileField({
   error?: string;
   accept: string;
   id?: string;
+  optional?: boolean;
 }) {
   const auto = useId();
   const fid = id ?? auto;
   return (
-    <Shell id={fid} label={label} hint={hint} error={error} optional>
+    <Shell id={fid} label={label} hint={hint} error={error} optional={optional}>
       <div
         className={cn(
           "flex flex-wrap items-center gap-3 rounded-card border border-dashed bg-ink-raised p-3",
@@ -371,7 +373,7 @@ export function FileField({
         ) : (
           <>
             <Upload className="size-4 shrink-0 text-muted" aria-hidden />
-            <span className="flex-1 text-[0.86rem] text-faint">{hint ?? "No file selected"}</span>
+            <span className="flex-1 text-[0.86rem] text-faint">No file selected</span>
             <label
               htmlFor={fid}
               className="cursor-pointer rounded-pill border border-mint/45 px-3.5 py-1.5 text-[0.8rem] text-mint transition-colors hover:bg-mint/10"

@@ -5,6 +5,7 @@ type PageMeta = {
   title: string;
   description?: string;
   noindex?: boolean;
+  absoluteTitle?: boolean;
 };
 
 function upsert(attr: "name" | "property", key: string, value: string) {
@@ -18,10 +19,10 @@ function upsert(attr: "name" | "property", key: string, value: string) {
 }
 
 /** Page-level title, description, canonical and Open Graph tags. */
-export function usePageMeta({ title, description, noindex }: PageMeta) {
+export function usePageMeta({ title, description, noindex, absoluteTitle }: PageMeta) {
   useEffect(() => {
     const brandless = title === site.name;
-    const full = brandless ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
+    const full = absoluteTitle ? title : brandless ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
     const desc = description ?? site.description;
 
     document.title = full;
@@ -47,5 +48,5 @@ export function usePageMeta({ title, description, noindex }: PageMeta) {
     } else if (canonical) {
       canonical.remove();
     }
-  }, [title, description, noindex]);
+  }, [title, description, noindex, absoluteTitle]);
 }
