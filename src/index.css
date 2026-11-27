@@ -924,6 +924,7 @@
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   /* The smallest type on the site and the one that sits furthest into the moving wash, so it takes
