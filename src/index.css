@@ -2261,3 +2261,16 @@ html.cursor-none * {
 html, body, button, input, textarea, select, option {
   font-family: "Open Sans Variable", "Open Sans", ui-sans-serif, system-ui, sans-serif !important;
 }
+
+
+/* Keep the seven page hero backdrops completely still without changing their artwork or colour. */
+.about-hero-art__wash,
+.about-hero-art__glow,
+.about-hero-art__orbit,
+.about-hero-art__orbit--large,
+.about-hero-art__orbit--small,
+.about-hero-art__dash {
+  animation: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
