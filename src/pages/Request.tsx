@@ -22,7 +22,7 @@ export default function Request() {
 
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-[#061820] text-white">
+      <section data-static-hero="" className="relative isolate overflow-hidden bg-[#061820] text-white">
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
             className="absolute inset-0 opacity-[0.12]"
