@@ -4,7 +4,7 @@
  * slip, never the sentence. Sections a page is expected to have but the document supplies no copy
  * for are listed in `pending` and rendered as a visible gap rather than filled in.
  */
-export type Capability = { title: string; detail?: string };
+export type Capability = { title: string; detail?: string; href?: string };
 export type ProcessSub = { title: string; detail?: string };
 
 export type ProcessStepData = {
@@ -93,26 +93,31 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "MVP in 4 to 6 Weeks",
+        href: "/services/ai-product-development#process-stage-6",
         detail:
           "We help you quickly launch MVPs within 4 to 6 weeks, allowing you to validate ideas, test, and gather data and feedback early.",
       },
       {
         title: "Faster Design & Iteration",
+        href: "/services/ai-product-development#capability-ui-ux-design",
         detail:
           "AI products require continuous refinement. Our rapid design and iteration cycles ensure your product improves quickly based on user interaction and feedback.",
       },
       {
         title: "Solid Security Infrastructure",
+        href: "/services/observability-monitoring#capability-real-time-monitoring",
         detail:
           "We build secure systems that protect sensitive data, ensure compliance, and support reliable AI operations at scale.",
       },
       {
         title: "Product Research",
+        href: "/services/ai-product-development#process-stage-2",
         detail:
           "We combine market research with data-driven insights to define the right product strategy, ensuring your solution solves meaningful problems.",
       },
       {
         title: "User-Centered Approach",
+        href: "/services/ai-product-development#capability-ui-ux-design",
         detail:
           "We design AI products around human behavior. Complex technologies are translated into simple, intuitive experiences that users can easily understand and trust.",
       },
@@ -289,14 +294,17 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "Tailored to Your Operations",
+        href: "/services/workflow-automation#process-stage-1",
         detail: "We build around your processes instead of forcing new ones.",
       },
       {
         title: "Cost and Time Savings",
+        href: "/services/digital-transformation#process-stage-5",
         detail: "Automations that pay for themselves through efficiency gains.",
       },
       {
         title: "Low Disruption Delivery",
+        href: "/services/workflow-automation#process-stage-4",
         detail: "We implement in phases to keep your operations running smoothly.",
       },
       
@@ -369,16 +377,19 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "Business & Technology Expertise",
+        href: "/about#deep-expertise",
         detail:
           "We combine strategic insight with technical excellence to deliver solutions that work.",
       },
       {
         title: "Industry-Specific Strategies",
+        href: "/services/digital-transformation#core-services",
         detail:
           "Tailored digital transformation approaches designed for your sector’s unique challenges.",
       },
       {
         title: "Measurable Impact",
+        href: "/services/digital-transformation#process-stage-5",
         detail:
           "Every solution is tracked and optimized to show clear improvements in efficiency, cost savings, and customer satisfaction.",
       },
@@ -443,14 +454,17 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "Proactive Detection",
+        href: "/services/observability-monitoring#capability-real-time-monitoring",
         detail: "Catch and resolve issues before they affect customers.",
       },
       {
         title: "Custom Monitoring Setups",
+        href: "/services/observability-monitoring#capability-real-time-monitoring",
         detail: "Solutions tailored to your infrastructure and workflows.",
       },
       {
         title: "Actionable Insights",
+        href: "/services/observability-monitoring#capability-dashboards-reporting",
         detail: "Reporting and analytics that drive better decisions and performance improvements.",
       },
       
@@ -546,14 +560,18 @@ export const services: ServiceContent[] = [
     ],
     whyChooseHeading: "Why Businesses Trust Septa Talent Solutions",
     whyChoose: [
-      { title: "Efficiency", detail: "Faster hiring timelines and zero payroll errors." },
-      { title: "Compliance", detail: "Stay fully aligned with labor laws and tax regulations." },
+      { title: "Efficiency",
+        href: "/services/talent-solution#capability-tailored-recruitment-process", detail: "Faster hiring timelines and zero payroll errors." },
+      { title: "Compliance",
+        href: "/services/talent-solution#capability-payroll-management", detail: "Stay fully aligned with labor laws and tax regulations." },
       {
         title: "Employee Experience",
+        href: "/services/talent-solution#capability-employee-benefits-administration",
         detail: "Benefits, welfare, and support that keep employees engaged and retained.",
       },
       {
         title: "Partnership Approach",
+        href: "/about#people-first-partnership",
         detail: "We don’t just hire; we become your long-term workforce partner.",
       },
       
