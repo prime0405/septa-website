@@ -171,3 +171,175 @@
 }
 
 /* Button colours are intentionally not declared or overridden in this file. */
+
+
+/* Why Choose Septa: benefits orbit a fixed portrait, without spokes or tentacle-like connectors. */
+.service-page .septa-orbit {
+  --orbit-radius: clamp(205px, 27vw, 238px);
+  width: 100%;
+}
+.service-page .septa-orbit__stage {
+  position: relative;
+  width: min(100%, 900px);
+  height: 620px;
+  margin-inline: auto;
+  isolation: isolate;
+}
+.service-page .septa-orbit__track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--orbit-radius) * 2);
+  aspect-ratio: 1;
+  border: 1px solid rgb(109 177 174 / 30%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(109 177 174 / 7%) 0%, transparent 68%);
+  transform: translate(-50%, -50%);
+}
+.service-page .septa-orbit__portrait {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: clamp(190px, 24vw, 250px);
+  margin: 0;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 1.6rem;
+  background: #e9efec;
+  box-shadow: 0 24px 70px -35px rgb(6 44 42 / 48%);
+  transform: translate(-50%, -50%);
+}
+.service-page .septa-orbit__portrait img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 4.2;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.service-page .septa-orbit__portrait figcaption {
+  padding: .65rem .5rem;
+  background: #fff;
+  color: #286f6a;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.service-page .septa-orbit__cards {
+  position: absolute;
+  inset: 0;
+  animation: septa-orbit-rotation 42s linear infinite;
+}
+.service-page .septa-orbit__item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(235px, 29%);
+  transform: rotate(var(--orbit-angle)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-1 * var(--orbit-angle)));
+}
+.service-page .septa-orbit__card {
+  display: flex;
+  min-height: 136px;
+  align-items: flex-start;
+  gap: .7rem;
+  padding: 1rem;
+  border: 1px solid rgb(109 177 174 / 38%);
+  border-radius: 1.15rem;
+  background: rgb(255 255 255 / 96%);
+  box-shadow: 0 16px 42px -30px rgb(6 44 42 / 40%);
+  color: #17383b;
+  text-decoration: none;
+  animation: septa-orbit-counter 42s linear infinite;
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.service-page .septa-orbit__card:hover {
+  border-color: #6db1ae;
+  background: #f7fcf9;
+  box-shadow: 0 20px 48px -30px rgb(6 44 42 / 48%);
+}
+.service-page .septa-orbit__number {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: .55rem;
+  background: #eaf5f0;
+  color: #286f6a;
+  font-size: .65rem;
+  font-weight: 800;
+}
+.service-page .septa-orbit__copy {
+  display: block;
+  min-width: 0;
+}
+.service-page .septa-orbit__copy strong {
+  display: block;
+  color: #17383b;
+  font-size: .86rem;
+  line-height: 1.35;
+}
+.service-page .septa-orbit__copy > span {
+  display: -webkit-box;
+  margin-top: .45rem;
+  overflow: hidden;
+  color: #49666a;
+  font-size: .72rem;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.service-page .septa-orbit__arrow {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: #6a9e91;
+}
+@keyframes septa-orbit-rotation { to { transform: rotate(360deg); } }
+@keyframes septa-orbit-counter { to { transform: rotate(-360deg); } }
+@media (max-width: 767px) {
+  .service-page .septa-orbit__stage {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .service-page .septa-orbit__track,
+  .service-page .septa-orbit__cards { display: none; }
+  .service-page .septa-orbit__portrait {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: min(72%, 250px);
+    transform: none;
+  }
+  .service-page .septa-orbit__item {
+    position: static;
+    width: 100%;
+    transform: none;
+  }
+  .service-page .septa-orbit__cards {
+    position: static;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem;
+    animation: none;
+  }
+  .service-page .septa-orbit__card {
+    min-height: 0;
+    height: 100%;
+    padding: .9rem;
+    animation: none;
+  }
+}
+@media (max-width: 480px) {
+  .service-page .septa-orbit__cards { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-page .septa-orbit__cards,
+  .service-page .septa-orbit__card { animation: none !important; }
+}
