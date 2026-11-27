@@ -1,4 +1,3 @@
-import { useReducedMotion } from "motion/react";
 import { Brain, Eye, Layers, Users, Workflow } from "lucide-react";
 import { cn } from "../../lib/cn";
 
@@ -19,7 +18,7 @@ function point(angleDeg: number, dist: number) {
 
 /** Animated architecture graph: the hero visual on the homepage. */
 export function HeroDiagram({ className }: { className?: string }) {
-  const reduce = useReducedMotion();
+  const reduce = true;
 
   return (
     <div className={cn("relative", className)}>
