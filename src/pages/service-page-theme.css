@@ -1,0 +1,87 @@
+/* Septa service-page palette. Scoped here so the rest of the site is untouched. */
+.service-page {
+  background: #EDF4F0;
+  color: #344B49;
+}
+
+.service-page > section:nth-of-type(2),
+.service-page > section:nth-of-type(4),
+.service-page > section:nth-of-type(6) {
+  background-color: #EDF4F0 !important;
+  color: #344B49 !important;
+}
+
+.service-page > section:nth-of-type(3),
+.service-page > section:nth-of-type(5) {
+  background-color: #DDEFE6 !important;
+  color: #344B49 !important;
+}
+
+.service-page .text-brand-pearl,
+.service-page .text-fg {
+  color: #344B49 !important;
+}
+
+.service-page .text-muted,
+.service-page .text-faint {
+  color: #344B49 !important;
+  opacity: 0.82;
+}
+
+.service-page .service-capability-carousel {
+  background: #DDEFE6 !important;
+  border-color: #6DB1AE !important;
+  color: #344B49 !important;
+}
+
+.service-page .service-capability-copy {
+  background: #DDEFE6 !important;
+  color: #344B49 !important;
+}
+
+.service-page .service-capability-copy .text-white,
+.service-page .service-capability-copy [class*="text-white/"] {
+  color: #344B49 !important;
+}
+
+.service-page .service-capability-copy button {
+  border-color: #6DB1AE !important;
+  color: #344B49 !important;
+}
+
+.service-page .service-capability-copy button[aria-current="true"] {
+  background: #6DB1AE !important;
+  color: #344B49 !important;
+}
+
+.service-page .service-process-journey button[aria-pressed="true"] {
+  background: #6DB1AE !important;
+  border-color: #6DB1AE !important;
+  color: #344B49 !important;
+  box-shadow: none !important;
+}
+
+.service-page .service-process-journey button[aria-pressed="true"] * {
+  color: #344B49 !important;
+}
+
+.service-page .service-process-journey > div:last-child {
+  background: #FFFFFF !important;
+  border-color: #DDEFE6 !important;
+  color: #344B49 !important;
+}
+
+.service-page .service-extra-panel {
+  background: #FFFFFF !important;
+  border-color: #DDEFE6 !important;
+  color: #344B49 !important;
+}
+
+.service-page .service-extra-panel .text-white,
+.service-page .service-extra-panel [class*="text-white/"] {
+  color: #344B49 !important;
+}
+
+.service-page .service-extra-panel [class*="border-brand-teal"] {
+  border-color: #6DB1AE !important;
+}
