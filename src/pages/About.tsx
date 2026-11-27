@@ -75,6 +75,7 @@ export default function About() {
           <div className="relative">
             <PhotoFigure
               eager
+              static
               src="https://images.pexels.com/photos/3862089/pexels-photo-3862089.jpeg?auto=compress&dpr=1&h=750&w=1260"
               alt="A multiracial team discussing a project around a laptop in a bright office"
               ratio="aspect-[4/3]"
