@@ -50,23 +50,17 @@ function ServiceMotionField({ slug }: { slug: string }) {
       />
       <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-mint/[0.10] blur-[110px]" />
       <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.14]" viewBox="0 0 760 620" fill="none">
-        <motion.path
+        <path
           d={trace.primary}
           stroke="#5fdd9d"
           strokeWidth="1.2"
           strokeDasharray="5 13"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduce ? 0 : 2.8, ease: "easeOut" }}
         />
-        <motion.path
+        <path
           d={trace.secondary}
           stroke="#6db1ae"
           strokeWidth="1"
           strokeDasharray="3 15"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduce ? 0 : 3.2, delay: 0.15, ease: "easeOut" }}
         />
       </svg>
     </div>
