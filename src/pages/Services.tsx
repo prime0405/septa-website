@@ -28,7 +28,7 @@ const serviceLegend = (
                 to={paths.service(s.slug)}
                 className="group flex items-baseline gap-3 text-[0.88rem] text-white/80 hover:text-brand-mint"
               >
-                <span className="font-mono text-[0.72rem] text-white/55 group-hover:text-brand-mint">
+                <span className="font-sans text-[0.72rem] text-white/55 group-hover:text-brand-mint">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="min-w-0 flex-1 truncate">{s.name}</span>
@@ -40,7 +40,7 @@ const serviceLegend = (
             </li>
           ))}
         </ul>
-        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-white/55 uppercase">
+        <p className="mt-5 font-sans text-[0.66rem] tracking-[0.14em] text-white/55 uppercase">
           Five ways we plug into your team
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function Services() {
                   </div>
                   <p className="prose-body relative mt-3 flex-1 text-[0.94rem]">{s.detail}</p>
                   {svc ? (
-                    <p className="relative mt-4 font-mono text-[0.72rem] text-faint">
+                    <p className="relative mt-4 font-sans text-[0.72rem] text-faint">
                       {svc.coreServices.length} core services
                     </p>
                   ) : null}
