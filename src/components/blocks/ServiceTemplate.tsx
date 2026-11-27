@@ -10,7 +10,7 @@ import { PhotoFigure } from "./PhotoFigure";
 import { ServiceIcon } from "./ServiceIcon";
 
 
-const anchorSlug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g);
+const anchorSlug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 function ServiceMotionField({ slug }: { slug: string }) {
   const reduce = useReducedMotion();

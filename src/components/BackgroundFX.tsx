@@ -27,29 +27,7 @@ export function BackgroundFX() {
   const depthRef = useRef<HTMLDivElement>(null);
 
 
-  // Scroll-linked depth: each sheet drifts at its own rate as the page moves.
-  useEffect(() => {
-    if (reduce) return;
-    const host = depthRef.current;
-    if (!host) return;
-    let frame = 0;
-    const write = () => {
-      frame = 0;
-      const y = window.scrollY;
-      host.style.setProperty("--bgfx-slow", `${(-y * 0.035).toFixed(1)}px`);
-      host.style.setProperty("--bgfx-fast", `${(-y * 0.09).toFixed(1)}px`);
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(write);
-    };
-    write();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, [reduce]);
-
+  // Hero backgrounds remain visually intact but static across every route.
   // Two things are answered from the wall that is currently lit. `--bgfx-k` is how loud the moving
   // layers are: only the homepage hero keeps them at full strength, and every other section runs
   // them at the reduced value set on `html`. The attribute also picks the scrollbar gutter colour —
@@ -77,7 +55,7 @@ export function BackgroundFX() {
         <div className="bgfx-sheet bgfx-sheet-b" />
         <div
           className="absolute inset-[-8%]"
-          style={{ transform: "translate3d(0, var(--bgfx-slow, 0), 0)", opacity: "var(--bgfx-k, 1)" }}
+          style={{ opacity: "var(--bgfx-k, 1)" }}
         >
           <div className="bgfx-plate relative size-full">
             <PlateStack plate={plate} film={film} />
@@ -89,7 +67,7 @@ export function BackgroundFX() {
         <div className="pointer-events-none absolute inset-0" style={{ opacity: "var(--bgfx-k, 1)" }}>
           <div
             className="absolute inset-[-4%]"
-            style={{ transform: "translate3d(0, var(--bgfx-fast, 0), 0)" }}
+            style={{}}
           >
             <div className="bgfx-grid grid-bg size-full" />
           </div>
