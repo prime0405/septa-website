@@ -289,30 +289,6 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
 }
 
 export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs: { label: string; to?: string }[] }) {
-  const peoplePhotos: Record<string, { src: string; alt: string }> = {
-    "ai-product-development": {
-      src: "/img/work/engineering-floor.webp",
-      alt: "People working together in an engineering environment",
-    },
-    "workflow-automation": {
-      src: "/img/work/product-in-use.webp",
-      alt: "A person working with a digital product",
-    },
-    "digital-transformation": {
-      src: "/img/work/transformation-floor.webp",
-      alt: "People working in a modernised operations environment",
-    },
-    "observability-monitoring": {
-      src: "/img/work/engineering-floor.webp",
-      alt: "An engineering team working together",
-    },
-    "talent-solution": {
-      src: "/img/work/hiring-review.webp",
-      alt: "Colleagues reviewing candidates together",
-    },
-  };
-  const peoplePhoto = peoplePhotos[page.slug];
-
   return (
     <div className="service-page">
       <section className="relative isolate overflow-hidden bg-[#061820] text-white">
@@ -384,19 +360,6 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                   </div>
                 </div>
               </div>
-              {peoplePhoto ? (
-                <div className="service-people-photo absolute -right-2 -top-3 z-20 h-24 w-32 overflow-hidden rounded-2xl border border-white/65 bg-white/30 p-1 shadow-[0_18px_45px_-20px_rgba(0,0,0,.45)] backdrop-blur-xl sm:-right-5 sm:-top-5 sm:h-32 sm:w-40">
-                  <img
-                    src={peoplePhoto.src}
-                    alt={peoplePhoto.alt}
-                    loading="lazy"
-                    className="size-full rounded-xl object-cover"
-                  />
-                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#061820]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
-                    PEOPLE / IN PRACTICE
-                  </span>
-                </div>
-              ) : null}
             </motion.div>
           </div>
         </div>
