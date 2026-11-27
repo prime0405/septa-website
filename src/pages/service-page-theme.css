@@ -80,20 +80,20 @@
 }
 
 /* Reusable cards: clean white surfaces with more visible brand colour at the edges. */
-.service-page .service-glass,
-.service-page .service-process-journey > div:last-child,
-.service-page .service-extra-panel,
-.service-page .services-overview-card {
+.service-page > section:not(:first-child) .service-glass,
+.service-page > section:not(:first-child) .service-process-journey > div:last-child,
+.service-page > section:not(:first-child) .service-extra-panel,
+.service-page > section:not(:first-child) .services-overview-card {
   background: linear-gradient(145deg, #ffffff 0%, #f7fcf9 100%) !important;
   border-color: rgb(66 155 137 / 38%) !important;
   color: #17383b !important;
   box-shadow: 0 18px 48px -38px rgb(6 44 42 / 42%);
   backdrop-filter: blur(18px);
 }
-.service-page .service-extra-panel :is(h2, p, span) {
+.service-page > section:not(:first-child) .service-extra-panel :is(h2, p, span) {
   color: #17383b !important;
 }
-.service-page .services-overview-card {
+.service-page > section:not(:first-child) .services-overview-card {
   background: linear-gradient(145deg, #ffffff 0%, #f2faf5 100%) !important;
   border-color: rgb(95 180 145 / 42%) !important;
 }
@@ -135,10 +135,10 @@
 }
 
 /* Small supporting details use a stronger, consistent mint/teal accent. */
-.service-page :is(.service-glass, .service-extra-panel, .services-overview-card) :is(h2, h3, h4) {
+.service-page > section:not(:first-child) :is(.service-glass, .service-extra-panel, .services-overview-card) :is(h2, h3, h4) {
   color: #123f3d !important;
 }
-.service-page :is(.service-glass, .service-extra-panel, .services-overview-card) :is(svg, .icon) {
+.service-page > section:not(:first-child) :is(.service-glass, .service-extra-panel, .services-overview-card) :is(svg, .icon) {
   color: #318b73;
 }
 .service-page .service-capability-copy {
