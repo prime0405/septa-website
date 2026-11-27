@@ -63,8 +63,8 @@
 }
 
 .service-page p,
-.service-page .text-muted,
-.service-page .text-faint {
+.service-page .text-muted:not(a):not(button):not(a *):not(button *),
+.service-page .text-faint:not(a):not(button):not(a *):not(button *) {
   color: #49666a;
 }
 
