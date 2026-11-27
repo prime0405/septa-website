@@ -200,12 +200,7 @@ export default function EnyataCaseStudy({ study }: { study: UseCase }) {
 
           <div className="grid items-center gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14">
             <div className="max-w-2xl">
-              <motion.div
-                className="mb-7 flex min-h-10 items-center"
-                initial={reduceMotion ? false : { opacity: 0, x: -18 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <div className="mb-7 flex min-h-10 items-center">
                 {caseStudyVisualFor(study.slug).logo ? (
                   <img
                     src={caseStudyVisualFor(study.slug).logo}
@@ -215,51 +210,27 @@ export default function EnyataCaseStudy({ study }: { study: UseCase }) {
                 ) : (
                   <span className="text-sm font-semibold tracking-[0.08em] text-brand-teal">{study.client}</span>
                 )}
-              </motion.div>
-              <motion.p
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-brand-teal"
-              >
+              </div>
+              <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-brand-teal">
                 {study.kind}
-              </motion.p>
-              <motion.h1
-                initial={reduceMotion ? false : { opacity: 0, y: 26 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.85, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                className="max-w-xl text-[clamp(2.65rem,5.7vw,5.25rem)] font-semibold leading-[0.98] tracking-[-0.065em] text-white"
-              >
+              </p>
+              <h1 className="max-w-xl text-[clamp(2.65rem,5.7vw,5.25rem)] font-semibold leading-[0.98] tracking-[-0.065em] text-white">
                 {story.headline}
-              </motion.h1>
-              <motion.p
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.72, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-6 max-w-lg text-[0.98rem] leading-[1.8] text-white/65 sm:text-[1.04rem]"
-              >
+              </h1>
+              <p className="mt-6 max-w-lg text-[0.98rem] leading-[1.8] text-white/65 sm:text-[1.04rem]">
                 {story.introduction}
-              </motion.p>
-              <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.72, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-[0.78rem] text-white/65"
-              >
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-[0.78rem] text-white/65">
                 <span>{story.coverNote}</span>
                 <span aria-hidden className="hidden size-1 rounded-full bg-brand-teal sm:block" />
                 <a href="#project-overview" className="inline-flex items-center gap-2 font-semibold text-brand-teal transition-colors hover:text-white">
                   Explore the project <ArrowRight className="size-4" />
                 </a>
-              </motion.div>
+              </div>
             </div>
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.985 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            >
+            <div>
               <CaseCoverVisual study={study} />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
