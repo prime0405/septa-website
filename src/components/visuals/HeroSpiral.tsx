@@ -28,11 +28,9 @@ export function HeroSpiral({
   copyRef: RefObject<HTMLElement | null>;
   className?: string;
 }) {
-  const reduce = true;
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (reduce) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -75,6 +73,8 @@ export function HeroSpiral({
       // Reaching the farthest corner means the dot is guaranteed to leave the hero before it turns.
       reach = Math.hypot(width, height) / 2 + 12;
       growth = reach / (TURNS * Math.PI * 2);
+      theta = (reach / growth) * 0.62;
+      dir = 0;
       dimOn();
     };
 
@@ -132,52 +132,27 @@ export function HeroSpiral({
       ctx.fill();
     };
 
-    const loop = (now: number) => {
-      frame = requestAnimationFrame(loop);
-      if (now - last < 33) return;
-      // The hero is pinned against the homepage stage so the stacked sheets can arrive over it,
-      // which means it never leaves the viewport while the stack holds and an IntersectionObserver
-      // would call it visible for the whole pinned stretch. Past a viewport and a half of scroll
-      // every sheet above it has closed over the screen, so the canvas is behind opaque plates:
-      // keep the loop, skip the paint.
-      if (window.scrollY > window.innerHeight * 1.6) return;
+    const renderStatic = () => {
+      resize();
+      const now = performance.now();
+      last = now;
       paint(now);
     };
 
-    const start = () => {
-      if (frame || document.hidden) return;
-      last = 0;
-      frame = requestAnimationFrame(loop);
-    };
-    const stop = () => {
-      cancelAnimationFrame(frame);
-      frame = 0;
-    };
-
+    renderStatic();
     let ro: ResizeObserver | null = null;
-    const onVisibility = () => (document.hidden ? stop() : start());
-
-    resize();
-    start();
     if (typeof ResizeObserver !== "undefined") {
-      ro = new ResizeObserver(() => {
-        resize();
-        paint(performance.now());
-      });
+      ro = new ResizeObserver(renderStatic);
       ro.observe(canvas);
     } else {
-      window.addEventListener("resize", resize);
+      window.addEventListener("resize", renderStatic);
     }
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      stop();
-      ro?.disconnect();
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [reduce, copyRef]);
 
-  if (reduce) return null;
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", renderStatic);
+    };
+  }, [copyRef]
 
   return <canvas ref={canvasRef} aria-hidden className={className} />;
 }
