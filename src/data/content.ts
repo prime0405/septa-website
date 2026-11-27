@@ -90,13 +90,17 @@ export const advantagePillars = [
     title: "Proactive, End-to-End Support",
     detail: "Septa AI handles requests, resolves issues, and keeps your product running smoothly.",
   },
+  {
+    title: "Stronger Brand Recognition",
+    detail: "We create consistent digital experiences that make your brand easier to recognize, remember, and trust across customer touchpoints.",
+  },
 ];
 
 export const serviceOverview =
-  "From startups to enterprises, we craft custom software solutions, provide top-tier tech talent, and upskill professionals for the future of work.";
+  "One technology partner. Five ways to move your business forward.";
 
 export const servicesIntro =
-  "We help businesses and individuals thrive through product development and tech talent solutions.";
+  "We build AI-powered digital products, automate workflows, modernise business operations, strengthen system reliability, and connect organisations with skilled technology talent.";
 
 /** The five entries of the document's "OUR SERVICES" list, with the CTA labels it gives each. */
 export const serviceListings = [
@@ -107,13 +111,7 @@ export const serviceListings = [
       "We build intelligent, user-focused products from idea to market-ready launch. We go beyond development; we design and engineer AI-powered solutions that solve real-world problems, adapt to user needs, and scale with your business.",
     cta: "Work with us",
   },
-  {
-    slug: "talent-solution",
-    name: "Talent Solutions",
-    detail:
-      "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
-    cta: "The right talent, right when you need it",
-  },
+
   {
     slug: "workflow-automation",
     name: "Workflow Automation",
@@ -121,13 +119,7 @@ export const serviceListings = [
       "Repetitive tasks drain productivity and distract from strategic priorities. Describe your organizational needs. Septa partners with you to identify bottlenecks, map critical workflows, and deliver automation solutions that free your teams from routine tasks, enabling sharper focus, faster execution, and sustainable growth.",
     cta: "Work Smarter, Not Harder",
   },
-  {
-    slug: "observability-monitoring",
-    name: "Observability & Monitoring",
-    detail:
-      "Data-driven insights keep your systems reliable. Every minute of downtime drains revenue, damages reputation, and stalls growth. Our advanced observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
-    cta: "Protect my business now",
-  },
+
   {
     slug: "digital-transformation",
     name: "Digital Transformation",
@@ -135,6 +127,23 @@ export const serviceListings = [
       "At Septa, we transform the way businesses operate. By replacing outdated systems with powerful digital solutions, we unlock efficiency, cut costs, and deliver customer experiences that fuel growth. Discover how we can help your business thrive in the digital age.",
     cta: "Experience growth without limits.",
   },
+
+  {
+    slug: "observability-monitoring",
+    name: "Observability & Monitoring",
+    detail:
+      "Data-driven insights keep your systems reliable. Every minute of downtime drains revenue, damages reputation, and stalls growth. Our advanced observability and monitoring services give you real-time visibility into your entire system, proactively detecting threats and pinpointing root causes before they escalate.",
+    cta: "Protect my business now",
+  },
+
+  {
+    slug: "talent-solution",
+    name: "Talent Solutions",
+    detail:
+      "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
+    cta: "The right talent, right when you need it",
+  },
+
 ];
 
 /* ------------------------------------ testimonials ------------------------------------ */

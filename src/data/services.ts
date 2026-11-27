@@ -4,7 +4,7 @@
  * slip, never the sentence. Sections a page is expected to have but the document supplies no copy
  * for are listed in `pending` and rendered as a visible gap rather than filled in.
  */
-export type Capability = { title: string; detail?: string };
+export type Capability = { title: string; detail?: string; href?: string };
 export type ProcessSub = { title: string; detail?: string };
 
 export type ProcessStepData = {
@@ -41,7 +41,7 @@ export type ServiceContent = {
    *  source wording but no longer rendered — the footer's banner is now the one close on every
    *  page, and a second panel above it said the same thing. */
   cta?: { headline: string; copy: string; label: string; to: string };
-  /** Sections expected on this page for which the document gives no copy. */
+  /** Sections expected on this page for which the source document gives no copy; not rendered. */
   pending?: string[];
 };
 
@@ -93,29 +93,35 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "MVP in 4 to 6 Weeks",
+        href: "/services/ai-product-development#process-stage-6",
         detail:
           "We help you quickly launch MVPs within 4 to 6 weeks, allowing you to validate ideas, test, and gather data and feedback early.",
       },
       {
         title: "Faster Design & Iteration",
+        href: "/services/ai-product-development#capability-ui-ux-design",
         detail:
           "AI products require continuous refinement. Our rapid design and iteration cycles ensure your product improves quickly based on user interaction and feedback.",
       },
       {
         title: "Solid Security Infrastructure",
+        href: "/services/ai-product-development#capability-web-development",
         detail:
           "We build secure systems that protect sensitive data, ensure compliance, and support reliable AI operations at scale.",
       },
       {
         title: "Product Research",
+        href: "/services/ai-product-development#process-stage-2",
         detail:
           "We combine market research with data-driven insights to define the right product strategy, ensuring your solution solves meaningful problems.",
       },
       {
         title: "User-Centered Approach",
+        href: "/services/ai-product-development#capability-ui-ux-design",
         detail:
           "We design AI products around human behavior. Complex technologies are translated into simple, intuitive experiences that users can easily understand and trust.",
       },
+      
     ],
     processHeading: "Our Product Development Process",
     processLead:
@@ -218,6 +224,25 @@ export const services: ServiceContent[] = [
         },
       },
     ],
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      {
+        title: "Startups and Founders",
+        detail: "Teams turning an idea into a web, mobile, or AI-enabled product.",
+      },
+      {
+        title: "Businesses Building Digital Products",
+        detail: "Organizations developing customer-facing platforms or enterprise solutions.",
+      },
+      {
+        title: "Product and Engineering Teams",
+        detail: "Teams seeking product strategy, design, and engineering support from concept through delivery.",
+      },
+      {
+        title: "Businesses Adding AI Capabilities",
+        detail: "Organizations integrating intelligent features into an existing product or service.",
+      },
+    ],
     extra: {
       heading: "Why Work With Us?",
       paragraphs: [
@@ -269,16 +294,20 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "Tailored to Your Operations",
+        href: "/services/workflow-automation#process-stage-1",
         detail: "We build around your processes instead of forcing new ones.",
       },
       {
         title: "Cost and Time Savings",
+        href: "/services/workflow-automation#process-stage-5",
         detail: "Automations that pay for themselves through efficiency gains.",
       },
       {
         title: "Low Disruption Delivery",
+        href: "/services/workflow-automation#process-stage-4",
         detail: "We implement in phases to keep your operations running smoothly.",
       },
+      
     ],
     cta: {
       headline: "Work Smarter, Not Harder",
@@ -286,7 +315,22 @@ export const services: ServiceContent[] = [
       label: "Partner with Septa",
       to: "/contact",
     },
-    pending: ["Our Process", "Who We Serve"],
+    processHeading: "Our Process",
+    processLead: "A practical sequence based on your existing operations, with changes introduced in manageable stages.",
+    process: [
+      { title: "Map Current Processes" },
+      { title: "Identify Bottlenecks" },
+      { title: "Design and Build Automation" },
+      { title: "Integrate and Test" },
+      { title: "Launch and Optimize" },
+    ],
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      { title: "Businesses with Manual Processes", detail: "Organizations looking to reduce repetitive work across everyday operations." },
+      { title: "Teams Managing Repetitive Tasks", detail: "Teams spending time on routine steps that can be streamlined." },
+      { title: "Organizations Using Multiple Systems", detail: "Businesses that need their apps, databases, and tools to exchange information more smoothly." },
+      { title: "Growing Operations", detail: "Teams seeking more consistent workflows as their workload increases." },
+    ],
   },
   {
     slug: "digital-transformation",
@@ -333,19 +377,39 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "Business & Technology Expertise",
+        href: "/about#deep-expertise",
         detail:
           "We combine strategic insight with technical excellence to deliver solutions that work.",
       },
       {
         title: "Industry-Specific Strategies",
+        href: "/services/digital-transformation#core-services",
         detail:
           "Tailored digital transformation approaches designed for your sector’s unique challenges.",
       },
       {
         title: "Measurable Impact",
+        href: "/services/digital-transformation#process-stage-5",
         detail:
           "Every solution is tracked and optimized to show clear improvements in efficiency, cost savings, and customer satisfaction.",
       },
+      
+    ],
+    processHeading: "Our Process",
+    processLead: "A structured approach to modernizing the way your business operates, with each step aligned to your goals.",
+    process: [
+      { title: "Assess Current Operations" },
+      { title: "Define a Digital Roadmap" },
+      { title: "Modernize and Integrate Systems" },
+      { title: "Support Team Adoption" },
+      { title: "Measure and Optimize Results" },
+    ],
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      { title: "Businesses Using Outdated Systems", detail: "Organizations ready to replace legacy tools and manual workflows with digital solutions." },
+      { title: "Organizations Modernizing Infrastructure", detail: "Businesses exploring cloud migration and more flexible technology environments." },
+      { title: "Businesses Seeking Better Data Insights", detail: "Teams that want to organize business data and use it to support decisions." },
+      { title: "Customer-Facing Businesses", detail: "Organizations improving websites, apps, portals, and other digital customer touchpoints." },
     ],
     cta: {
       headline: "Experience growth without limits.",
@@ -364,8 +428,8 @@ export const services: ServiceContent[] = [
     intro:
       "Downtime and performance issues cost money and trust. We provide real-time visibility into your systems so you can detect, respond, and fix problems before they impact customers.",
     image: {
-      src: "/img/work/observability-noc.webp",
-      alt: "Three screens in a dim room: a latency graph with one spike marked, a grid of service health tiles with two of them amber, and a log stream with a single row highlighted",
+      src: "/img/services/Real time moitoring.jpg",
+      alt: "A network operations professional monitoring multiple live infrastructure dashboards",
     },
     coreServicesHeading: "Core Services",
     coreServices: [
@@ -390,16 +454,20 @@ export const services: ServiceContent[] = [
     whyChoose: [
       {
         title: "Proactive Detection",
+        href: "/services/observability-monitoring#capability-real-time-monitoring",
         detail: "Catch and resolve issues before they affect customers.",
       },
       {
         title: "Custom Monitoring Setups",
+        href: "/services/observability-monitoring#process-stage-2",
         detail: "Solutions tailored to your infrastructure and workflows.",
       },
       {
         title: "Actionable Insights",
+        href: "/services/observability-monitoring#capability-dashboards-reporting",
         detail: "Reporting and analytics that drive better decisions and performance improvements.",
       },
+      
     ],
     processHeading: "Our Process",
     process: [
@@ -456,52 +524,57 @@ export const services: ServiceContent[] = [
   },
   {
     slug: "talent-solution",
-    name: "Talent Solution",
+    name: "Talent Solutions",
     icon: "talent",
     navBlurb:
       "The right experts at the right time to support your growth and innovation journey. Need skilled professionals to drive your projects forward? Our talent solutions connect you with experienced tech experts who fit your needs.",
-    heroTitle: "Septa Talent Solution",
+    heroTitle: "Septa Talent Solutions",
     intro:
       "At Septa Talent Solutions, we take the hassle out of hiring, payroll, and employee benefits management, allowing businesses and organizations to focus on what truly matters: growth and innovation. We specialize in providing highly skilled professionals across various industries while managing everything from payroll processing, tax compliance, pension, HMO, and other employee benefits. Whether you’re a startup, SME, or large enterprise, we ensure seamless workforce management so you can scale without stress.",
     image: {
       src: "/img/work/talent-matching.webp",
       alt: "A monitor showing a grid of candidate profiles as abstract avatars with skill bars, two of them joined by a curve, beside a laptop running a video interview",
     },
-    coreServicesHeading: "Why Choose Us?",
+    coreServicesHeading: "Core Services",
     coreServices: [
       {
-        title: "Access to a pool of pre-scanned talent solutions",
+        title: "Access to a Pool of Pre-Screened Talent",
         detail:
           "We have a vast network of professionals across various tech disciplines. Our recruitment process ensures that only highly qualified candidates with the right skill set and expertise make it to your interview stage.",
       },
       {
-        title: "Tailored Recruitment process",
+        title: "Tailored Recruitment Process",
         detail:
           "We understand every business is unique, so we tailor our recruitment strategies to your specific hiring needs. Whether you need a full-time employee, contract worker, or a team to work with on short-term projects, we help you find the perfect fit.",
       },
       {
-        title: "Payroll management",
+        title: "Payroll Management",
         detail:
           "Hassle free salary processing, tax deduction, and compliance. Septa’s payroll management services provide seamless solutions to help businesses streamline their salary processing and maintain compliance with tax laws and labor regulations.",
       },
       {
-        title: "Employee benefits administration",
+        title: "Employee Benefits Administration",
         detail:
           "We handle employee benefits administration seamlessly, covering HMO, pensions, insurance, and other welfare benefits. Our goal is to provide a hassle-free experience for both employers and employees.",
       },
     ],
     whyChooseHeading: "Why Businesses Trust Septa Talent Solutions",
     whyChoose: [
-      { title: "Efficiency", detail: "Faster hiring timelines and zero payroll errors." },
-      { title: "Compliance", detail: "Stay fully aligned with labor laws and tax regulations." },
+      { title: "Efficiency",
+        href: "/services/talent-solution#capability-tailored-recruitment-process", detail: "Faster hiring timelines and zero payroll errors." },
+      { title: "Compliance",
+        href: "/services/talent-solution#capability-payroll-management", detail: "Stay fully aligned with labor laws and tax regulations." },
       {
         title: "Employee Experience",
+        href: "/services/talent-solution#capability-employee-benefits-administration",
         detail: "Benefits, welfare, and support that keep employees engaged and retained.",
       },
       {
         title: "Partnership Approach",
+        href: "/about#people-first-partnership",
         detail: "We don’t just hire; we become your long-term workforce partner.",
       },
+      
     ],
     processHeading: "Our Process",
     processLead: "We keep things simple, structured, and transparent:",
@@ -547,7 +620,7 @@ export const services: ServiceContent[] = [
     ],
     cta: {
       headline: "Let’s Build What’s Next, Together!",
-      copy: "Whether you need an AI powered product, smarter workflows, or complete product development, Septa is your partner for building the future.",
+      copy: "Find the right technology professionals for your team, with recruitment, payroll, and employee benefits support that helps your workforce grow.",
       label: "Partner with Septa",
       to: "/contact",
     },

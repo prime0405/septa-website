@@ -10,19 +10,13 @@ type Slot = { subject: BgMotion | null; on: boolean; live: boolean };
 /**
  * The moving line art that gives each page its own wallpaper.
  *
- * Five subjects, one per kind of page, chosen by `bgThemes`: a rotating wireframe globe ringed by
- * breathing pulses and orbited by motes, a depth-layered node network carrying packets along its
- * links, an isometric cube lattice with a light front sweeping across it, a bundle of routed data
- * lanes joined by risers, and a stack of sheared strata sliding past each other.
+ * Five subjects, one per kind of page, chosen by `bgThemes`: a slow wireframe globe, a depth-layered
+ * node network, an isometric cube lattice, a bundle of routed data lanes, and a stack of sliding
+ * strata. Each subject keeps its motion legible without competing with the page content.
  *
- * Two facts set every number in this file. The layer runs at 28% (`bgfx-mesh`) and the mask holds it
- * to 0.62 of that across the reading column, so a canvas pixel can never reach the eye at more than
- * 17% Tradewind — but only if nothing is drawn darker than Tradewind at full alpha, because the
- * ceiling is the opaque colour itself, not the coverage. And the page is light, so ink can only ever
- * be seen by being *darker* than the ground: a pale highlight, however large, simply disappears.
- * Together those mean the art has to be carried by Tradewind at high alpha, and that depth has to be
- * expressed with line weight, size and spacing rather than with alpha dropped to a tenth. An alpha
- * below about 0.4 is not a faint stroke on this ground, it is no stroke at all.
+ * The canvas now runs at 15% opacity and the mask holds it to 0.62 across the reading column, keeping
+ * the decorative line art behind the content. Line weight and spacing carry the geometry; motion is
+ * deliberately slower and less prominent than the content it supports.
  *
  * Cost is bounded the same way the mesh bounds it: counts scale with area, links and cubes are
  * bucketed into four weight bands so a field is four stroke calls rather than thousands, the loop
@@ -133,7 +127,6 @@ function WallScene({ subject, on, live }: { subject: BgMotion | null; on: boolea
     /* ------------------------------------ fields ------------------------------------ */
     type Node = { x: number; y: number; vx: number; vy: number; r: number; z: number };
     type Packet = { a: number; b: number; t: number; s: number };
-    type Mote = { a: number; r: number; s: number; z: number; v: number };
     type Cube = { x: number; y: number; s: number };
     type Particle = { u: number; v: number; w: number };
     type Lane = { o: number; k: number; amp: number; ph: number; z: number; ps: Particle[] };
@@ -144,8 +137,6 @@ function WallScene({ subject, on, live }: { subject: BgMotion | null; on: boolea
     let py = new Float32Array(0);
     let hubs: number[] = [];
     let packets: Packet[] = [];
-    let rings: number[] = [];
-    let motes: Mote[] = [];
     let cubes: Cube[] = [];
     let rowStep = 90;
     let lanes: Lane[] = [];
@@ -186,19 +177,6 @@ function WallScene({ subject, on, live }: { subject: BgMotion | null; on: boolea
       packets = Array.from({ length: 9 }, () => {
         const a = Math.floor(Math.random() * nodes.length);
         return { a, b: nextHop(a), t: Math.random(), s: 0.16 + Math.random() * 0.3 };
-      });
-
-      // Seven pulses evenly staggered across one breath, so the assembly is never empty and never full.
-      rings = Array.from({ length: 7 }, (_, i) => i / 7);
-      motes = Array.from({ length: 30 }, () => {
-        const z = 0.45 + Math.random() * 0.55;
-        return {
-          a: Math.random() * TAU,
-          r: 0.26 + Math.random() * 0.94,
-          s: 0.9 + Math.random() * 1.8,
-          z,
-          v: 0.5 + Math.random() * 1.5,
-        };
       });
 
       const step = clamp(width / 12, 78, 132);
@@ -365,134 +343,41 @@ function WallScene({ subject, on, live }: { subject: BgMotion | null; on: boolea
     const drawRings = () => {
       const cx = width < 900 ? width * 0.5 : width * 0.755;
       const cy = height * 0.46;
-      const R = Math.min(width * 0.9, height * 0.82) * 0.34;
+      const radius = Math.min(width * 0.9, height * 0.82) * 0.32;
       const tilt = 0.46;
-      /* Scrolling turns the globe as well as time, which is what makes a fixed canvas read as depth
-         rather than as a screensaver. */
-      const rot = clock * 0.1 + scroll * 0.0016;
       const squash = Math.sin(tilt);
+      const rotation = clock * 0.035 + scroll * 0.00045;
 
-      // The laminar ribbon first, so the globe reads as sitting in front of it.
       ctx.strokeStyle = TEAL;
-      for (let k = 0; k < 4; k += 1) {
-        const base = height * (0.24 + k * 0.19);
-        const amp = height * (0.045 + k * 0.016);
-        ctx.lineWidth = 1.4 + (k === 1 ? 2 : 0.2);
-        ctx.globalAlpha = k === 1 ? 0.85 : 0.5;
-        ctx.beginPath();
-        for (let x = -20; x <= width + 20; x += 14) {
-          const y =
-            base +
-            Math.sin(
-              (x / width) * TAU * (1.3 + k * 0.25) +
-                clock * (0.22 + k * 0.05) +
-                scroll * 0.001 * (1 + k * 0.3) +
-                k,
-            ) *
-              amp;
-          if (x === -20) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
+      ctx.lineWidth = 1.25;
+      ctx.globalAlpha = 0.58;
 
-      // Latitude circles: an ellipse at the height of the parallel, squashed by the tilt.
-      ctx.strokeStyle = TEAL;
+      // A quiet wireframe: a few latitude lines and three slow meridians.
       for (let i = -2; i <= 2; i += 1) {
-        const lat = i * 0.44;
-        const rx = R * Math.cos(lat);
-        const face = 1 - Math.abs(i) / 2;
-        ctx.globalAlpha = 0.55 + face * 0.45;
-        ctx.lineWidth = 1.2 + face * 2.2;
+        const latitude = i * 0.48;
+        const rx = radius * Math.cos(latitude);
         ctx.beginPath();
-        ctx.ellipse(cx, cy - R * Math.sin(lat) * Math.cos(tilt), rx, rx * squash, 0, 0, TAU);
+        ctx.ellipse(
+          cx,
+          cy - radius * Math.sin(latitude) * Math.cos(tilt),
+          rx,
+          rx * squash,
+          0,
+          0,
+          TAU,
+        );
         ctx.stroke();
       }
 
-      // Meridians: the same great circle seen edge-on collapses to a vertical line, and that
-      // collapse is the only cheap way to sell a rotation on a 2D canvas.
-      for (let m = 0; m < 6; m += 1) {
-        const ph = rot + (m * Math.PI) / 6;
-        const face = Math.abs(Math.sin(ph));
-        ctx.globalAlpha = 0.48 + face * 0.52;
-        ctx.lineWidth = 1 + face * 2.2;
+      for (let meridian = 0; meridian < 3; meridian += 1) {
+        const phase = rotation + (meridian * Math.PI) / 3;
+        const widthScale = Math.abs(Math.sin(phase));
+        ctx.globalAlpha = 0.42 + widthScale * 0.2;
         ctx.beginPath();
-        ctx.ellipse(cx, cy, R * face, R, 0, 0, TAU);
+        ctx.ellipse(cx, cy, radius * widthScale, radius, 0, 0, TAU);
         ctx.stroke();
       }
-      ctx.globalAlpha = 1;
 
-      // Two gyroscope rings running the other way, so the assembly has an outside as well as a body.
-      for (let g = 0; g < 2; g += 1) {
-        const a = -rot * (0.5 + g * 0.4) + g * 1.1;
-        ctx.save();
-        ctx.setLineDash([3, 11]);
-        ctx.strokeStyle = TEAL;
-        ctx.globalAlpha = 0.72;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, R * (1.24 + g * 0.16), R * (0.2 + g * 0.12), a, 0, TAU);
-        ctx.stroke();
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
-
-      /* One breath per 9s, derived from the clock rather than accumulated per frame, so the cycle runs
-         at the same speed whether the tab is at 30fps or throttled. A pulse leaves the core, opens to
-         the rim and then comes back in — the radius is a triangle wave and the alpha peaks at the
-         turn, which is what hides the reversal. */
-      const reach = R * 1.34;
-      ctx.strokeStyle = TEAL;
-      for (let i = 0; i < rings.length; i += 1) {
-        const p = (clock / 9 + rings[i]) % 1;
-        const tri = p < 0.5 ? p * 2 : 2 - p * 2;
-        const r = reach * (0.05 + tri * 0.95);
-        ctx.globalAlpha = Math.sin(Math.PI * p) * 0.95;
-        ctx.lineWidth = 1 + (1 - tri) * 2.6;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, r, r * squash, 0, 0, TAU);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-
-      const beat = 0.5 + 0.5 * Math.sin(clock * 0.7);
-      halo(cx, cy, R * (0.34 + beat * 0.1), 0.4 + beat * 0.2);
-      ctx.strokeStyle = TEAL;
-      ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, R * 0.07, R * 0.07 * squash, 0, 0, TAU);
-      ctx.stroke();
-      ctx.fillStyle = TEAL;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 4.2, 0, TAU);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-
-      /* Motes orbit in one of the two planes, so some cross the face of the globe and some pass over
-         its poles. Each leaves a short arc behind it, which is the difference between a dusting of
-         dots and a field of bodies. */
-      for (const m of motes) {
-        const a = m.a + clock * (0.05 + m.z * 0.16) * m.v;
-        const r = R * m.r;
-        const flat = m.v < 1.2;
-        const rx = r * (flat ? 1 : squash);
-        const ry = r * (flat ? squash : 1);
-        const x = cx + Math.cos(a) * rx;
-        const y = cy + Math.sin(a) * ry;
-        ctx.strokeStyle = TEAL;
-        ctx.globalAlpha = 0.5 + 0.45 * m.z;
-        ctx.lineWidth = 1.2 + m.z * 2;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, rx, ry, 0, a - 0.24, a);
-        ctx.stroke();
-        ctx.fillStyle = TEAL;
-        ctx.globalAlpha = 0.65 + 0.35 * Math.abs(Math.sin(clock * 0.6 + m.a));
-        ctx.beginPath();
-        ctx.arc(x, y, m.s * (0.7 + m.z), 0, TAU);
-        ctx.fill();
-      }
       ctx.globalAlpha = 1;
     };
 

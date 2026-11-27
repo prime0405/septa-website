@@ -12,7 +12,7 @@ export function ProcessSteps({
   columns = 3,
   caption,
   autoRoll = false,
-  interval = 3400,
+  interval = 3000,
 }: {
   steps: ProcessStep[];
   className?: string;

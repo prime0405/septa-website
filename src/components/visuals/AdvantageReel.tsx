@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { motion } from "motion/react";
-import { Brain, Layers, RefreshCw, ShieldCheck, Users } from "lucide-react";
+import { BadgeCheck, Brain, Layers, RefreshCw, ShieldCheck, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { advantagePillars } from "../../data/content";
 import { cn } from "../../lib/cn";
@@ -17,6 +17,7 @@ const labels: Record<string, string> = {
   "Human-Centered Technology": "Human insight",
   "Delivery You Can Trust": "Agile execution",
   "Proactive, End-to-End Support": "End-to-end support",
+  "Stronger Brand Recognition": "A consistent brand experience",
 };
 
 const icons: Record<string, LucideIcon> = {
@@ -25,9 +26,10 @@ const icons: Record<string, LucideIcon> = {
   "Human-Centered Technology": Users,
   "Delivery You Can Trust": ShieldCheck,
   "Proactive, End-to-End Support": RefreshCw,
+  "Stronger Brand Recognition": BadgeCheck,
 };
 
-const INTERVAL = 5000;
+const INTERVAL = 3000;
 const pad = (n: number) => String(n).padStart(2, "0");
 
 function IconTile({ title, className }: { title: string; className?: string }) {

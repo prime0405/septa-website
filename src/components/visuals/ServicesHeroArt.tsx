@@ -23,14 +23,14 @@ export function ServicesHeroArt() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, var(--color-surface) 0%, var(--color-ink) 56%, var(--color-ink-raised) 100%)",
+            "linear-gradient(132deg, #344B49 0%, #123A43 52%, #061820 100%)",
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(50% 64% at 12% 6%, color-mix(in oklab, var(--color-brand-teal-lift) 24%, transparent) 0%, transparent 62%), radial-gradient(44% 58% at 90% 90%, color-mix(in oklab, var(--color-amber) 8%, transparent) 0%, transparent 64%)",
+            "radial-gradient(50% 64% at 12% 6%, rgba(109,177,174,.28) 0%, transparent 62%), radial-gradient(44% 58% at 90% 90%, rgba(95,221,157,.12) 0%, transparent 64%)",
         }}
       />
       {/* swimlanes: the horizontal bands a workflow diagram keeps its stages in */}
@@ -38,11 +38,11 @@ export function ServicesHeroArt() {
         className="mask-fade absolute inset-0 opacity-40"
         style={{
           background:
-            "repeating-linear-gradient(to bottom, color-mix(in oklab, var(--color-line) 55%, transparent) 0 1px, transparent 1px 96px)",
+            "repeating-linear-gradient(to bottom, color-mix(in oklab, #344B49 24%, transparent) 0 1px, transparent 1px 96px)",
         }}
       />
       <svg
-        className="absolute -top-10 -right-16 size-[300px] text-brand-teal sm:size-[520px]"
+        className="absolute -top-10 -right-16 size-[300px] text-[#6DB1AE] sm:size-[520px]"
         viewBox="0 0 520 460"
         fill="none"
       >
@@ -72,7 +72,7 @@ export function ServicesHeroArt() {
               fill="currentColor"
               fillOpacity={i === 4 ? 0.85 : 0.5}
               fontSize="13"
-              fontFamily="JetBrains Mono Variable, monospace"
+              fontFamily="Manrope, sans-serif"
             >
               {nd.n}
             </text>
@@ -85,7 +85,7 @@ export function ServicesHeroArt() {
       </svg>
       {/* the legend down the left margin: the same five nodes as a key */}
       <svg
-        className="absolute inset-y-0 left-0 hidden h-full w-20 text-brand-teal opacity-70 sm:block"
+        className="absolute inset-y-0 left-0 hidden h-full w-20 text-[#6DB1AE] opacity-70 sm:block"
         viewBox="0 0 80 800"
         preserveAspectRatio="none"
         fill="none"
@@ -99,7 +99,7 @@ export function ServicesHeroArt() {
         ))}
       </svg>
       <div className="grain absolute inset-0 opacity-[0.05]" />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-ink" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[#6DB1AE]" />
     </div>
   );
 }

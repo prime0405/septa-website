@@ -7,7 +7,7 @@ import { Card, Reveal } from "../ui/primitives";
 import { CtaArrival } from "./CtaArrival";
 
 /** How long a card holds the light before it moves. Long enough to read a card's first line. */
-const INTERVAL = 3600;
+const INTERVAL = 3000;
 
 /**
  * The five services, with the attention arriving on its own.

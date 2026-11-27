@@ -1,36 +1,19 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, Sparkles } from "lucide-react";
-import { PageHero } from "../components/blocks/PageHero";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { Button } from "../components/ui/Button";
 import { RequestWizard } from "../components/forms/RequestWizard";
 import { IntegrationNotice } from "../components/blocks/LaunchNote";
-import { Button } from "../components/ui/Button";
-import {
-  Callout,
-  Card,
-  MarkerList,
-  Pill,
-  Reveal,
-  Section,
-  SectionHeading,
-} from "../components/ui/primitives";
+import { Callout, Section, SectionHeading } from "../components/ui/primitives";
 import { requestServices } from "../shared/schemas";
-import { privacy } from "../lib/site";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
-
-const steps = [
-  { label: "Choose a service", detail: "One selection. “Other” is a real option." },
-  { label: "Describe the project", detail: "The problem, the outcome you want, constraints you already know." },
-  { label: "Project details", detail: "Organisation, budget range and timeline. Optional where it should be." },
-  { label: "Your contact details", detail: "How to reach you and which channel you prefer." },
-  { label: "Review and send", detail: "Everything you entered, in one screen, before it leaves the browser." },
-];
+import "./service-page-theme.css";
 
 export default function Request() {
   usePageMeta({
     title: "Request a Service",
     description:
-      "Tell Septa what you need: AI product development, traditional software, workflow automation, digital transformation, observability or technical talent.",
+      "Tell Septa what you need and share the key details of your project. Our team will use your enquiry to understand the challenge and identify a suitable next step.",
   });
 
   const [params] = useSearchParams();
@@ -38,141 +21,83 @@ export default function Request() {
   const preselected = raw && (requestServices as readonly string[]).includes(raw) ? raw : undefined;
 
   return (
-    <>
-      <PageHero
-        crumbs={[{ label: "Home", to: paths.home() }, { label: "Request a Service" }]}
-        eyebrow="Start a project"
-        title="Request a Service"
-        lead="Five short steps, and you can go back and edit anything before sending. If you get partway, your answers stay in this browser so a refresh does not lose them."
-        meta={
-          <>
-            <Pill tone="mint">
-              <ShieldCheck className="size-3.5" /> Validated on the way in
-            </Pill>
-            <Pill tone="line">Saves a local draft</Pill>
-            <Pill tone="line">Nothing sent until you review</Pill>
-          </>
-        }
-        actions={
-          <Button to={paths.contact()} variant="secondary" iconStart={<ArrowLeft className="size-4" />}>
-            Have a question first? Use the contact form
-          </Button>
-        }
-        aside={
-          <Reveal>
-            <Card className="p-6">
-              <p className="eyebrow mb-4">What happens in each step</p>
-              <ol className="space-y-3.5">
-                {steps.map((s, i) => (
-                  <li key={s.label} className="flex gap-3.5">
-                    <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-lg border border-mint/30 bg-mint/[0.07] font-mono text-[0.68rem] text-mint">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span>
-                      <span className="block text-[0.92rem] text-fg">{s.label}</span>
-                      <span className="mt-0.5 block text-[0.83rem] leading-relaxed text-muted">
-                        {s.detail}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </Card>
-          </Reveal>
-        }
-      />
+    <div className="service-page">
+      <section className="relative isolate overflow-hidden bg-[#061820] text-white">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute inset-0 opacity-[0.12]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+          <div className="absolute -right-24 -top-32 size-[30rem] rounded-full border border-brand-teal/20" />
+          <div className="absolute -right-10 -top-16 size-[22rem] rounded-full bg-brand-teal/10 blur-[100px]" />
+        </div>
 
-      <Section wall="answers" className="section">
-        <div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
-          <div className="min-w-0">
-            {preselected ? (
-              <Callout kind="info" title="Service preselected" className="mb-6">
-                <p>
-                  You arrived from the <span className="text-fg">{preselected}</span> page, so step one
-                  starts there. Change it if the problem is really somewhere else. Mixed engagements
-                  are normal.
-                </p>
-              </Callout>
-            ) : null}
-            <RequestWizard preselected={preselected} />
+        <div className="wrap relative py-10 sm:py-12 lg:py-14">
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex flex-wrap items-center gap-2 font-sans text-[0.7rem] uppercase tracking-wider text-white/55">
+              <li><Link to={paths.home()} className="transition-colors hover:text-brand-mint">Home</Link></li>
+              <li className="flex items-center gap-2"><ChevronRight className="size-3" aria-hidden /><span className="text-white">Request a service</span></li>
+            </ol>
+          </nav>
+
+          <div className="max-w-3xl">
+            <p className="mb-5 font-sans text-xs uppercase tracking-[0.2em] text-brand-mint">Start a conversation</p>
+            <h1 className="max-w-4xl text-[clamp(2.8rem,6vw,5rem)] leading-[0.98] tracking-[-0.055em] text-white">
+              Tell us what you <span className="text-brand-teal">need to move forward.</span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/75 sm:text-base">
+              Share what you are trying to build, change or improve. A few clear details will help us understand the challenge and plan the right next step.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button to={paths.services()} size="lg" variant="dark-cta">Explore our services</Button>
+              <Link to={paths.contact()} className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">
+                Contact us first <ArrowUpRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div aria-hidden className="h-1 w-full bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent" />
+      </section>
+
+      <Section id="project-enquiry" wall="use-case" tone="surface" className="section">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-8 max-w-2xl">
+            <SectionHeading
+              eyebrow="Project enquiry"
+              title="A little context goes a long way."
+              lead="Work through the steps below. You can review your answers before submitting the request."
+            />
           </div>
 
-          <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
-            <IntegrationNotice />
-
-            <Card className="p-6">
-              <p className="eyebrow mb-4">What we do with it</p>
-              <MarkerList
-                items={[
-                  {
-                    label: "Stored in the request record",
-                    detail: "So a follow-up conversation has the context you already gave us.",
-                  },
-                  {
-                    label: "Read by a person",
-                    detail: "Someone replies with a point of view and a suggested next step.",
-                  },
-                  {
-                    label: "Nothing shared onward",
-                    detail: "No advertising trackers, no resale of enquiry data.",
-                  },
-                ]}
-              />
-              <p className="mt-4 border-t border-line pt-4 text-[0.82rem] leading-relaxed text-faint">
-                Full detail is in the{" "}
-                <Link to={paths.privacy()} className="text-mint hover:underline">
-                  privacy notice
-                </Link>
-                .
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <p className="eyebrow mb-4">Local draft storage</p>
-              <p className="text-[0.86rem] leading-relaxed text-muted">
-                This form keeps a draft in your browser under{" "}
-                <code className="font-mono text-[0.78rem] text-fg">
-                  {privacy.localStorageKeys.join(", ")}
-                </code>{" "}
-                so a lost tab is not lost work. It clears when the request is accepted, and you can
-                discard it at any time from the form.
-              </p>
-            </Card>
-
-            <Callout kind="setup" title="Before this page takes real enquiries">
+          {preselected ? (
+            <Callout kind="info" title="Service preselected" className="mb-6">
               <p>
-                Submissions need a configured destination: SMTP credentials for email forwarding, and
-                a durable database for production. The banner above tells you which of those is
-                missing right now.
+                Your enquiry is set to <span className="font-semibold text-fg">{preselected}</span>.
+                You can change this in the first step if another service is a better fit.
               </p>
             </Callout>
-          </aside>
-        </div>
-      </Section>
+          ) : null}
 
-      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-          <SectionHeading
-            eyebrow="Useful context"
-            title="What makes a request easy to answer well"
-            lead="None of this is required. It is what turns a reply that guesses into a reply that is specific."
-          />
-          <MarkerList
-            items={[
-              "Who is affected by the problem today, and how often they hit it.",
-              "What you already tried, including anything that quietly failed.",
-              "Systems the solution has to touch, and the ones it must stay away from.",
-              "A rough date, if one exists, and what makes that date real.",
-              "Who needs to say yes, and what they care about.",
-            ]}
-          />
-        </div>
-        <div className="mt-10 flex flex-wrap items-center gap-3 rounded-card border border-line bg-surface px-5 py-4 text-[0.86rem] text-muted">
-          <Sparkles className="size-4 shrink-0 text-mint" aria-hidden />
-          Short is fine. “Our finance team rebuilds this report by hand every month” is a complete
-          brief to start from.
+          <IntegrationNotice />
+          <RequestWizard preselected={preselected} />
+          <p className="mt-4 text-center text-xs leading-6 text-muted">
+            Unfinished answers are saved in this browser so you can return to them later.{" "}
+            <Link to={paths.privacy()} className="font-semibold text-mint hover:underline">Privacy policy</Link>.
+          </p>
+
+          <p className="mt-6 text-center text-sm leading-6 text-muted">
+            Prefer to speak with someone first?{" "}
+            <Link to={paths.contact()} className="font-semibold text-mint hover:underline">
+              Contact the Septa team
+            </Link>
+            .
+          </p>
         </div>
       </Section>
-    </>
+    </div>
   );
 }

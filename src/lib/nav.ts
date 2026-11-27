@@ -29,7 +29,7 @@ export const primaryNav: NavItem[] = [
             label: "Observability & Monitoring",
             href: SERVICE_ROUTES["observability-monitoring"],
           },
-          { label: "Talent Solution", href: SERVICE_ROUTES["talent-solution"] },
+          { label: "Talent Solutions", href: SERVICE_ROUTES["talent-solution"] },
         ],
       },
     ],
@@ -60,7 +60,7 @@ export const footerColumns: NavGroup[] = [
       { label: "Workflow Automation", href: SERVICE_ROUTES["workflow-automation"] },
       { label: "Digital Transformation", href: SERVICE_ROUTES["digital-transformation"] },
       { label: "Observability & Monitoring", href: SERVICE_ROUTES["observability-monitoring"] },
-      { label: "Talent Solution", href: SERVICE_ROUTES["talent-solution"] },
+      { label: "Talent Solutions", href: SERVICE_ROUTES["talent-solution"] },
     ],
   },
   {

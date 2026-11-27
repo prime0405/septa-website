@@ -1,0 +1,173 @@
+/* Septa service pages: one shared palette anchored to the homepage hero.
+   Keep this file scoped to the overview and five service detail pages. Button variants
+   remain owned by Button.tsx. */
+
+.service-page {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: clip;
+  background: #ffffff;
+  color: var(--color-fg);
+}
+
+/* Give the content a clearer mint/teal rhythm while keeping the homepage hero
+   as the visual anchor. Colour comes through soft light, not competing panels. */
+.service-page > section:not(:first-child) {
+  --band: #ffffff;
+  background:
+    radial-gradient(70% 85% at 100% 0%, rgb(95 221 157 / 7%) 0%, transparent 72%),
+    #ffffff !important;
+  color: #061820 !important;
+}
+.service-page > section:not(:first-child).band-raised {
+  --band: #f3faf6;
+  background:
+    radial-gradient(75% 90% at 0% 10%, rgb(95 221 157 / 13%) 0%, transparent 70%),
+    linear-gradient(135deg, #f5fbf7 0%, #edf7f3 100%) !important;
+}
+.service-page > section:not(:first-child).band-surface {
+  --band: #eaf5f0;
+  background:
+    radial-gradient(70% 80% at 100% 0%, rgb(109 177 174 / 15%) 0%, transparent 70%),
+    linear-gradient(135deg, #edf7f2 0%, #e7f2ef 100%) !important;
+}
+
+/* The Why Choose Septa section has its own vertical rhythm.
+   Keep this override scoped to the shared service-detail section so global .section spacing
+   remains unchanged everywhere else. Content spacing inside the two columns is preserved. */
+.service-page #the-septa-difference.service-why-section {
+  padding-block: clamp(2.75rem, 5vw, 4.25rem);
+}
+
+/* The service hero uses the homepage hero's exact background treatment:
+   Black Pearl into charcoal, with subtle mint and Tradewind light. */
+.service-page > section:first-child {
+  --band: transparent;
+  background:
+    radial-gradient(110% 70% at 50% -14%, rgb(95 221 157 / 13%) 0%, transparent 52%),
+    radial-gradient(80% 60% at 88% 78%, rgb(109 177 174 / 12%) 0%, transparent 58%),
+    radial-gradient(120% 44% at 50% 112%, rgb(95 221 157 / 12%) 0%, transparent 64%),
+    linear-gradient(180deg, #061820 0%, #0b1b21 46%, #0b1b21 100%) !important;
+  color: #ffffff !important;
+}
+.service-page > section:first-child :is(h1, h2, h3, h4, p, span, li, small) {
+  color: #ffffff;
+}
+.service-page > section:first-child .text-brand-mint,
+.service-page > section:first-child .text-brand-teal {
+  color: #5fdd9d !important;
+}
+.service-page > section:first-child nav,
+.service-page > section:first-child nav :is(li, span, a) {
+  color: rgb(255 255 255 / 76%) !important;
+}
+.service-page > section:first-child nav a:hover {
+  color: #5fdd9d !important;
+}
+
+/* Hard reset light-section text to dark. This specifically prevents inherited
+   text-white utilities from becoming invisible on white or pale-green surfaces.
+   Links and buttons are excluded so their own variants retain their colours. */
+.service-page > section:not(:first-child) :is(h1, h2, h3, h4, p, span, li, small, strong, em):not(a *):not(button *) {
+  color: #17383b;
+}
+.service-page > section:not(:first-child) [class*="text-white"]:not(a):not(button):not(a *):not(button *),
+.service-page > section:not(:first-child) [class*="text-brand-white"]:not(a):not(button):not(a *):not(button *) {
+  color: #17383b !important;
+}
+.service-page > section:not(:first-child) .text-muted:not(a):not(button):not(a *):not(button *),
+.service-page > section:not(:first-child) .text-faint:not(a):not(button):not(a *):not(button *) {
+  color: #49666a !important;
+}
+.service-page > section:not(:first-child) .text-mint:not(a):not(button):not(a *):not(button *),
+.service-page > section:not(:first-child) .text-brand-mint:not(a):not(button):not(a *):not(button *),
+.service-page > section:not(:first-child) .text-brand-teal:not(a):not(button):not(a *):not(button *) {
+  color: #286f6a !important;
+}
+
+/* Reusable cards: clean white surfaces with more visible brand colour at the edges. */
+.service-page > section:not(:first-child) .service-glass,
+.service-page > section:not(:first-child) .service-process-journey > div:last-child,
+.service-page > section:not(:first-child) .service-extra-panel,
+.service-page > section:not(:first-child) .services-overview-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f7fcf9 100%) !important;
+  border-color: rgb(66 155 137 / 38%) !important;
+  color: #17383b !important;
+  box-shadow: 0 18px 48px -38px rgb(6 44 42 / 42%);
+  backdrop-filter: blur(18px);
+}
+.service-page > section:not(:first-child) .service-extra-panel :is(h2, p, span) {
+  color: #17383b !important;
+}
+.service-page > section:not(:first-child) .services-overview-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f2faf5 100%) !important;
+  border-color: rgb(95 180 145 / 42%) !important;
+}
+
+/* Featured capability carousel uses the homepage hero treatment as its dark anchor.
+   The text panel stays white with dark copy for reliable contrast. */
+.service-page .service-capability-carousel,
+.service-page .services-overview-legend {
+  background:
+    radial-gradient(110% 70% at 50% -14%, rgb(95 221 157 / 13%) 0%, transparent 52%),
+    radial-gradient(80% 60% at 88% 78%, rgb(109 177 174 / 12%) 0%, transparent 58%),
+    linear-gradient(180deg, #061820 0%, #0b1b21 46%, #0b1b21 100%) !important;
+  border-color: rgb(109 177 174 / 48%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 32px 90px -48px rgb(6 24 32 / 72%);
+}
+.service-page .service-capability-copy {
+  background: #ffffff !important;
+  border-color: rgb(109 177 174 / 35%) !important;
+  color: #17383b !important;
+}
+.service-page .service-capability-copy :is(h3, p, span, li),
+.service-page .service-capability-copy [class*="text-white"],
+.service-page .service-capability-copy .text-brand-pearl {
+  color: #17383b !important;
+}
+.service-page .service-capability-copy .text-muted,
+.service-page .service-capability-copy .text-faint {
+  color: #49666a !important;
+}
+.service-page .service-capability-art [class*="text-[#91d9cf]"] {
+  color: #91d9cf !important;
+}
+.service-page .service-capability-copy [class*="text-[#75c9bd]"] {
+  color: #286f6a !important;
+}
+.service-page .services-overview-legend .text-faint {
+  color: rgb(255 255 255 / 72%) !important;
+}
+
+/* Small supporting details use a stronger, consistent mint/teal accent. */
+.service-page > section:not(:first-child) :is(.service-glass, .service-extra-panel, .services-overview-card) :is(h2, h3, h4) {
+  color: #123f3d !important;
+}
+.service-page > section:not(:first-child) :is(.service-glass, .service-extra-panel, .services-overview-card) :is(svg, .icon) {
+  color: #318b73;
+}
+.service-page .service-capability-copy {
+  box-shadow: 0 20px 54px -42px rgb(6 44 42 / 42%);
+}
+
+/* Small supporting details use brand accents without introducing another dark palette. */
+.service-page [class*="border-[#DDEFE6]"] {
+  border-color: rgb(109 177 174 / 35%);
+}
+.service-page [class*="bg-[#DDEFE6]"] {
+  background-color: #eef6f3;
+}
+.service-page :not(a):not(button):not(a *):not(button *)[class*="text-[#344B49]"] {
+  color: #17383b;
+}
+.service-page :not(a):not(button):not(a *):not(button *)[class*="text-[#91d9cf]"] {
+  color: #286f6a;
+}
+
+/* Button colours are intentionally not declared or overridden in this file. */

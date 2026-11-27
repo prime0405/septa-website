@@ -18,6 +18,7 @@ export function PageHero({
   className,
   wall,
   art,
+  density = "default",
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
@@ -31,6 +32,8 @@ export function PageHero({
   wall?: BgTheme;
   /** A painted plate of the page's own, in place of the shared grid, glow and photo foot. */
   art?: ReactNode;
+  /** Tighter vertical rhythm for the services overview header. */
+  density?: "default" | "compact";
 }) {
   return (
     // `band` puts the same solid plate under this header as the sections below it carry, so the
@@ -67,9 +70,9 @@ export function PageHero({
           </div>
         </>
       )}
-      <div className="wrap relative py-14 sm:py-18">
+      <div className={cn("wrap relative", density === "compact" ? "py-10 sm:py-12" : "py-14 sm:py-18")}>
         {crumbs.length ? (
-          <nav aria-label="Breadcrumb" className="mb-6">
+          <nav aria-label="Breadcrumb" className={cn("mb-6", density === "compact" && "mb-4")}>
             <ol className="flex flex-wrap items-center gap-1 font-mono text-[0.72rem] text-faint">
               {crumbs.map((c, i) => (
                 <li key={c.label} className="flex items-center gap-1">
@@ -87,15 +90,15 @@ export function PageHero({
           </nav>
         ) : null}
 
-        <div className={cn("grid gap-10", aside ? "lg:grid-cols-[1.15fr_1fr] lg:items-center" : "")}>
+        <div className={cn("grid gap-10", density === "compact" && "gap-7", aside ? "lg:grid-cols-[1.15fr_1fr] lg:items-center" : "")}>
           <div className={cn(!aside && "max-w-3xl")}>
             {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
             <MaskRise>
               <h1 className="text-[clamp(2.1rem,5.2vw,3.6rem)]">{title}</h1>
             </MaskRise>
-            {lead ? <p className="prose-body mt-5 max-w-2xl text-[1.05rem]">{lead}</p> : null}
+            {lead ? <p className={cn("prose-body mt-5 max-w-2xl text-[1.05rem]", density === "compact" && "mt-4")}>{lead}</p> : null}
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-2">{meta}</div> : null}
-            {actions ? <div className="mt-7 flex flex-wrap gap-3">{actions}</div> : null}
+            {actions ? <div className={cn("mt-7 flex flex-wrap gap-3", density === "compact" && "mt-5")}>{actions}</div> : null}
           </div>
           {aside}
         </div>

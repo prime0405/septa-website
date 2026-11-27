@@ -7,6 +7,7 @@ import { ClosingCta } from "./ClosingCta";
 import { Nav } from "./Nav";
 import { IntroCurtain } from "../IntroCurtain";
 import { CursorHalo } from "../ui/CursorHalo";
+import { BackgroundFX } from "../BackgroundFX";
 import { cn } from "../../lib/cn";
 import { armIntro, endIntro, useIntroHeld } from "../../lib/intro";
 
@@ -79,6 +80,16 @@ export function Layout() {
 
   // Stable so the curtain's timing effect is never restarted while the panels are on screen.
   const finishIntro = useCallback(() => setShowIntro(false), []);
+  const immersive = pathname.startsWith("/services/") || pathname === "/request";
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (immersive) root.dataset.immersive = "1";
+    else delete root.dataset.immersive;
+    return () => {
+      delete root.dataset.immersive;
+    };
+  }, [immersive]);
 
   // `held` is what stops a curtain that was interrupted by navigation from replaying
   // when the visitor comes back to the homepage in the same session. The page wrapper is
@@ -86,11 +97,9 @@ export function Layout() {
   // stays outside that wrapper, because inert would swallow its click-to-skip too.
   return (
     <>
+      {immersive ? <BackgroundFX /> : null}
       <div className="flex min-h-dvh flex-col" inert={showIntro && held}>
-        {/* Nothing is mounted behind this page. Septa asked for the motion to stop belonging to the
-            site: the wallpaper layer is out of the tree on every route, so no plate, film, grid,
-            beam, orb or mesh byte is fetched anywhere, and the only animation left is the one the
-            homepage hero carries inside its own section. */}
+        {/* The immersive wallpaper is mounted only on service and request journeys. */}
         <Nav />
         <main
           id="main"

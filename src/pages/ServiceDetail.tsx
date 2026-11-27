@@ -6,6 +6,7 @@ import { EmptyState } from "../components/ui/primitives";
 import { serviceBySlug, services } from "../data/services";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
+import "./service-page-theme.css";
 
 export default function ServiceDetail() {
   const { slug = "" } = useParams<{ slug: string }>();

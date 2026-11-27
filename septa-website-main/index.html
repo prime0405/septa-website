@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- `viewport-fit=cover` is what makes the `env(safe-area-inset-*)` values in the CSS
+         non-zero; without it every one of them resolves to 0 and the notched-phone padding
+         rules silently do nothing. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Septa | Technology That Moves Your Business Forward</title>
+    <meta
+      name="description"
+      content="Septa helps businesses turn ideas into digital products through AI-assisted and traditional product development, streamline operations with workflow automation, access skilled technology talent, improve system reliability, and drive digital transformation."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Septa" />
+    <meta property="og:title" content="Septa | Technology That Moves Your Business Forward" />
+    <meta
+      property="og:description"
+      content="AI-assisted and traditional product development, workflow automation, digital transformation, observability and technical talent."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image" content="/og-default.png" />
+    <meta property="og:image:alt" content="The Septa logo on a Black Pearl background" />
+    <meta name="twitter:image" content="/og-default.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
