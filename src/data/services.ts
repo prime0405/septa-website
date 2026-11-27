@@ -524,22 +524,22 @@ export const services: ServiceContent[] = [
     coreServicesHeading: "Core Services",
     coreServices: [
       {
-        title: "Access to a pool of pre-scanned talent solutions",
+        title: "Access to a Pool of Pre-Screened Talent",
         detail:
           "We have a vast network of professionals across various tech disciplines. Our recruitment process ensures that only highly qualified candidates with the right skill set and expertise make it to your interview stage.",
       },
       {
-        title: "Tailored Recruitment process",
+        title: "Tailored Recruitment Process",
         detail:
           "We understand every business is unique, so we tailor our recruitment strategies to your specific hiring needs. Whether you need a full-time employee, contract worker, or a team to work with on short-term projects, we help you find the perfect fit.",
       },
       {
-        title: "Payroll management",
+        title: "Payroll Management",
         detail:
           "Hassle free salary processing, tax deduction, and compliance. Septa’s payroll management services provide seamless solutions to help businesses streamline their salary processing and maintain compliance with tax laws and labor regulations.",
       },
       {
-        title: "Employee benefits administration",
+        title: "Employee Benefits Administration",
         detail:
           "We handle employee benefits administration seamlessly, covering HMO, pensions, insurance, and other welfare benefits. Our goal is to provide a hassle-free experience for both employers and employees.",
       },
