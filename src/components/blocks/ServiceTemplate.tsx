@@ -454,16 +454,15 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
             <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-44 rounded-full bg-white/35 blur-3xl" />
             <div className="relative">
-              <div className="mb-5 flex items-center justify-between gap-4 border-b border-[#6DB1AE]/30 pb-4">
+              <div className="mb-5 border-b border-[#6DB1AE]/30 pb-4">
                 <span className="font-sans text-[.62rem] font-semibold uppercase tracking-[.2em] text-[#286F6A]">The Septa advantage</span>
-                <span className="font-sans text-[.65rem] tracking-wider text-[#52736D]">{String(page.whyChoose.length).padStart(2, "0")} / WHY SEPTA</span>
               </div>
               <div className="divide-y divide-[#6DB1AE]/25">
                 {page.whyChoose.map((item, index) => (
                   <Reveal key={item.title} delay={index * 0.045}>
                     <Link
                       to={item.href ?? "#core-services"}
-                      className="group grid grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-start gap-3 py-5 transition-colors duration-300 first:pt-1 last:pb-1 sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-4 sm:py-6"
+                      className="group grid grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-start gap-3 py-4 transition-colors duration-300 first:pt-1 last:pb-0 sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-4 sm:py-5"
                     >
                       <span className="pt-0.5 font-sans text-xl font-light tracking-tight text-[#6A9E91] transition-colors duration-300 group-hover:text-[#286F6A] sm:text-2xl">
                         {String(index + 1).padStart(2, "0")}
