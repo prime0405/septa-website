@@ -42,7 +42,7 @@ function ServiceMotionField({ slug }: { slug: string }) {
         className="absolute inset-0 opacity-[0.12]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(6,24,32,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(6,24,32,.14) 1px, transparent 1px)",
+            "linear-gradient(rgba(95,221,157,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(95,221,157,.07) 1px, transparent 1px)",
           backgroundSize: "56px 56px",
         }}
       />
@@ -50,7 +50,7 @@ function ServiceMotionField({ slug }: { slug: string }) {
       <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.14]" viewBox="0 0 760 620" fill="none">
         <motion.path
           d={trace.primary}
-          stroke="#344B49"
+          stroke="#5fdd9d"
           strokeWidth="1.2"
           strokeDasharray="5 13"
           initial={{ pathLength: 0 }}
@@ -319,35 +319,34 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
 
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-[#6DB1AE] text-[#344B49]">
+      <section className="relative isolate overflow-hidden bg-[#061820] text-white">
         <ServiceMotionField slug={page.slug} />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#6DB1AE] via-[#6DB1AE]/95 to-[#6DB1AE]/35" />
-        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-pearl/10 via-transparent to-transparent" />
+
         <div className="wrap relative py-11 sm:py-14 lg:py-16">
           {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-[#344B49]/55">
+            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-white/55">
               {crumbs.map((crumb, index) => <li key={crumb.label} className="flex items-center gap-2">
                 {index > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
-                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-[#344B49]">{crumb.label}</Link> : <span className="text-[#344B49]">{crumb.label}</span>}
+                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-brand-mint">{crumb.label}</Link> : <span className="text-white">{crumb.label}</span>}
               </li>)}
             </ol>
           </nav> : null}
           <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-10">
             <div className="max-w-3xl">
               <div className="mb-5 inline-flex items-center gap-3">
-                <span className="flex size-11 items-center justify-center border border-[#344B49]/30 bg-[#344B49]/[0.06] text-[#344B49]"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#344B49]">{page.name}</span>
+                <span className="flex size-11 items-center justify-center border border-brand-mint/35 bg-brand-mint/[0.07] text-brand-mint"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-mint">{page.name}</span>
               </div>
               <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
-                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-[#344B49]">{page.heroTitle}</h1>
-                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-[#344B49]/75 sm:text-base sm:leading-7">{page.intro}</p>
+                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
+                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/75 sm:text-base sm:leading-7">{page.intro}</p>
               </motion.div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" variant="dark-cta" magnetic>{page.cta.label}</Button> : null}
-                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-[#344B49]/30 px-5 text-sm font-semibold text-[#344B49] transition-colors hover:border-[#344B49]/70 hover:bg-[#344B49]/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
+                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
-              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#344B49]/20 pt-4">
-                <span className="inline-flex items-center gap-2 rounded-full border border-[#344B49]/20 bg-[#344B49]/[0.04] px-3 py-2 font-mono text-xs text-[#344B49]/75"><strong className="text-[#344B49]">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/20 pt-4">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-3 py-2 font-mono text-xs text-white/75"><strong className="text-[#344B49]">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
                 {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-[#344B49]/20 bg-[#344B49]/[0.04] px-3 py-2 font-mono text-xs text-[#344B49]/75"><strong className="text-[#344B49]">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
               </div>
             </div>
