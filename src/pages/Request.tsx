@@ -1,217 +1,97 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
-import { PageHero } from "../components/blocks/PageHero";
-import { RequestWizard } from "../components/forms/RequestWizard";
-import { IntegrationNotice } from "../components/blocks/LaunchNote";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
-import {
-  Callout,
-  Card,
-  MarkerList,
-  Section,
-  SectionHeading,
-} from "../components/ui/primitives";
+import { RequestWizard } from "../components/forms/RequestWizard";
+import { Callout, Section, SectionHeading } from "../components/ui/primitives";
 import { requestServices } from "../shared/schemas";
-import { privacy } from "../lib/site";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
-
-const steps = [
-  { label: "Choose a service", detail: "One selection. “Other” is a real option." },
-  { label: "Describe the project", detail: "The problem, the outcome you want, constraints you already know." },
-  { label: "Project details", detail: "Organisation, budget range and timeline. Optional where it should be." },
-  { label: "Your contact details", detail: "How to reach you and which channel you prefer." },
-  { label: "Review and send", detail: "Everything you entered, in one screen, before it leaves the browser." },
-];
+import "./service-page-theme.css";
 
 export default function Request() {
   usePageMeta({
     title: "Request a Service",
     description:
-      "Tell Septa what you need: AI product development, traditional software, workflow automation, digital transformation, observability or technical talent.",
+      "Tell Septa what you need and share the key details of your project. Our team will use your enquiry to understand the challenge and identify a suitable next step.",
   });
 
-  const reduce = useReducedMotion();
   const [params] = useSearchParams();
   const raw = params.get("service");
   const preselected = raw && (requestServices as readonly string[]).includes(raw) ? raw : undefined;
 
   return (
-    <>
-      <motion.div initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduce ? 0 : .65, ease: [.22, 1, .36, 1] }}>
-      <PageHero
-        className="request-hero min-h-[570px] border-b border-brand-teal/20"
-        crumbs={[{ label: "Home", to: paths.home() }, { label: "Request a Service" }]}
-        eyebrow={<span className="inline-flex items-center gap-2"><span className="size-2 animate-pulse rounded-full bg-brand-teal shadow-[0_0_14px_rgba(109,177,174,.9)]" /> SEPTA / PROJECT INTAKE</span>}
-        title={<span className="block max-w-4xl text-white">Let's build something <span className="text-brand-teal">that moves you forward.</span></span>}
-        lead="Tell us what you are trying to change, build or improve. We'll use the details to understand the challenge and identify the right people and approach."
-        wall="engage"
-        art={
-          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden bg-[#061820]">
-            <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)", backgroundSize: "54px 54px" }} />
-            <motion.div className="absolute -right-24 -top-56 size-[48rem] rounded-full border border-brand-teal/20" animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
-            <motion.div className="absolute -right-4 -top-36 size-[34rem] rounded-full border border-dashed border-brand-teal/25" animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 68, repeat: Infinity, ease: "linear" }} />
-            <div className="absolute right-[12%] top-[12%] size-[28rem] rounded-full bg-brand-teal/15 blur-[110px]" />
-            <div className="absolute -bottom-40 left-[8%] size-[30rem] rounded-full bg-brand-teal/10 blur-[110px]" />
-            <svg className="absolute right-0 top-0 h-full w-[62%] opacity-50" viewBox="0 0 760 600" fill="none">
-              <motion.path d="M760 110H610L510 210H390L270 330H140L40 430H0" stroke="#6DB1AE" strokeWidth="1.2" strokeDasharray="7 10" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 2.4, ease: "easeOut" }} />
-              <motion.path d="M760 430H650L560 340H440L340 440H220L120 540H0" stroke="#6DB1AE" strokeWidth="1" strokeDasharray="3 11" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 2.8, delay: .2, ease: "easeOut" }} />
-              {[{x:610,y:110},{x:510,y:210},{x:390,y:210},{x:270,y:330},{x:560,y:340},{x:440,y:340},{x:340,y:440},{x:220,y:440}].map((p,i)=><motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#8AC2BF" initial={{ opacity: .65 }} animate={{ opacity: 1 }} transition={{ duration: reduce ? 0 : .45, delay: i * .06 }} />)}
-            </svg>
-            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#061820] to-transparent" />
-          </div>
-        }
-        actions={
-          <Button to={paths.contact()} variant="secondary" iconStart={<ArrowLeft className="size-4" />}>
-            Have a question first? Contact us
-          </Button>
-        }
-        aside={
-          <div className="request-hero-panel relative overflow-hidden rounded-[1.8rem] p-5 sm:p-7">
-            <div className="mb-5 flex items-center justify-between gap-3">
-              <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-brand-teal">Intake sequence</p>
-              <span className="font-mono text-xs text-white/45">05 STEPS</span>
-            </div>
-            <ol className="space-y-2.5">
-              {steps.map((s, i) => (
-                <li key={s.label} className="request-hero-step flex items-start gap-3 rounded-xl p-3">
-                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg border border-brand-teal/35 font-mono text-[0.68rem] text-brand-teal">{String(i + 1).padStart(2, "0")}</span>
-                  <span><span className="block text-sm font-semibold text-white">{s.label}</span><span className="mt-1 block text-xs leading-relaxed text-white/55">{s.detail}</span></span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        }
-      />      </motion.div>
-
-      <Section wall="answers" className="section relative isolate overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <motion.div className="absolute -right-24 top-12 size-[28rem] rounded-full border border-mint/20" animate={reduce ? undefined : { rotate: 360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} />
-          <motion.div className="absolute -right-12 top-24 size-[22rem] rounded-full border border-dashed border-mint/20" animate={reduce ? undefined : { rotate: -360 }} transition={{ duration: 65, repeat: Infinity, ease: "linear" }} />
-          <div className="absolute -left-28 bottom-0 size-80 rounded-full bg-mint/10 blur-[90px]" />
-          <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "radial-gradient(circle, var(--color-mint) 1px, transparent 1px)", backgroundSize: "26px 26px" }} />
+    <div className="service-page">
+      <section className="relative isolate overflow-hidden bg-[#061820] text-white">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute inset-0 opacity-[0.12]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(109,177,174,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.32) 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+          <div className="absolute -right-24 -top-32 size-[30rem] rounded-full border border-brand-teal/20" />
+          <div className="absolute -right-10 -top-16 size-[22rem] rounded-full bg-brand-teal/10 blur-[100px]" />
         </div>
-        <div className="relative z-10 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-16">
-          <motion.div className="min-w-0 max-w-full" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .55 }}>
-            {preselected ? (
-              <Callout kind="info" title="Service preselected" className="mb-6">
-                <p>
-                  You arrived from the <span className="text-fg">{preselected}</span> page, so step one
-                  starts there. Change it if the problem is really somewhere else. Mixed engagements
-                  are normal.
-                </p>
-              </Callout>
-            ) : null}
-            <div className="request-wizard-frame">
-              <div className="mb-4 flex items-center justify-between gap-3 px-1">
-                <span className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-mint">01 / Project intake</span>
-                <span className="font-mono text-[0.68rem] text-faint">SECURE ENQUIRY</span>
-              </div>
-              <RequestWizard preselected={preselected} />
+
+        <div className="wrap relative py-10 sm:py-12 lg:py-14">
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex flex-wrap items-center gap-2 font-sans text-[0.7rem] uppercase tracking-wider text-white/55">
+              <li><Link to={paths.home()} className="transition-colors hover:text-brand-mint">Home</Link></li>
+              <li className="flex items-center gap-2"><ChevronRight className="size-3" aria-hidden /><span className="text-white">Request a service</span></li>
+            </ol>
+          </nav>
+
+          <div className="max-w-3xl">
+            <p className="mb-5 font-sans text-xs uppercase tracking-[0.2em] text-brand-mint">Start a conversation</p>
+            <h1 className="max-w-4xl text-[clamp(2.8rem,6vw,5rem)] leading-[0.98] tracking-[-0.055em] text-white">
+              Tell us what you <span className="text-brand-teal">need to move forward.</span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/75 sm:text-base">
+              Share what you are trying to build, change or improve. A few clear details will help us understand the challenge and plan the right next step.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button to={paths.services()} size="lg" variant="dark-cta">Explore our services</Button>
+              <Link to={paths.contact()} className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">
+                Contact us first <ArrowUpRight className="size-4" aria-hidden />
+              </Link>
             </div>
-          </motion.div>
+          </div>
+        </div>
+        <div aria-hidden className="h-1 w-full bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent" />
+      </section>
 
-          <motion.aside className="min-w-0 space-y-5 lg:sticky lg:top-28 lg:self-start" initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .12 }} transition={{ duration: reduce ? 0 : .6, delay: .08 }}>
-            <motion.figure className="group relative isolate aspect-[16/10] overflow-hidden bg-brand-pearl shadow-[0_24px_70px_-35px_rgba(6,24,32,.5)]"
-              whileHover={reduce ? undefined : { y: -5 }} transition={{ duration: .35 }}>
-              <motion.img
-                src="/img/work/engineering-floor.webp"
-                alt="Technology professionals working together in an engineering environment"
-                className="absolute inset-0 size-full object-cover"
-                initial={false}
-                animate={reduce ? undefined : { scale: [1.04, 1.1, 1.04] }}
-                transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-pearl/95 via-brand-pearl/15 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white">
-                <div>
-                  <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-brand-teal">SEPTA / COLLABORATION</p>
-                  <p className="mt-2 max-w-xs text-xl font-semibold leading-tight">Good technology starts with understanding the people who use it.</p>
-                </div>
-                <span className="mb-1 hidden size-10 shrink-0 items-center justify-center border border-white/30 bg-white/10 sm:flex">
-                  <ArrowRight className="size-4" />
-                </span>
-              </div>
-              <motion.span aria-hidden className="absolute left-0 top-0 h-1 w-1/3 bg-brand-teal"
-                animate={reduce ? undefined : { x: ["0%", "200%", "0%"] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
-            </motion.figure>
-            <IntegrationNotice />
+      <Section id="project-enquiry" wall="use-case" tone="surface" className="section">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-8 max-w-2xl">
+            <SectionHeading
+              eyebrow="Project enquiry"
+              title="A little context goes a long way."
+              lead="Work through the steps below. You can review your answers before submitting the request."
+            />
+          </div>
 
-            <Card className="p-6">
-              <p className="eyebrow mb-4">What we do with it</p>
-              <MarkerList
-                items={[
-                  {
-                    label: "Stored in the request record",
-                    detail: "So a follow-up conversation has the context you already gave us.",
-                  },
-                  {
-                    label: "Read by a person",
-                    detail: "Someone replies with a point of view and a suggested next step.",
-                  },
-                  {
-                    label: "Nothing shared onward",
-                    detail: "No advertising trackers, no resale of enquiry data.",
-                  },
-                ]}
-              />
-              <p className="mt-4 border-t border-line pt-4 text-[0.82rem] leading-relaxed text-faint">
-                Full detail is in the{" "}
-                <Link to={paths.privacy()} className="text-mint hover:underline">
-                  privacy notice
-                </Link>
-                .
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <p className="eyebrow mb-4">Local draft storage</p>
-              <p className="text-[0.86rem] leading-relaxed text-muted">
-                This form keeps a draft in your browser under{" "}
-                <code className="font-mono text-[0.78rem] text-fg">
-                  {privacy.localStorageKeys.join(", ")}
-                </code>{" "}
-                so a lost tab is not lost work. It clears when the request is accepted, and you can
-                discard it at any time from the form.
-              </p>
-            </Card>
-
-            <Callout kind="setup" title="Before this page takes real enquiries">
+          {preselected ? (
+            <Callout kind="info" title="Service preselected" className="mb-6">
               <p>
-                Submissions need a configured destination: SMTP credentials for email forwarding, and
-                a durable database for production. The banner above tells you which of those is
-                missing right now.
+                Your enquiry is set to <span className="font-semibold text-fg">{preselected}</span>.
+                You can change this in the first step if another service is a better fit.
               </p>
             </Callout>
-          </motion.aside>
-        </div>
-      </Section>
+          ) : null}
 
-      <Section wall="use-case" tone="raised" className="section border-y border-line-soft">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-          <SectionHeading
-            eyebrow="Useful context"
-            title="What makes a request easy to answer well"
-            lead="None of this is required. It is what turns a reply that guesses into a reply that is specific."
-          />
-          <MarkerList
-            items={[
-              "Who is affected by the problem today, and how often they hit it.",
-              "What you already tried, including anything that quietly failed.",
-              "Systems the solution has to touch, and the ones it must stay away from.",
-              "A rough date, if one exists, and what makes that date real.",
-              "Who needs to say yes, and what they care about.",
-            ]}
-          />
-        </div>
-        <div className="mt-10 flex flex-wrap items-center gap-3 rounded-card border border-line bg-surface px-5 py-4 text-[0.86rem] text-muted">
-          <Sparkles className="size-4 shrink-0 text-mint" aria-hidden />
-          Short is fine. “Our finance team rebuilds this report by hand every month” is a complete
-          brief to start from.
+          <RequestWizard preselected={preselected} />
+
+          <p className="mt-6 text-center text-sm leading-6 text-muted">
+            Prefer to speak with someone first?{" "}
+            <Link to={paths.contact()} className="font-semibold text-mint hover:underline">
+              Contact the Septa team
+            </Link>
+            .
+          </p>
         </div>
       </Section>
-    </>
+    </div>
   );
 }
