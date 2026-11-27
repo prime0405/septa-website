@@ -115,6 +115,14 @@
   color: #49666a !important;
 }
 
+.service-page .service-capability-art [class*="text-[#91d9cf]"] {
+  color: #91d9cf !important;
+}
+
+.service-page .service-capability-copy [class*="text-[#75c9bd]"] {
+  color: #286f6a !important;
+}
+
 /* Supporting cards and process panels use a light mint surface, not another dark block. */
 .service-page .service-glass,
 .service-page .service-process-journey > div:last-child,
