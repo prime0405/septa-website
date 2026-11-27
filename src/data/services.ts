@@ -417,8 +417,8 @@ export const services: ServiceContent[] = [
     intro:
       "Downtime and performance issues cost money and trust. We provide real-time visibility into your systems so you can detect, respond, and fix problems before they impact customers.",
     image: {
-      src: "/img/work/observability-noc.webp",
-      alt: "Three screens in a dim room: a latency graph with one spike marked, a grid of service health tiles with two of them amber, and a log stream with a single row highlighted",
+      src: "/img/services/Real time moitoring.jpg",
+      alt: "A network operations professional monitoring multiple live infrastructure dashboards",
     },
     coreServicesHeading: "Core Services",
     coreServices: [
