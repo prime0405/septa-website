@@ -78,7 +78,6 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const [direction, setDirection] = useState(1);
   const reduce = useReducedMotion();
   const item = page.coreServices[active];
-  if (!item) return null;
 
   const visuals: Record<string, Record<string, { src: string; alt: string; tag: string }>> = {
     "ai-product-development": {
@@ -123,8 +122,12 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     const target = window.location.hash.match(/^#capability-(.+)$/)?.[1];
     if (!target) return;
     const index = page.coreServices.findIndex((capability) => anchorSlug(capability.title) === target);
-    if (index >= 0) setActive(index);
+    if (index < 0) return;
+    setActive(index);
+    document.getElementById(`capability-${target}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [page.slug, page.coreServices]);
+
+  if (!item) return null;
 
   const goTo = (index: number) => {
     const length = page.coreServices.length;
@@ -231,6 +234,17 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 function ProcessJourney({ page }: { page: ServiceContent }) {
   const steps = page.process ?? [];
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const target = window.location.hash.match(/^#process-stage-(\\d+)$/)?.[1];
+    if (target) {
+      const index = Number(target) - 1;
+      if (index >= 0 && index < steps.length) {
+        setActive(index);
+        document.getElementById(`process-stage-${target}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [page.slug, steps.length]);
 
   useEffect(() => {
     if (steps.length < 2) return;
