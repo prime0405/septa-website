@@ -468,15 +468,15 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               ))}
             </div>
           ) : (
-            <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
+            <div className={cn("grid gap-3 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
               {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-                <Link to={item.href ?? "#core-services"} className="service-glass group relative block h-full overflow-hidden rounded-[1.35rem] rounded-tr-[2.8rem] rounded-bl-[2.1rem] border border-white/60 bg-white/50 p-5 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-6">
-                  <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-sans text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
-                  <div className="mt-5 flex items-start justify-between gap-3">
-                    <h3 className="max-w-xs text-lg font-semibold leading-snug">{item.title}</h3>
+                <Link to={item.href ?? "#core-services"} className="service-glass group relative block h-full overflow-hidden rounded-[1.2rem] rounded-tr-[2.3rem] rounded-bl-[1.8rem] border border-white/60 bg-white/50 p-4 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-4">
+                  <span className="inline-flex size-7 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-sans text-[.65rem] tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="mt-3 flex items-start justify-between gap-3">
+                    <h3 className="max-w-xs text-base font-semibold leading-snug line-clamp-2">{item.title}</h3>
                     <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
                   </div>
-                  {item.detail ? <p className="mt-2 max-w-md text-sm leading-6 text-muted">{item.detail}</p> : null}
+                  {item.detail ? <p className="mt-1.5 max-w-md text-[.82rem] leading-5 text-muted line-clamp-3">{item.detail}</p> : null}
                 </Link>
               </Reveal>)}
             </div>
