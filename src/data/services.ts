@@ -393,7 +393,22 @@ export const services: ServiceContent[] = [
         detail: "We bring disconnected systems and customer touchpoints into a coherent digital experience that customers can recognise and trust.",
       },
     ],
-    pending: ["Our Process"],
+    processHeading: "Our Process",
+    processLead: "A structured approach to modernizing the way your business operates, with each step aligned to your goals.",
+    process: [
+      { title: "Assess Current Operations" },
+      { title: "Define a Digital Roadmap" },
+      { title: "Modernize and Integrate Systems" },
+      { title: "Support Team Adoption" },
+      { title: "Measure and Optimize Results" },
+    ],
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      { title: "Businesses Using Outdated Systems", detail: "Organizations ready to replace legacy tools and manual workflows with digital solutions." },
+      { title: "Organizations Modernizing Infrastructure", detail: "Businesses exploring cloud migration and more flexible technology environments." },
+      { title: "Businesses Seeking Better Data Insights", detail: "Teams that want to organize business data and use it to support decisions." },
+      { title: "Customer-Facing Businesses", detail: "Organizations improving websites, apps, portals, and other digital customer touchpoints." },
+    ],
     cta: {
       headline: "Experience growth without limits.",
       copy: "Discover how we can help your business thrive in the digital age.",
