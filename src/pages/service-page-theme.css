@@ -33,13 +33,13 @@
   color: #ffffff !important;
 }
 
-.service-page > section:first-child [class*="text-[#344B49]"] {
+.service-page > section:first-child :not(a):not(button):not(a *):not(button *)[class*="text-[#344B49]"] {
   color: rgba(255, 255, 255, 0.82) !important;
 }
 
-.service-page > section:first-child .text-brand-mint,
-.service-page > section:first-child .text-brand-teal,
-.service-page > section:first-child [class*="text-[#91d9cf]"] {
+.service-page > section:first-child .text-brand-mint:not(a):not(button):not(a *):not(button *),
+.service-page > section:first-child .text-brand-teal:not(a):not(button):not(a *):not(button *),
+.service-page > section:first-child :not(a):not(button):not(a *):not(button *)[class*="text-[#91d9cf]"] {
   color: #5fdd9d !important;
 }
 
@@ -68,13 +68,13 @@
   color: #49666a;
 }
 
-.service-page .text-mint,
-.service-page .text-brand-mint,
-.service-page .text-brand-teal {
+.service-page .text-mint:not(a):not(button):not(a *):not(button *),
+.service-page .text-brand-mint:not(a):not(button):not(a *):not(button *),
+.service-page .text-brand-teal:not(a):not(button):not(a *):not(button *) {
   color: #286f6a;
 }
 
-.service-page [class*="text-[#344B49]"] {
+.service-page :not(a):not(button):not(a *):not(button *)[class*="text-[#344B49]"] {
   color: #17383b;
 }
 
@@ -86,7 +86,7 @@
   background-color: #eaf5f1;
 }
 
-.service-page [class*="text-[#91d9cf]"] {
+.service-page :not(a):not(button):not(a *):not(button *)[class*="text-[#91d9cf]"] {
   color: #286f6a;
 }
 
@@ -105,8 +105,8 @@
 }
 
 .service-page .service-capability-copy :is(h3, p),
-.service-page .service-capability-copy [class*="text-white"]:not(button *),
-.service-page .service-capability-copy .text-brand-pearl:not(button *) {
+.service-page .service-capability-copy [class*="text-white"]:not(a *):not(button *),
+.service-page .service-capability-copy .text-brand-pearl:not(a *):not(button *) {
   color: #17383b !important;
 }
 
