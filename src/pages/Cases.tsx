@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Globe2, MoveUpRight } from "lucide-react";
+import { ArrowRight, Globe2 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useCases, type UseCase } from "../data/useCases";
 import { paths } from "../lib/paths";
@@ -163,7 +163,7 @@ function CaseStudyCard({
             {study.kind}
           </span>
           <span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full border border-white/75 bg-brand-pearl/75 text-white backdrop-blur-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:bg-brand-teal group-hover:text-brand-pearl sm:bottom-5 sm:right-5">
-            <MoveUpRight className="size-4" />
+            <ArrowRight className="size-4" />
           </span>
         </div>
 
@@ -181,7 +181,7 @@ function CaseStudyCard({
 
           <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-brand-pearl/20 px-4 py-2.5 text-[0.78rem] font-semibold text-brand-pearl transition-all duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
             View case study
-            <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
           </span>
         </div>
       </Link>
@@ -258,7 +258,7 @@ function InHouseFeature({ reduceMotion }: { reduceMotion: boolean }) {
               className="group mt-8 inline-flex w-fit items-center gap-2 rounded-full border border-white/35 px-5 py-3 text-[0.82rem] font-semibold text-white transition-colors hover:border-brand-teal hover:bg-brand-teal hover:text-brand-pearl"
             >
               Explore Septa LMS
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
           <div className="relative min-h-[18rem] overflow-hidden bg-[#e7efec] sm:min-h-[24rem] lg:min-h-[30rem]">
@@ -314,7 +314,7 @@ function EventCard({
           className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         />
         <span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-white text-brand-pearl shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:bg-brand-teal">
-          <ArrowUpRight className="size-4" />
+          <ArrowRight className="size-4" />
         </span>
       </div>
       <div className="pt-4">
@@ -327,7 +327,7 @@ function EventCard({
         <p className="mt-2 text-[0.86rem] leading-[1.75] text-muted">{description}</p>
         <span className="mt-4 inline-flex items-center gap-2 text-[0.78rem] font-semibold text-brand-pearl">
           {action}
-          <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
         </span>
       </div>
     </a>
@@ -395,7 +395,7 @@ export default function Cases() {
               className="group mt-8 inline-flex items-center gap-3 rounded-full bg-brand-pearl px-6 py-4 text-[0.86rem] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-brand-teal hover:text-brand-pearl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-teal"
             >
               Start a project
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>
         </div>
@@ -430,7 +430,7 @@ export default function Cases() {
               className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-brand-pearl px-6 py-4 text-[0.86rem] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-brand-teal hover:text-brand-pearl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-teal"
             >
               Share your idea
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </ScrollReveal>
         </div>
@@ -474,7 +474,7 @@ export default function Cases() {
                 className="group mt-8 inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-[0.82rem] font-semibold text-white transition-colors hover:border-brand-teal hover:bg-brand-teal hover:text-brand-pearl"
               >
                 Build with Septa
-                <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </ScrollReveal>
@@ -521,7 +521,7 @@ export default function Cases() {
               className="group mt-7 inline-flex items-center gap-2 border-b border-brand-teal pb-2 text-[0.84rem] font-semibold text-brand-pearl transition-colors hover:text-mint"
             >
               Explore Septa updates
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </a>
           </ScrollReveal>
 

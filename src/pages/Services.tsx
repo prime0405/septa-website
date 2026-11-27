@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { ServiceIcon } from "../components/blocks/ServiceIcon";
 import { Reveal, Section, SectionHero } from "../components/ui/primitives";
@@ -57,7 +57,7 @@ export default function Services() {
               <div className="mt-7 flex flex-wrap gap-3">
                 <Button to={paths.request()} size="lg" variant="dark-cta" magnetic>Start a project</Button>
                 <Link to={paths.contact()} className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">
-                  Talk to our team <ArrowUpRight className="size-4" aria-hidden />
+                  Talk to our team <ArrowRight className="size-4" aria-hidden />
                 </Link>
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/20 pt-4">
@@ -165,7 +165,7 @@ export default function Services() {
                         className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#286F6A] transition-colors hover:text-[#123F3D]"
                       >
                         Explore service
-                        <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden />
+                        <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                       </Link>
                     </div>
                   </div>

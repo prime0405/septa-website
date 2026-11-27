@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { RequestWizard } from "../components/forms/RequestWizard";
 import { IntegrationNotice } from "../components/blocks/LaunchNote";
@@ -55,7 +55,7 @@ export default function Request() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Button to={paths.services()} size="lg" variant="dark-cta">Explore our services</Button>
               <Link to={paths.contact()} className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">
-                Contact us first <ArrowUpRight className="size-4" aria-hidden />
+                Contact us first <ArrowRight className="size-4" aria-hidden />
               </Link>
             </div>
           </div>

@@ -1,15 +1,15 @@
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, Link2 } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 import { CareerForm } from "../components/forms/CareerForm";
-import { IntegrationNotice } from "../components/blocks/LaunchNote";
-import { MarkerList } from "../components/ui/primitives";
 import { StackSheet } from "../components/blocks/StackSheet";
 import { Button } from "../components/ui/Button";
 
 import { careers } from "../data/content";
 import { openings } from "../data/jobs";
+import { OTHER_ROLE } from "../shared/schemas";
 import { usePageMeta } from "../lib/usePageMeta";
 
 import CareersNavigation from "./CareersNavigation";
@@ -42,62 +42,30 @@ const benefits = [
 ];
 
 /* ==========================================
-   COMPANY CULTURE
+   OUR CULTURE
 ========================================== */
 
 const culture = [
   {
-    title: "Collaboration",
+    title: "Collaboration & Curiosity",
     description:
-      "We bring different perspectives together to solve complex challenges.",
+      "We believe the best ideas come from working together. Every perspective matters, and curiosity drives us to keep asking 'what's possible?'",
   },
   {
-    title: "Curiosity",
+    title: "Creativity in Action",
     description:
-      "We ask questions, explore technologies and continuously improve our approach.",
+      "Challenges inspire us. Whether it's AI-powered platforms, digital products, or talent solutions, we solve problems with creativity and practical innovation.",
   },
   {
-    title: "Transparency",
+    title: "Growth Mindset",
     description:
-      "We communicate clearly about decisions, progress and challenges.",
+      "Learning, experimentation, and ownership are part of who we are. We empower our team to push boundaries and innovate with purpose.",
   },
-];
-
-/* ==========================================
-   SCRIBE VALUES
-========================================== */
-
-const values = [
-  [
-    "S",
-    "Simplicity",
-    "Make complex ideas easier to understand and use.",
-  ],
-  [
-    "C",
-    "Customer Collaboration",
-    "Listen to customers and build around real needs.",
-  ],
-  [
-    "R",
-    "Relevance",
-    "Prioritize work that delivers meaningful results.",
-  ],
-  [
-    "I",
-    "Intelligent Systems",
-    "Use technology to improve everyday processes.",
-  ],
-  [
-    "B",
-    "Bold",
-    "Explore ambitious ideas and test practical solutions.",
-  ],
-  [
-    "E",
-    "Excellence",
-    "Pay attention to quality and follow through.",
-  ],
+  {
+    title: "Integrity & Transparency",
+    description:
+      "We work with honesty and openness, ensuring trust at every step with clients, colleagues, and partners.",
+  },
 ];
 
 /* ==========================================
@@ -107,23 +75,23 @@ const values = [
 const steps = [
   [
     "Application Review",
-    "We read every application.",
+    "Our team carefully reviews your resume and portfolio to understand your skills, experience, and alignment with Septa's mission of building intelligent, practical solutions.",
   ],
   [
     "Introductory Conversation",
-    "30 minutes with the hiring lead.",
+    "A friendly chat to discuss your background, career goals, and interest in Septa. Learn about our culture, exciting projects, and how you can grow with us.",
   ],
   [
     "Assessment & Technical Interview",
-    "A real problem, discussed live.",
+    "For technical and specialized roles, you'll take on a challenge that reflects real project scenarios, allowing us to see your problem-solving skills and expertise in action. Afterwards, you'll engage in a detailed conversation with our technical team to dive deeper into your experience, approach, and how you can contribute to impactful projects at Septa.",
   ],
   [
     "Final Interview",
-    "Meet the people you'd work with.",
+    "A conversation with senior leadership to align your vision, goals, and career aspirations with Septa's mission. It's also a chance for you to ask any remaining questions.",
   ],
   [
     "Offer & Onboarding",
-    "Written decision, then a structured first week.",
+    "If selected, you'll receive an offer and a guided onboarding experience to help you integrate seamlessly into the team and start making an impact from day one.",
   ],
 ];
 
@@ -132,10 +100,49 @@ const steps = [
 ========================================== */
 
 function Arrow() {
+  return <ArrowRight aria-hidden="true" className="sc-arrow size-4" />;
+}
+
+/* ==========================================
+   COPY ROLE LINK
+========================================== */
+
+function CopyRoleLink({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const copy = async () => {
+    const url = new URL(window.location.href);
+    url.hash = slug;
+
+    try {
+      await navigator.clipboard.writeText(url.href);
+    } catch {
+      return;
+    }
+
+    window.history.replaceState(null, "", url.href);
+    setCopied(true);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <span className="sc-arrow" aria-hidden="true">
-      →
-    </span>
+    <button
+      type="button"
+      className="sc-copy-link"
+      onClick={copy}
+      aria-live="polite"
+    >
+      {copied ? (
+        <Check size={18} aria-hidden="true" />
+      ) : (
+        <Link2 size={18} aria-hidden="true" />
+      )}
+      {copied ? "Link copied" : "Copy link"}
+    </button>
   );
 }
 
@@ -164,7 +171,7 @@ export default function Careers() {
   const [role, setRole] = useState<string>();
   const [speculative, setSpeculative] = useState(false);
 
-  // Select a job without resetting other form fields.
+  // Select a role from its card without resetting the rest of the form.
   const selectRole = (title: string) => {
     setSpeculative(false);
     setRole(title);
@@ -172,9 +179,99 @@ export default function Careers() {
 
   // Expression of interest.
   const selectSpeculative = () => {
-    setRole("Something else");
     setSpeculative(true);
   };
+
+  // A shared role link (…/careers#sales-manager) opens that role on arrival.
+  useEffect(() => {
+    const openRoleFromHash = () => {
+      const slug = window.location.hash.slice(1);
+      const target = slug ? document.getElementById(slug) : null;
+
+      if (!(target instanceof HTMLDetailsElement)) return;
+
+      target.open = true;
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+    };
+
+    openRoleFromHash();
+    window.addEventListener("hashchange", openRoleFromHash);
+
+    return () => window.removeEventListener("hashchange", openRoleFromHash);
+  }, []);
+
+  // The stacked sections retract as the page settles, which can leave a deep link a screen
+  // away from its target. Follow the target until it holds still, then leave scrolling alone.
+  useEffect(() => {
+    const slug = window.location.hash.slice(1);
+    const target = slug ? document.getElementById(slug) : null;
+
+    if (!target) return;
+
+    const start = performance.now();
+    let last = Number.NaN;
+    let stable = 0;
+    let timer = 0;
+    let cancelled = false;
+
+    const stop = () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+
+      for (const type of ["wheel", "touchstart", "keydown"] as const) {
+        window.removeEventListener(type, stop);
+      }
+
+      window.removeEventListener("load", wake);
+    };
+
+    // A late font or image swap moves everything above the target, so the count restarts.
+    function wake() {
+      stable = 0;
+    }
+
+    const tick = () => {
+      if (cancelled || window.location.hash.slice(1) !== slug) {
+        return stop();
+      }
+
+      const nav = document.querySelector<HTMLElement>(".sc-route");
+      const offset = 72 + (nav?.offsetHeight ?? 72) + 16;
+      const delta = target.getBoundingClientRect().top - offset;
+
+      if (Math.abs(delta) > 1) {
+        window.scrollTo({
+          top: window.scrollY + delta,
+          behavior: "instant",
+        });
+      }
+
+      const top = target.getBoundingClientRect().top + window.scrollY;
+
+      stable = Math.abs(top - last) < 1 ? stable + 1 : 0;
+      last = top;
+
+      const ready =
+        document.readyState === "complete" && document.fonts.status === "loaded";
+
+      if ((ready && stable >= 3) || performance.now() - start > 5000) {
+        return stop();
+      }
+
+      timer = window.setTimeout(tick, 100);
+    };
+
+    for (const type of ["wheel", "touchstart", "keydown"] as const) {
+      window.addEventListener(type, stop, { passive: true });
+    }
+
+    window.addEventListener("load", wake);
+    void document.fonts.ready.then(wake);
+
+    tick();
+
+    return stop;
+  }, []);
 
   return (
     <div className="septa-careers">
@@ -185,7 +282,7 @@ export default function Careers() {
       ====================================== */}
 
       <section
-        className={`sc-dark sc-motif sc-grid sc-hero sc-layer-hero${reduceMotion ? "" : " sc-layer-pinned"}`}
+        className={`sc-hero-light sc-motif sc-grid sc-hero sc-layer-hero${reduceMotion ? "" : " sc-layer-pinned"}`}
         aria-labelledby="careers-title"
       >
         <motion.div
@@ -205,14 +302,16 @@ export default function Careers() {
           </h1>
 
           <p className="sc-lead">
-            Join Septa in building intelligent software,
-            AI-powered solutions and digital products
-            that help businesses solve meaningful challenges.
+            At Septa, we believe that talented individuals are the driving
+            force behind our success. We are a dynamic and innovative company
+            that values creativity, collaboration, and continuous learning.
+            Join our team and be part of a diverse community of professionals
+            who are passionate about making a difference in the world.
           </p>
 
           <div className="sc-actions">
             <Button href="#open-roles" magnetic variant="dark-cta" className="sc-button sc-primary">
-              Explore Opportunities
+              See Open Roles
               <Arrow />
             </Button>
 
@@ -290,18 +389,13 @@ export default function Careers() {
         aria-labelledby="careers-culture-title"
       >
         <div className="sc-wrap">
-          <p className="sc-eyebrow">
-            Our Culture
-          </p>
-
           <h2 id="careers-culture-title">
-            Great Work Starts With How We Work Together.
+            Our Culture
           </h2>
 
           <p className="sc-lead">
-            Collaboration, curiosity and transparency
-            shape how we approach challenges and
-            build solutions.
+            At Septa, we don't just build solutions, we create an environment
+            where people and ideas thrive.
           </p>
 
           <CareersReveal>
@@ -317,38 +411,6 @@ export default function Careers() {
             ))}
           </div>
           </CareersReveal>
-
-          {/* SCRIBE VALUES */}
-
-          <div className="sc-values-block">
-            <p className="sc-eyebrow">
-              Our Core Values
-            </p>
-
-            <h2>Driven by SCRIBE.</h2>
-
-            <p className="sc-lead">
-              Six principles that guide our decisions,
-              relationships and the solutions we build.
-            </p>
-
-            <CareersReveal>
-          <ul className="sc-values">
-              {values.map(
-                ([letter, title, description]) => (
-                  <li key={letter}>
-                    <span aria-hidden="true">
-                      {letter}
-                    </span>
-
-                    <h3>{title}</h3>
-                    <p>{description}</p>
-                  </li>
-                )
-              )}
-            </ul>
-          </CareersReveal>
-          </div>
         </div>
       </section>
       </StackSheet>
@@ -369,95 +431,84 @@ export default function Careers() {
           </p>
 
           <h2 id="careers-roles-title">
-            Find Your Place at Septa.
+            {openings.length === 0
+              ? "No Open Roles at the Moment."
+              : "Open Positions"}
           </h2>
 
-          <p className="sc-lead">
-            Explore our current opportunities,
-            review the requirements and apply
-            for a position that matches your
-            experience and interests.
-          </p>
-
-          <div className="sc-roles-count">
-            {openings.length} Open Positions
-          </div>
-
-          <CareersReveal>
-          <ul className="sc-roles">
-            {openings.map((opening) => {
-              const requirementCount =
-                opening.groups.reduce(
-                  (total, group) =>
-                    total + group.items.length,
-                  0
-                );
-
-              return (
-                <li
-                  key={opening.slug}
-                  id={opening.slug}
-                >
-                  <details className="sc-job">
+          {openings.length === 0 ? (
+            <p className="sc-lead">
+              We open new roles from time to time and
+              post them here first. Until then, we
+              would still like to meet you.
+            </p>
+          ) : (
+            <CareersReveal>
+            <ul className="sc-roles">
+              {openings.map((opening) => (
+                <li key={opening.slug}>
+                  <details className="sc-job" id={opening.slug}>
                     <summary className="sc-role">
-                      <div>
-                        <h3>{opening.title}</h3>
+                      <h3>{opening.title}</h3>
 
-                        <p className="sc-role-description">
-                          {opening.lead}
-                        </p>
-                      </div>
-
-                      <span className="sc-tags">
-                        <span>
-                          {requirementCount} requirements
-                        </span>
+                      <span className="sc-role-toggle">
+                        View requirements
+                        <ArrowRight aria-hidden="true" className="sc-arrow size-4" />
                       </span>
-
-                      <Arrow />
                     </summary>
 
                     <div className="sc-job-detail">
-                      {opening.groups.map((group) => (
-                        <div key={group.heading}>
-                          <h4>{group.heading}</h4>
+                      <div className="sc-job-groups">
+                        {opening.groups.map((group) => (
+                          <div
+                            className="sc-job-group"
+                            key={group.heading}
+                          >
+                            <h4>{group.heading}</h4>
 
-                          <MarkerList
-                            items={group.items}
-                          />
-                        </div>
-                      ))}
+                            <ul className="sc-req">
+                              {group.items.map((item) => (
+                                <li key={item}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
 
-                      <CareersMagneticButton
-                        className="sc-button sc-primary"
-                        href="#apply"
-                        onClick={() =>
-                          selectRole(opening.title)
-                        }
-                      >
-                        Apply for {opening.title}
-                        <Arrow />
-                      </CareersMagneticButton>
+                      <div className="sc-job-actions">
+                        <CareersMagneticButton
+                          className="sc-button sc-primary"
+                          href="#apply"
+                          onClick={() => selectRole(opening.title)}
+                        >
+                          Apply for this role
+                          <Arrow />
+                        </CareersMagneticButton>
+
+                        <CopyRoleLink slug={opening.slug} />
+                      </div>
                     </div>
                   </details>
                 </li>
-              );
-            })}
-          </ul>
-          </CareersReveal>
+              ))}
+            </ul>
+            </CareersReveal>
+          )}
 
-          {/* EXPRESSION OF INTEREST */}
+          {/* SEND US YOUR CV */}
 
           <CareersReveal>
           <div className="sc-speculative">
             <h3>
-              Nothing Fits Yet? Send Us Your CV.
+              Send Us Your CV.
             </h3>
 
             <p>
-              Don't see a suitable opportunity?
-              Introduce yourself and share your
-              experience for future consideration.
+              Introduce yourself, tell us the kind of
+              work you would like to do, and share
+              your experience. We read every
+              application and will reach out when a
+              role matches your skills.
             </p>
 
             <CareersMagneticButton
@@ -494,9 +545,8 @@ export default function Careers() {
           </h2>
 
           <p className="sc-lead">
-            We believe the hiring process should
-            be clear, structured and focused on
-            finding the right fit.
+            At Septa, we believe in a transparent and engaging hiring journey.
+            Here's what to expect when you apply:
           </p>
 
           <CareersReveal>
@@ -528,16 +578,16 @@ export default function Careers() {
             </h3>
 
             <p>
-              Explore our current opportunities
-              and find a role that matches your skills.
+              Send us your CV and we will reach out
+              when a role matches your experience.
             </p>
 
             <CareersMagneticButton
               className="sc-button sc-primary"
-              href="#open-roles"
+              href="#apply"
               onClick={selectSpeculative}
             >
-              Explore Opportunities
+              Send Your CV
               <Arrow />
             </CareersMagneticButton>
           </div>
@@ -574,21 +624,10 @@ export default function Careers() {
                 ? "Share your CV and tell us how you would like to contribute."
                 : "Complete the application form to express your interest in joining our team."}
             </p>
-
-            {role && !speculative && (
-              <p className="sc-selected-role">
-                Selected position:{" "}
-                <strong>{role}</strong>
-              </p>
-            )}
-
-            <div className="mt-6">
-              <IntegrationNotice />
-            </div>
           </div>
 
           <CareerForm
-            preselectRole={role}
+            preselectRole={speculative ? OTHER_ROLE : role}
             source={
               speculative
                 ? "speculative"
