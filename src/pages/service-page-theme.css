@@ -55,8 +55,8 @@
 }
 
 /* Convert the formerly dark hero and panel surfaces to soft white/mint surfaces. */
-.service-page [class*="bg-[#061820]"],
-.service-page [class*="bg-brand-pearl"],
+.service-page :not(a):not(button):not(a *):not(button *)[class*="bg-[#061820]"],
+.service-page :not(a):not(button):not(a *):not(button *)[class*="bg-brand-pearl"],
 .service-page .service-capability-carousel,
 .service-page .services-overview-legend {
   background: rgba(255, 255, 255, 0.9) !important;
@@ -87,47 +87,11 @@
 
 /* Make the non-interactive hero copy readable on the new light hero field.
    Interactive buttons/links are excluded so their approved colours stay unchanged. */
-.service-page :not(a):not(button)[class*="text-white"] {
+.service-page :not(a):not(button):not(a *):not(button *)[class*="text-white"] {
   color: #17383b !important;
 }
 .service-page .service-capability-art :not(a):not(button)[class*="text-white"] {
   color: #ffffff !important;
-}
-
-/* Capability selector controls keep their mint active state. */
-.service-page .service-capability-copy button {
-  border-color: rgba(40, 111, 106, 0.22) !important;
-  color: #49666a !important;
-}
-.service-page .service-capability-copy button[aria-current="true"],
-.service-page .service-process-journey button[aria-pressed="true"] {
-  background: rgba(95, 221, 157, 0.2) !important;
-  border-color: #286f6a !important;
-  color: #17383b !important;
-  box-shadow: none !important;
-}
-.service-page .service-capability-copy button[aria-current="true"] *,
-.service-page .service-process-journey button[aria-pressed="true"] * {
-  color: #17383b !important;
-}
-.service-page .service-process-journey button:not([aria-pressed="true"]) {
-  color: #49666a !important;
-}
-.service-page .service-process-journey button:not([aria-pressed="true"]):hover {
-  background: rgba(40, 111, 106, 0.06) !important;
-  border-color: rgba(40, 111, 106, 0.35) !important;
-}
-
-.service-page .service-extra-panel [class*="border-brand-teal"] {
-  border-color: rgba(40, 111, 106, 0.35) !important;
-}
-.service-page .service-people-photo {
-  border-color: rgba(40, 111, 106, 0.3) !important;
-}
-.service-page .services-overview-card h2,
-.service-page .services-overview-card p,
-.service-page .services-overview-card .text-faint {
-  color: #49666a !important;
 }
 
 /* Bring legacy hard-coded section borders and text onto the same light palette. */
