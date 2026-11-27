@@ -450,37 +450,37 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               </figcaption>
             </figure>
           </div>
-          {page.slug === "ai-product-development" ? (
-            <div className="divide-y divide-line-soft border-y border-line-soft">
-              {page.whyChoose.map((item, index) => (
-                <Reveal key={item.title} delay={index * 0.035}>
-                  <Link to={item.href ?? "#core-services"} className="group grid gap-3 py-5 transition-colors duration-300 hover:bg-brand-teal/[0.035] sm:grid-cols-[3.5rem_minmax(0,0.78fr)_minmax(0,1.22fr)] sm:items-start sm:gap-5 sm:px-4">
-                    <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-teal/[0.08] font-sans text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div className="flex items-center justify-between gap-3">
-                      <h3 className="text-lg font-semibold leading-snug text-brand-pearl sm:pt-1">{item.title}</h3>
-                      <ArrowUpRight className="size-4 shrink-0 text-mint opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" aria-hidden />
-                    </div>
-                    {item.detail ? <p className="max-w-2xl text-sm leading-6 text-muted sm:pt-1">{item.detail}</p> : null}
-                  </Link>
-                </Reveal>
-              ))}
+          <div className="relative overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
+            <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
+            <div aria-hidden className="pointer-events-none absolute -right-10 -top-14 size-44 rounded-full bg-white/35 blur-3xl" />
+            <div className="relative">
+              <div className="mb-5 flex items-center justify-between gap-4 border-b border-[#6DB1AE]/30 pb-4">
+                <span className="font-sans text-[.62rem] font-semibold uppercase tracking-[.2em] text-[#286F6A]">The Septa advantage</span>
+                <span className="font-sans text-[.65rem] tracking-wider text-[#52736D]">{String(page.whyChoose.length).padStart(2, "0")} / WHY SEPTA</span>
+              </div>
+              <div className="divide-y divide-[#6DB1AE]/25">
+                {page.whyChoose.map((item, index) => (
+                  <Reveal key={item.title} delay={index * 0.045}>
+                    <Link
+                      to={item.href ?? "#core-services"}
+                      className="group grid grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-start gap-3 py-5 transition-colors duration-300 first:pt-1 last:pb-1 sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-4 sm:py-6"
+                    >
+                      <span className="pt-0.5 font-sans text-xl font-light tracking-tight text-[#6A9E91] transition-colors duration-300 group-hover:text-[#286F6A] sm:text-2xl">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[.98rem] font-semibold leading-snug text-[#23413D] transition-colors duration-300 group-hover:text-[#286F6A] sm:text-lg">
+                          {item.title}
+                        </span>
+                        {item.detail ? <span className="mt-1.5 block max-w-xl text-[.82rem] leading-6 text-[#52736D] sm:text-sm">{item.detail}</span> : null}
+                      </span>
+                      <ArrowUpRight className="mt-1 size-4 text-[#6A9E91] transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#286F6A] sm:size-5" aria-hidden />
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
             </div>
-          ) : (
-            <div className={cn("grid gap-3 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
-              {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-                <Link to={item.href ?? "#core-services"} className={cn("service-glass group relative block overflow-hidden rounded-[1rem] rounded-tr-[1.8rem] rounded-bl-[1.4rem] border border-white/60 bg-white/50 p-3 shadow-[0_12px_32px_-28px_rgba(6,24,32,.4)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_18px_42px_-30px_rgba(6,24,32,.35)] sm:p-3", page.slug === "digital-transformation" ? "h-[132px]" : "h-full")}>
-                  <span className="inline-flex size-6 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-sans text-[.58rem] tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
-                  <div className="mt-2 flex items-start justify-between gap-2">
-                    <h3 className="max-w-xs text-sm font-semibold leading-snug line-clamp-2">{item.title}</h3>
-                    <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
-                  </div>
-                  {item.detail ? <p className="mt-1 max-w-md text-xs leading-4 text-muted line-clamp-2">{item.detail}</p> : null}
-                </Link>
-              </Reveal>)}
-            </div>
-          )}
+          </div>
         </div>
       </Section>
 
