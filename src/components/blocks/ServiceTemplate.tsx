@@ -40,18 +40,18 @@ function ServiceMotionField({ slug }: { slug: string }) {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       <div
-        className="absolute inset-0 opacity-[0.07]"
+        className="absolute inset-0 opacity-[0.12]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(109,177,174,.28) 1px, transparent 1px), linear-gradient(90deg, rgba(109,177,174,.28) 1px, transparent 1px)",
+            "linear-gradient(rgba(6,24,32,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(6,24,32,.14) 1px, transparent 1px)",
           backgroundSize: "56px 56px",
         }}
       />
-      <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-teal/[0.08] blur-[110px]" />
-      <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.24]" viewBox="0 0 760 620" fill="none">
+      <div className="absolute right-[10%] top-[14%] size-72 rounded-full bg-brand-pearl/[0.08] blur-[110px]" />
+      <svg className="absolute right-0 top-0 h-full w-[58%] opacity-[0.14]" viewBox="0 0 760 620" fill="none">
         <motion.path
           d={trace.primary}
-          stroke="#6DB1AE"
+          stroke="#344B49"
           strokeWidth="1.2"
           strokeDasharray="5 13"
           initial={{ pathLength: 0 }}
@@ -60,7 +60,7 @@ function ServiceMotionField({ slug }: { slug: string }) {
         />
         <motion.path
           d={trace.secondary}
-          stroke="#6DB1AE"
+          stroke="#344B49"
           strokeWidth="1"
           strokeDasharray="3 15"
           initial={{ pathLength: 0 }}
@@ -150,7 +150,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     >
       <div className="grid lg:min-h-[470px] lg:grid-cols-[1.04fr_.96fr]">
         <div className="service-capability-art relative min-h-[260px] overflow-hidden sm:min-h-[360px] lg:min-h-[470px]">
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(109,177,174,.28),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_18%,rgba(6,24,32,.14),transparent_52%),linear-gradient(145deg,#123a43,#061820_72%)]" />
           <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "linear-gradient(rgba(109,177,174,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(109,177,174,.4) 1px,transparent 1px)", backgroundSize: "34px 34px" }} />
           <div className="absolute inset-0">
             <AnimatePresence mode="sync" initial={false} custom={direction}>
@@ -353,41 +353,41 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
 
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-brand-pearl text-white">
+      <section className="relative isolate overflow-hidden bg-[#6DB1AE] text-[#061820]">
         <ServiceMotionField slug={page.slug} />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-pearl via-brand-pearl/95 to-brand-pearl/45" />
-        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-teal/20 via-transparent to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#6DB1AE] via-[#6DB1AE]/95 to-[#6DB1AE]/35" />
+        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-pearl/10 via-transparent to-transparent" />
         <div className="wrap relative py-11 sm:py-14 lg:py-16">
           {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-white/45">
+            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-[#061820]/55">
               {crumbs.map((crumb, index) => <li key={crumb.label} className="flex items-center gap-2">
                 {index > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
-                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-brand-teal">{crumb.label}</Link> : <span className="text-brand-teal">{crumb.label}</span>}
+                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-[#061820]">{crumb.label}</Link> : <span className="text-[#061820]">{crumb.label}</span>}
               </li>)}
             </ol>
           </nav> : null}
           <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-10">
             <div className="max-w-3xl">
               <div className="mb-5 inline-flex items-center gap-3">
-                <span className="flex size-11 items-center justify-center border border-brand-teal/50 bg-brand-teal/10 text-brand-teal"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-teal">{page.name}</span>
+                <span className="flex size-11 items-center justify-center border border-[#061820]/30 bg-[#061820]/[0.06] text-[#061820]"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#061820]">{page.name}</span>
               </div>
               <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
-                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
-                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/65 sm:text-base sm:leading-7">{page.intro}</p>
+                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-[#061820]">{page.heroTitle}</h1>
+                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-[#061820]/75 sm:text-base sm:leading-7">{page.intro}</p>
               </motion.div>
               <div className="mt-6 flex flex-wrap gap-3">
-                {page.cta ? <Button to={page.cta.to} size="lg" magnetic>{page.cta.label}</Button> : null}
-                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/25 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-teal hover:text-brand-teal">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
+                {page.cta ? <Button to={page.cta.to} size="lg" variant="dark-cta" magnetic>{page.cta.label}</Button> : null}
+                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-[#061820]/30 px-5 text-sm font-semibold text-[#061820] transition-colors hover:border-[#061820]/70 hover:bg-[#061820]/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
-              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/15 pt-4">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-2 font-mono text-xs text-white/65"><strong className="text-brand-teal">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
-                {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-2 font-mono text-xs text-white/65"><strong className="text-brand-teal">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#061820]/20 pt-4">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#061820]/20 bg-[#061820]/[0.04] px-3 py-2 font-mono text-xs text-[#061820]/75"><strong className="text-[#061820]">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
+                {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-[#061820]/20 bg-[#061820]/[0.04] px-3 py-2 font-mono text-xs text-[#061820]/75"><strong className="text-[#061820]">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
               </div>
             </div>
 
-            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-white/25 bg-white/[0.08] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
-              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-brand-teal/25" />
+            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-[#061820]/20 bg-white/[0.12] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-[#061820]/20" />
               <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
                 <PhotoFigure
                   src={page.image?.src ?? "/img/work/product-in-use.webp"}
@@ -439,7 +439,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             </motion.div>
           </div>
         </div>
-        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-teal to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
+        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-[#061820]/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
       </section>
 
       <Section wall="use-case" tone="surface" className="section">
@@ -472,7 +472,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               {page.whyChoose.map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.035}>
                   <article className="group grid gap-3 py-5 transition-colors duration-300 hover:bg-brand-teal/[0.035] sm:grid-cols-[3.5rem_minmax(0,0.78fr)_minmax(0,1.22fr)] sm:items-start sm:gap-5 sm:px-4">
-                    <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-teal/[0.08] font-mono text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
+                    <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-pearl/[0.08] font-mono text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="flex items-center justify-between gap-3">

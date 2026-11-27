@@ -58,9 +58,9 @@ export default function Services() {
     <>
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Services" }]}
-        eyebrow="Service Overview"
+        eyebrow={<span className="text-[#061820]">Service Overview</span>}
         title={serviceOverview}
-        lead={servicesIntro}
+        lead={<span className="text-[#061820]/80">{servicesIntro}</span>}
         actions={
           <>
             <Button to={paths.request()} size="lg" magnetic>
@@ -72,6 +72,7 @@ export default function Services() {
           </>
         }
         art={<ServicesHeroArt />}
+        className="bg-[#6DB1AE]"
         density="compact"
         aside={serviceLegend}
       />
