@@ -299,7 +299,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Cost and Time Savings",
-        href: "/services/digital-transformation#process-stage-5",
+        href: "/services/workflow-automation#process-stage-5",
         detail: "Automations that pay for themselves through efficiency gains.",
       },
       {
