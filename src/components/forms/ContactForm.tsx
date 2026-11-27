@@ -7,7 +7,6 @@ import { contactSchema, contactServices, type SubmissionResult } from "../../sha
 import { Button } from "../ui/Button";
 import { CheckboxField, Honeypot } from "../ui/form";
 import { Callout, Pill } from "../ui/primitives";
-import { cn } from "../../lib/cn";
 
 type Phase = "form" | "sending" | "done" | "failed";
 
@@ -25,8 +24,7 @@ const countryCodes = [
 ];
 
 export function ContactForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [countryCode, setCountryCode] = useState("+234");
   const [phoneNum, setPhoneNum] = useState("");
@@ -42,8 +40,7 @@ export function ContactForm() {
   const [failure, setFailure] = useState<string | null>(null);
 
   const resetForm = () => {
-    setFirstName("");
-    setLastName("");
+    setFullName("");
     setEmail("");
     setPhoneNum("");
     setCompany("");
@@ -61,14 +58,11 @@ export function ContactForm() {
     e.preventDefault();
     if (phase === "sending") return;
 
-    const trimmedFirst = firstName.trim();
-    const trimmedLast = lastName.trim();
-    const fullName = trimmedLast ? `${trimmedFirst} ${trimmedLast}`.trim() : trimmedFirst;
     const cleanPhone = phoneNum.trim() ? `${countryCode} ${phoneNum.trim()}` : undefined;
 
     // Validate using Zod schema
     const check = contactSchema.safeParse({
-      fullName,
+      fullName: fullName.trim(),
       phone: cleanPhone,
       company: company.trim() || undefined,
       email: email.trim(),
@@ -82,11 +76,7 @@ export function ContactForm() {
       const fieldErrors: Record<string, string> = {};
       for (const issue of check.error.issues) {
         const key = issue.path[0]?.toString() || "form";
-        if (key === "fullName") {
-          if (!trimmedFirst) fieldErrors.firstName = "First name is required.";
-          else if (!trimmedLast) fieldErrors.lastName = "Last name is required.";
-          else fieldErrors.firstName = issue.message;
-        } else if (key === "phone") {
+        if (key === "phone") {
           fieldErrors.phoneNum = issue.message;
         } else {
           fieldErrors[key] = issue.message;
@@ -154,75 +144,28 @@ export function ContactForm() {
     <form onSubmit={onSubmit} noValidate className="space-y-6">
       <Honeypot value={_hp} onChange={setHp} />
 
-      {/* First Name & Last Name */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="first-name" className="mb-2 block text-[0.86rem] font-medium text-fg">
-            First name <span className="sr-only">required</span>
-          </label>
-          <input
-            id="first-name"
-            type="text"
-            value={firstName}
-            onChange={(e) => {
-              setFirstName(e.target.value);
-              if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: "" }));
-            }}
-            placeholder="Ada"
-            autoComplete="given-name"
-            maxLength={60}
-            aria-invalid={errors.firstName ? true : undefined}
-            className="w-full"
-          />
-          {errors.firstName ? (
-            <p className="mt-1.5 text-[0.8rem] text-rose">{errors.firstName}</p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="last-name" className="mb-2 block text-[0.86rem] font-medium text-fg">
-            Last name <span className="sr-only">required</span>
-          </label>
-          <input
-            id="last-name"
-            type="text"
-            value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value);
-              if (errors.lastName) setErrors((prev) => ({ ...prev, lastName: "" }));
-            }}
-            placeholder="Lovelace"
-            autoComplete="family-name"
-            maxLength={60}
-            aria-invalid={errors.lastName ? true : undefined}
-            className="w-full"
-          />
-          {errors.lastName ? (
-            <p className="mt-1.5 text-[0.8rem] text-rose">{errors.lastName}</p>
-          ) : null}
-        </div>
-      </div>
-
-      {/* Email */}
+      {/* Name */}
       <div>
-        <label htmlFor="work-email" className="mb-2 block text-[0.86rem] font-medium text-fg">
-          Email address <span className="sr-only">required</span>
+        <label htmlFor="full-name" className="mb-2 block text-[0.86rem] font-medium text-fg">
+          Name <span className="sr-only">required</span>
         </label>
         <input
-          id="work-email"
-          type="email"
-          value={email}
+          id="full-name"
+          type="text"
+          value={fullName}
           onChange={(e) => {
-            setEmail(e.target.value);
-            if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
+            setFullName(e.target.value);
+            if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: "" }));
           }}
-          placeholder="you@company.com"
-          autoComplete="email"
+          placeholder="Your full name"
+          autoComplete="name"
           maxLength={120}
-          aria-invalid={errors.email ? true : undefined}
+          aria-invalid={errors.fullName ? true : undefined}
           className="w-full"
         />
-        {errors.email ? <p className="mt-1.5 text-[0.8rem] text-rose">{errors.email}</p> : null}
+        {errors.fullName ? (
+          <p className="mt-1.5 text-[0.8rem] text-rose">{errors.fullName}</p>
+        ) : null}
       </div>
 
       {/* Phone Number with Country Code */}
@@ -265,38 +208,53 @@ export function ContactForm() {
         {errors.phoneNum ? <p className="mt-1.5 text-[0.8rem] text-rose">{errors.phoneNum}</p> : null}
       </div>
 
-      {/* Service Choice */}
+      {/* Company Name */}
       <div>
-        <label className="mb-2 block text-[0.86rem] font-medium text-fg">
-          What service are you interested in?
-        </label>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {contactServices.map((s) => {
-            const isSelected = service === s;
-            return (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setService(s)}
-                className={cn(
-                  "flex items-center justify-center rounded-xl p-3 text-center text-[0.82rem] font-semibold transition-all duration-200",
-                  isSelected
-                    ? "border-2 border-mint bg-mint text-white shadow-md scale-[1.02]"
-                    : "border border-line bg-surface hover:border-mint/50 hover:bg-surface-raised text-fg",
-                )}
-              >
-                {s}
-              </button>
-            );
-          })}
+        <div className="mb-2 flex items-center justify-between">
+          <label htmlFor="company-name" className="text-[0.86rem] font-medium text-fg">
+            Company name
+          </label>
+          <span className="font-mono text-[0.7rem] text-faint uppercase">optional</span>
         </div>
+        <input
+          id="company-name"
+          type="text"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          placeholder="Your company or organisation"
+          autoComplete="organization"
+          maxLength={120}
+          className="w-full"
+        />
+      </div>
+
+      {/* Email */}
+      <div>
+        <label htmlFor="work-email" className="mb-2 block text-[0.86rem] font-medium text-fg">
+          Email address <span className="sr-only">required</span>
+        </label>
+        <input
+          id="work-email"
+          type="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
+          }}
+          placeholder="you@company.com"
+          autoComplete="email"
+          maxLength={120}
+          aria-invalid={errors.email ? true : undefined}
+          className="w-full"
+        />
+        {errors.email ? <p className="mt-1.5 text-[0.8rem] text-rose">{errors.email}</p> : null}
       </div>
 
       {/* Message Textarea */}
       <div>
         <div className="mb-2 flex items-baseline justify-between">
           <label htmlFor="build-message" className="text-[0.86rem] font-medium text-fg">
-            What are you looking to build with Septa?
+            What are you partnering with us to build?
           </label>
           <span className="font-mono text-[0.7rem] text-faint">
             {message.length}/4000
@@ -322,6 +280,30 @@ export function ContactForm() {
             At least 20 characters. Please do not include passwords or confidential credentials.
           </p>
         )}
+      </div>
+
+      {/* Service Dropdown */}
+      <div>
+        <label htmlFor="service-select" className="mb-2 block text-[0.86rem] font-medium text-fg">
+          What service do you need from us? <span className="sr-only">required</span>
+        </label>
+        <select
+          id="service-select"
+          value={service}
+          onChange={(e) => {
+            setService(e.target.value);
+            if (errors.service) setErrors((prev) => ({ ...prev, service: "" }));
+          }}
+          aria-invalid={errors.service ? true : undefined}
+          className="w-full"
+        >
+          {contactServices.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        {errors.service ? <p className="mt-1.5 text-[0.8rem] text-rose">{errors.service}</p> : null}
       </div>
 
       {/* Privacy Agreement Checkbox */}

@@ -1,68 +1,13 @@
 import { useRef } from "react";
-import { Link } from "react-router-dom";
-import { ArrowDown, ArrowRight, Clock, ShieldCheck, Zap, MessageSquare } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { ArrowDown, ArrowRight, MessageSquare } from "lucide-react";
 import { ContactIdeaVisual } from "../components/visuals/ContactIdeaVisual";
 import { ContactForm } from "../components/forms/ContactForm";
-import { ContactAdvantageSection } from "../components/blocks/ContactAdvantageSection";
 import { ContactFaqSection } from "../components/blocks/ContactFaqSection";
-import { ContactPartnerTicker } from "../components/blocks/ContactPartnerTicker";
-import { ContactProcessTimeline } from "../components/blocks/ContactProcessTimeline";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
 import { contactCopy } from "../data/content";
 import { Button } from "../components/ui/Button";
 import { Eyebrow, MaskRise, Reveal, Section } from "../components/ui/primitives";
-import { PointerGlow } from "../components/ui/PointerGlow";
-import { usePointerTrack } from "../lib/pointerGlow";
-
-/** Word-by-word reveal matching the Home hero */
-function Rise({ i, children }: { i: number; children: React.ReactNode }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <span className="inline-block">{children}</span>;
-  return (
-    <motion.span
-      className="inline-block"
-      initial={{ opacity: 0, y: "0.45em" }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.62, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.span>
-  );
-}
-
-/** Dark-surface glass card with crystal-clear high-contrast text and luminous glow */
-function MetricCard({
-  icon,
-  metric,
-  label,
-}: {
-  icon: React.ReactNode;
-  metric: string;
-  label: string;
-}) {
-  const track = usePointerTrack<HTMLDivElement>("tilt", 6);
-  return (
-    <div
-      onPointerMove={track.onPointerMove}
-      onPointerLeave={track.onPointerLeave}
-      className="tilt group relative flex flex-col justify-between overflow-hidden rounded-card border border-white/15 bg-white/[0.06] p-6 backdrop-blur-md transition-all duration-300 hover:border-brand-mint/60 hover:bg-white/[0.12] hover:-translate-y-1 shadow-[0_8px_30px_rgb(0,0,0,0.25)]"
-    >
-      <PointerGlow />
-      <div className="flex items-center justify-between">
-        <span className="flex size-9 items-center justify-center rounded-lg border border-brand-mint/35 bg-brand-mint/15 text-brand-mint shadow-sm">
-          {icon}
-        </span>
-        <span className="font-mono text-[0.68rem] font-bold tracking-wider text-brand-mint uppercase">
-          Verified SLA
-        </span>
-      </div>
-      <p className="mt-4 text-2xl font-bold tracking-tight text-white">{metric}</p>
-      <p className="mt-1 text-[0.88rem] leading-snug font-medium text-slate-200">{label}</p>
-    </div>
-  );
-}
 
 export default function Contact() {
   usePageMeta({
@@ -82,54 +27,18 @@ export default function Contact() {
     <div className="overflow-x-hidden">
       {/* ----------------------------- 1. HERO SECTION ----------------------------- */}
       <section className="hero-field relative flex min-h-[82svh] items-center overflow-hidden bg-charcoal pt-24 pb-20 text-brand-white">
-        {/* Animated Aurora Light Pools */}
-        <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="animate-aurora absolute top-[-20%] left-1/2 h-[580px] w-[900px] -translate-x-1/2 rounded-full bg-brand-mint/20 blur-[130px]" />
-          <div className="animate-aurora-slow absolute top-[25%] left-[8%] hidden h-[380px] w-[380px] rounded-full bg-brand-mint/12 blur-[120px] lg:block" />
-          <div className="animate-aurora absolute top-[10%] right-[6%] hidden h-[340px] w-[420px] rounded-full bg-brand-teal/16 blur-[120px] lg:block" />
-        </div>
-
-        {/* Night-lit Grid Background */}
+        {/* Static architectural grid */}
         <div aria-hidden className="grid-bg-dark absolute inset-0 opacity-45 mask-fade pointer-events-none" />
 
         <div className="wrap relative z-10 mx-auto max-w-4xl text-center">
-          {/* Breadcrumbs */}
-          <div className="mb-4 flex flex-wrap items-center justify-center gap-2 font-mono text-[0.74rem] text-slate-300">
-            <Link to={paths.home()} className="text-slate-300 hover:text-white transition-colors">
-              Home
-            </Link>
-            <span className="text-slate-500">/</span>
-            <span className="text-brand-mint font-semibold">Contact Us</span>
-          </div>
-
-          {/* 1. Live Engineering Availability Pill */}
-          <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-emerald-500/35 bg-emerald-950/50 px-4 py-1.5 backdrop-blur-md shadow-sm">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-            </span>
-            <span className="font-mono text-[0.72rem] font-bold tracking-wider text-emerald-300 uppercase">
-              Engineering Pods Active · Accepting New Sprint Kickoffs
-            </span>
-          </div>
-
-          <div className="mb-5">
-            <Eyebrow className="text-brand-mint font-bold text-[0.8rem] tracking-[0.2em]">
-              GET IN TOUCH · SEPTA ENGINEERING
-            </Eyebrow>
-          </div>
-
-          {/* Animated Headline */}
           <h1 className="text-[clamp(2.4rem,6.2vw,4.5rem)] font-bold leading-[1.08] text-white sm:leading-[1.02] drop-shadow-sm">
             {headlineWords.map((word, i) => (
               <span key={`${word}-${i}`}>
-                <Rise i={i}>
-                  {word.toLowerCase().includes("tech") || word.toLowerCase().includes("solution") ? (
-                    <span className="text-brand-mint font-extrabold">{word}</span>
-                  ) : (
-                    word
-                  )}
-                </Rise>{" "}
+                {word.toLowerCase().includes("tech") || word.toLowerCase().includes("solution") ? (
+                  <span className="text-brand-mint font-extrabold">{word}</span>
+                ) : (
+                  word
+                )}{" "}
               </span>
             ))}
           </h1>
@@ -166,29 +75,9 @@ export default function Contact() {
             </div>
           </Reveal>
 
-          {/* Metric Highlights Strip with Crystal-Clear Contrast */}
-          <div className="mt-16 grid grid-cols-1 gap-5 border-t border-white/15 pt-10 sm:grid-cols-3">
-            <MetricCard
-              icon={<Zap className="size-4.5" />}
-              metric="4 to 6 Weeks"
-              label="Rapid MVP Delivery from Concept to Launch"
-            />
-            <MetricCard
-              icon={<Clock className="size-4.5" />}
-              metric="< 24 Hours"
-              label="Engineering Lead Direct Response SLA"
-            />
-            <MetricCard
-              icon={<ShieldCheck className="size-4.5" />}
-              metric="100% IP Secure"
-              label="Strict Mutual NDA & Complete Code Transfer"
-            />
-          </div>
+
         </div>
       </section>
-
-      {/* 2. Partner Trust Ticker */}
-      <ContactPartnerTicker />
 
       {/* ----------------------------- 3. FORM & INNOVATION STUDIO ----------------------------- */}
       <div ref={formRef} id="contact-form">
@@ -224,8 +113,7 @@ export default function Contact() {
 
             {/* A Good First Message Guide (From Original File) */}
             <div className="mx-auto mt-8 max-w-4xl">
-              <div className="card card-hover tilt group relative overflow-hidden p-6 sm:p-7">
-                <PointerGlow />
+              <div className="card relative overflow-hidden p-6 sm:p-7">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="flex size-7 items-center justify-center rounded-lg bg-mint/15 text-mint">
                     <MessageSquare className="size-4" />
@@ -255,14 +143,9 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* 3. "What Happens Next?" 3-Step Process */}
-            <ContactProcessTimeline />
           </div>
         </Section>
       </div>
-
-      {/* ----------------------------- 4. THE SEPTA ADVANTAGE ----------------------------- */}
-      <ContactAdvantageSection />
 
       {/* ----------------------------- 5. FAQ ACCORDION ----------------------------- */}
       <ContactFaqSection />
