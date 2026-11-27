@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { cn } from "../../lib/cn";
-import { Eyebrow, MaskRise } from "../ui/primitives";
+import { Eyebrow } from "../ui/primitives";
 import type { BgTheme } from "../../lib/bgThemes";
 
 export type Crumb = { label: string; to?: string };
@@ -94,9 +94,9 @@ export function PageHero({
         <div className={cn("grid gap-10", density === "compact" && "gap-7", aside ? "lg:grid-cols-[1.15fr_1fr] lg:items-center" : "")}>
           <div className={cn(!aside && "max-w-3xl")}>
             {eyebrow ? <Eyebrow className="mb-4">{eyebrow}</Eyebrow> : null}
-            <MaskRise>
+            <div>
               <h1 className="text-[clamp(2.1rem,5.2vw,3.6rem)]">{title}</h1>
-            </MaskRise>
+            </div>
             {lead ? <p className={cn("prose-body mt-5 max-w-2xl text-[1.05rem]", density === "compact" && "mt-4")}>{lead}</p> : null}
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-2">{meta}</div> : null}
             {actions ? <div className={cn("mt-7 flex flex-wrap gap-3", density === "compact" && "mt-5")}>{actions}</div> : null}
