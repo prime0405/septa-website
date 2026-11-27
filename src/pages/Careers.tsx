@@ -115,7 +115,7 @@ export default function Careers() {
         art={<CareersHeroArt />}
         aside={careerRoute}
         actions={
-          <Button onClick={scrollToRoles} size="lg" magnetic>
+          <Button onClick={scrollToRoles} size="lg">
             {careers.rolesCta}
           </Button>
         }
