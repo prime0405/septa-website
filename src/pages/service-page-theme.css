@@ -1,11 +1,11 @@
-/* Service pages reuse the homepage intro field: Black Pearl, white copy, mint light and a quiet grid. */
+/* Shared light service-page theme. Button fills and button text are intentionally untouched. */
 .service-page {
   position: relative;
   isolation: isolate;
   min-height: 100vh;
   overflow: clip;
-  background: #061820;
-  color: #ffffff;
+  background: #f7fbfa;
+  color: #17383b;
 }
 
 .service-page::before {
@@ -14,149 +14,134 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-color: #061820;
-  background-image:
-    radial-gradient(ellipse at 18% 4%, rgba(95, 221, 157, 0.13), transparent 34%),
-    radial-gradient(ellipse at 88% 24%, rgba(109, 177, 174, 0.12), transparent 32%),
-    linear-gradient(rgba(95, 221, 157, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(95, 221, 157, 0.055) 1px, transparent 1px);
-  background-size: auto, auto, 56px 56px, 56px 56px;
-  background-position: center, center, center, center;
+  background:
+    radial-gradient(ellipse at 12% 2%, rgba(95, 221, 157, 0.13), transparent 32%),
+    radial-gradient(ellipse at 92% 18%, rgba(109, 177, 174, 0.13), transparent 30%),
+    linear-gradient(rgba(40, 111, 106, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(40, 111, 106, 0.035) 1px, transparent 1px),
+    #f7fbfa;
+  background-size: auto, auto, 56px 56px, 56px 56px, auto;
 }
 
 .service-page > section {
   background-color: transparent !important;
-  color: #ffffff !important;
+  color: #17383b !important;
 }
 
 .service-page > section:first-child {
   background: transparent !important;
 }
 
+/* Main page and section typography */
 .service-page h1,
 .service-page h2,
 .service-page h3,
+.service-page h4,
 .service-page .text-brand-pearl,
 .service-page .text-fg {
-  color: #ffffff !important;
+  color: #17383b !important;
 }
 
+.service-page p,
 .service-page .text-muted,
 .service-page .text-faint {
-  color: rgba(255, 255, 255, 0.72) !important;
+  color: #49666a !important;
 }
 
 .service-page .text-mint,
-.service-page .text-brand-mint {
-  color: #5fdd9d !important;
+.service-page .text-brand-mint,
+.service-page .text-brand-teal {
+  color: #286f6a !important;
 }
 
-.service-page .service-capability-carousel {
-  background: rgba(6, 24, 32, 0.9) !important;
-  border-color: rgba(95, 221, 157, 0.3) !important;
-  color: #ffffff !important;
+/* Convert the formerly dark hero and panel surfaces to soft white/mint surfaces. */
+.service-page [class*="bg-[#061820]"],
+.service-page [class*="bg-brand-pearl"],
+.service-page .service-capability-carousel,
+.service-page .services-overview-legend {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(40, 111, 106, 0.2) !important;
+  color: #17383b !important;
+  box-shadow: 0 24px 70px -48px rgba(23, 56, 59, 0.28);
 }
 
-.service-page .service-capability-copy {
-  background: rgba(16, 49, 62, 0.88) !important;
-  color: #ffffff !important;
-}
-
-.service-page .service-capability-copy .text-white,
-.service-page .service-capability-copy [class*="text-white/"] {
-  color: rgba(255, 255, 255, 0.82) !important;
-}
-
-.service-page .service-capability-copy button {
-  border-color: rgba(95, 221, 157, 0.25) !important;
-  color: rgba(255, 255, 255, 0.78) !important;
-}
-
-.service-page .service-capability-copy button[aria-current="true"] {
-  background: rgba(95, 221, 157, 0.16) !important;
-  border-color: #5fdd9d !important;
-  color: #ffffff !important;
-}
-
-.service-page .service-process-journey button[aria-pressed="true"] {
-  background: rgba(95, 221, 157, 0.14) !important;
-  border-color: rgba(95, 221, 157, 0.6) !important;
-  color: #ffffff !important;
-  box-shadow: none !important;
-}
-
-.service-page .service-process-journey button[aria-pressed="true"] * {
-  color: #ffffff !important;
-}
-
+.service-page .service-capability-copy,
 .service-page .service-process-journey > div:last-child,
-.service-page .service-glass {
-  background: rgba(16, 49, 62, 0.78) !important;
-  border-color: rgba(109, 177, 174, 0.28) !important;
-  color: #ffffff !important;
+.service-page .service-glass,
+.service-page .service-extra-panel,
+.service-page .services-overview-card {
+  background: rgba(235, 247, 243, 0.92) !important;
+  border-color: rgba(40, 111, 106, 0.2) !important;
+  color: #17383b !important;
   backdrop-filter: blur(18px);
 }
 
-.service-page .service-extra-panel {
-  background: rgba(16, 49, 62, 0.82) !important;
-  border-color: rgba(109, 177, 174, 0.28) !important;
+.service-page .service-capability-copy .text-white,
+.service-page .service-capability-copy [class*="text-white/"],
+.service-page .service-extra-panel .text-white,
+.service-page .service-extra-panel [class*="text-white/"],
+.service-page .services-overview-card [class*="text-white"],
+.service-page .services-overview-legend [class*="text-white"] {
+  color: #49666a !important;
+}
+
+/* Make the non-interactive hero copy readable on the new light hero field.
+   Interactive buttons/links are excluded so their approved colours stay unchanged. */
+.service-page :not(a):not(button)[class*="text-white"] {
+  color: #17383b !important;
+}
+.service-page .service-capability-art :not(a):not(button)[class*="text-white"] {
   color: #ffffff !important;
 }
 
-.service-page .service-extra-panel .text-white,
-.service-page .service-extra-panel [class*="text-white/"] {
-  color: rgba(255, 255, 255, 0.82) !important;
+/* Capability selector controls keep their mint active state. */
+.service-page .service-capability-copy button {
+  border-color: rgba(40, 111, 106, 0.22) !important;
+  color: #49666a !important;
+}
+.service-page .service-capability-copy button[aria-current="true"],
+.service-page .service-process-journey button[aria-pressed="true"] {
+  background: rgba(95, 221, 157, 0.2) !important;
+  border-color: #286f6a !important;
+  color: #17383b !important;
+  box-shadow: none !important;
+}
+.service-page .service-capability-copy button[aria-current="true"] *,
+.service-page .service-process-journey button[aria-pressed="true"] * {
+  color: #17383b !important;
+}
+.service-page .service-process-journey button:not([aria-pressed="true"]) {
+  color: #49666a !important;
+}
+.service-page .service-process-journey button:not([aria-pressed="true"]):hover {
+  background: rgba(40, 111, 106, 0.06) !important;
+  border-color: rgba(40, 111, 106, 0.35) !important;
 }
 
 .service-page .service-extra-panel [class*="border-brand-teal"] {
-  border-color: rgba(95, 221, 157, 0.45) !important;
+  border-color: rgba(40, 111, 106, 0.35) !important;
 }
-
-.service-page .service-process-journey button:not([aria-pressed="true"]) {
-  color: rgba(255, 255, 255, 0.78) !important;
-}
-
-.service-page .service-process-journey button:not([aria-pressed="true"]):hover {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border-color: rgba(95, 221, 157, 0.35) !important;
-}
-
 .service-page .service-people-photo {
-  border-color: rgba(95, 221, 157, 0.3) !important;
+  border-color: rgba(40, 111, 106, 0.3) !important;
 }
-
-.service-page a.bg-brand-mint,
-.service-page button.bg-brand-mint,
-.service-page a.bg-brand-teal,
-.service-page button.bg-brand-teal {
-  background-color: #5fdd9d !important;
-  color: #061820 !important;
-}
-
-
-/* The services index is the sixth service-facing page and uses the same intro field. */
-.service-page .services-overview-legend {
-  background: rgba(6, 24, 32, 0.88) !important;
-  border-color: rgba(95, 221, 157, 0.28) !important;
-  color: #ffffff !important;
-}
-
-.service-page .services-overview-card {
-  background: rgba(16, 49, 62, 0.78) !important;
-  border-color: rgba(109, 177, 174, 0.28) !important;
-  color: #ffffff !important;
-}
-
 .service-page .services-overview-card h2,
 .service-page .services-overview-card p,
 .service-page .services-overview-card .text-faint {
-  color: rgba(255, 255, 255, 0.86) !important;
+  color: #49666a !important;
 }
 
+/* Bring legacy hard-coded section borders and text onto the same light palette. */
 .service-page [class*="text-[#344B49]"] {
-  color: #ffffff !important;
+  color: #17383b !important;
+}
+.service-page [class*="border-[#DDEFE6]"] {
+  border-color: rgba(40, 111, 106, 0.2) !important;
+}
+.service-page [class*="bg-[#DDEFE6]"] {
+  background-color: #eaf5f1 !important;
+}
+.service-page [class*="text-[#91d9cf]"] {
+  color: #286f6a !important;
 }
 
-.service-page [class*="border-[#DDEFE6]"] {
-  border-color: rgba(109, 177, 174, 0.28) !important;
-}
+/* Keep the existing approved button colours exactly as authored. */
