@@ -174,6 +174,7 @@ export default function Home() {
       <section
         ref={fieldRef}
         data-wall="home"
+        data-static-hero=""
         className={
           pinned
             ? "hero-field sticky top-0 z-[1] flex h-[100svh] items-center overflow-hidden"
