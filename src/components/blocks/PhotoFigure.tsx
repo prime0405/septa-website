@@ -73,7 +73,8 @@ export function PhotoFigure({
   static?: boolean;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
-  const reduce = isStatic || useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const reduce = isStatic || prefersReducedMotion;
   const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
   const scrollScale = useTransform(scrollYProgress, (p) => (reduce ? 1.1 : 1.05 + 0.12 * settle(p)));
   const parallax = useTransform(scrollYProgress, (p) => (reduce ? 0 : (0.5 - p) * 36));
