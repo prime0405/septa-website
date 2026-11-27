@@ -41,6 +41,7 @@ export function PageHero({
     // Nothing here moves any more: the contour plate drifts only inside the homepage hero field.
     <section
       data-wall={wall}
+      data-static-hero=""
       className={cn("relative overflow-hidden band", className)}
     >
       {art ?? (
