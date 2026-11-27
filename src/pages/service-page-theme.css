@@ -108,4 +108,30 @@
   color: #286f6a !important;
 }
 
+/* Restore the stronger Septa green hierarchy: heroes and featured capability frame
+   use the deep green, while bright mint remains reserved for existing buttons/highlights. */
+.service-page > section:first-child {
+  background: linear-gradient(132deg, #344b49 0%, #123a43 48%, #061820 100%) !important;
+  color: #ffffff !important;
+}
+
+.service-page > section:first-child h1,
+.service-page > section:first-child h2,
+.service-page > section:first-child h3,
+.service-page > section:first-child p,
+.service-page > section:first-child .text-muted,
+.service-page > section:first-child .text-faint {
+  color: #ffffff !important;
+}
+
+.service-page .service-capability-carousel {
+  background: linear-gradient(145deg, #344b49 0%, #123a43 52%, #061820 100%) !important;
+  border-color: rgba(109, 177, 174, 0.42) !important;
+  color: #ffffff !important;
+  box-shadow: 0 32px 90px -48px rgba(6, 24, 32, 0.72);
+}
+
+/* The capability copy panel stays light for readable body text; its frame and artwork
+   provide the deeper green contrast. Existing button rules remain untouched. */
+
 /* Keep the existing approved button colours exactly as authored. */
