@@ -1,6 +1,9 @@
-import { useEffect, useRef } from "react";
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useIntroHeld } from "../lib/intro";
 import { AdvantageReel } from "../components/visuals/AdvantageReel";
+import { HeroSpiral } from "../components/visuals/HeroSpiral";
 import { TestimonialOrbit } from "../components/visuals/TestimonialOrbit";
 import { PhotoFigure } from "../components/blocks/PhotoFigure";
 import { SectionStage } from "../components/blocks/SectionStage";
@@ -41,10 +44,71 @@ const blockWalls: Record<string, BgTheme> = {
   talent: "service-talent",
 };
 
+/** One headline word, rising into place. `held` keeps it waiting for the curtain. */
+function Rise({ i, held, children }: { i: number; held: boolean; children: ReactNode }) {
+  const reduce = true;
+  if (reduce) return <span className="inline-block">{children}</span>;
+  return (
+    <motion.span
+      className="inline-block"
+      initial={{ opacity: 0, y: "0.45em" }}
+      animate={held ? { opacity: 0, y: "0.45em" } : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.62, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
+/** Below this width the pinned stretch is shortened — see the note above. */
+function useWideHero() {
+  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return wide;
+}
+
+/*
+ * The pinned stage. The hero sticks to the top of the stage wrapper — the same containing block
+ * every `StackSheet` on this page uses — and a spacer the height of the runway sits after it, so the
+ * hero holds at the top of the screen while the sheets arrive over it.
+ *
+ * The wrapper this used to sit in was one viewport plus the runway, which made the hero release at
+ * exactly the scroll position the next section entered the screen: the two edges met and passed, and
+ * the first transition on the page was the one place nothing covered anything. Against the whole
+ * stage the hero never releases early, so the first offering block slides up over a hero that has
+ * finished shrinking — and because the hero is a viewport tall and pinned at zero, it is also the
+ * floor under the whole stack. There is no scroll position at which the page can show through a seam
+ * between two sheets.
+ *
+ * The stage ends before the partners strip, and that end is the stack's release: a sticky box cannot
+ * leave its containing block, so every pinned sheet lets go together in the viewport where the last
+ * offering block has been fully read and the partners strip is entering. From the strip down the
+ * page is ordinary flow again — partners, the advantage, the service overview, the testimonial and
+ * the footer scroll past each other the way plain bands do. The cover gesture is the opening
+ * chapter of the homepage, not its whole grammar.
+ *
+ * `RELEASE` is no longer a fraction of a wrapper: the spacer is the runway outright, 58vh on desktop
+ * and 26vh below `lg`, and the shrink is measured against it. The phone and tablet runway is
+ * deliberately short — the brief asks for a shrinking hero at every size and for mobile not to be
+ * made to fight its way through a long pinned stretch, so the composition gets a quarter-screen of
+ * visible tightening and then hands over.
+ */
+
 const headlineWords = hero.headline.split(" ");
 
 export default function Home() {
   usePageMeta({ title: site.name, description: hero.subheadline });
+  const held = useIntroHeld();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const wide = useWideHero();
+  const pinned = false;
 
   // The hero is the only dark surface on the site, and the classic Windows scrollbar paints its gutter
   // from the root background — so the field reaches both edges only while it owns the middle of the
@@ -69,6 +133,37 @@ export default function Home() {
     };
   }, []);
 
+  // The spacer is the runway, so its own pass is the shrink: `start end` is the moment its top edge
+  // reaches the bottom of the screen, which with a viewport-tall hero above it is scroll zero, and
+  // `end end` is one runway later. Measuring the spacer rather than the hero is what keeps this
+  // exact — the hero is pinned, so its own rect stops moving and would report a frozen progress.
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: stageRef,
+    offset: ["start end", "end end"],
+  });
+  const gridY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 70]);
+  const auroraY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 130]);
+
+  /*
+   * The shrinking itself. Everything is driven by `heroScroll`, which is the runway's real position
+   * in the viewport, so the composition is a function of the scrollbar and nothing else: scrolling
+   * down shrinks it, scrolling back up re-inflates it, and a fast flick in either direction lands on
+   * the exact frame the position implies because there is no timer to fall behind. Measured at the
+   * endpoints, the headline block sits at 1.0000 and returns to 1.0000, and only `scale` and
+   * `translate` are touched — paint-only properties, so nothing reflows and the stage keeps the
+   * height it was given at load.
+   *
+   * The groups move independently on purpose. The copy tightens the most because it is the thing
+   * that has to stop dominating; the field and the light drift on the existing parallax and only
+   * widen, which is what gives the composition depth behind a shrinking foreground. The nav is not
+   * in this subtree and holds its size throughout.
+   */
+  const copyScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : wide ? 0.78 : 0.88]);
+  const copyY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : wide ? -18 : -10]);
+  const copyFade = useTransform(heroScroll, [0, 1], [1, 1]);
+  const fieldScale = useTransform(heroScroll, [0, 1], [1, reduce ? 1 : 1.1]);
+  const fieldFade = useTransform(heroScroll, [0, 1], [1, 1]);
+
   return (
     <>
       {/* The stage: hero through the third offering block. Its bottom edge is where every pin
@@ -80,11 +175,19 @@ export default function Home() {
         ref={fieldRef}
         data-wall="home"
         data-static-hero=""
-        className="hero-field relative flex h-[100svh] items-center overflow-hidden"
+        className={
+          pinned
+            ? "hero-field sticky top-0 z-[1] flex h-[100svh] items-center overflow-hidden"
+            : "hero-field relative flex h-[100svh] items-center overflow-hidden"
+        }
       >
           {/* The engineering floor, held low so it reads as depth in the field rather than as a
               picture behind the words. */}
-          <div aria-hidden className="pointer-events-none absolute inset-[-6%]">
+          <motion.div
+            aria-hidden
+            style={{ y: gridY, scale: fieldScale, opacity: fieldFade }}
+            className="pointer-events-none absolute inset-[-6%]"
+          >
             <img
               src="/img/work/engineering-floor.webp"
               alt=""
@@ -98,19 +201,33 @@ export default function Home() {
                 colour over 34% of a mostly-black image is the pass the contrast harness measured. */}
             <div className="absolute inset-0 bg-charcoal/58" />
             <div className="grid-bg-dark absolute inset-0 opacity-[0.6] mask-fade" />
-          </div>
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute top-[-26%] left-1/2 h-[620px] w-[980px] -translate-x-1/2 rounded-full bg-brand-mint/20 blur-[130px]" />
-            <div className="absolute top-[22%] left-[6%] hidden h-[420px] w-[420px] rounded-full bg-brand-mint/12 blur-[120px] lg:block" />
-            <div className="absolute top-[8%] right-[4%] hidden h-[360px] w-[460px] rounded-full bg-brand-teal/16 blur-[120px] lg:block" />
-          </div>
+          </motion.div>
+          <motion.div
+            aria-hidden
+            style={{ y: auroraY, scale: fieldScale }}
+            className="pointer-events-none absolute inset-0"
+          >
+            <div className="animate-aurora absolute top-[-26%] left-1/2 h-[620px] w-[980px] -translate-x-1/2 rounded-full bg-brand-mint/20 blur-[130px]" />
+            <div className="animate-aurora-slow absolute top-[22%] left-[6%] hidden h-[420px] w-[420px] rounded-full bg-brand-mint/12 blur-[120px] lg:block" />
+            <div className="animate-aurora absolute top-[8%] right-[4%] hidden h-[360px] w-[460px] rounded-full bg-brand-teal/16 blur-[120px] lg:block" />
+          </motion.div>
 
-          <div className="wrap relative z-[2]">
+          {/* The spiral runs over the plate and under the copy. It dims itself to 10% inside the
+              measured box of the headline block, so no glyph ever sits on a stroke stronger than the
+              site-wide mesh's worst pixel, while the gutters and corners get the line at full run.
+              The box is re-measured every frame, which is what lets the headline shrink underneath it. */}
+          <HeroSpiral copyRef={copyRef} className="pointer-events-none absolute inset-0 z-0 size-full" />
+
+          <motion.div
+            ref={copyRef}
+            style={{ y: copyY, scale: copyScale, opacity: copyFade, transformOrigin: "50% 38%" }}
+            className="wrap relative z-[2]"
+          >
             <div className="mx-auto max-w-4xl text-center">
               <h1 className="text-[clamp(2.6rem,7.2vw,4.9rem)] leading-[1.08] text-brand-white sm:leading-[0.98]">
                 {headlineWords.map((word, i) => (
                   <span key={`${word}-${i}`}>
-                    <span className="inline-block">
+                    <Rise i={i} held={held}>
                       {/* One word carries the accent, and only one: the brief asks for green used for
                           emphasis rather than a green hero, and #5fdd9d over 4.9rem of type would
                           turn the headline into the lighting effect. */}
@@ -119,27 +236,45 @@ export default function Home() {
                       ) : (
                         word
                       )}
-                    </span>{" "}
+                    </Rise>{" "}
                     {word === "Moves" ? <br className="hidden sm:block" /> : null}
                   </span>
                 ))}
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-[1.06rem] leading-[1.7] text-brand-white/88">
-                {hero.subheadline}
-              </p>
-
-              <div className="mt-9 flex flex-wrap justify-center gap-3">
-                <Button to={paths.services()} size="lg" variant="dark-cta">
-                  {hero.ctaPrimary}
-                </Button>
-                <Button to={paths.contact()} size="lg" variant="outline-light">
-                  {hero.ctaSecondary}
-                </Button>
+              <div>
+                <p className="mx-auto mt-6 max-w-2xl text-[1.06rem] leading-[1.7] text-brand-white/88">
+                  {hero.subheadline}
+                </p>
               </div>
+
+              <div>
+                <div className="mt-9 flex flex-wrap justify-center gap-3">
+                  <CtaArrival waiting={held}>
+                    <Button to={paths.services()} size="lg" variant="dark-cta">
+                      {hero.ctaPrimary}
+                    </Button>
+                  </CtaArrival>
+                  <CtaArrival waiting={held}>
+                    <Button to={paths.contact()} size="lg" variant="outline-light">
+                      {hero.ctaSecondary}
+                    </Button>
+                  </CtaArrival>
+                </div>
+              </Reveal>
             </div>
-          </div>
+          </motion.div>
         </section>
+
+      {/* The runway. It carries no content: it is the scroll distance the hero shrinks across, and
+          it is the element measured for that shrink, because a pinned hero's own rect does not move.
+          Under reduced motion the hero is not pinned and nothing shrinks, so it collapses to a
+          hairline — a zero-height target would make the progress a division by zero. */}
+      <div
+        ref={stageRef}
+        aria-hidden
+        className="hidden"
+      />
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
       {/* A workplace photograph matched to each offering sits beside the words instead of under
