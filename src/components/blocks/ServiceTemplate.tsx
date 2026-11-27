@@ -193,7 +193,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
           </div>
         </div>
 
-        <div className="relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-[linear-gradient(145deg,#10333c,#071f27_68%)] p-6 sm:p-9 lg:p-10">
+        <div className="service-capability-copy relative flex min-h-[360px] flex-col justify-between overflow-hidden bg-[#DDEFE6] p-6 sm:p-9 lg:p-10">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full bg-brand-teal/[0.12] blur-3xl" />
           <div className="relative">
@@ -256,7 +256,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
   if (!step) return null;
 
   return (
-    <div ref={journeyRef} {...hoverProps} className="mt-12 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
+    <div ref={journeyRef} {...hoverProps} className="service-process-journey mt-12 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
       <div>
         <div className="mb-8 flex items-center justify-between gap-3">
           <Pill tone="mint"><Compass className="size-3.5" aria-hidden /> Your journey</Pill>
@@ -353,41 +353,41 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
 
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-[#6DB1AE] text-[#061820]">
+      <section className="relative isolate overflow-hidden bg-[#6DB1AE] text-[#344B49]">
         <ServiceMotionField slug={page.slug} />
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#6DB1AE] via-[#6DB1AE]/95 to-[#6DB1AE]/35" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-2/3 w-2/3 bg-gradient-to-tl from-brand-pearl/10 via-transparent to-transparent" />
         <div className="wrap relative py-11 sm:py-14 lg:py-16">
           {crumbs.length ? <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-[#061820]/55">
+            <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] uppercase tracking-wider text-[#344B49]/55">
               {crumbs.map((crumb, index) => <li key={crumb.label} className="flex items-center gap-2">
                 {index > 0 ? <ChevronRight className="size-3" aria-hidden /> : null}
-                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-[#061820]">{crumb.label}</Link> : <span className="text-[#061820]">{crumb.label}</span>}
+                {crumb.to ? <Link to={crumb.to} className="transition-colors hover:text-[#344B49]">{crumb.label}</Link> : <span className="text-[#344B49]">{crumb.label}</span>}
               </li>)}
             </ol>
           </nav> : null}
           <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-10">
             <div className="max-w-3xl">
               <div className="mb-5 inline-flex items-center gap-3">
-                <span className="flex size-11 items-center justify-center border border-[#061820]/30 bg-[#061820]/[0.06] text-[#061820]"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#061820]">{page.name}</span>
+                <span className="flex size-11 items-center justify-center border border-[#344B49]/30 bg-[#344B49]/[0.06] text-[#344B49]"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#344B49]">{page.name}</span>
               </div>
               <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
-                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-[#061820]">{page.heroTitle}</h1>
-                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-[#061820]/75 sm:text-base sm:leading-7">{page.intro}</p>
+                <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-[#344B49]">{page.heroTitle}</h1>
+                <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-[#344B49]/75 sm:text-base sm:leading-7">{page.intro}</p>
               </motion.div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {page.cta ? <Button to={page.cta.to} size="lg" variant="dark-cta" magnetic>{page.cta.label}</Button> : null}
-                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-[#061820]/30 px-5 text-sm font-semibold text-[#061820] transition-colors hover:border-[#061820]/70 hover:bg-[#061820]/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
+                <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-[#344B49]/30 px-5 text-sm font-semibold text-[#344B49] transition-colors hover:border-[#344B49]/70 hover:bg-[#344B49]/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
-              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#061820]/20 pt-4">
-                <span className="inline-flex items-center gap-2 rounded-full border border-[#061820]/20 bg-[#061820]/[0.04] px-3 py-2 font-mono text-xs text-[#061820]/75"><strong className="text-[#061820]">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
-                {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-[#061820]/20 bg-[#061820]/[0.04] px-3 py-2 font-mono text-xs text-[#061820]/75"><strong className="text-[#061820]">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#344B49]/20 pt-4">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#344B49]/20 bg-[#344B49]/[0.04] px-3 py-2 font-mono text-xs text-[#344B49]/75"><strong className="text-[#344B49]">{String(page.coreServices.length).padStart(2, "0")}</strong> core capabilities</span>
+                {page.process ? <span className="inline-flex items-center gap-2 rounded-full border border-[#344B49]/20 bg-[#344B49]/[0.04] px-3 py-2 font-mono text-xs text-[#344B49]/75"><strong className="text-[#344B49]">{String(page.process.length).padStart(2, "0")}</strong> process stages</span> : null}
               </div>
             </div>
 
-            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-[#061820]/20 bg-white/[0.12] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
-              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-[#061820]/20" />
+            <motion.div className="service-glass relative mx-auto w-full max-w-lg rounded-[2.25rem] border border-[#344B49]/20 bg-white/[0.12] p-2.5 backdrop-blur-xl sm:p-3 lg:pb-2" initial={{ opacity: 0, y: 36, rotateY: -8 }} animate={{ opacity: 1, y: 0, rotateY: 0 }} transition={{ duration: .9, delay: .18, ease: [.2,.8,.2,1] }}>
+              <div aria-hidden className="pointer-events-none absolute -inset-2 rounded-[2.6rem] border border-[#344B49]/20" />
               <div className="relative isolate overflow-hidden rounded-[1.8rem] bg-brand-pearl shadow-[0_35px_110px_-42px_rgba(0,0,0,.75)] sm:rounded-[2rem]">
                 <PhotoFigure
                   src={page.image?.src ?? "/img/work/product-in-use.webp"}
@@ -431,7 +431,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                     loading="lazy"
                     className="size-full rounded-xl object-cover"
                   />
-                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#061820]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
+                  <span className="absolute inset-x-1 bottom-1 rounded-b-lg bg-gradient-to-t from-[#344B49]/90 to-transparent px-2 pb-2 pt-5 font-mono text-[8px] tracking-[0.12em] text-white">
                     PEOPLE / IN PRACTICE
                   </span>
                 </div>
@@ -439,7 +439,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             </motion.div>
           </div>
         </div>
-        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-[#061820]/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
+        <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-[#344B49]/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
       </section>
 
       <Section wall="use-case" tone="surface" className="section">
@@ -531,7 +531,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
       </Section> : null}
 
       {page.extra ? <Section wall="blog" tone="raised" className="section">
-        <div className="service-glass service-glass-dark relative isolate overflow-hidden rounded-[2rem] border border-white/20 bg-[#0b2830]/70 p-7 text-white shadow-[0_30px_80px_-55px_rgba(6,24,32,.75)] sm:rounded-[2.5rem] sm:p-12">
+        <div className="service-extra-panel service-glass relative isolate overflow-hidden rounded-[2rem] border border-[#DDEFE6] bg-white p-7 text-[#344B49] shadow-[0_30px_80px_-55px_rgba(52,75,73,.18)] sm:rounded-[2.5rem] sm:p-12">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-28 size-[28rem] rounded-full border border-brand-teal/20" />
           <div aria-hidden className="pointer-events-none absolute -right-12 -top-16 size-[20rem] rounded-full bg-brand-teal/10 blur-[80px]" />
           <div className="relative z-10 grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
