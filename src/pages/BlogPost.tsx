@@ -182,7 +182,7 @@ export default function BlogPost() {
       <Progress slug={post.slug} />
 
       <article>
-        <header data-static-hero="" className="band relative overflow-hidden">
+        <header className="band relative overflow-hidden">
           <BlogHeroArt quiet />
           <div className="wrap relative py-14 sm:py-16">
             <nav aria-label="Breadcrumb" className="mb-6">
