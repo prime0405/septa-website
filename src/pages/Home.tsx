@@ -108,7 +108,7 @@ export default function Home() {
   const copyRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const wide = useWideHero();
-  const pinned = !reduce;
+  const pinned = false;
 
   // The hero is the only dark surface on the site, and the classic Windows scrollbar paints its gutter
   // from the root background — so the field reaches both edges only while it owns the middle of the
@@ -273,7 +273,7 @@ export default function Home() {
       <div
         ref={stageRef}
         aria-hidden
-        className={reduce ? "h-px" : wide ? "h-[58vh]" : "h-[26vh]"}
+        className="hidden"
       />
 
       {/* ------------------- 2–4. the three offering blocks ------------------- */}
