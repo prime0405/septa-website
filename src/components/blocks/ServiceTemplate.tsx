@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Check, ChevronRight, Compass } from "lucide-react";
@@ -462,7 +462,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             </p>
           </div>
 
-          <div className="septa-orbit mt-10 sm:mt-14" style={{ "--orbit-count": page.whyChoose.length } as React.CSSProperties}>
+          <div className="septa-orbit mt-10 sm:mt-14" style={{ "--orbit-count": page.whyChoose.length } as CSSProperties}>
             <div className="septa-orbit__stage">
               <div className="septa-orbit__track" aria-hidden="true" />
               <figure className="septa-orbit__portrait">
