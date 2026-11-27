@@ -17,7 +17,7 @@ export default function Services() {
 
   return (
     <div className="service-page">
-      <section className="relative isolate overflow-hidden bg-[#061820] text-white">
+      <section data-static-hero="" className="relative isolate overflow-hidden bg-[#061820] text-white">
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
             className="absolute inset-0 opacity-[0.12]"
@@ -55,7 +55,7 @@ export default function Services() {
                 Explore Septa's service areas, from intelligent digital products and connected workflows to modern infrastructure and technical talent.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Button to={paths.request()} size="lg" variant="dark-cta" magnetic>Start a project</Button>
+                <Button to={paths.request()} size="lg" variant="dark-cta">Start a project</Button>
                 <Link to={paths.contact()} className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">
                   Talk to our team <ArrowUpRight className="size-4" aria-hidden />
                 </Link>
