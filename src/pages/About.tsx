@@ -110,10 +110,10 @@ export default function About() {
         <div className="grid gap-5 md:grid-cols-3">
           {strengths.map(({ icon: Icon, title, detail, id }, i) => (
             <Reveal key={title} delay={i * 0.06} className="h-full">
-              <div className="approach-float-stage relative h-full">
+              <div id={id} className="approach-float-stage relative h-full">
                 <span className="approach-float__shadow" aria-hidden="true" />
                 <div className="approach-float relative h-full">
-                  <Card id={id} tilt interactive className="relative z-[1] flex h-full flex-col overflow-hidden p-7">
+                  <Card tilt interactive className="relative z-[1] flex h-full flex-col overflow-hidden p-7">
                   <span className="flex size-11 items-center justify-center rounded-xl border border-mint/25 bg-mint/[0.07] text-mint">
                     <Icon className="size-5" />
                   </span>
