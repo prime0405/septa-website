@@ -3,6 +3,10 @@
    remain owned by Button.tsx. */
 
 .service-page {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
   position: relative;
   isolation: isolate;
   min-height: 100vh;
