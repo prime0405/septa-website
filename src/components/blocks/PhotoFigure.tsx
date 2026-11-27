@@ -57,6 +57,7 @@ export function PhotoFigure({
   width = 1200,
   height = 800,
   className,
+  static: isStatic = false,
 }: {
   src: string;
   alt: string;
@@ -68,9 +69,11 @@ export function PhotoFigure({
   width?: number;
   height?: number;
   className?: string;
+  /** Keep a hero photograph still while preserving its normal section behaviour elsewhere. */
+  static?: boolean;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = isStatic || useReducedMotion();
   const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
   const scrollScale = useTransform(scrollYProgress, (p) => (reduce ? 1.1 : 1.05 + 0.12 * settle(p)));
   const parallax = useTransform(scrollYProgress, (p) => (reduce ? 0 : (0.5 - p) * 36));
