@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { RequestWizard } from "../components/forms/RequestWizard";
+import { IntegrationNotice } from "../components/blocks/LaunchNote";
 import { Callout, Section, SectionHeading } from "../components/ui/primitives";
 import { requestServices } from "../shared/schemas";
 import { paths } from "../lib/paths";
@@ -81,7 +82,12 @@ export default function Request() {
             </Callout>
           ) : null}
 
+          <IntegrationNotice />
           <RequestWizard preselected={preselected} />
+          <p className="mt-4 text-center text-xs leading-6 text-muted">
+            Unfinished answers are saved in this browser so you can return to them later.{" "}
+            <Link to={paths.privacy()} className="font-semibold text-mint hover:underline">Privacy policy</Link>.
+          </p>
 
           <p className="mt-6 text-center text-sm leading-6 text-muted">
             Prefer to speak with someone first?{" "}
