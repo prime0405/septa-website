@@ -9,7 +9,6 @@ import { PostCard } from "../components/blocks/cards";
 import { Button } from "../components/ui/Button";
 import {
   EmptyState,
-  Pill,
   Reveal,
   Section,
   SectionHeading,
@@ -68,14 +67,8 @@ export default function Blog() {
     <>
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Blog" }]}
-        eyebrow="The Septa journal"
         title="A clearer view of what technology can do."
         lead="Practical perspectives on AI, product engineering, automation and the decisions behind technology that works."
-        meta={
-          <>
-            <Pill tone="mint">{posts.length} articles</Pill>
-          </>
-        }
         actions={
           <>
             <Button to={paths.request()} size="lg" magnetic>Start a conversation</Button>
@@ -106,7 +99,6 @@ export default function Blog() {
         <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             as="h2"
-            eyebrow="Explore the journal"
             title="Perspectives for the work ahead"
           />
           <div className="grid w-full gap-3 sm:grid-cols-[minmax(15rem,1fr)_10rem] lg:w-auto">
@@ -150,7 +142,6 @@ export default function Blog() {
         {featured && (
           <Reveal className="mb-9">
             <div className="mb-4 flex items-center justify-between gap-4">
-              <p className="eyebrow">Featured perspective</p>
             </div>
             <PostCard post={featured} variant="featured" showCategory={false} />
           </Reveal>
@@ -189,10 +180,7 @@ export default function Blog() {
           </EmptyState>
         )}
 
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-          <p className="text-[0.85rem] text-muted">
-            {ordered.length} {ordered.length === 1 ? "piece" : "pieces"} in this view
-          </p>
+        <div className="mt-12 flex justify-end border-t border-line pt-6">
           <Link to={paths.contact()} className="inline-flex items-center gap-2 text-[0.86rem] font-medium text-mint hover:underline">
             Have a topic in mind? Tell us
             <span aria-hidden>↗</span>
