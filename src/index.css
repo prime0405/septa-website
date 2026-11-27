@@ -2274,3 +2274,17 @@ html, body, button, input, textarea, select, option {
   transform: none !important;
   will-change: auto !important;
 }
+
+
+/* Freeze the other page-specific hero atmospheres while preserving their gradients and artwork. */
+.vision-band__wash,
+.vision-band__glow,
+.vision-band__orbit,
+.vision-band__orbit--large,
+.vision-band__orbit--small,
+.vision-band__orbit-dash,
+.case-atmosphere__particle {
+  animation: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
