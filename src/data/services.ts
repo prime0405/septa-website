@@ -459,7 +459,7 @@ export const services: ServiceContent[] = [
       },
       {
         title: "Custom Monitoring Setups",
-        href: "/services/observability-monitoring#capability-real-time-monitoring",
+        href: "/services/observability-monitoring#process-stage-2",
         detail: "Solutions tailored to your infrastructure and workflows.",
       },
       {
