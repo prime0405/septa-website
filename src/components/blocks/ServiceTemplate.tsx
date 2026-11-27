@@ -437,7 +437,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             </div>
           </div>
         </div>
-        <div className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent">
+        <div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent" />
       </section>
 
       <Section id="core-services" wall="use-case" tone="surface" className="section">
