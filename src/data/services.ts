@@ -116,10 +116,7 @@ export const services: ServiceContent[] = [
         detail:
           "We design AI products around human behavior. Complex technologies are translated into simple, intuitive experiences that users can easily understand and trust.",
       },
-      {
-        title: "Brand Recognition",
-        detail: "We build product experiences with a clear, consistent identity across the web, mobile, and AI features people use.",
-      },
+      
     ],
     processHeading: "Our Product Development Process",
     processLead:
@@ -302,10 +299,7 @@ export const services: ServiceContent[] = [
         title: "Low Disruption Delivery",
         detail: "We implement in phases to keep your operations running smoothly.",
       },
-      {
-        title: "Brand Recognition",
-        detail: "We make automated customer and internal touchpoints more consistent, helping every interaction reflect the same dependable service.",
-      },
+      
     ],
     cta: {
       headline: "Work Smarter, Not Harder",
@@ -388,10 +382,7 @@ export const services: ServiceContent[] = [
         detail:
           "Every solution is tracked and optimized to show clear improvements in efficiency, cost savings, and customer satisfaction.",
       },
-      {
-        title: "Brand Recognition",
-        detail: "We bring disconnected systems and customer touchpoints into a coherent digital experience that customers can recognise and trust.",
-      },
+      
     ],
     processHeading: "Our Process",
     processLead: "A structured approach to modernizing the way your business operates, with each step aligned to your goals.",
@@ -462,10 +453,7 @@ export const services: ServiceContent[] = [
         title: "Actionable Insights",
         detail: "Reporting and analytics that drive better decisions and performance improvements.",
       },
-      {
-        title: "Brand Recognition",
-        detail: "Reliable systems support reliable customer experiences. We help protect the availability and performance people associate with your brand.",
-      },
+      
     ],
     processHeading: "Our Process",
     process: [
@@ -568,10 +556,7 @@ export const services: ServiceContent[] = [
         title: "Partnership Approach",
         detail: "We don’t just hire; we become your long-term workforce partner.",
       },
-      {
-        title: "Brand Recognition",
-        detail: "Thoughtful recruitment and workforce support create a consistent experience for candidates and employees, strengthening your reputation as an employer.",
-      },
+      
     ],
     processHeading: "Our Process",
     processLead: "We keep things simple, structured, and transparent:",
