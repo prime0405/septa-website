@@ -236,7 +236,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const target = window.location.hash.match(/^#process-stage-(\\d+)$/)?.[1];
+    const target = window.location.hash.match(/^#process-stage-(\d+)$/)?.[1];
     if (target) {
       const index = Number(target) - 1;
       if (index >= 0 && index < steps.length) {
