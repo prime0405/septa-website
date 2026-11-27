@@ -470,7 +470,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
           ) : (
             <div className={cn("grid gap-3 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
               {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-                <Link to={item.href ?? "#core-services"} className="service-glass group relative block h-full overflow-hidden rounded-[1rem] rounded-tr-[1.8rem] rounded-bl-[1.4rem] border border-white/60 bg-white/50 p-3 shadow-[0_12px_32px_-28px_rgba(6,24,32,.4)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_18px_42px_-30px_rgba(6,24,32,.35)] sm:p-3">
+                <Link to={item.href ?? "#core-services"} className={cn("service-glass group relative block overflow-hidden rounded-[1rem] rounded-tr-[1.8rem] rounded-bl-[1.4rem] border border-white/60 bg-white/50 p-3 shadow-[0_12px_32px_-28px_rgba(6,24,32,.4)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_18px_42px_-30px_rgba(6,24,32,.35)] sm:p-3", page.slug === "digital-transformation" ? "h-[132px]" : "h-full")}>
                   <span className="inline-flex size-6 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-sans text-[.58rem] tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
                   <div className="mt-2 flex items-start justify-between gap-2">
                     <h3 className="max-w-xs text-sm font-semibold leading-snug line-clamp-2">{item.title}</h3>
