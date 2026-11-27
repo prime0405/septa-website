@@ -313,7 +313,22 @@ export const services: ServiceContent[] = [
       label: "Partner with Septa",
       to: "/contact",
     },
-    pending: ["Our Process", "Who We Serve"],
+    processHeading: "Our Process",
+    processLead: "A practical sequence based on your existing operations, with changes introduced in manageable stages.",
+    process: [
+      { title: "Map Current Processes" },
+      { title: "Identify Bottlenecks" },
+      { title: "Design and Build Automation" },
+      { title: "Integrate and Test" },
+      { title: "Launch and Optimize" },
+    ],
+    whoWeServeHeading: "Who We Serve",
+    whoWeServe: [
+      { title: "Businesses with Manual Processes", detail: "Organizations looking to reduce repetitive work across everyday operations." },
+      { title: "Teams Managing Repetitive Tasks", detail: "Teams spending time on routine steps that can be streamlined." },
+      { title: "Organizations Using Multiple Systems", detail: "Businesses that need their apps, databases, and tools to exchange information more smoothly." },
+      { title: "Growing Operations", detail: "Teams seeking more consistent workflows as their workload increases." },
+    ],
   },
   {
     slug: "digital-transformation",
