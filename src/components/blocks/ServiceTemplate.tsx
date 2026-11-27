@@ -434,8 +434,9 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
 
       <Section id="the-septa-difference" wall="about" tone="raised" className="section service-why-section border-y border-line-soft">
         <div className="grid items-stretch gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
-          <div className="lg:sticky lg:top-28">
-            <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
+          <div className="relative">
+            <div className="lg:sticky lg:top-28">
+              <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
             <p className="mt-6 max-w-sm text-sm leading-7 text-muted">A considered approach, built around the work your organisation needs to get done.</p>
             <figure className="mt-7 max-w-sm overflow-hidden rounded-[1.5rem] border border-brand-teal/25 bg-brand-pearl shadow-[0_22px_55px_-35px_rgba(6,24,32,.5)]">
               <img
@@ -448,7 +449,8 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
               <figcaption className="border-t border-brand-teal/20 px-4 py-3 font-sans text-[0.62rem] uppercase tracking-[0.16em] text-mint">
                 People first. Technology with purpose.
               </figcaption>
-            </figure>
+              </figure>
+            </div>
           </div>
           <div className="relative h-full overflow-hidden rounded-[1.8rem] border border-[#C9E3D7] bg-[#DDEFE6] p-5 text-[#344B49] shadow-[0_24px_65px_-48px_rgba(30,75,65,.28)] sm:rounded-[2.2rem] sm:p-7 lg:p-8">
             <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-[#6DB1AE]/25" />
