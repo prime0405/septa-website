@@ -81,23 +81,23 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
   const visuals: Record<string, Record<string, { src: string; alt: string; tag: string }>> = {
     "ai-product-development": {
       "UI/UX Design": { src: "/img/services/UIUX Design.jpg", alt: "Black product designer reviewing interface wireframes and a connected prototype", tag: "EXPERIENCE DESIGN" },
-      "Web Development": { src: "", alt: "Responsive website layouts displayed across desktop and mobile screens", tag: "WEB PLATFORMS" },
+      "Web Development": { src: "/img/work/product-in-use.webp", alt: "Responsive website layouts displayed across desktop and mobile screens", tag: "WEB PLATFORMS" },
       "Mobile App Development": { src: "/img/services/Mobile App Development.jpg", alt: "A set of polished mobile application screens displayed in smartphone mockups", tag: "MOBILE PRODUCTS" },
-      "AI and Machine Learning Integration": { src: "", alt: "Machine learning model pipeline connecting data, training and product features", tag: "AI & MACHINE LEARNING" },
-      "End-to-End Delivery": { src: "", alt: "Software product lifecycle from planning and development through testing and deployment", tag: "END-TO-END BUILD" },
+      "AI and Machine Learning Integration": { src: "/img/work/ai-model-build.webp", alt: "Machine learning model pipeline connecting data, training and product features", tag: "AI & MACHINE LEARNING" },
+      "End-to-End Delivery": { src: "/img/work/product-delivery.webp", alt: "Software product lifecycle from planning and development through testing and deployment", tag: "END-TO-END BUILD" },
     },
     "workflow-automation": {
       "Business Process Automation": { src: "/img/services/Business Process Automation.jpg", alt: "Black operations professional reviewing an automated business workflow", tag: "WORKFLOW DESIGN" },
-      "Custom Automation Tools": { src: "", alt: "Custom operations software interface with controls and automated task status", tag: "CUSTOM AUTOMATION" },
-      "System Integration": { src: "", alt: "API architecture diagram connecting business applications and data services", tag: "SYSTEM INTEGRATION" },
-      "Repetitive Task Elimination": { src: "", alt: "Document processing workflow showing manual steps replaced by automated actions", tag: "PROCESS IMPROVEMENT" },
+      "Custom Automation Tools": { src: "/img/work/automation-flows.webp", alt: "Custom operations software interface with controls and automated task status", tag: "CUSTOM AUTOMATION" },
+      "System Integration": { src: "/img/work/product-delivery.webp", alt: "API architecture diagram connecting business applications and data services", tag: "SYSTEM INTEGRATION" },
+      "Repetitive Task Elimination": { src: "/img/work/automation-flows.webp", alt: "Document processing workflow showing manual steps replaced by automated actions", tag: "PROCESS IMPROVEMENT" },
     },
     "digital-transformation": {
       "Process Modernization": { src: "/img/services/Digital Transformation.jpg", alt: "Business process transitioning from legacy paperwork and systems to a modern digital workflow", tag: "PROCESS MODERNISATION" },
       "Cloud Migration": { src: "/img/services/Cloud Migration.jpg", alt: "Cloud migration architecture moving workloads from on-premise infrastructure into cloud services", tag: "CLOUD & INFRASTRUCTURE" },
       "Data Intelligence": { src: "/img/services/Data intelligence.jpg", alt: "Black data analyst interpreting business intelligence dashboards and data visualisations", tag: "DATA INTELLIGENCE" },
-      "Customer Experience Upgrades": { src: "", alt: "Customer journey and omnichannel service experience interface", tag: "CUSTOMER EXPERIENCE" },
-      "Change Management Support": { src: "", alt: "Black and diverse team collaborating during a digital change and adoption workshop", tag: "CHANGE & ADOPTION" },
+      "Customer Experience Upgrades": { src: "/img/work/product-in-use.webp", alt: "Customer journey and omnichannel service experience interface", tag: "CUSTOMER EXPERIENCE" },
+      "Change Management Support": { src: "/img/work/transformation-floor.webp", alt: "Black and diverse team collaborating during a digital change and adoption workshop", tag: "CHANGE & ADOPTION" },
     },
     "observability-monitoring": {
       "Real-Time Monitoring": { src: "/img/services/Real-Time Monitoring.jpg", alt: "Black network operations engineer monitoring live infrastructure and service health screens", tag: "LIVE SYSTEM HEALTH" },
