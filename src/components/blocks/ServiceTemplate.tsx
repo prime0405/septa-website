@@ -106,10 +106,10 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
       "Dashboards & Reporting": { src: "/img/services/Dashboards & Reporting.jpg", alt: "A business intelligence dashboard showing revenue, sales, customers and performance charts", tag: "REPORTING & ALERTS" },
     },
     "talent-solution": {
-      "Access to a pool of pre-scanned talent solutions": { src: "/img/services/Access to a Pool of Pre-Screened Talent.jpg", alt: "A recruitment planning session with a facilitator and team reviewing hiring priorities on a whiteboard", tag: "TALENT SOURCING" },
-      "Tailored Recruitment process": { src: "/img/services/tailored recruitment process.jpg", alt: "A recruiter speaking with a candidate during an interview", tag: "TAILORED RECRUITMENT" },
-      "Payroll management": { src: "/img/services/Payroll Management.jpg", alt: "An HR professional reviews payroll and employee records across desktop and tablet interfaces", tag: "PAYROLL OPERATIONS" },
-      "Employee benefits administration": { src: "/img/services/Hr customer benefits.jpg", alt: "An HR professional and employee review workplace benefits documents together", tag: "PEOPLE & BENEFITS" },
+      "Access to a Pool of Pre-Screened Talent": { src: "/img/services/Access to a Pool of Pre-Screened Talent.jpg", alt: "A recruitment planning session with a facilitator and team reviewing hiring priorities on a whiteboard", tag: "TALENT SOURCING" },
+      "Tailored Recruitment Process": { src: "/img/services/tailored recruitment process.jpg", alt: "A recruiter speaking with a candidate during an interview", tag: "TAILORED RECRUITMENT" },
+      "Payroll Management": { src: "/img/services/Payroll Management.jpg", alt: "An HR professional reviews payroll and employee records across desktop and tablet interfaces", tag: "PAYROLL OPERATIONS" },
+      "Employee Benefits Administration": { src: "/img/services/Hr customer benefits.jpg", alt: "An HR professional and employee review workplace benefits documents together", tag: "PEOPLE & BENEFITS" },
     },
   };
   const visual = visuals[page.slug]?.[item.title] ?? {
