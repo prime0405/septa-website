@@ -383,12 +383,12 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                 <span className="flex size-11 items-center justify-center border border-brand-mint/35 bg-brand-mint/[0.07] text-brand-mint"><ServiceIcon icon={page.icon} className="size-5" strokeWidth={1.8} /></span>
                 <span className="font-sans text-xs uppercase tracking-[0.2em] text-brand-mint">{page.name}</span>
               </div>
-              <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, delay: .08, ease: [.22, 1, .36, 1] }}>
+              <div>
                 <h1 className="max-w-4xl text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[0.98] tracking-[-0.055em] text-white">{page.heroTitle}</h1>
                 <p className="mt-5 max-w-2xl text-[.98rem] leading-7 text-white/75 sm:text-base sm:leading-7">{page.intro}</p>
-              </motion.div>
+              </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                {page.cta ? <Button to={page.cta.to} size="lg" variant="dark-cta" magnetic>{page.cta.label}</Button> : null}
+                {page.cta ? <Button to={page.cta.to} size="lg" variant="dark-cta">{page.cta.label}</Button> : null}
                 <Link to="/services" className="inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:border-brand-mint hover:bg-white/[0.04]">Explore all services <ArrowUpRight className="size-4" aria-hidden /></Link>
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/20 pt-4">
