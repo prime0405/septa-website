@@ -10,6 +10,8 @@ import { PhotoFigure } from "./PhotoFigure";
 import { ServiceIcon } from "./ServiceIcon";
 
 
+const anchorSlug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g);
+
 function ServiceMotionField({ slug }: { slug: string }) {
   const reduce = useReducedMotion();
   const traces: Record<string, { primary: string; secondary: string }> = {
@@ -117,6 +119,13 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     alt: "",
     tag: "CAPABILITY OVERVIEW",
   };
+  useEffect(() => {
+    const target = window.location.hash.match(/^#capability-(.+)$/)?.[1];
+    if (!target) return;
+    const index = page.coreServices.findIndex((capability) => anchorSlug(capability.title) === target);
+    if (index >= 0) setActive(index);
+  }, [page.slug, page.coreServices]);
+
   const goTo = (index: number) => {
     const length = page.coreServices.length;
     const next = ((index % length) + length) % length;
@@ -205,7 +214,7 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
             <p className="mb-5 text-xs text-white/55">Explore each capability</p>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {page.coreServices.map((capability, index) => (
-                <button key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
+                <button id={`capability-${anchorSlug(capability.title)}`} key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
                   className={cn("min-h-10 min-w-0 break-words rounded-xl border px-3 py-2 text-left text-xs font-semibold leading-snug transition-all duration-300 sm:flex-1", active === index ? "border-[#91d9cf]/70 bg-[#6db1ae]/20 text-white shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-white/15 bg-white/[.035] text-white/65 hover:border-white/35 hover:bg-white/[.08] hover:text-white")}>
                   <span className="mr-2 font-sans text-[.62rem] text-[#91d9cf]">{String(index + 1).padStart(2, "0")}</span>{capability.title}
                 </button>
@@ -246,7 +255,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
         <div className="relative space-y-2">
           <div aria-hidden className="absolute bottom-7 left-[19px] top-7 w-px bg-brand-teal/30" />
           {steps.map((item, index) => (
-            <button key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)}
+            <button id={`process-stage-${index + 1}`} key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)}
               className={cn("relative flex w-full items-center gap-4 rounded-2xl border px-3 py-4 text-left transition-all duration-300",
                 active === index ? "border-brand-pearl bg-brand-pearl text-white shadow-lg shadow-brand-pearl/10" : "border-transparent text-brand-pearl hover:border-white/60 hover:bg-white/55")}>
               <span className={cn("relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border font-sans text-xs",
@@ -376,14 +385,14 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
         <motion.div aria-hidden className="h-1 w-full origin-left bg-gradient-to-r from-transparent via-brand-mint/55 to-transparent" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.4, delay: .2 }} />
       </section>
 
-      <Section wall="use-case" tone="surface" className="section">
+      <Section id="core-services" wall="use-case" tone="surface" className="section">
         <div className="max-w-3xl">
           <SectionHeading eyebrow="What we do" title={page.coreServicesHeading} lead={page.coreServicesLead} />
         </div>
         <CapabilityExplorer key={page.slug} page={page} />
       </Section>
 
-      <Section wall="about" tone="raised" className="section border-y border-line-soft">
+      <Section id="the-septa-difference" wall="about" tone="raised" className="section border-y border-line-soft">
         <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading eyebrow="The Septa difference" title={page.whyChooseHeading} />
@@ -405,7 +414,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
             <div className="divide-y divide-line-soft border-y border-line-soft">
               {page.whyChoose.map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.035}>
-                  <article className="group grid gap-3 py-5 transition-colors duration-300 hover:bg-brand-teal/[0.035] sm:grid-cols-[3.5rem_minmax(0,0.78fr)_minmax(0,1.22fr)] sm:items-start sm:gap-5 sm:px-4">
+                  <Link to={item.href ?? "#core-services"} className="group grid gap-3 py-5 transition-colors duration-300 hover:bg-brand-teal/[0.035] sm:grid-cols-[3.5rem_minmax(0,0.78fr)_minmax(0,1.22fr)] sm:items-start sm:gap-5 sm:px-4">
                     <span className="flex size-9 items-center justify-center rounded-full border border-brand-teal/30 bg-brand-teal/[0.08] font-sans text-xs tracking-widest text-mint transition-colors duration-300 group-hover:border-brand-teal group-hover:bg-brand-teal group-hover:text-brand-pearl">
                       {String(index + 1).padStart(2, "0")}
                     </span>
@@ -414,28 +423,28 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                       <ArrowUpRight className="size-4 shrink-0 text-mint opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" aria-hidden />
                     </div>
                     {item.detail ? <p className="max-w-2xl text-sm leading-6 text-muted sm:pt-1">{item.detail}</p> : null}
-                  </article>
+                  </Link>
                 </Reveal>
               ))}
             </div>
           ) : (
             <div className={cn("grid gap-4 sm:grid-cols-2", [3, 5].includes(page.whyChoose.length) && "xl:grid-cols-3")}>
               {page.whyChoose.map((item, index) => <Reveal key={item.title} delay={index * 0.04}>
-                <article className="service-glass group relative h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-white/60 bg-white/50 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
+                <Link to={item.href ?? "#core-services"} className="service-glass group relative block h-full min-h-48 overflow-hidden rounded-[1.65rem] border border-white/60 bg-white/50 p-6 shadow-[0_16px_42px_-34px_rgba(6,24,32,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-teal/45 hover:bg-white/75 hover:shadow-[0_24px_55px_-35px_rgba(6,24,32,.4)] sm:p-7">
                   <span className="inline-flex size-9 items-center justify-center rounded-full border border-brand-teal/25 bg-brand-teal/10 font-sans text-xs tracking-widest text-mint">{String(index + 1).padStart(2, "0")}</span>
                   <div className="mt-8 flex items-start justify-between gap-3">
                     <h3 className="max-w-xs text-xl">{item.title}</h3>
                     <ArrowUpRight className="mt-1 size-4 shrink-0 text-mint opacity-0 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
                   </div>
                   {item.detail ? <p className="mt-3 max-w-md text-sm leading-7 text-muted">{item.detail}</p> : null}
-                </article>
+                </Link>
               </Reveal>)}
             </div>
           )}
         </div>
       </Section>
 
-      {page.process ? <Section wall="service-automation" tone="surface" className="section">
+      {page.process ? <Section id="our-process" wall="service-automation" tone="surface" className="section">
         <div className="max-w-3xl">
           <SectionHeading eyebrow="From first step to delivery" title={page.processHeading ?? "Our Process"} lead={page.processLead} />
         </div>
