@@ -118,6 +118,17 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
     alt: page.image?.alt ?? `Septa ${page.name} capability in practice`,
     tag: "CAPABILITY OVERVIEW",
   };
+
+  // Advance the capability carousel automatically. Any manual selection restarts this timer.
+  useEffect(() => {
+    if (page.coreServices.length < 2) return;
+    const timer = window.setTimeout(() => {
+      setDirection(1);
+      setActive((current) => (current + 1) % page.coreServices.length);
+    }, 3000);
+    return () => window.clearTimeout(timer);
+  }, [active, page.coreServices.length]);
+
   useEffect(() => {
     const target = window.location.hash.match(/^#capability-(.+)$/)?.[1];
     if (!target) return;
@@ -287,7 +298,7 @@ function ProcessJourney({ page }: { page: ServiceContent }) {
 
     const timer = window.setTimeout(() => {
       setActive((current) => (current + 1) % steps.length);
-    }, 2500);
+    }, 3000);
 
     return () => window.clearTimeout(timer);
   }, [active, steps.length]);
