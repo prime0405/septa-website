@@ -215,11 +215,37 @@ function CapabilityExplorer({ page }: { page: ServiceContent }) {
 
           <div className="relative mt-10">
             <p className="mb-5 text-xs text-white/55">Explore each capability</p>
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+            <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
               {page.coreServices.map((capability, index) => (
-                <button id={`capability-${anchorSlug(capability.title)}`} key={capability.title} type="button" aria-label={`Show capability ${index + 1}: ${capability.title}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}
-                  className={cn("min-h-10 min-w-0 break-words rounded-xl border px-3 py-2 text-left text-xs font-semibold leading-snug transition-all duration-300 sm:flex-1", active === index ? "border-[#91d9cf]/70 bg-[#6db1ae]/20 text-white shadow-[inset_0_0_0_1px_rgba(145,217,207,.12)]" : "border-white/15 bg-white/[.035] text-white/65 hover:border-white/35 hover:bg-white/[.08] hover:text-white")}>
-                  <span className="mr-2 font-sans text-[.62rem] text-[#91d9cf]">{String(index + 1).padStart(2, "0")}</span>{capability.title}
+                <button
+                  id={`capability-${anchorSlug(capability.title)}`}
+                  key={capability.title}
+                  type="button"
+                  aria-label={`Show capability ${index + 1}: ${capability.title}`}
+                  aria-current={active === index ? "true" : undefined}
+                  onClick={() => goTo(index)}
+                  className={cn(
+                    "group relative flex min-h-[88px] min-w-0 items-start gap-3 overflow-hidden rounded-[1.15rem] rounded-tr-[2rem] rounded-bl-[1.8rem] border px-3.5 py-3.5 text-left transition-all duration-300 sm:min-h-[96px] sm:px-4 sm:py-4",
+                    active === index
+                      ? "border-[#6db1ae]/70 bg-[#6db1ae]/15 text-[#123f3d] shadow-[0_10px_24px_-18px_rgba(6,44,42,.65),inset_0_0_0_1px_rgba(109,177,174,.18)]"
+                      : "border-[#6db1ae]/25 bg-white/65 text-[#17383b] hover:-translate-y-0.5 hover:border-[#6db1ae]/60 hover:bg-white hover:shadow-[0_12px_26px_-20px_rgba(6,44,42,.55)]"
+                  )}
+                >
+                  <span className={cn(
+                    "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg rounded-br-xl border font-sans text-[.68rem] font-bold transition-colors",
+                    active === index
+                      ? "border-[#286f6a]/30 bg-[#286f6a] text-white"
+                      : "border-[#286f6a]/20 bg-[#eaf5f0] text-[#286f6a]"
+                  )}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0 flex-1 whitespace-normal break-words [overflow-wrap:anywhere] text-[.76rem] font-semibold leading-[1.35] sm:text-[.8rem]">
+                    {capability.title}
+                  </span>
+                  <span aria-hidden className={cn(
+                    "absolute bottom-0 right-0 h-1 w-10 rounded-tl-full transition-all",
+                    active === index ? "bg-[#286f6a] w-14" : "bg-[#6db1ae]/35 group-hover:w-14"
+                  )} />
                 </button>
               ))}
             </div>
