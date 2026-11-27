@@ -71,8 +71,8 @@ export default function Blog() {
         lead="Practical perspectives on AI, product engineering, automation and the decisions behind technology that works."
         actions={
           <>
-            <Button to={paths.request()} size="lg" magnetic>Start a conversation</Button>
-            <Button to={paths.contact()} size="lg" variant="secondary" magnetic>Contact Septa</Button>
+            <Button to={paths.request()} size="lg">Start a conversation</Button>
+            <Button to={paths.contact()} size="lg" variant="secondary">Contact Septa</Button>
           </>
         }
         art={<BlogHeroArt />}
