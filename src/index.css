@@ -2290,31 +2290,16 @@ html, body, button, input, textarea, select, option {
 }
 
 
-/* Septa instruction: every page hero is a fixed composition, not an animated scene.
-   This also neutralises Framer Motion's inline entrance/scroll styles inside hero wrappers. */
+/* Every hero is a fixed composition. Stop CSS animations and transitions on the
+   elements and their pseudo-elements without overriding static transforms or opacity. */
 [data-static-hero],
-[data-static-hero] * {
+[data-static-hero] *,
+[data-static-hero] *::before,
+[data-static-hero] *::after {
   animation: none !important;
   transition: none !important;
   scroll-behavior: auto !important;
 }
-[data-static-hero] [style*="transform"] {
-  transform: none !important;
-}
-[data-static-hero] [style*="opacity"] {
-  opacity: 1 !important;
-}
-[data-static-hero] [style*="filter"] {
-  filter: none !important;
-}
 [data-static-hero] canvas {
   display: none !important;
-}
-.hero-field .animate-aurora,
-.hero-field .animate-aurora-slow,
-.hero-field .animate-dash,
-.hero-field .animate-float,
-.hero-field .animate-spin-slow,
-.hero-field .animate-pulse-node {
-  animation: none !important;
 }
