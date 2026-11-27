@@ -16,7 +16,7 @@ import { usePageMeta } from "../lib/usePageMeta";
  */
 const serviceLegend = (
   <Reveal>
-    <div className="relative overflow-hidden rounded-card border border-line bg-ink-raised/85 p-6">
+    <div className="relative overflow-hidden rounded-card border border-[#DDEFE6] bg-[#FFFFFF] p-6">
       <div aria-hidden className="dot-bg absolute inset-0 opacity-30" />
       <div className="relative">
         <p className="eyebrow mb-4">The legend</p>
@@ -25,9 +25,9 @@ const serviceLegend = (
             <li key={s.slug}>
               <Link
                 to={paths.service(s.slug)}
-                className="group flex items-baseline gap-3 text-[0.88rem] text-muted hover:text-mint"
+                className="group flex items-baseline gap-3 text-[0.88rem] text-[#344B49] hover:text-[#6DB1AE]"
               >
-                <span className="font-mono text-[0.72rem] text-faint group-hover:text-mint">
+                <span className="font-mono text-[0.72rem] text-[#344B49]/70 group-hover:text-[#6DB1AE]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="min-w-0 flex-1 truncate">{s.name}</span>
@@ -39,7 +39,7 @@ const serviceLegend = (
             </li>
           ))}
         </ul>
-        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-faint uppercase">
+        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-[#344B49]/65 uppercase">
           Five ways we plug into your team
         </p>
       </div>
@@ -58,9 +58,9 @@ export default function Services() {
     <>
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Services" }]}
-        eyebrow={<span className="text-[#061820]">Service Overview</span>}
+        eyebrow={<span className="text-[#344B49]">Service Overview</span>}
         title={serviceOverview}
-        lead={<span className="text-[#061820]/80">{servicesIntro}</span>}
+        lead={<span className="text-[#344B49]/80">{servicesIntro}</span>}
         actions={
           <>
             <Button to={paths.request()} size="lg" magnetic>
