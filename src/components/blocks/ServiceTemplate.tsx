@@ -481,7 +481,7 @@ export function ServiceTemplate({ page, crumbs }: { page: ServiceContent; crumbs
                     <div
                       key={item.title}
                       className="septa-orbit__item"
-                      style={{ "--orbit-angle": `${angle}deg`, "--orbit-index": index } as React.CSSProperties}
+                      style={{ "--orbit-angle": `${angle}deg`, "--orbit-index": index } as CSSProperties}
                     >
                       <Link
                         to={item.href ?? "#core-services"}
