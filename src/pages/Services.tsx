@@ -9,6 +9,7 @@ import { serviceListings, serviceOverview, servicesIntro } from "../data/content
 import { services } from "../data/services";
 import { paths } from "../lib/paths";
 import { usePageMeta } from "../lib/usePageMeta";
+import "./service-page-theme.css";
 
 /**
  * The legend down the hero's right margin: the five services as numbered schematic nodes, in the
@@ -16,7 +17,7 @@ import { usePageMeta } from "../lib/usePageMeta";
  */
 const serviceLegend = (
   <Reveal>
-    <div className="relative overflow-hidden rounded-card border border-[#DDEFE6] bg-[#FFFFFF] p-6">
+    <div className="services-overview-legend relative overflow-hidden rounded-card border border-brand-teal/25 bg-[#061820] p-6">
       <div aria-hidden className="dot-bg absolute inset-0 opacity-30" />
       <div className="relative">
         <p className="eyebrow mb-4">The legend</p>
@@ -25,9 +26,9 @@ const serviceLegend = (
             <li key={s.slug}>
               <Link
                 to={paths.service(s.slug)}
-                className="group flex items-baseline gap-3 text-[0.88rem] text-[#344B49] hover:text-[#6DB1AE]"
+                className="group flex items-baseline gap-3 text-[0.88rem] text-white/80 hover:text-brand-mint"
               >
-                <span className="font-mono text-[0.72rem] text-[#344B49]/70 group-hover:text-[#6DB1AE]">
+                <span className="font-mono text-[0.72rem] text-white/55 group-hover:text-brand-mint">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="min-w-0 flex-1 truncate">{s.name}</span>
@@ -39,7 +40,7 @@ const serviceLegend = (
             </li>
           ))}
         </ul>
-        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-[#344B49]/65 uppercase">
+        <p className="mt-5 font-mono text-[0.66rem] tracking-[0.14em] text-white/55 uppercase">
           Five ways we plug into your team
         </p>
       </div>
@@ -55,7 +56,7 @@ export default function Services() {
   usePageMeta({ title: "Services", description: servicesIntro });
 
   return (
-    <>
+    <div className="service-page">
       <PageHero
         crumbs={[{ label: "Home", to: paths.home() }, { label: "Services" }]}
         eyebrow={<span className="text-[#344B49]">Service Overview</span>}
@@ -72,7 +73,7 @@ export default function Services() {
           </>
         }
         art={<ServicesHeroArt />}
-        className="bg-[#6DB1AE]"
+        className="bg-[#061820] text-white"
         density="compact"
         aside={serviceLegend}
       />
@@ -84,7 +85,7 @@ export default function Services() {
             const svc = services.find((x) => x.slug === s.slug);
             return (
               <Reveal key={s.slug} delay={i * 0.05} className={i === 0 ? "md:col-span-2" : ""}>
-                <Card tilt className="card-hover group relative flex h-full flex-col overflow-hidden p-6 sm:p-7">
+                <Card tilt className="services-overview-card card-hover group relative flex h-full flex-col overflow-hidden p-6 sm:p-7">
                   <span
                     aria-hidden
                     className="pointer-events-none absolute -top-5 -right-2 font-display text-[5rem] leading-none text-mint/[0.07]"
@@ -120,6 +121,6 @@ export default function Services() {
           })}
         </div>
       </Section>
-    </>
+    </div>
   );
 }
