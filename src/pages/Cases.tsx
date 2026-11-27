@@ -345,7 +345,7 @@ export default function Cases() {
 
   return (
     <div className="overflow-hidden bg-white">
-      <section className="relative isolate overflow-hidden bg-white">
+      <section data-static-hero="" className="relative isolate overflow-hidden bg-white">
         <AnimatedCaseBackdrop variant="light" />
         <div className="wrap relative z-10 pb-20 pt-20 text-center sm:pb-24 sm:pt-24 lg:pb-32 lg:pt-28">
           <nav
@@ -359,45 +359,26 @@ export default function Cases() {
             <span className="text-brand-pearl">Case Studies</span>
           </nav>
 
-          <motion.p
-            initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-mint"
-          >
+          <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-mint">
             Our work · Septa Software
-          </motion.p>
-          <motion.h1
-            initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto max-w-5xl text-[clamp(3rem,7.4vw,6.8rem)] font-semibold leading-[0.94] tracking-[-0.075em] text-brand-pearl"
-          >
+          </p>
+          <h1 className="mx-auto max-w-5xl text-[clamp(3rem,7.4vw,6.8rem)] font-semibold leading-[0.94] tracking-[-0.075em] text-brand-pearl">
             Digital solutions built around{" "}
             <span className="text-mint">real needs.</span>
-          </motion.h1>
-          <motion.p
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-7 max-w-2xl text-[1rem] leading-[1.9] text-muted sm:text-[1.08rem]"
-          >
+          </h1>
+          <p className="mx-auto mt-7 max-w-2xl text-[1rem] leading-[1.9] text-muted sm:text-[1.08rem]">
             From growing startups to established organisations, we turn ideas and business
             challenges into thoughtful digital products built for the people who use them.
-          </motion.p>
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
-          >
+          </p>
+          <div>
             <Link
               to={paths.contact()}
-              className="group mt-8 inline-flex items-center gap-3 rounded-full bg-brand-pearl px-6 py-4 text-[0.86rem] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-brand-teal hover:text-brand-pearl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-teal"
+              className="group mt-8 inline-flex items-center gap-3 rounded-full bg-brand-pearl px-6 py-4 text-[0.86rem] font-semibold text-white transition-colors duration-300 hover:bg-brand-teal hover:text-brand-pearl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-teal"
             >
               Start a project
               <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
