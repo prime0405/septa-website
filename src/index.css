@@ -2303,3 +2303,16 @@ html, body, button, input, textarea, select, option {
 [data-static-hero] canvas {
   display: none !important;
 }
+/* Freeze inline Framer Motion values in hero content, including aside photography. */
+[data-static-hero] [style*="transform"] {
+  transform: none !important;
+}
+[data-static-hero] [style*="opacity"] {
+  opacity: 1 !important;
+}
+[data-static-hero] [style*="filter"] {
+  filter: none !important;
+}
+[data-static-hero] .photo-sheet {
+  pointer-events: none !important;
+}
